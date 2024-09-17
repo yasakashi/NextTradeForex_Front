@@ -1,0 +1,1154 @@
+{
+	"info": {
+		"_postman_id": "d954734e-fd5a-46ea-b19c-732c65d932cd",
+		"name": "NextTradeForex",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "6329644"
+	},
+	"item": [
+		{
+			"name": "Signal",
+			"item": [
+				{
+					"name": "ایجاد کانال سیگتال",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"communitygroupid\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"title\": \"\",\r\n    \"isneedpaid\": false \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/addsignalchannel"
+					},
+					"response": []
+				},
+				{
+					"name": "حذف سک کانال سیگتال",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/deletesignalchannel"
+					},
+					"response": []
+				},
+				{
+					"name": "ویرایش سک کانال سیگنال",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"title\": \"\",\r\n    \"isneedpaid\": false /*true | false */\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/updatesignalchannel"
+					},
+					"response": []
+				},
+				{
+					"name": "getanalysistype",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/getanalysistype"
+					},
+					"response": []
+				},
+				{
+					"name": "getpositiontype",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/getpositiontype"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت عکس یک سیگنال",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/signal/getimage/05ff7d38-07f8-44e0-987b-a56d2b0d550f"
+					},
+					"response": []
+				},
+				{
+					"name": "getmarketcycle",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/getmarketcycle"
+					},
+					"response": []
+				},
+				{
+					"name": "ارسال عکس برای سیگنال",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "",
+									"description": "کد گروه ایحاد شده",
+									"type": "text"
+								},
+								{
+									"key": "IFormFile",
+									"value": "",
+									"description": "فایل عکس",
+									"type": "text"
+								}
+							]
+						},
+						"url": "https://api.yasakashi.ir/api/signal/uploadsignalimage"
+					},
+					"response": []
+				},
+				{
+					"name": "getentrypoint",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/getentrypoint"
+					},
+					"response": []
+				},
+				{
+					"name": "لیست کانال های سیگنال یک گروه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"communitygroupId\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/getsignalchannel"
+					},
+					"response": []
+				},
+				{
+					"name": "Instrument",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/getinstrument"
+					},
+					"response": []
+				},
+				{
+					"name": "ایجاد کانال سیگنال",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n    \"communitygroupId\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"title\":\"\",\r\n    \"isneedpaid\":false\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/addsignalchannel"
+					},
+					"response": []
+				},
+				{
+					"name": "حذف کلنال سیگتال",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"communitygroupId\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/deletesignalchannel"
+					},
+					"response": []
+				},
+				{
+					"name": "اصلاح اطلاعات کانال سیگتال",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \"Id\":\"\",\r\n    \"communitygroupId\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"title\":\"\",\r\n    \"isneedpaid\":false\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/updatesignalchannel"
+					},
+					"response": []
+				},
+				{
+					"name": "اضافه کردن یک سیگنال",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"signalchannelId\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"positiontypeId\":1,\r\n    \"instrumenttypeid\":1,\r\n    \"timeframe_1min\":1,\r\n    \"timeframe_5min\":true,\r\n    \"timeframe_15min\":true,\r\n    \"timeframe_30min\":true,\r\n    \"timeframe_1houre\":true,\r\n    \"timeframe_4houre\":true,\r\n    \"timeframe_8houre\":true,\r\n    \"timeframe_1day\":true,\r\n    \"timeframe_1week\":false,\r\n    \"timeframe_1month\":false,\r\n    \"analysistypeId\":1,\r\n    \"marketsycleid\":1,\r\n    \"entrypointtypeId\":1,\r\n    \"entrypointtypevalue\":1,\r\n    \"sl\":1,\r\n    \"tp1\":1,\r\n    \"tp2\":1,\r\n    \"tp3\":1,\r\n    \"resistance3\":\"5\",\r\n    \"resistance2\":\"4\",\r\n    \"resistance1\":\"5\",\r\n    \"entrypoint\":\"34\",\r\n    \"support1\":\"324\",\r\n    \"support2\":\"234\",\r\n    \"support3\":\"55\",\r\n    \"description\":\"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/addsignal"
+					},
+					"response": []
+				},
+				{
+					"name": "حذف یک سیگتال",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/deletesignal"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت اطلاعات یک سیگتال با لیست سیگنال های گروه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"signalchannelId\": \"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"id\":null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/signal/getsignal"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CommiunityGroups",
+			"item": [
+				{
+					"name": "لیست گروه های ساخته شده",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":\"0027f263-1cec-4172-96b1-960e95712966\",\r\n    \"owneruserid\":null,\r\n    \"grouptypeId\":null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/getcommunitygroups"
+					},
+					"response": []
+				},
+				{
+					"name": "ایجاد گروه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\"title\":\"O’zbekiston Savdogarlari Guruhi group\",\r\n    \"grouptypeId\":1,\r\n    \"description\":\"fsdafsdfsdfsa\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/addcommunitygroup"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت پیام ها",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"parentId\":null,\r\n    \"categoryid\":1,\r\n    \"fromregisterdatetime\":\"2024-05-25\",\r\n    \"toregisterdatetime\":\"2024-06-25\",\r\n    \"communitygroupid\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\"\r\n}    \r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/getforummessage"
+					},
+					"response": []
+				},
+				{
+					"name": "لیست گروه های یک کاربر",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoryid\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/getusercommunitygroups"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت عکس گروه",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/getcommunitygroupimage/0b739cbf-c955-49d7-9e50-06d3b4a81af6"
+					},
+					"response": []
+				},
+				{
+					"name": "درخواست عضویت در یک گروه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"communitygroupId\":\"7638f86c-5ed8-4d1d-b1d7-f237c434ffd9\",\r\n    //  در صورت عدم ارسال از کاربر توکن استفاده می کند -- خواستی تست کنی این را پاک کن\r\n    \"userId\":12 \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/addcommunitygroupmember"
+					},
+					"response": []
+				},
+				{
+					"name": "تایید درخواست در یک گروه توسط مالک گروه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\":null,\r\n    \"communitygroupId\":\"7638f86c-5ed8-4d1d-b1d7-f237c434ffd9\",\r\n    \"userId\":12 \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/acceptcommunitygroupmember"
+					},
+					"response": []
+				},
+				{
+					"name": "حذف عضویت در یک گروه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\":null,\r\n    \"communitygroupId\":\"7638f86c-5ed8-4d1d-b1d7-f237c434ffd9\",\r\n    \"userId\":222\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/removecommunitygroupmember"
+					},
+					"response": []
+				},
+				{
+					"name": "ارسال عکس برای گروه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "",
+									"description": "کد گروه ایحاد شده",
+									"type": "text"
+								},
+								{
+									"key": "IFormFile",
+									"value": "",
+									"description": "فایل عکس",
+									"type": "text"
+								}
+							]
+						},
+						"url": "https://api.yasakashi.ir/api/setcommunitygrouppic"
+					},
+					"response": []
+				},
+				{
+					"name": "ایجاد پیام در سیستم",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"parentId\":null,\r\n    \"categoryid\":1,\r\n    \"communitygroupId\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"title\":\"forex\",\r\n    \"messagebody\":\"amir basiri\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/createforummessage"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت لیست اعضای گروه",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"communitygroupId\":\"7638f86c-5ed8-4d1d-b1d7-f237c434ffd9\",\r\n    \"isaccepted\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/getcommunitygroupmember"
+					},
+					"response": []
+				},
+				{
+					"name": "لیست گروه های محبوب",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"showdetail\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/gettopcommunitygroups"
+					},
+					"response": []
+				},
+				{
+					"name": "ارسال عکس",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "0b739cbf-c955-49d7-9e50-06d3b4a81af6",
+									"type": "text"
+								},
+								{
+									"key": "coverPicture",
+									"type": "file",
+									"src": "/E:/movie/New folder/tt (2).jpg"
+								}
+							]
+						},
+						"url": "http://localhost:55121/api/setcommunitygrouppic"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "لیست نوع  یا سطح دوره ها",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/getcourseleveltype"
+					},
+					"response": []
+				},
+				{
+					"name": "نوع برگذاری دوره",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/getcoursetype"
+					},
+					"response": []
+				},
+				{
+					"name": "اضافه کردن ک دوره جدید",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \"courseleveltypeId\" :  2,\r\n    \"coursename\" :  \"\",\r\n    \"courseduringtime\" :  55,\r\n    \"courseprice\" :  33.44,\r\n    \"startdate\" :  null,\r\n    \"enddate\" :  null,\r\n    \"lessencount\" :  6,\r\n    \"allowdownload\" :  false,\r\n    \"coursetypeId\" :  5,\r\n    \"siteisowner\" : true,\r\n    \"coursedescription\" :  \"sadasdas\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/course/addcourses"
+					},
+					"response": []
+				},
+				{
+					"name": "خذف کردن یک دوره",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"Id\" :  \"Guid\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/course/removecourse"
+					},
+					"response": []
+				},
+				{
+					"name": "ویرایش یک دوره",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n     \"Id\" :  \"شنا سه دوره\",\r\n     \"courseleveltypeId\" :  2,\r\n    \"coursename\" :  \"\",\r\n    \"courseduringtime\" :  55,\r\n    \"courseprice\" :  33.44,\r\n    \"startdate\" :  null,\r\n    \"enddate\" :  null,\r\n    \"lessencount\" :  6,\r\n    \"allowdownload\" :  false,\r\n    \"coursetypeId\" :  5,\r\n    \"siteisowner\" : true,\r\n    \"coursedescription\" :  \"sadasdas\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/course/editcourses"
+					},
+					"response": []
+				},
+				{
+					"name": "در یافت لیست دوره ها",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n     \"owneruserId\" :  \"شناسه کاربر مالک دوره\",\r\n     \"courseleveltypeId\" :  2,\r\n    \"rowcount\" :  20,\r\n    \"pageindex\":1,\r\n    \"coursetypeId\" :  5,\r\n    \"siteisowner\" : true /* لیست آموزش های مخصوص خود سایت */\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/course/getcourse"
+					},
+					"response": []
+				},
+				{
+					"name": "آپلود عکس دوره",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "coverPicture",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": "https://api.yasakashi.ir/api/course/uploadcoursepic"
+					},
+					"response": []
+				},
+				{
+					"name": "ارسال فایل مربوطه به یک درس",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "attachtment",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": "https://api.yasakashi.ir/api/course/uploadcourselessonfile"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت عکس دوره",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/course/getcoursepic/0b739cbf-c955-49d7-9e50-06d3b4a81af6"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت فایل مربوط به درس",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://api.yasakashi.ir/api/course/getcourseleesonfile/0b739cbf-c955-49d7-9e50-06d3b4a81af6"
+					},
+					"response": []
+				},
+				{
+					"name": "اضافه کردن یک درس به دوره",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseId\":\"f2b9bf82-d4a6-4732-861e-0c62cd27eb19\",\r\n    \"author\" : \"\", /*اگر مالک درص خود شخص باشد این فیلد خالی باشد*/\r\n    \"lessonname\" : \"\",\r\n    \"lessondescription\" : \"\",\r\n    \"lessontime\" : \"\",\r\n    \"starttime\" : \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/course/addCourseLesson"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت لیست درس های یک دوره",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\":\"\",\r\n    \"courseId\":\"sdfsdfdsfsdfs\",\r\n    \"pageindex\":2,\r\n    \"rowcount\":10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/course/getcourselessons"
+					},
+					"response": []
+				},
+				{
+					"name": "دریافت لیست فایل های یک درس",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courselessonId\":\"ksadashdkjh\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://api.yasakashi.ir/api/course/getcourselessonfilelist"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetToken",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "kashi",
+						"username": "yasa"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:55121/api/gettoken"
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8095/Authorization/api/GetUserFromToken"
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"amirbasiri\",\n    \"Password\":\"test\",\n    \"Email\":\"amir@test.co\",\n    \"Mobile\":\"+989224938267\",\n    \"UserTypeId\":2\n}"
+				},
+				"url": "http://178.239.151.7:8095/api/users/create"
+			},
+			"response": []
+		},
+		{
+			"name": "لیست کاربران",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"username\":\"\",\n\"fname\":\"\",\n\"lname\":\"\",\n \"mobile\":\"\"\n}"
+				},
+				"url": "https://api.yasakashi.ir/api/users/search"
+			},
+			"response": []
+		},
+		{
+			"name": "دریافت اطلاعات کاربر با توکن",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+					}
+				],
+				"url": "https://api.yasakashi.ir/api/checktoken"
+			},
+			"response": []
+		},
+		{
+			"name": "شاخه های اصلی",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://api.yasakashi.ir/api/getcategory"
+			},
+			"response": []
+		},
+		{
+			"name": "زیرشاخه ها",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoryid\":0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://api.yasakashi.ir/api/getsubcategory"
+			},
+			"response": []
+		},
+		{
+			"name": "گروه ها",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subcategoryid\":0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://api.yasakashi.ir/api/getsubcategory"
+			},
+			"response": []
+		},
+		{
+			"name": "گروه های کاربران",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ5YXNhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEiLCJqdGkiOiI4NjFhNjBhMC1hZTM0LTQyMGItYTNhYS0wMWQ4MmIwMzE3ZDQiLCJ1aWQiOiI1Yzc5ZDAwZC05MGZhLTQ3MGYtZDc2Mi0wOGRjN2NiNzZiNjciLCJleHAiOjE3MzIxOTI2NDAsImlzcyI6Ik1pdHJhIiwiYXVkIjoiTmV4dFRyYWRlQVBJcyJ9.QOzJJZsWOwMnrhgmmjOMU0ZkdN0JC3HHyUcUea5s5sM"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://api.yasakashi.ir/api/users/getusertypes"
+			},
+			"response": []
+		}
+	]
+}

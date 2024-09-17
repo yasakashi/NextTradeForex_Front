@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* scrollbar-thin scrollbar-thumb-rounded-lg scrollbar-thumb-gray-100  */
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+  display: none !important;
+}
+
+span[style="white-space: nowrap"] {
+  display: none !important;
+}
+
+.test:not(:empty) {
+  display: none !important; /* This will hide the text within the div but keep its children displayed */
+}
+
+.test:not(:empty)::before {
+  content: none !important; /* This will hide the text ”Power” */
+}
+
+.test :nth-child(n + 2) {
+  display: none !important;
+}
+
+.VIpgJd-ZVi9od-ORHb-OEVmcd skiptranslate {
+  display: none;
+}
+iframe {
+  display: none !important;
+}
+
+.goog-te-combo {
+  background: #bb914a;
+  /* color: #030c3b; */
+  color: #fff;
+  font-weight: 500;
+  outline: none;
+  border: none;
+  margin-top: 4px;
+  padding: 2px 1px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.goog-te-combo ::-webkit-scrollbar {
+  width: 5px !important;
+}
+
+@layer components {
+  .wrapper {
+    @apply px-4 md:px-8 lg:px-12 xl:px-16;
+  }
+
+  .social_icon {
+    @apply bg-gold-light_400 w-6 h-6 aspect-square rounded-[3px] py-[1px];
+  }
+
+  .formInputText {
+    @apply bg-transparent border border-gray-400 px-2 py-3 rounded-lg w-full outline-none placeholder:text-gray-500 placeholder:text-sm text-sm;
+  }
+
+  .btnGradiant {
+    @apply bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] shadow-xl;
+  }
+
+  .label {
+    @apply text-base font-medium my-1  text-gray-800;
+  }
+
+  .labelSpan {
+    @apply text-blue-light font-semibold;
+  }
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+/* swiper */
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  color: #fff !important;
+  font-size: 18px !important;
+}
+
+/*  */
+
+li > ul {
+  transform: translatex(100%) scale(0);
+}
+li:hover > ul {
+  transform: translatex(101%) scale(1);
+}
+li > button svg {
+  transform: rotate(-90deg);
+}
+li:hover > button svg {
+  transform: rotate(-270deg);
+}
+.group:hover .group-hover\:scale-100 {
+  transform: scale(1);
+}
+.group:hover .group-hover\:-rotate-180 {
+  transform: rotate(180deg);
+}
+.scale-0 {
+  transform: scale(0);
+}
+.min-w-32 {
+  min-width: 8rem;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

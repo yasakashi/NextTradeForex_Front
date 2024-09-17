@@ -1,0 +1,65 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+  display: none !important;
+}
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd:link,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd:visited,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd:hover,
+.VIpgJd-ZVi9od-l4eHX-hSRGPd:active {
+  display: none;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.custom_card {
+  background-color: white;
+  border-radius: 3px;
+  width: 100%;
+  margin: 8px 0px; 
+  overflow-y: hidden;
+}
+ 
+
+
+::-webkit-input-placeholder {
+    color: peachpuff;
+    font-size: 13px;
+}
+
+::-moz-placeholder {
+    color: peachpuff;
+    font-size: 13px;
+}
+
+:-ms-input-placeholder {
+    color: peachpuff;
+    font-size: 13px;
+}
+
+::placeholder {
+    color: peachpuff;
+    font-size: 13px;
+}

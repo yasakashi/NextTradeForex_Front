@@ -1,0 +1,6 @@
+POST https://api.yasakashi.ir/api/gettoken
+Content-Type: application/json 
+    {
+        "username":"yaki" ,
+        "password":"yasa"
+    }
