@@ -33,9 +33,12 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
   const [deletingPostId, setDeletingPostId] = useState(null);
   const [reactionVisiblity, setReactionVisiblity] = useState(false);
   const [edittingPostId, setEdittingPostId] = useState(null);
+  const [postReactions, setPostReactions] = useState([]);
+  const [postComments, setPostComments] = useState([]);
 
   const postRef = useRef(null);
   const params = useParams();
+  const groupId = localStorage.getItem("groupId");
 
   const { title, categories } = post;
 
@@ -44,32 +47,124 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
 
   const {
     commentLoading,
-    postComments,
     postComment,
     postCommentsLoading,
     removePostLoading,
-    postReactions,
     postReaction,
   } = useSelector((state) => state.posts);
 
   useEffect(() => {
-    dispatch(
-      getPostComments({
-        axiosPrivate,
-        data: { parentId: post?.id, communitygroupid: params?.id },
-      })
-    );
-  }, [postComment]);
+    if (post?.id) {
+      const fetchPostReactions = async () => {
+        try {
+          const response = await dispatch(
+            getPostReactions({
+              axiosPrivate,
+              data: { forummessageId: post?.id },
+              toast,
+            })
+          );
+
+          if (response?.payload?.messageCode === 200) {
+            setPostReactions(response?.payload?.messageData || []);
+          }
+        } catch (error) {
+          console.log("Error fetching post reactions", error);
+        }
+      };
+
+      fetchPostReactions();
+    }
+  }, [post?.id, dispatch, axiosPrivate]);
 
   useEffect(() => {
-    dispatch(
-      getPostReactions({
-        axiosPrivate,
-        data: { forummessageId: post?.id },
-        toast,
-      })
-    );
-  }, [postReaction, post?.id]);
+    if (post?.id) {
+      const fetchPostComments = async () => {
+        try {
+          const response = await dispatch(
+            getPostComments({
+              axiosPrivate,
+              data: { parentId: post?.id, communitygroupid: groupId },
+            })
+          );
+          console.log("==============> comments", response);
+          if (response?.payload?.comments) {
+            setPostComments(response.payload.comments || []);
+          }
+        } catch (error) {
+          console.error("Error fetching post comments:", error);
+        }
+      };
+
+      fetchPostComments();
+    }
+  }, [post?.id, dispatch, axiosPrivate]);
+
+  // useEffect(() => {
+  //   if (post?.id && groupId) {
+  //     const fetchComments = async () => {
+  //       try {
+  //         const response = await dispatch(
+  //           getPostComments({
+  //             axiosPrivate,
+  //             data: { parentId: post?.id, communitygroupid: groupId },
+  //           })
+  //         );
+  //         console.log("=============> comments", response);
+  //         if (response?.payload?.messageCode === 200) {
+  //           setPostComments([response.payload.messageData]);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching post comments:", error);
+  //       }
+  //     };
+
+  //     fetchComments();
+  //   }
+  // }, [post?.id, groupId, dispatch, axiosPrivate]);
+
+  // const addCommentHandler = async (newComment) => {
+  //   try {
+  //     const response = await dispatch(
+  //       addPostComment({
+  //         axiosPrivate,
+  //         data: { parentId: post?.id, ...newComment },
+  //         toast,
+  //       })
+  //     );
+
+  //     if (response?.payload?.messageCode === 200) {
+  //       setPostComments((prevComments) => [
+  //         ...prevComments,
+  //         response.payload.messageData,
+  //       ]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding comment:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   dispatch(
+  //     getPostComments({
+  //       axiosPrivate,
+  //       data: { parentId: post?.id, communitygroupid: params?.id },
+  //     })
+  //   );
+  // }, [postComment]);
+
+  // useEffect(() => {
+  //   console.log("post id ", post?.id);
+  //   if (post?.id) {
+  //     dispatch(
+  //       getPostReactions({
+  //         axiosPrivate,
+  //         data: { forummessageId: post?.id },
+  //         toast,
+  //       })
+  //     );
+  //   }
+  // }, []);
 
   const toggleEditModalHandler = (id) => {
     if (activePostId === id) {
@@ -109,18 +204,43 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
     setActivePostId(null);
   });
 
-  const postReactionHandler = (reaction) => {
-    dispatch(
-      addPostReaction({
-        axiosPrivate,
-        data: { forummessageId: post?.id, reactiontypeId: reaction },
-        toast,
-      })
-    );
+  const postReactionHandler = async (reaction) => {
+    try {
+      setReactionVisiblity(false);
+      const response = await dispatch(
+        addPostReaction({
+          axiosPrivate,
+          data: { forummessageId: post?.id, reactiontypeId: reaction },
+          toast,
+        })
+      );
+
+      if (response?.payload?.messageCode === 200) {
+        //update local state with new reactions count
+        setPostReactions((prevReactions) => {
+          const existingReaction = prevReactions.find(
+            (r) => r.reactiontypeId === reaction
+          );
+
+          if (existingReaction) {
+            return prevReactions.map((r) =>
+              r.reactiontypeId === reaction
+                ? { ...r, reactioncount: r.reactioncount + 1 }
+                : r
+            );
+          } else {
+            // If the reaction type doesn't exist, add it
+            return [
+              ...prevReactions,
+              { reactiontypeId: reaction, reactioncount: 1 },
+            ];
+          }
+        });
+      }
+    } catch (error) {
+      console.log("Error adding reaction: ", error);
+    }
   };
-
- 
-
 
   return (
     <div ref={ref}>
@@ -293,7 +413,12 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
         </div>
 
         {showCommentBox && (
-          <CreateComment postId={post.id} communitygroupId={params.id} />
+          <CreateComment
+            postId={post.id}
+            communitygroupId={groupId}
+            setPostComments={setPostComments}
+            setShowCommentBox={setShowCommentBox}
+          />
         )}
       </div>
     </div>

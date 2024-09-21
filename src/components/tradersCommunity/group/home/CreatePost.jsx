@@ -54,52 +54,52 @@ const CreatePost = React.forwardRef(({ page = "" }, ref) => {
   }, []);
 
   // Handle form submission
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      const createPostRes = await dispatch(
-        createGroupPost({
-          axiosPrivate,
-          data: {
-            ...values,
-            categoryids: values?.categoryids,
-            parentId: null,
-            communitygroupId: groupId,
-          },
-          resetForm,
-          setSelectedCategories,
-          toast,
-        })
-      );
+  // const handleSubmit = async (values, { resetForm }) => {
+  //   try {
+  //     const createPostRes = await dispatch(
+  //       createGroupPost({
+  //         axiosPrivate,
+  //         data: {
+  //           ...values,
+  //           categoryids: values?.categoryids,
+  //           parentId: null,
+  //           communitygroupId: groupId,
+  //         },
+  //         resetForm,
+  //         setSelectedCategories: [],
+  //         toast,
+  //       })
+  //     );
 
-      if (createPostRes?.payload?.messageCode === 200) {
-        const fieldName =
-          fileType === "img"
-            ? "photofile"
-            : fileType === "video"
-            ? "videofile"
-            : fileType === "audio"
-            ? "audiofile"
-            : "file";
+  //     if (createPostRes?.payload?.messageCode === 200) {
+  //       const fieldName =
+  //         fileType === "img"
+  //           ? "photofile"
+  //           : fileType === "video"
+  //           ? "videofile"
+  //           : fileType === "audio"
+  //           ? "audiofile"
+  //           : "file";
 
-        const formData = await new FormData();
-        formData.append("Id", createPostRes?.payload?.messageData?.id);
-        formData.append(fieldName, postFile);
+  //       const formData = await new FormData();
+  //       formData.append("Id", createPostRes?.payload?.messageData?.id);
+  //       formData.append(fieldName, postFile);
 
-        const uploadPostFileRes = await dispatch(
-          addPostMessageFile({
-            axiosPrivate,
-            formData,
-            toast,
-          })
-        );
-        if (uploadPostFileRes?.payload?.messageCode === 200) {
-          toast.success("New post created.");
-        }
-      }
-    } catch (error) {
-      console.log({ error });
-    }
-  };
+  //       const uploadPostFileRes = await dispatch(
+  //         addPostMessageFile({
+  //           axiosPrivate,
+  //           formData,
+  //           toast,
+  //         })
+  //       );
+  //       if (uploadPostFileRes?.payload?.messageCode === 200) {
+  //         toast.success("New post created.");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log({ error });
+  //   }
+  // };
 
   const formik = useFormik({
     initialValues: { title: "", messageBody: "", categoryids: [] },
@@ -117,7 +117,7 @@ const CreatePost = React.forwardRef(({ page = "" }, ref) => {
               communitygroupId: groupId,
             },
             resetForm,
-            setSelectedCategories,
+          
             toast,
           })
         );
@@ -143,8 +143,12 @@ const CreatePost = React.forwardRef(({ page = "" }, ref) => {
               toast,
             })
           );
+          console.log(uploadPostFileRes, "uploadPostFileRes");
           if (uploadPostFileRes?.payload?.messageCode === 200) {
             toast.success("New post created.");
+            resetForm();
+            // setSelectedCategories([]);
+            setPostFile(null);
           }
         }
       } catch (error) {
@@ -187,6 +191,7 @@ const CreatePost = React.forwardRef(({ page = "" }, ref) => {
       ref={formRef}
       className="bg-white rounded-lg shadow-md p-4 my-6 w-full"
     >
+      {console.log(postFile)}
       <div className="flex justify-center items-center font-semibold text-xl py-1 pb-3 text-gray-700 w-full">
         <div>New Post</div>
       </div>

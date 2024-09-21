@@ -63,11 +63,11 @@ const CommunityGroup = () => {
     dispatch(getGroup({ axiosPrivate, id: groupId }));
   }, [groupId, groupDetail, groupImg, groupCoverImg]);
 
-  useEffect(() => {
-    // dispatch(getGroupImage({ axiosPrivate, id: groupId }));
-    dispatch(getGroupCoverImg({ axiosPrivate, id: groupId }));
-    dispatch(getGroupImage({ axiosPrivate, id: groupId }));
-  }, [groupCoverImg, groupImg, dispatch, groupId]);
+  // useEffect(() => {
+  //   // dispatch(getGroupImage({ axiosPrivate, id: groupId }));
+  //   dispatch(getGroupCoverImg({ axiosPrivate, id: groupId }));
+  //   dispatch(getGroupImage({ axiosPrivate, id: groupId }));
+  // }, [groupCoverImg, groupImg, dispatch, groupId]);
 
   useEffect(() => {
     let subUrl = group?.title
@@ -102,7 +102,7 @@ const CommunityGroup = () => {
       <div className="bg-link-water  w-full min-h-screen h-full">
         <div className="w-full">
           <CummunityNavbar />
-      
+
           <div className="w-full sm:w-[calc(100%-60px)] ml-auto">
             <div className="px-4 sm:max-w-xl md:max-w-3xl lg:max-w-4xl xl:max-w-6xl mx-auto">
               <div className="mt-10 w-full">

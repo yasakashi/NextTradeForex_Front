@@ -30,7 +30,7 @@ const EmojiPicker = ({ textRef, setText, text, position = "top" }) => {
   useClickOutside(emojiRef, () => setShowEmojiPicker(false));
 
   return (
-    <div ref={emojiRef} className="relative inline-block ">
+    <div ref={emojiRef} className="relative inline-block z-[1000]">
       <div
         onClick={() => setShowEmojiPicker((prev) => !prev)}
         className={`${
@@ -41,7 +41,7 @@ const EmojiPicker = ({ textRef, setText, text, position = "top" }) => {
       </div>
       {showEmojiPicker && (
         <div
-          className={`absolute scale-75 z-40  ${
+          className={`absolute scale-75 z-[1000]  ${
             position === "top"
               ? " top-full -translate-y-11 -translate-x-[82%] "
               : " bottom-full -translate-x-[83%] translate-y-11 "

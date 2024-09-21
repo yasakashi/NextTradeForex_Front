@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export const createGroupPost = createAsyncThunk(
   "post/createGroupPost",
   async (
-    { axiosPrivate, data, toast, resetForm, setSelectedCategories },
+    { axiosPrivate, data, toast, resetForm },
     { rejectWithValue }
   ) => {
     console.log({ data });
@@ -15,12 +15,12 @@ export const createGroupPost = createAsyncThunk(
 
       console.log({ response });
       if (response?.status === 200) {
-        resetForm();
-        setSelectedCategories([]);
+        // resetForm();
+        // setSelectedCategories([]);
       }
       return response.data;
     } catch (error) {
-      console.log("userlist error", error);
+      console.log("create post error", error);
       return rejectWithValue(error);
     }
   }
@@ -28,14 +28,13 @@ export const createGroupPost = createAsyncThunk(
 
 export const createPostComment = createAsyncThunk(
   "post/createPostComment",
-  async ({ axiosPrivate, data, toast, resetForm }, { rejectWithValue }) => {
+  async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
       const response = await axiosPrivate.post("/api/createforummessage", data);
 
       console.log({ response });
       if (response?.status === 200) {
         toast.success("Comment added successfully.");
-        resetForm();
       }
       return response.data;
     } catch (error) {
@@ -316,6 +315,7 @@ const groupPostSlice = createSlice({
         state.errorMsg = null;
       })
       .addCase(getPostReactions.fulfilled, (state, action) => {
+        
         state.postReactionLoading = false;
         state.errorMsg = null;
         state.postReactions = action?.payload?.messageData;

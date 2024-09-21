@@ -48,7 +48,6 @@ const TradersCommunity = () => {
   }, []);
   return (
     <div>
-      {console.log({ popularGroups })}
       <CummunityNavbar />
       {/* Hero */}
       <div className="bg-blue-dark relative max_w_main mx-auto wrapper pt-[190px] overflow-hidden pb-[120px] z-50">
