@@ -1,8 +1,10 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { courses_items } from "../new_course";
-// import Form from "react-bootstrap/Form";
-import ArrowUp from "../../../asset/img/up-arrow.svg";
+// import { courses_items } from "../new_course";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+
+const courses_items = [];
+
 const CourseItemSelector = ({
   course_items,
   set_course_items,
@@ -11,13 +13,7 @@ const CourseItemSelector = ({
   check_additional_setting,
   set_additional_setting,
 }) => {
-  // console.log({
-  //   is_layout_column,
-  //   set_is_layout_column,
-  //   check_additional_setting,
-  //   set_additional_setting,
-  // });
-  const [is_open, set_is_open] = React.useState(false);
+  const [is_open, set_is_open] = useState(false);
   return (
     <div
       style={{
@@ -29,41 +25,15 @@ const CourseItemSelector = ({
       }}
     >
       <button
-        style={{
-          // position: "absolute",k
-          top: 0,
-          right: 0,
-          color: "white",
-          // border: "1px solid white",
-          width: "fit-content",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          border: "1px solid white",
-          borderRadius: 4,
-          padding: "6px 12px",
-          borderTop: "none",
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-          fontSize: 14,
-        }}
+        className="top-0 right-0 w-fit flex justify-between items-center border-2 border-gray-500 rounded-b-[4px] py-[6px] px-3 border-t-0 text-sm bg-white outline-none"
         onClick={() => set_is_open((pre) => !pre)}
       >
         Screen Options
-        <img
-          src={ArrowUp}
-          alt=""
-          width={10}
-          style={{
-            marginLeft: 8,
-            transform: `rotate(${is_open ? 180 : 0}deg)`,
-            transition: "0.2s",
-          }}
-        />
-        {/* {is_open && <motion.img key={`${is_open}`} src={close} width={25} />}
-          {!is_open && (
-            <motion.img src={filter} key={`${is_open}`} width={30} />
-          )} */}
+        {is_open ? (
+          <IoMdArrowDropup size={24} className="text-gray-500" />
+        ) : (
+          <IoMdArrowDropdown size={24} className="text-gray-500" />
+        )}
       </button>
 
       <AnimatePresence mode="wait" initial={false}>
@@ -74,14 +44,13 @@ const CourseItemSelector = ({
             animate={{ height: "fit-content" }}
             transition={{
               ease: "linear",
-              duration: 0.23,
+              duration: 0.3,
               // bounce: 10,
             }}
             style={{
               // position: "absolute",
               width: "100%",
               display: "flex",
-
               padding: "0px 24px",
               flexWrap: "wrap",
               justifyContent: "flex-start",

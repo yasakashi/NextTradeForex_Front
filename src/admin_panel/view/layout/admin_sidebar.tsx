@@ -33,7 +33,7 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
   const [hoveed, set_hoverd] = React.useState<null | number>(null);
   return (
-    <div className="h-full bg-white shadow-lg" style={{ width: 200 , }}>
+    <div className="h-screen bg-red-600 shadow-lg" style={{ width: 200 , }}>
       <div className="w-full relative">
         <h2
           style={{ height: 38, backgroundColor: yellow_medium }}

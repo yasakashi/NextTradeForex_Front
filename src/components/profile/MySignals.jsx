@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
-
 const MySignals = () => {
-
   return (
     <div>
       <div className="flex items-center flex-wrap gap-4 justify-between">
@@ -40,6 +38,6 @@ const MySignals = () => {
       </div>
     </div>
   );
-}
+};
 
 export default MySignals;

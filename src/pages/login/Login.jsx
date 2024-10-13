@@ -6,14 +6,11 @@ import { useFormik } from "formik";
 import { loginAction } from "../../redux/features/loginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getCookie, setCookie } from "../../utils/cookie";
 import { userDataAction } from "../../redux/features/userDataSlice";
 import CustomCircleLoader from "../../utils/loaders/CustomCircleLoader";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import toast from "react-hot-toast";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
-import store from "../../redux/store";
-import { reload_auth } from "../../redux/features/generalSlice";
 
 const Login = () => {
   const params = useParams();
@@ -37,16 +34,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const { loginToken, isLoading } = useSelector((state) => state.login);
 
-  useEffect(() => {
-    // if (userData?.messageCode === 200) {
-    //   dispatch(userDataAction({ axiosPrivate }));
-    //   // setCookie("loginTokne", userData?.messageData, 10);
-    //   // setCookie("user", userData);
-    //   // navigate("/");
-    // }
-    // console.log({ userData });
-  }, [loginToken, isLoading]);
-
   // formik init
   const loginValidation = Yup.object({
     username: Yup.string().required("Username is required."),
@@ -64,10 +51,7 @@ const Login = () => {
 
       if (result?.payload?.messageCode === 200) {
         await dispatch(userDataAction({ axiosPrivate, navigate, toast }));
-        store.dispatch(reload_auth());
       }
-      // console.log({ result });
-      // console.log({ loginToken });
     },
   });
 

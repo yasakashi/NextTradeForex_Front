@@ -7,12 +7,7 @@ import useAxiosPrivate from "../../../../../hooks/useAxiosPrivate";
 import { useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {
-  createGroupPost,
-  createPostComment,
-  getPostComments,
-  route,
-} from "../../../../../redux/features/postSlice";
+import { createPostComment } from "../../../../../redux/features/postSlice";
 import toast from "react-hot-toast";
 import CustomBeatLoader from "../../../../../utils/loaders/CustomBeatLoader";
 import EmojiPicker from "../../../../EmojiPicker";
@@ -34,7 +29,7 @@ const CreateComment = ({
 
   const {
     commentLoading,
-  
+
     postComments,
     postCommentsLoading,
   } = useSelector((state) => state.posts);
@@ -67,7 +62,7 @@ const CreateComment = ({
           response.payload.messageData,
         ]);
         resetForm(); // Clear the form after successful submission
-        console.log("close comment box")
+        console.log("close comment box");
         setShowCommentBox(false);
       }
     } catch (error) {

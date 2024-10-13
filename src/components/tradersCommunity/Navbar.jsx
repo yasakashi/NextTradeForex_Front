@@ -1,15 +1,60 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiMessageRounded } from "react-icons/bi";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
 import { CiUser } from "react-icons/ci";
 import { LuUsers } from "react-icons/lu";
 import { RiLogoutCircleLine } from "react-icons/ri";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import NotificationModal from "../modals/NotificationModal";
+import MessagesModal from "../modals/MessagesModal";
+import useClickOutside from "../../hooks/useClickOutside";
+import { useDispatch, useSelector } from "react-redux";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { logoutAction } from "../../redux/features/loginSlice";
+import toast from "react-hot-toast";
+import { getUserNotReadMessages } from "../../redux/features/messageSlice";
 
 const CummunityNavbar = () => {
+  const token = localStorage.getItem("loginToken");
+
   const [showProfileDropDown, setShowProfileDropDown] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
+
+  const messageRef = useRef(null);
+  const notiveRef = useRef(null);
+
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const { userNotReadMessagesCount } = useSelector(
+    (state) => state.siteMessage
+  );
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
+
+  const logoutHandler = () => {
+    dispatch(logoutAction({ axiosPrivate, toast, navigate }));
+  };
+
+  useEffect(() => {
+    dispatch(
+      getUserNotReadMessages({
+        axiosPrivate,
+        data: { reciverusername: user?.username },
+      })
+    );
+  }, []);
+
+  useClickOutside(messageRef, () => {
+    setShowMessages(false);
+  });
+
+  useClickOutside(notiveRef, () => {
+    setShowNotification(false);
+  });
 
   return (
     <header className="w-full">
@@ -51,12 +96,41 @@ const CummunityNavbar = () => {
           {/* profile & icons */}
           <div className="flex items-center space-x-6">
             <div className="text-white font-bold flex items-center space-x-3">
-              <button>
-                <BiMessageRounded size={24} />
-              </button>
-              <button>
-                <MdOutlineNotificationsNone size={24} />
-              </button>
+              <div className="relative">
+                <button
+                  className="relative"
+                  onClick={() => setShowMessages((prev) => !prev)}
+                >
+                  <BiMessageRounded size={24} />
+                  <span className="absolute flex items-center justify-center -top-0 right-0 bg-red-400 text-white p-[2px] text-xs rounded-full">
+                    {userNotReadMessagesCount === ""
+                      ? 0
+                      : userNotReadMessagesCount}
+                  </span>
+                </button>
+                {showMessages && (
+                  <div
+                    ref={messageRef}
+                    className="absolute top-[120%] z-[1001] left-1/2 -translate-x-1/2"
+                  >
+                    <MessagesModal />
+                  </div>
+                )}
+              </div>
+              <div className="relative">
+                <button onClick={() => setShowNotification((prev) => !prev)}>
+                  <MdOutlineNotificationsNone size={24} />
+                </button>
+
+                {showNotification && (
+                  <div
+                    ref={notiveRef}
+                    className="absolute top-[120%] z-[1001] left-1/2 -translate-x-1/2"
+                  >
+                    <NotificationModal />
+                  </div>
+                )}
+              </div>
             </div>
             <div>
               <div className="relative">
@@ -78,7 +152,7 @@ const CummunityNavbar = () => {
                     </span>
                   </div>
                   <span className="capitalize text-white ml-2 font-semibold">
-                    {user?.username || "unKnown"}
+                    {user?.username}
                   </span>
                 </div>
                 <div className="absolute top-[124%] z-[1000] left-1/2 -translate-x-1/2">
@@ -92,13 +166,16 @@ const CummunityNavbar = () => {
 
                         <li className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
                           <CiUser size={20} />
-                          <Link to="/admin-panel">Admin </Link>
+                          <Link to="/admin-panel/lesson/cateogies">Admin</Link>
                         </li>
                         <li className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
                           <LuUsers size={20} />
                           <Link to="/traders-community/groups">Groups</Link>
                         </li>
-                        <li className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg  w-max">
+                        <li
+                          onClick={logoutHandler}
+                          className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg  w-max"
+                        >
                           <RiLogoutCircleLine size={20} />
                           <Link to="">Log Out</Link>
                         </li>

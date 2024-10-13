@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import CreateComment from "./CreateComment";
 import { RiMoreLine } from "react-icons/ri";
@@ -37,21 +37,13 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
   const [postComments, setPostComments] = useState([]);
 
   const postRef = useRef(null);
-  const params = useParams();
+
   const groupId = localStorage.getItem("groupId");
 
   const { title, categories } = post;
 
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
-
-  const {
-    commentLoading,
-    postComment,
-    postCommentsLoading,
-    removePostLoading,
-    postReaction,
-  } = useSelector((state) => state.posts);
 
   useEffect(() => {
     if (post?.id) {
@@ -100,72 +92,6 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
     }
   }, [post?.id, dispatch, axiosPrivate]);
 
-  // useEffect(() => {
-  //   if (post?.id && groupId) {
-  //     const fetchComments = async () => {
-  //       try {
-  //         const response = await dispatch(
-  //           getPostComments({
-  //             axiosPrivate,
-  //             data: { parentId: post?.id, communitygroupid: groupId },
-  //           })
-  //         );
-  //         console.log("=============> comments", response);
-  //         if (response?.payload?.messageCode === 200) {
-  //           setPostComments([response.payload.messageData]);
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching post comments:", error);
-  //       }
-  //     };
-
-  //     fetchComments();
-  //   }
-  // }, [post?.id, groupId, dispatch, axiosPrivate]);
-
-  // const addCommentHandler = async (newComment) => {
-  //   try {
-  //     const response = await dispatch(
-  //       addPostComment({
-  //         axiosPrivate,
-  //         data: { parentId: post?.id, ...newComment },
-  //         toast,
-  //       })
-  //     );
-
-  //     if (response?.payload?.messageCode === 200) {
-  //       setPostComments((prevComments) => [
-  //         ...prevComments,
-  //         response.payload.messageData,
-  //       ]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding comment:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   dispatch(
-  //     getPostComments({
-  //       axiosPrivate,
-  //       data: { parentId: post?.id, communitygroupid: params?.id },
-  //     })
-  //   );
-  // }, [postComment]);
-
-  // useEffect(() => {
-  //   console.log("post id ", post?.id);
-  //   if (post?.id) {
-  //     dispatch(
-  //       getPostReactions({
-  //         axiosPrivate,
-  //         data: { forummessageId: post?.id },
-  //         toast,
-  //       })
-  //     );
-  //   }
-  // }, []);
-
   const toggleEditModalHandler = (id) => {
     if (activePostId === id) {
       setActivePostId(null);
@@ -173,23 +99,14 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
       setActivePostId(id);
     }
   };
-  // const scrollToCreatePost = () => {
-  //   ref.current.scrollIntoView({ behavior: "smooth" });
-  // };
+
   const handleEditPost = (postId) => {
-    // Scroll to CreatePost section
     window.scrollTo({
       top: 350,
-      behavior: "smooth", // Optional for smooth scrolling
+      behavior: "smooth",
     });
 
     localStorage.setItem("postId", postId);
-    // createPostRef.current?.scrollIntoView({ behavior: "smooth" });
-
-    // Optionally, you can call other methods exposed via ref
-    // if (createPostRef.current?.scrollToPostForm) {
-    //   createPostRef.current.scrollToPostForm(); // Calls the method exposed in CreatePost
-    // }
   };
 
   const removePostHandler = (id) => {
@@ -216,7 +133,6 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
       );
 
       if (response?.payload?.messageCode === 200) {
-        //update local state with new reactions count
         setPostReactions((prevReactions) => {
           const existingReaction = prevReactions.find(
             (r) => r.reactiontypeId === reaction
@@ -229,7 +145,7 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
                 : r
             );
           } else {
-            // If the reaction type doesn't exist, add it
+           
             return [
               ...prevReactions,
               { reactiontypeId: reaction, reactioncount: 1 },
@@ -267,7 +183,7 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
                 {post.creatorusername || "unKnown"}
               </span>
               <span className="flex items-center justify-start text-xs font-normal">
-                <Moment className="text-xs text-gray-400" fromNow></Moment>
+                {/* <Moment className="text-xs text-gray-400" fromNow></Moment> */}
               </span>
             </div>
           </Link>
@@ -358,9 +274,9 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
                       </p>
                     </div>
 
-                    <Moment className="text-xs text-gray-400" fromNow>
+                    {/* <Moment className="text-xs text-gray-400" fromNow>
                       {comment?.registerdatetime}
-                    </Moment>
+                    </Moment> */}
                   </div>
 
                   <div className="bg-gray-100 my-4 p-4 rounded-md">

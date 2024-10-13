@@ -12,10 +12,15 @@ import {
 } from "../../../../redux/features/generalSlice";
 import { LoadingSpinner } from "../../../../common/contained_button_primary";
 import { CircularProgress, IconButton, LinearProgress } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import store from "../../../../redux/store";
 import { set_course_data_state } from "../../../../redux/features/courseSlise";
 import { get_course_cover_image_api } from "../service/get_course_cover_image_api";
+import { AiFillPlusSquare } from "react-icons/ai";
+
+
+
+
 const MyCourses = () => {
   const { courses_list, publish_type, set_publish_type, remove_course_state } =
     useMyCourses({ issitecourse: false });
@@ -23,6 +28,16 @@ const MyCourses = () => {
   const loading_level_2 = useAppSelector(loading_level_2_selector);
   return (
     <div className="flex p-4 flex-col w-full h-full ">
+      <div className="flex flex-wrap justify-between items-center gap-2">
+        <h2 className="text-xl text-white my-4">My courses</h2>
+        <Link
+          to="/user-profile/myCourses/new-course"
+          className="flex items-center gap-2 bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] shadow-xl text-blue-dark px-4 py-2 rounded-md text-base font-semibold"
+        >
+          <AiFillPlusSquare size={20} />
+          Create a New Course
+        </Link>
+      </div>{" "}
       <p className="text-white text-2xl mb-3">My Courses</p>
       <div className="w-full">
         <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-white">
@@ -142,7 +157,7 @@ export const CourceCard = ({ props }: { props: CourseCardProps }) => {
                 );
                 e.stopPropagation();
                 e.preventDefault();
-                navigate(`/user-profile/edit-course/${props.id}`);
+                navigate(`/user-profile/myCourses/edit-course/${props.id}`);
               }}
             >
               <BiEdit color="white" size={16} />

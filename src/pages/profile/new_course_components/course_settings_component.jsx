@@ -49,7 +49,7 @@ const CourseSettings = () => {
                   flexDirection: "column",
                   width: "calc(100% - 180px)",
                 }}
-              > 
+              >
                 {item?.has_check_box ? (
                   <label className="inline-flex items-center cursor-pointer">
                     <input
@@ -61,16 +61,16 @@ const CourseSettings = () => {
                     <div className="relative w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                   </label>
                 ) : i === 1 ? (
-                  <CustomSelectBox />
+                  <select className="outline-blue-400 text-base py-1 pl-2 text-gray-600 rounded-sm shadow-sm border border-gray-300">
+                    <option>All levels</option>
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Expert</option>
+                  </select>
                 ) : (
-                  <CustomTextField
-                    placeHolder="0"
-                    type="text"
-                    style={{
-                      height: 42,
-                      borderRadius: 4,
-                      borderColor: "#c7c7c7",
-                    }}
+                  <input
+                    type="number"
+                    className="border w-full border-gray-300 rounded-md px-3 py-2 lg:py-[6px] outline-blue-400 outline-[1px] text-gray-700 placeholder:text-gray-400 placeholder:text-sm"
                   />
                 )}
                 <div

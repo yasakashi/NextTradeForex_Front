@@ -11,7 +11,7 @@ export const createGroupAction = createAsyncThunk(
       if (error?.message) {
         toast.error(error.message);
       }
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -275,7 +275,7 @@ export const getGroupCategory = createAsyncThunk(
 
 export const setCommunityGroupPic = createAsyncThunk(
   "group/setCommunityGroupPic",
-  async ({ axiosPrivate, toast, data }, { rejectWithValue }) => {
+  async ({ axiosPrivate, toast, data, id }, { rejectWithValue }) => {
     try {
       const response = await axiosPrivate.post(
         "/api/setcommunitygrouppic",
@@ -288,7 +288,7 @@ export const setCommunityGroupPic = createAsyncThunk(
       );
 
       console.log("setCommunityGroupPic", { response });
-
+      
       return response.data;
     } catch (error) {
       console.log("setCommunityGroupPic error", error);
@@ -404,10 +404,10 @@ const groupSlice = createSlice({
     getGroupLoading: false,
     popularGroupsLoading: false,
     membersLoading: false,
-    setGroupPicLoading: false,
+    groupPicLoading: false,
+    groupCoverImgLoading: false,
     groupsForDisplayLoading: false,
     editGroupLoading: false,
-    getGroupImgLoading: false,
     acceptMemberShipLoading: false,
     changeUserTypeLoading: false,
     groupImg: "",
@@ -586,37 +586,72 @@ const groupSlice = createSlice({
       // ----------------------------
 
       .addCase(setCommunityGroupPic.pending, (state) => {
-        state.setGroupPicLoading = true;
+        state.groupPicLoading = true;
         state.errorMsg = null;
       })
       .addCase(setCommunityGroupPic.fulfilled, (state, action) => {
         console.log("setCommunityGroupPic", { action });
-        state.setGroupPicLoading = false;
+        state.groupPicLoading = false;
         state.errorMsg = null;
-        state.groupCoverPic = action.payload?.messageData;
-        state.group = action?.payload?.messageData[0];
+        // state.groupImg = action?.payload?.messageData;
       })
       .addCase(setCommunityGroupPic.rejected, (state, action) => {
         console.log({ action });
-        state.setGroupPicLoading = false;
+        state.groupPicLoading = false;
+        state.errorMsg = action.payload;
+      })
+
+      // -------------------------------
+
+      .addCase(getGroupImage.pending, (state) => {
+        state.groupPicLoading = true;
+        state.errorMsg = null;
+      })
+      .addCase(getGroupImage.fulfilled, (state, action) => {
+        state.groupPicLoading = false;
+        state.errorMsg = null;
+        state.groupImg = action?.payload?.messageData;
+      })
+      .addCase(getGroupImage.rejected, (state, action) => {
+        console.log({ action });
+        state.groupPicLoading = false;
         state.errorMsg = action.payload;
       })
 
       // ----------------------------
 
       .addCase(getGroupCoverImg.pending, (state) => {
-        state.setGroupPicLoading = true;
+        state.groupCoverImgLoading = true;
         state.errorMsg = null;
       })
       .addCase(getGroupCoverImg.fulfilled, (state, action) => {
         console.log("getGroupCoverImg", { action });
-        state.setGroupPicLoading = false;
+        state.groupCoverImgLoading = false;
         state.errorMsg = null;
         state.groupCoverImg = action.payload?.messageData;
       })
       .addCase(getGroupCoverImg.rejected, (state, action) => {
         console.log({ action });
-        state.setGroupPicLoading = false;
+        state.groupCoverImgLoading = false;
+        state.errorMsg = action.payload;
+      })
+
+      // -------------------------------
+
+      .addCase(setCommunityGroupCoverImage.pending, (state) => {
+        state.groupCoverImgLoading = true;
+        state.errorMsg = null;
+      })
+      .addCase(setCommunityGroupCoverImage.fulfilled, (state, action) => {
+        console.log({ action });
+        state.groupCoverImgLoading = false;
+        state.errorMsg = null;
+        state.groupCoverImg = action?.payload?.messageData;
+        // state.group = action.payload?.messageData[0];
+      })
+      .addCase(setCommunityGroupCoverImage.rejected, (state, action) => {
+        console.log({ action });
+        state.groupCoverImgLoading = false;
         state.errorMsg = action.payload;
       })
 
@@ -649,42 +684,6 @@ const groupSlice = createSlice({
       .addCase(editGroupDetail.rejected, (state, action) => {
         console.log({ action });
         state.editGroupLoading = false;
-        state.errorMsg = action.payload;
-      })
-      // -------------------------------
-
-      .addCase(getGroupImage.pending, (state) => {
-        state.getGroupImgLoading = true;
-        state.errorMsg = null;
-      })
-      .addCase(getGroupImage.fulfilled, (state, action) => {
-        console.log({ action });
-        state.getGroupImgLoading = false;
-        state.errorMsg = null;
-        state.groupImg = action?.payload?.messageData;
-      })
-      .addCase(getGroupImage.rejected, (state, action) => {
-        console.log({ action });
-        state.getGroupImgLoading = false;
-        state.errorMsg = action.payload;
-      })
-
-      // -------------------------------
-
-      .addCase(setCommunityGroupCoverImage.pending, (state) => {
-        state.setGroupPicLoading = true;
-        state.errorMsg = null;
-      })
-      .addCase(setCommunityGroupCoverImage.fulfilled, (state, action) => {
-        console.log({ action });
-        state.setGroupPicLoading = false;
-        state.errorMsg = null;
-        state.groupCoverImg = action?.payload?.messageData;
-        // state.group = action.payload?.messageData[0];
-      })
-      .addCase(setCommunityGroupCoverImage.rejected, (state, action) => {
-        console.log({ action });
-        state.setGroupPicLoading = false;
         state.errorMsg = action.payload;
       })
 

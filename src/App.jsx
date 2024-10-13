@@ -13,6 +13,22 @@ import {
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 import UserProfile from "./pages/profile/userProfile";
+import ProfileDashboard from "./components/profile/ProfileDashboard";
+
+import MyProfile from "./components/profile/MyProfile";
+import MyGroups from "./components/profile/MyGroups";
+import Requests from "./components/profile/Requests";
+import MySignals from "./components/profile/MySignals";
+// import EnrolledCourses from "./components/profile/EnrolledCourses";
+import OrderHistory from "./components/profile/OrderHistory";
+import Settings from "./components/profile/settings/Settings";
+import Profile from "./components/profile/settings/Profile";
+import ResetPassword from "./components/profile/settings/ResetPassword";
+import Withdraw from "./components/profile/settings/withdraw/Withdraw";
+import SocialProfile from "./components/profile/settings/SociaProfile";
+// import MyCourses from "./components/profile/instructorCourses/MyCourses";
+import Withdrawals from "./components/profile/withdrawals/Withdrawals";
+
 import { Toaster } from "react-hot-toast";
 import AllMemberShipRequest from "./pages/master/AllMemberShipRequest";
 import CreateSignalChannel from "./pages/tradersCommunity/signalChannals/CreateSignalChannel";
@@ -55,6 +71,10 @@ import MyGalleries from "./components/tradersCommunity/group/gallery/MyGalleries
 import CreateGallery from "./components/tradersCommunity/group/gallery/CreateGallery";
 import ManageGroup from "./components/tradersCommunity/group/manageGroup/ManageGroup";
 import LiveMeeting from "./pages/tradersCommunity/groups/group/liveMeeting/LiveMeeting";
+import NewCourse from "./pages/profile/new_course";
+import MyCourses from "./pages/profile/my_courses/view/my_courses";
+import EnrolledCourses from "./pages/profile/enrolled_courses/view/enrolled_courses";
+import CourseBuilderPage from "./pages/profile/new_course_components/CourseBuilderPage";
 
 function App({ auth }) {
   const token = localStorage.getItem("loginToken");
@@ -84,6 +104,9 @@ function App({ auth }) {
   //       .catch((err) => {});
   //   }
   // }, []);
+  // @babel/plugin-proposal-private-property-in-object
+  // export NODE_OPTIONS=--max_old_space_size=4096
+  // npx update-browserslist-db@latest
 
   return (
     <div className="bg-blue-dark">
@@ -100,7 +123,6 @@ function App({ auth }) {
             <Route path="/register" element={<Register />} />
             {token ? (
               <>
-             
                 <Route path="/partnership" element={<PartnerShip />} />
                 <Route
                   path="/partnership/profile-view/:userid"
@@ -108,6 +130,18 @@ function App({ auth }) {
                 />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/course/:id" element={<CourseDetails />} />
+                <Route
+                  path="/user-profile/myCourses/new-course"
+                  element={<NewCourse />}
+                />
+                <Route
+                  path="/user-profile/myCourses/edit-course/:id"
+                  element={<NewCourse />}
+                />
+                <Route
+                  path="/user-profile/myCourses/new-course/course-builder"
+                  element={<CourseBuilderPage />}
+                />
                 <Route
                   path="/course/attachments/:id/:title"
                   element={<CourseAttachments />}
@@ -154,7 +188,55 @@ function App({ auth }) {
                   path="/traders-community/groups/create"
                   element={<CreateGroup />}
                 />
-                <Route path="/user-profile" element={<UserProfile />} />
+                <Route element={<UserProfile />}>
+                  <Route
+                    path="/user-profile/dashboard"
+                    element={<ProfileDashboard />}
+                  />
+                  <Route path="/user-profile/profile" element={<MyProfile />} />
+                  <Route path="/user-profile/groups" element={<MyGroups />} />
+                  <Route path="/user-profile/requests" element={<Requests />} />
+                  <Route path="/user-profile/signals" element={<MySignals />} />
+                  <Route
+                    path="/user-profile/enrolled-courses"
+                    element={<EnrolledCourses />}
+                  />
+                  <Route
+                    path="/user-profile/order-history"
+                    element={<OrderHistory />}
+                  />
+
+                  <Route
+                    path="/user-profile/myCourses"
+                    element={<MyCourses />}
+                  />
+
+                  <Route
+                    path="/user-profile/withdrawals"
+                    element={<Withdrawals />}
+                  />
+
+                  {/* SETTINGS */}
+                  <Route element={<Settings />}>
+                    <Route
+                      path="/user-profile/settings"
+                      element={<Profile />}
+                    />
+                    <Route
+                      path="/user-profile/settings/reset-password"
+                      element={<ResetPassword />}
+                    />
+                    <Route
+                      path="/user-profile/settings/withdraw"
+                      element={<Withdraw />}
+                    />
+                    <Route
+                      path="/user-profile/settings/social-profile"
+                      element={<SocialProfile />}
+                    />
+                  </Route>
+                </Route>
+                {/* <Route path="/user-profile/dashboard" element={<UserProfile />} /> */}
                 <Route
                   path="/traders-community/all-membership-request"
                   element={<AllMemberShipRequest />}

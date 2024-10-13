@@ -38,8 +38,7 @@ http_instanse.interceptors.response.use(
       );
     }
     if (err?.response?.status === 401) {
-      localStorage.clear();
-      window.location.reload();
+   
     }
   }
 );
@@ -79,8 +78,7 @@ http_instanse_level_2.interceptors.response.use(
     } 
     
     if (err?.response?.status === 401) {
-      localStorage.clear();
-      window.location.reload();
+      console.log("unauthurized error" , err)
     }
   }
 );

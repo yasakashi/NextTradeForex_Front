@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import NewCourceCard, { CustomDivider } from "./new_cource_card";
 import ContainedButtonPrimary from "../../../common/contained_button_primary";
 import ModalLayout from "../../../common/modal_layout";
-import { Plus, PlusCircleIcon } from "@heroicons/react/24/outline";
+
 import { CgClose } from "react-icons/cg";
 import CustomTextField from "../../../common/custom_text_field";
 import { CiWarning } from "react-icons/ci";
 import BorderedButtonPrimary from "../../../common/bordered_button_primary";
 
 const CourseBuilder = () => {
-  const [is_open, set_is_open] = React.useState(false);
+  const [is_open, set_is_open] = useState(false);
   return (
     <NewCourceCard title={"Course Builder"}>
       <div className="p-4">

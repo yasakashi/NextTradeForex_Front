@@ -8,7 +8,6 @@ export const registerAction = createAsyncThunk(
 
     const authToken = btoa(authData);
     const data = JSON.stringify(values);
-    
 
     try {
       const response = await axiosInstance.post("/api/users/create", data, {

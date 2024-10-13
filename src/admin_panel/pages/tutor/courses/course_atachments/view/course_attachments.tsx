@@ -8,9 +8,9 @@ import { yellow_color } from "../../../../categories/view/category_details_view_
 import { AnimatePresence, motion } from "framer-motion";
 import { BiPlus } from "react-icons/bi";
 import MAterialTable from "../../../../../components/table/material_table";
-import { AddTopic } from "../../../../../../pages/profile/new_course_components/course_builder";
+// import { AddTopic } from "../../../../../../pages/profile/new_course_components/course_builder";
 import ModalLayout from "../../../../../../common/modal_layout";
-import { MeetingComponent } from "../../../../../../pages/profile/new_course_components/meeting_content_component";
+// import { MeetingComponent } from "../../../../../../pages/profile/new_course_components/meeting_content_component";
 import { VideoComponent as PDF } from "../../../../../../pages/profile/new_course_components/video_pdf_url";
 import ContainedButtonPrimary from "../../../../../../common/contained_button_primary";
 import VideoComponent from "../../../../../../pages/profile/new_course_components/video_component";
@@ -199,7 +199,7 @@ interface Props {
 const items: Props[] = [
   {
     title: "Topics",
-    Component: AddTopic,
+    // Component: AddTopic,
     table_headers: [
       { header: "Name", accessorKey: "name" },
       { header: "Summery", accessorKey: "summery" },
@@ -346,7 +346,7 @@ const items: Props[] = [
         <ModalLayout onClose={set_is_open} open={is_open}>
           <div className="flex flex-col py-4 px-4 items-start">
             <h2 className="font-semibold mb-2">Add New Meeting Content</h2>
-            <MeetingComponent add_to_meetings_list={add_to_meetings_list} />
+            {/* <MeetingComponent add_to_meetings_list={add_to_meetings_list} /> */}
           </div>
         </ModalLayout>
       );

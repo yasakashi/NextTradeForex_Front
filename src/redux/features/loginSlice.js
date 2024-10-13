@@ -37,15 +37,15 @@ export const loginAction = createAsyncThunk(
 
 export const logoutAction = createAsyncThunk(
   "login/logoutAction",
-  async ({ axiosPrivate , toast, navigate}, { rejectWithValue }) => {
+  async ({ axiosPrivate, toast, navigate }, { rejectWithValue }) => {
     try {
       const response = await axiosPrivate.post("/api/signout");
       if (response?.status === 200) {
-        toast.success("Logout successfully.")
+        toast.success("Logout successfully.");
         localStorage.removeItem("loginToken");
         localStorage.removeItem("user");
-        localStorage.removeItem("username")
-        navigate("/")
+        localStorage.removeItem("username");
+        navigate("/");
       }
 
       console.log("logout response", { response });
@@ -59,6 +59,33 @@ export const logoutAction = createAsyncThunk(
     }
   }
 );
+
+// export const logoutAction = createAsyncThunk(
+//   "login/logoutAction",
+//   async ({ axiosPrivate , toast, navigate}, { rejectWithValue }) => {
+//     try {
+//       const response = await axiosPrivate.post("/api/signout");
+//       if (response?.status === 200) {
+//         toast.success("Logout successfully.")
+//         localStorage.removeItem("loginToken");
+//         localStorage.removeItem("user");
+//         localStorage.removeItem("username")
+//         navigate("/")
+//       }
+
+//       console.log("logout response", { response });
+//       return response.data;
+//     } catch (error) {
+//       console.log("logout error", error);
+//       if (error?.message) {
+//         toast.error(error?.message);
+//       }
+//       return rejectWithValue(error);
+//     }
+//   }
+// );
+
+
 
 const loginSlice = createSlice({
   name: "login",

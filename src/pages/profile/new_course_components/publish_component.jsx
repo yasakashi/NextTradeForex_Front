@@ -3,7 +3,8 @@ import NewCourceCard, { CustomDivider } from "./new_cource_card";
 import BorderedButtonPrimary from "../../../common/bordered_button_primary";
 import { bold_font, light_font } from "../../../constants/style/fonts";
 import ContainedButtonPrimary from "../../../common/contained_button_primary";
-const PublishComponent = () => {
+
+const PublishComponent = ({ onClick }) => {
   return (
     <NewCourceCard title={"Publish"}>
       <div style={{ width: "100%" }}>
@@ -44,7 +45,12 @@ const PublishComponent = () => {
           <p style={bold_font}>{"Draft"}</p>
         </div>
         <div
-          style={{ display: "flex", alignItems: "center", padding: "0px 16px",marginBottom:8, }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: "0px 16px",
+            marginBottom: 8,
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -66,11 +72,23 @@ const PublishComponent = () => {
             />
           </svg>
           <p style={{ ...light_font, margin: "0px 8px" }}>Visibility:</p>
-          <p style={{...bold_font,}}>{"Public"}</p>
+          <p style={{ ...bold_font }}>{"Public"}</p>
         </div>
         <CustomDivider />
-        <div style={{  padding: 16,width:"100%",display:"flex",justifyContent:"flex-end" }}>
-          <ContainedButtonPrimary title={"Submit for Preview"} />
+        <div
+          style={{
+            padding: 16,
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <button
+            onClick={onClick}
+            className="px-3 py-1 bg-blue-600 rounded-md outline-none border-none text-white shadow-sm text-sm"
+          >
+            Submit for preview
+          </button>
         </div>
       </div>
     </NewCourceCard>

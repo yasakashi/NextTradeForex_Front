@@ -14,7 +14,7 @@ import adminCourseReducer from "./features/learning/adminCourseSlice";
 import partnershipReducer from "./features/partnershipSlice";
 import galleryReducer from "./features/gallerySlice";
 import siteMessageReducer from "./features/messageSlice";
-import { generalReducer } from "./features/generalSlice"; 
+import { generalReducer } from "./features/generalSlice";
 import { courseReducer } from "./features/courseSlise";
 
 const store = configureStore({
@@ -32,10 +32,9 @@ const store = configureStore({
     adminCourse: adminCourseReducer,
     partnership: partnershipReducer,
     gallery: galleryReducer,
-    siteMessage: siteMessageReducer,  
-    general:generalReducer,
-    course:courseReducer
-
+    siteMessage: siteMessageReducer,
+    general: generalReducer,
+    course: courseReducer,
   },
 });
 

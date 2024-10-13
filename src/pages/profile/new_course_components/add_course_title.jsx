@@ -1,18 +1,14 @@
 import React from "react";
 
-const AddCourseTitle = () => {
+const AddCourseTitle = ({ formik }) => {
   return (
     <input
+      name="courseName"
+      value={formik.values.courseName}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
       type="text"
-      className="form-control"
-      style={{
-        width: "100%",
-        height: 45,
-        marginTop: 16,
-        borderRadius: 4,
-        padding: "0px 16px", 
-      marginBottom:4
-      }}
+      className="w-full px-3 py-2 rounded-[3px] outline-blue-500 placeholder:text-gray-400 border border-gray-700"
       placeholder="Add title"
     />
   );

@@ -32,6 +32,7 @@ const MessageSnackbar = ({ message }: Props) => {
           );
         } catch (error) {
           /* empty */
+          console.log("error ===========> ")
         }
       }}
       className="energy"

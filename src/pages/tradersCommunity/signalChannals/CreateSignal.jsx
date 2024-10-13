@@ -19,8 +19,11 @@ import * as Yup from "yup";
 import { IoIosClose } from "react-icons/io";
 import CustomCircleLoader from "../../../utils/loaders/CustomCircleLoader";
 import { useNavigate } from "react-router-dom";
+import { sendMessageAction } from "../../../redux/features/messageSlice";
 
 const CreateSignal = ({ pageType }) => {
+  const groupId = localStorage.getItem("groupId");
+
   const signalChannelId = localStorage.getItem("signalChannelId");
   const groupName = localStorage.getItem("groupname");
 
@@ -133,35 +136,53 @@ const CreateSignal = ({ pageType }) => {
   // //////////////////////////////
 
   const handleSubmit = async (values) => {
-
-    console.log(JSON.stringify(values))
     try {
       // Step 1: Add signal data
-      const addSignalResponse = await dispatch(
-        addSignalAction({
-          axiosPrivate,
-          data: { ...values, signalchannelId: signalChannelId },
-          toast,
-        })
-      );
+      if (pageType === "groupChat") {
+        console.log(JSON.stringify(values, "amir basiri =============>"));
 
-      if (addSignalResponse?.payload?.messageCode === 200) {
-        const formData = await new FormData();
-        formData.append("Id", addSignalResponse?.payload?.messageData?.id);
-        formData.append("photofile", signalFile);
-
-        const uploadImageResponse = await dispatch(
-          postSignalImage({
+        const response = await dispatch(
+          sendMessageAction({
             axiosPrivate,
-            IFormFile: formData,
+
+            data: {
+              messagetitle: "",
+              messagebody: JSON.stringify(values),
+              issignaltemplate: true,
+              communitygroupId: groupId,
+            },
+          })
+        );
+        console.log("send signal temp", response);
+        if (response?.payload?.messageCode === 200) {
+        }
+      } else {
+        const addSignalResponse = await dispatch(
+          addSignalAction({
+            axiosPrivate,
+            data: { ...values, signalchannelId: signalChannelId },
             toast,
           })
         );
 
-        if (uploadImageResponse.payload?.messageCode === 200) {
-          toast.success("Signal image uploaded successfully");
-          navigate(`/traders-community/groups/${groupName}/signal-channels`);
-          //
+        if (addSignalResponse?.payload?.messageCode === 200) {
+          const formData = await new FormData();
+          formData.append("Id", addSignalResponse?.payload?.messageData?.id);
+          formData.append("photofile", signalFile);
+
+          const uploadImageResponse = await dispatch(
+            postSignalImage({
+              axiosPrivate,
+              IFormFile: formData,
+              toast,
+            })
+          );
+
+          if (uploadImageResponse.payload?.messageCode === 200) {
+            toast.success("Signal image uploaded successfully");
+            navigate(`/traders-community/groups/${groupName}/signal-channels`);
+            //
+          }
         }
       }
     } catch (error) {

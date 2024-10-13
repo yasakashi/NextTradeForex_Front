@@ -33,10 +33,12 @@ const Messages = () => {
       getMessages({
         axiosPrivate,
         data: {
-          isvisited: null,
+          // isvisited: null,
+          Id: null,
           fromdate: null,
           todate: null,
-          reciveruserId: null,
+          communitygroupid:groupId
+          // reciveruserId: null,
         },
       })
     );
@@ -53,6 +55,7 @@ const Messages = () => {
           reciverusername: "amirbasiri000111",
           forallluser: false,
           communitygroupId: groupId,
+          issignaltemplate: true,
         },
       })
     );
@@ -155,7 +158,7 @@ const Messages = () => {
                             </div> */}
 
                               {/* user messages */}
-                              <ul className="m-0 p-0">
+                              <ul className="m-0 p-0 w-full">
                                 {siteMessages?.length
                                   ? siteMessages.map((msg, index) => (
                                       <SingleMsg msg={msg} key={index} />

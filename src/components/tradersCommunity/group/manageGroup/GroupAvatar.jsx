@@ -2,7 +2,10 @@ import { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
-import { setCommunityGroupPic } from "../../../../redux/features/groupSlice";
+import {
+  getGroupImage,
+  setCommunityGroupPic,
+} from "../../../../redux/features/groupSlice";
 import toast from "react-hot-toast";
 import CustomBeatLoader from "../../../../utils/loaders/CustomBeatLoader";
 
@@ -11,7 +14,7 @@ const GroupAvatar = () => {
   const [profileImages, setProfileImages] = useState([]);
   const [profilePhoto, setProfilePhoto] = useState(null);
 
-  const { setGroupPicLoading } = useSelector((state) => state.group);
+  const { groupPicLoading } = useSelector((state) => state.group);
 
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
@@ -89,11 +92,11 @@ const GroupAvatar = () => {
       </div>
       {profileImages?.length > 0 && (
         <button
-          disabled={setGroupPicLoading}
+          disabled={groupPicLoading}
           onClick={updateGroupAvatarHandler}
           className="cursor-pointer disabled:opacity-45 disabled:cursor-not-allowed mt-4 ml-auto bg-blue-light text-white px-4 py-2 rounded-md"
         >
-          {setGroupPicLoading ? <CustomBeatLoader color="#fff" /> : "Send"}
+          {groupPicLoading ? <CustomBeatLoader color="#fff" /> : "Send"}
         </button>
       )}
     </div>

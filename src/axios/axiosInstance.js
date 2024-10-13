@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL = "http://178.239.151.7:8091";
+export const BASE_URL = "https://api.yasakashi.ir";
 
 const MY_BASE_URL = "https://api.yasakashi.ir";
 

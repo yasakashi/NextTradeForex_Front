@@ -12,7 +12,7 @@ const ScreenElements = ({
 }) => {
   return (
     <div>
-      <div className="" style={{ position: "relative", marginTop: 8 }}>
+      <div className="" style={{ position: "relative", marginTop: 0 }}>
         <div style={{ width: "100%" }}>
           <CourseItemSelector
             course_items={course_items}
@@ -23,7 +23,7 @@ const ScreenElements = ({
             set_is_layout_column={set_is_layout_column}
           />
         </div>
-        <h4 style={{ fontSize: 24, color: "white", margin: "0px 0px 16px" }}>
+        <h4 className="text-3xl text-gray-700 font-bold mb-4">
           {edit_title || " Add New Course"}
         </h4>
       </div>

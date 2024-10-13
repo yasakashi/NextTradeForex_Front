@@ -4,7 +4,7 @@ import HeroTemp from "../HeroTemp";
 const Hero = () => {
   return (
     <HeroTemp>
-      <div className="relative">
+      <div className="relative body_max_width">
         <div className="wrapper pt-10 lg:pt-20 pb-[60px] bg-blue-light">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-0">
             <div className="flex order-2 lg:order-1 mx-auto text-center md:mx-auto lg:text-left lg:mx-0 flex-col max-w-[520px] md:max-w-[700px] lg:max-w-[520px]">

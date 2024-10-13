@@ -20,18 +20,21 @@ const SignalItem = ({
   handleModalToggle,
   signalModalRef,
   signalChannelId,
+  pageType = "",
 }) => {
   const user = localStorage.getItem("user");
   return (
     <div
-      className={`group cursor-pointer h-auto opacity-100 pr-5 flex flex-row items-center mb-5 p-0 max-w-full relative `}
+      className={`group cursor-pointer h-auto opacity-100 pr-5 flex flex-row items-center mb-5 p-0 max-w-full w-full relative`}
     >
       <div
         onClick={() => {
           setSignalData(item);
           setShowSignalDetailModal(true);
         }}
-        className="grid grid-cols-2 relative shadow-lg justify-evenly w-[calc(100%-75px)] bg-link-water text-black rounded-[4px] text-left py-3 px-3"
+        className={`grid grid-cols-2 relative shadow-lg justify-evenly mx-auto  bg-link-water text-black rounded-[4px] text-left py-3 px-3 ${
+          pageType === "signalTemp" ? "w-full" : "w-[calc(100%-75px))]"
+        }`}
       >
         <div className="">
           <span className="text-sm font-semibold text-gray-700">Analysis</span>
@@ -103,24 +106,26 @@ const SignalItem = ({
         {/* check if channel is paid */}
       </div>
 
-      <span
-        className={` transition group-hover:flex items-center space-x-2 ml-1 text-sm ${
-          showSignalModal ? "flex" : "hidden"
-        }`}
-      >
-        <span className="cursor-pointer">
-          <CiStar className="text-[#fdae00]" size={15} />
-        </span>
-        <span className="cursor-pointer">
-          <MdReply className="text-[#808080]" size={13} />
-        </span>
+      {pageType !== "signalTemp" ? (
         <span
-          onClick={() => handleModalToggle(item.id)}
-          className="cursor-pointer"
+          className={` transition group-hover:flex items-center space-x-2 ml-1 text-sm ${
+            showSignalModal ? "flex" : "hidden"
+          }`}
         >
-          <IoEllipsisVerticalSharp size={13} className="text-[#808080]" />
+          <span className="cursor-pointer">
+            <CiStar className="text-[#fdae00]" size={15} />
+          </span>
+          <span className="cursor-pointer">
+            <MdReply className="text-[#808080]" size={13} />
+          </span>
+          <span
+            onClick={() => handleModalToggle(item.id)}
+            className="cursor-pointer"
+          >
+            <IoEllipsisVerticalSharp size={13} className="text-[#808080]" />
+          </span>
         </span>
-      </span>
+      ) : null}
 
       {activeSignalId === item.id && showSignalModal ? (
         <div
