@@ -3,7 +3,7 @@ import * as Yup from "yup";
 export const courseValidationSchema = Yup.object({
   courseName: Yup.string().required("Course name is required"),
   courseDescription: Yup.string(),
-  courseFile: Yup.string(),
+  courseFile: Yup.string().optional().nullable(),
   meetings: Yup.array().of(
     Yup.object({
       meetingTitle: Yup.string().required("Meeting title is required"),
@@ -19,15 +19,15 @@ export const courseValidationSchema = Yup.object({
         ),
     })
   ),
-  videoPdfUrls: Yup.array().of(
-    Yup.object({
-      pdfTitle: Yup.string().required("PDF title is required"),
-      pdfDescription: Yup.string(),
-      pdfFile: Yup.mixed().required("PDF file is required"),
-      viewPdfFile: Yup.string(),
-      downloadable: Yup.boolean().default(true),
-    })
-  ),
+  // videoPdfUrls: Yup.array().of(
+  //   Yup.object({
+  //     pdfTitle: Yup.string().required("PDF title is required"),
+  //     pdfDescription: Yup.string(),
+  //     pdfFile: Yup.mixed().required("PDF file is required"),
+  //     viewPdfFile: Yup.string(),
+  //     downloadable: Yup.boolean().default(true),
+  //   })
+  // )
   excerpt: Yup.string(),
   authorId: Yup.string().required("Author ID is required"),
   maximumStudents: Yup.number()
@@ -35,10 +35,10 @@ export const courseValidationSchema = Yup.object({
     .typeError("Must be a number"),
   difficultyLevelId: Yup.string().required("Difficulty level ID is required"),
   isPublicCourse: Yup.boolean().default(false),
-  allowQA: Yup.boolean().default(false),
+  allowQA: Yup.boolean().default(true),
   coursePrice: Yup.number()
-    .required("Course price is required")
-    .typeError("Must be a number"),
+    .typeError("Must be a valid number")
+    .min(1, "Price cannot be negative"),
   whatWillILearn: Yup.string().required("This field is required"),
   targetedAudience: Yup.string().required("Targeted audience is required"),
   courseDuration: Yup.number()
@@ -47,14 +47,11 @@ export const courseValidationSchema = Yup.object({
   materialsIncluded: Yup.string(),
   requirementsInstructions: Yup.string(),
   courseIntroVideo: Yup.string().url("Enter a valid YouTube link"),
-  courseCategoryIds: Yup.array().of(
-    Yup.string().required("Category ID is required")
-  ),
+  categoryids: Yup.array().of(Yup.string().required("Category ID is required")),
   coursetags: Yup.array()
     .min(1, "Each tag should have at least 1 character")
-    .max(4, "You can add up to 10 tags only")
-    .required("it is required"),
-  featuredImage: Yup.mixed(), // optional file input
+    .max(4, "You can add up to 10 tags only"),
+  featuredImage: Yup.mixed().optional().nullable(),
 });
 
 export const courseInitialValues = {
@@ -62,13 +59,13 @@ export const courseInitialValues = {
   courseDescription: "",
   courseFile: null, // Assuming this is a file input
   meetings: [
-    {
-      meetingTitle: "",
-      meetingDescription: "",
-      meetingFile: null, // Assuming this is a file input
-      meetingURL: "",
-      meetingDateTime: "", // Can be an empty string or null for date input
-    },
+    // {
+    //   meetingTitle: "",
+    //   meetingDescription: "",
+    //   meetingFile: null, // Assuming this is a file input
+    //   meetingURL: "",
+    //   meetingDateTime: "", // Can be an empty string or null for date input
+    // },
   ],
   videoPdfUrls: [
     {
@@ -80,11 +77,11 @@ export const courseInitialValues = {
     },
   ],
   excerpt: "",
-  authorId: "",
-  maximumStudents: "", // Empty string for number field initially
+  authorId: 7,
+  maximumStudents: 1, // Empty string for number field initially
   difficultyLevelId: "",
   isPublicCourse: false, // default to false
-  allowQA: false, // default to false
+  allowQA: true, // default to false
   coursePrice: "", // Empty string for number field initially
   whatWillILearn: "",
   targetedAudience: "",
@@ -92,7 +89,7 @@ export const courseInitialValues = {
   materialsIncluded: "",
   requirementsInstructions: "",
   courseIntroVideo: "",
-  courseCategoryIds: [], // Empty array for category IDs
-  courseTags: [], // Empty array for tags
+  categoryids: [402], // Empty array for category IDs
+  courseTags: ["new"], // Empty array for tags
   featuredImage: null, // Assuming this is a file input
 };

@@ -5,11 +5,12 @@ import CustomTextField from "../../../common/custom_text_field";
 import DropZone from "./dropzone";
 import { CiWarning } from "react-icons/ci";
 import ContainedButtonPrimary from "../../../common/contained_button_primary";
+import CustomTextInput from "../../../components/ui/CustomTextInput";
 // import { add_course_video_api } from "../../../admin_panel/pages/tutor/courses/course_atachments/service/course_videos_api";
 // import { useParams } from "react-router-dom";
 
-const VideoComponent = () => {
-  const [is_youtube, set_is_youtube] = useState(undefined);
+const VideoComponent = ({ courseIntroVideo, formik }) => {
+  const [is_youtube, set_is_youtube] = useState("youtube");
 
   return (
     <div className="w-full transition-all bg-white p-4 border border-gray-600 rounded-sm">
@@ -18,15 +19,13 @@ const VideoComponent = () => {
           Course Intro Video
         </p>
         <div style={{ width: "100%", marginBottom: 16 }}>
-          <CustomSelectBox
-            onChange={(val) => {
-              set_is_youtube(val);
-            }}
-            options={[
-              { title: "Youtube", value: "youtube" },
-              { title: "Select Video Sourse", value: "select file" },
-            ]}
-          />
+          <select
+            onChange={(e) => set_is_youtube(e.target.value)}
+            className="bg-white border border-gray-300 w-full py-2 pl-2 outline-blue-500"
+          >
+            <option value="youtube">Youtube</option>
+            {/* <option value="select file">Select video Sourse</option> */}
+          </select>
         </div>
 
         <AnimatePresence initial={false} mode="wait">
@@ -45,14 +44,23 @@ const VideoComponent = () => {
               exit={{ height: 0 }}
               key={`${is_youtube}+`}
             >
-              <CustomTextField
-                type="url"
-                onChange={(val) => {}}
-                placeHolder="Paste YouTube Video URL"
-                style={{ padding: "16px 8px" }}
+              <CustomTextInput
+                type="text"
+                onChange={formik.handleChange}
+                placeholder="https://www.youtube.com/"
+                onBlur={formik.handleBlur}
+                className="my-3"
+                name="courseIntroVideo"
+                value={formik?.values?.courseIntroVideo}
               />
             </motion.div>
           )}
+
+          {formik?.touched?.courseIntroVideo ? (
+            <span className="text-red-600 text-sm p-1">
+              {formik?.errors?.courseIntroVideo}
+            </span>
+          ) : null}
           {is_youtube === "select file" && (
             <motion.div
               initial={{ height: 0, scale: 0 }}
@@ -69,7 +77,7 @@ const VideoComponent = () => {
             </motion.div>
           )}
         </AnimatePresence>
-        <p
+        {/* <p
           style={{
             fontWeight: 600,
             fontSize: 14,
@@ -78,18 +86,22 @@ const VideoComponent = () => {
           }}
         >
           Type
-        </p>
-        <CustomSelectBox
+        </p> */}
+        {/* <CustomSelectBox
           onChange={(val) => {}}
           options={[
             { title: "None", value: "None" },
             { title: "Intro", value: "intro" },
             { title: "Lessons", value: "lessons" },
           ]}
-        />
-        <AnimatePresence initial={false} mode="wait">
+        /> */}
+        <AnimatePresence
+          style={{ display: "none" }}
+          initial={false}
+          mode="wait"
+        >
           <motion.div
-            className=""
+            className="hidden"
             style={{
               borderRadius: 6,
               overflow: "hidden",
@@ -129,11 +141,11 @@ const VideoComponent = () => {
           </motion.div>
         </AnimatePresence>
       </motion.div>
-      <ContainedButtonPrimary
+      {/* <ContainedButtonPrimary
         // onClick={() => formik.submitForm()}
         title="Save"
-        style={{ alignSelf: "flex-end", marginTop: 16 }}
-      />
+        style={{ alignSelf: "flex-end", marginTop: 16 , }}
+      /> */}
     </div>
   );
 };

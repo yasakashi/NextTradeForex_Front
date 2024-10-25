@@ -16,9 +16,15 @@ import galleryReducer from "./features/gallerySlice";
 import siteMessageReducer from "./features/messageSlice";
 import { generalReducer } from "./features/generalSlice";
 import { courseReducer } from "./features/courseSlise";
+import { courseBuilderApi } from "./features/course/courseBuilderApi";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { courseApi } from "./features/course/courseApii";
 
 const store = configureStore({
   reducer: {
+    [courseBuilderApi.reducerPath]: courseBuilderApi.reducer,
+    [courseApi.reducerPath]: courseApi.reducer,
+
     login: loginReducer,
     auth: registerReducer,
     usersList: usersListReducer,
@@ -36,6 +42,14 @@ const store = configureStore({
     general: generalReducer,
     course: courseReducer,
   },
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      courseBuilderApi.middleware,
+      courseApi.middleware
+    ),
 });
+
+setupListeners(store.dispatch);
 
 export default store;

@@ -19,7 +19,7 @@ const Home = () => {
       <div className="w-full h-full">
         <div className="w-full mx-auto">
           <BodyFixedModal />
-          <Header />
+          {/* <Header /> */}
           <Hero />
           <Provisions />
           <CustomCalendaar />

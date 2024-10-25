@@ -15,9 +15,10 @@ const buttonVariants = {
 
 const buttonSizes = {
   default: "h-10 px-4 py-2 font-normal",
-  sm: "h-9 px-2 py-1 text-xs",
-  lg: "h-11 px-8 py-3 text-lg",
-  icon: "h-10 w-10 flex items-center justify-center",
+  sm: "px-3 py-2 text-xs",
+  md: "px-3 py-2 text-sm",
+  lg: "px-8 py-3 text-lg",
+  icon: "w-10 flex items-center justify-center",
 };
 
 const CustomButton = React.forwardRef(
@@ -34,7 +35,7 @@ const CustomButton = React.forwardRef(
     const Component = asChild ? "span" : "button";
 
     const classes = classNames(
-      "inline-flex items-center justify-center rounded-[4px] font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none shadow-sm",
+      "inline-flex items-center justify-center rounded-[4px] font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none shadow-sm cursor-pointer",
       buttonVariants[variant],
       buttonSizes[size],
       className // Allow custom class names to be passed in

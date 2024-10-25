@@ -3,19 +3,16 @@ import NewCourceCard from "./new_cource_card";
 import { AnimatePresence, motion } from "framer-motion";
 import { CustomSelectBox } from "./custom_select_box";
 import { PiWarningCircleDuotone } from "react-icons/pi";
+import CustomTextInput from "../../../components/ui/CustomTextInput";
 
-const AddProductComponent = ({ set_course_type_id, course_type_id }) => {
-  const [course_type, set_course_type] = useState("FREE");
+const AddProductComponent = ({ formik }) => {
+  const [courseType, setCourseType] = useState("FREE");
 
   useEffect(() => {
-    if (course_type_id) {
-      set_course_type("PAID");
+    if (courseType === "FREE") {
+      formik?.setFieldValue("coursePrice", 0);
     }
-  }, []);
-
-  useEffect(() => {
-    set_course_type_id?.(course_type === "FREE" ? 0 : 1);
-  }, [course_type]);
+  }, [courseType]);
 
   return (
     <NewCourceCard title="Add Product">
@@ -28,9 +25,9 @@ const AddProductComponent = ({ set_course_type_id, course_type_id }) => {
                 <input
                   id="inline-radio"
                   onChange={(e) => {
-                    set_course_type(e.target.value);
+                    setCourseType(e.target.value);
                   }}
-                  checked={course_type === "PAID"}
+                  checked={courseType === "PAID"}
                   type="radio"
                   value="PAID"
                   name="inline-radio-group"
@@ -46,9 +43,9 @@ const AddProductComponent = ({ set_course_type_id, course_type_id }) => {
               <div className="flex items-center me-4">
                 <input
                   onChange={(e) => {
-                    set_course_type(e.target.value);
+                    setCourseType(e.target.value);
                   }}
-                  checked={course_type === "FREE"}
+                  checked={courseType === "FREE"}
                   id="inline-2-radio"
                   type="radio"
                   value="FREE"
@@ -66,9 +63,9 @@ const AddProductComponent = ({ set_course_type_id, course_type_id }) => {
           </div>
         </div>
         <AnimatePresence mode="sync" initial={false}>
-          {course_type === "PAID" && (
+          {courseType === "PAID" && (
             <motion.div
-              key={`${course_type}`}
+              key={`${courseType}`}
               initial={{ height: 0 }}
               animate={{ height: "fit-content" }}
               exit={{ height: 0, opacity: 0, y: 8 }}
@@ -76,12 +73,28 @@ const AddProductComponent = ({ set_course_type_id, course_type_id }) => {
               style={{}}
             >
               <div className="w-1/3 flex flex-col">
-                <p className="text-base font-semibold">Select Product</p>
+                <p className="text-base font-semibold">Enter the price</p>
                 <p className="text-xs mt-4 ">(When selling the course)</p>
               </div>
 
               <div className="w-2/3 flex flex-col">
-                <CustomSelectBox />
+                <div className="w-[300px] flex items-center gap-2">
+                  <span className="text-xl text-gray-600 font-medium">$</span>
+                  <CustomTextInput
+                    name="coursePrice"
+                    value={formik?.values?.coursePrice}
+                    onChange={formik?.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="$00"
+                  />
+                </div>
+
+                {formik?.touched?.coursePrice && formik?.errors?.coursePrice ? (
+                  <span className="text-red-600 text-xs p-1">
+                    {formik?.errors?.coursePrice}
+                  </span>
+                ) : null}
+                <span></span>
                 <div className="w-full flex items-center mt-2">
                   <PiWarningCircleDuotone />
                   <p className="text-sm ml-2">

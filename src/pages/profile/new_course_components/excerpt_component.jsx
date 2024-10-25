@@ -1,17 +1,24 @@
 import React from "react";
 import NewCourceCard from "./new_cource_card";
+import { Link } from "react-router-dom";
 
-const ExcerptComponent = () => {
+const ExcerptComponent = ({ name, formik }) => {
   return (
     <NewCourceCard title={"Excerpt"}>
-      <div style={{ padding: 16, width: "100%" }}>
+      <div className="w-full p-4">
         <textarea
-          className="resize rounded-md focus:border-blue-500"
-          style={{ width: "100%", border: "1px solid black" }}
+          placeholder="Excerpt"
+          name="excerpt"
+          onChange={formik.handleChange}
+          value={formik.values?.excerpt}
+          className="resize-none px-4 py-2 text-base text-gray-700 h-[100px] outline-blue-400 rounded-md focus:border-blue-500 w-full border border-gray-300"
         ></textarea>
-        <p style={{fontSize:12}}>
+        <p className="text-xs text-gray-600">
           Excerpts are optional hand-crafted summaries of your content that can
-          be used in your theme. <a href="#" className="text-blue-500" style={{textDecoration:"1px solid "}}>Learn more about manual excerpts.</a>{" "}
+          be used in your theme.
+          <Link to="#" className="text-blue-500 hover:underline mx-1 ">
+            Learn more about manual excerpts.
+          </Link>
         </p>
       </div>
     </NewCourceCard>

@@ -39,7 +39,7 @@ const LibraryModal = ({
       }}
       open={open}
     >
-      <div className="flex w-[70vw] h-[85vh] bg-red-600">
+      <div className="flex w-[70vw] h-[85vh]">
         {has_side_bar_action && (
           <div className="w-60 border-r-2 border-gray-300  pt-6 pl-4 pr-4 flex flex-col items-start">
             <p className="text-sm font-medium mb-3">Actions</p>

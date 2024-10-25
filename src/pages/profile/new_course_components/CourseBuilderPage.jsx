@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewCourceCard from "./new_cource_card";
 import ContainedButtonPrimary from "../../../common/contained_button_primary";
 import ModalLayout from "../../../common/modal_layout";
@@ -9,11 +9,15 @@ import { FaBars, FaPlus } from "react-icons/fa6";
 import { BiSolidEdit } from "react-icons/bi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import * as Yup from "yup";
 
 import { CiWarning } from "react-icons/ci";
 import BorderedButtonPrimary from "../../../common/bordered_button_primary";
 import NewLesson from "./NewLesson";
 import AddNewQuiz from "./AddNewQuiz";
+import { useFormik } from "formik";
+import { CustomButton } from "../../../components/ui/CustomButton";
+import { useGetCourseTopicsMutation } from "../../../redux/features/course/courseBuilderApi";
 
 const CourseBuilderPage = () => {
   const [is_open, set_is_open] = useState(false);
@@ -21,13 +25,36 @@ const CourseBuilderPage = () => {
   const [showQuizModal, setShowQuizModal] = useState(false);
 
   const [topics, setTopics] = useState([]); // State for storing topics
-  const [newTopic, setNewTopic] = useState({ name: "", summary: "" });
 
-  const addNewTopicHandler = () => {
-    setTopics([...topics, { ...newTopic, lessons: [] }]);
-    setNewTopic({ naem: "", summary: "" });
-    set_is_open(false);
-  };
+  const [getCourseTopics, { error, isLoading, isSuccess }] =
+    useGetCourseTopicsMutation();
+
+  const addTopicValidationShema = Yup.object().shape({
+    topicName: Yup.string().required("Topic name is required."),
+    topicSummary: Yup.string().required("Topic summary is reqired."),
+  });
+
+  useEffect(() => {
+    async function courseTopics({}) {
+      const topics = await getCourseTopics({ courseId: "123" });
+
+      console.log({ topics });
+    }
+
+    courseTopics();
+  }, []);
+
+  const formik = useFormik({
+    initialValues: {
+      topicName: "",
+      topicSummary: "",
+    },
+    validationSchema: addTopicValidationShema,
+    onSubmit: (values) => {
+      console.log("Form submitted:", values);
+      set_is_open(false);
+    },
+  });
 
   return (
     <>
@@ -144,35 +171,49 @@ const CourseBuilderPage = () => {
                   ))}
                 </div>
               )}
-              <ContainedButtonPrimary
-                // icon={<PlusCircleIcon className="size-6 text-blue-500"/>}
-                title={"Add new topic"}
-                onClick={(e) => set_is_open((pre) => !pre)}
-              />
+
+              <CustomButton
+                type="button"
+                size="md"
+                onClick={() => set_is_open(true)}
+              >
+                Add new topic
+              </CustomButton>
               <ModalLayout
                 className="w-full sm:w-[70vw] md:w-[50vw] lg:w-[60vw] max-w-[100vh] h-[80vh]"
                 onClose={set_is_open}
                 open={is_open}
               >
-                <div className="flex flex-col h-full">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault(); // Prevents the default form submission behavior
+                    formik.handleSubmit(e); // Calls Formik's submit handler
+                    console.log("Form submitted manually");
+                  }}
+                  className="flex flex-col h-full"
+                >
                   <div className="flex justify-between items-center py-4 px-8 w-full border-b border-b-gray-300">
                     <h4 style={{ fontWeight: 600 }}>Add Topic</h4>
                     <button onClick={() => set_is_open(false)}>
                       <CgClose style={{}} />
                     </button>
                   </div>
-
-                  <div className="flex w-full flex-col justify-between flex-grow">
-                    <div className="bg-[#eff1f7] px-8 py-4 ">
+                  <div className="flex w-full flex-col justify-between flex-grow bg-[#eff1f7]">
+                    <div className=" px-8 py-4 ">
                       <p className="text-sm font-semibold pb-2">Topic Name</p>
                       <input
-                        value={newTopic.name}
-                        onChange={(e) =>
-                          setNewTopic({ ...newTopic, name: e.target.value })
-                        }
+                        name="topicName"
+                        value={formik.values.topicName}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         type="text"
                         className="border w-full border-gray-300 rounded-md px-3 py-2 lg:py-[6px] outline-blue-400 outline-[1px] text-gray-700 placeholder:text-gray-400 placeholder:text-sm"
                       />
+                      {formik.touched?.topicName && formik.errors?.topicName ? (
+                        <span className="text-xs text-red-600 p-1">
+                          {formik.errors?.topicName}
+                        </span>
+                      ) : null}
                       <div className="flex items-start mt-4">
                         <CiWarning style={{ color: "black" }} />
 
@@ -186,12 +227,18 @@ const CourseBuilderPage = () => {
                         Topic Summery
                       </h3>
                       <textarea
-                        value={newTopic.summary}
-                        onChange={(e) =>
-                          setNewTopic({ ...newTopic, summary: e.target.value })
-                        }
+                        name="topicSummary"
+                        value={formik.values.topicSummary}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         className="resize px-3 py-2 text-sm text-gray-600 w-full border border-gray-300 rounded-md outline-blue-400"
                       ></textarea>
+                      {formik.touched.topicSummary &&
+                      formik.errors?.topicSummary ? (
+                        <span className="text-xs text-red-600 p-1">
+                          {formik.errors?.topicSummary}
+                        </span>
+                      ) : null}
                       <div className="flex items-start justify-center mb-4">
                         <CiWarning style={{ color: "black" }} />
                         <p className="text-xs opacity-70 ml-1">
@@ -202,21 +249,20 @@ const CourseBuilderPage = () => {
                       </div>
                     </div>
                   </div>
-
-                  <div className="flex justify-between items-center p-4 border-t border-t-gray-300">
-                    <BorderedButtonPrimary
-                      title={"Cancel"}
-                      onClick={(e) => {
-                        set_is_open(false);
-                      }}
-                    />
-                    <ContainedButtonPrimary
-                      title={"Add Topic"}
-                      // onClick={() => set_is_open(false)}
-                      onClick={addNewTopicHandler}
-                    />
+                  <div className="flex justify-between z-[1000] items-center p-4 border-t border-t-gray-300">
+                    <CustomButton
+                      type="button"
+                      onClick={() => set_is_open(false)}
+                      size="sm"
+                      variant="outlined"
+                    >
+                      Cancel
+                    </CustomButton>
+                    <CustomButton type="submit" size="sm">
+                      Add Topic
+                    </CustomButton>
                   </div>
-                </div>
+                </form>
               </ModalLayout>
             </div>
           </NewCourceCard>

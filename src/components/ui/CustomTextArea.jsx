@@ -1,21 +1,19 @@
 import classNames from "classnames";
 
-const CustomTextInput = ({
+const CustomTextArea = ({
   name,
   value = "",
   onChange,
   placeholder,
-  type = "text",
   error,
-  onBlur = () => {},
   className,
+  onBlur,
   ...props
 }) => {
   return (
     <div className="w-full">
-      <input
+      <textarea
         name={name}
-        type={type}
         value={value}
         onChange={onChange}
         onBlur={onBlur}
@@ -25,11 +23,11 @@ const CustomTextInput = ({
           className
         )}
         {...props}
-      />
+      ></textarea>
 
       {error ? <span className="text-red-600 text-sm p-1">{error}</span> : null}
     </div>
   );
 };
 
-export default CustomTextInput;
+export default CustomTextArea;

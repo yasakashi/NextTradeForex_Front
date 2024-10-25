@@ -25,18 +25,89 @@ import {
   courseInitialValues,
   courseValidationSchema,
 } from "../../constants/learning/course/newCourse";
+import CustomTextInput from "../../components/ui/CustomTextInput";
+import DraftEditor from "../../admin_panel/components/editor/draft_editor";
+
+import { EditorState } from "draft-js";
+import { useState } from "react";
+import { useAddNewCourseMutation } from "../../redux/features/course/courseApii";
+import LibraryModal from "./new_course_components/library_modal";
+import { BiSave } from "react-icons/bi";
+import { CustomButton } from "../../components/ui/CustomButton";
 
 const NewCourse = () => {
   const navigate = useNavigate();
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [openCourseDescFileModal, setOpenCourseDescFileModal] = useState(false);
+
+  const [addNewCourse, { isLoading }] = useAddNewCourseMutation();
 
   const formik = useFormik({
     initialValues: courseInitialValues,
     validationSchema: courseValidationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log({ values });
+
+      const formData = new FormData();
+      formData.append("courseName", values?.courseName);
+      formData.append("courseDescription", values?.courseDescription);
+      // formData.append("courseFile", values?.courseFile);
+      formData.append("excerpt", values?.excerpt);
+      formData.append("authorId", values?.authorId);
+      formData.append("maximumStudents", values?.maximumStudents);
+      formData.append("difficultyLevelId", values?.difficultyLevelId);
+      formData.append("isPublicCourse", values?.isPublicCourse);
+      formData.append("allowQA", values?.allowQA);
+      formData.append("coursePrice", values?.coursePrice);
+      formData.append("whatWillILearn", values?.whatWillILearn);
+      formData.append("targetedAudience", values?.targetedAudience);
+      formData.append("courseDuration", values?.courseDuration);
+      formData.append("materialsIncluded", values?.materialsIncluded);
+      formData.append("courseIntroVideo", values?.courseIntroVideo);
+      formData.append("courseTags", values?.courseTags);
+      // formData.append("featuredImage", values?.featuredImage);
+      formData.append("courseCategoryIds", values?.categoryids);
+      formData.append(
+        "requirementsInstructions",
+        values?.requirementsInstructions
+      );
+      if (values?.courseFile instanceof File) {
+        formData.append("courseFile", values?.courseFile);
+      }
+
+      if (values?.featuredImage instanceof File) {
+        formData.append("featuredImage", values?.featuredImage);
+      }
+
+      try {
+        // const addCourseRes = await addNewCourse({ data: formData });
+        // console.log({ addCourseRes });
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/coursebuilder/addcourse`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("loginToken")}`,
+              "Content-Type": "multipart/form-data",
+            },
+            body: formData,
+          }
+        );
+
+        const result = await response.json();
+        console.log({ result });
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
     },
   });
 
+  const handleEditorChange = (editorData) => {
+    formik.setFieldValue("courseDescription", editorData.plainText);
+
+    // Update the editor state
+    setEditorState(editorData.state);
+  };
 
   return (
     <div className="w-full bg-[#f0f0f1] top-0 p-0 m-0">
@@ -46,18 +117,68 @@ const NewCourse = () => {
         className="wrapper mx-auto flex w-full flex-col max-h-fit "
       >
         {/* <CourseItemSelector /> */}
-        {console.log(formik.errors)}
+        {console.log(formik.values)}
         <h4 className="text-3xl text-gray-700 font-bold mb-4 mt-8">
           Add New Course
         </h4>
-        {console.log(formik.values)}
-        <form>
+
+        <form onSubmit={formik.handleSubmit}>
           <div className="grid grid-cols-4 gap-4 mb-8">
             <div className="col-span-4 lg:col-span-3">
               <div className="w-full bg-white rounded-md">
-                <AddCourseTitle formik={formik} />
+                <CustomTextInput
+                  name="courseName"
+                  placeholder="Add title"
+                  className="border border-gray-700 py-[10px] placeholder:text-sm rounded-sm"
+                  value={formik.values?.courseName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
               </div>
-
+              <div className="border border-gray-700 my-3 bg-white">
+                <div className="w-full pt-2 pl-2">
+                  <div className="mb-2 flex">
+                    <CustomButton
+                      onClick={() => setOpenCourseDescFileModal(true)}
+                      size="sm"
+                      variant="outlined"
+                      type="button"
+                    >
+                      Add Media
+                    </CustomButton>
+                    <button
+                      type="button"
+                      className="bg-gray-600 rounded-sm p-1 pr-3 pl-3 ml-2"
+                    >
+                      <BiSave color="white" className="text-xl" />
+                    </button>
+                  </div>
+                  <LibraryModal
+                    file={formik?.values?.courseFile}
+                    set_file={(file) => {
+                      formik.setFieldValue("courseFile", file);
+                    }}
+                    accept_file="Image"
+                    has_side_bar_action={false}
+                    title="Add Media"
+                    open={openCourseDescFileModal}
+                    set_open={setOpenCourseDescFileModal}
+                    onSave={() => setOpenCourseDescFileModal(false)}
+                  />
+                  <div style={{ width: "100%", position: "relative" }}>
+                    {/* <EditorComponent /> */}
+                    <DraftEditor
+                      placeholder="Course description ..."
+                      value={editorState} // Pass the editor state
+                      onChange={handleEditorChange}
+                    />
+                  </div>
+                </div>
+                {/* <DraftEditor
+                  placeholder="Course description ..."
+                  value={editorState} // Pass the editor state
+                  onChange={handleEditorChange} */}
+              </div>
               <AnimatePresence
                 presenceAffectsLayout
                 initial={false}
@@ -72,33 +193,41 @@ const NewCourse = () => {
                 >
                   <MeetingContentComponent formik={formik} />
 
+                  <VideoPdfUrl formik={formik} />
+
                   <div className="lg:hidden space-y-4">
                     <AudioAccessbility />
 
-                    <CourseCategoriesComponent />
+                    <CourseCategoriesComponent
+                      name="categoryids"
+                      formik={formik}
+                    />
 
-                    <TagsComponent name="coursetags" formik={formik} />
+                    <TagsComponent name="courseTags" formik={formik} />
 
-                    <FeaturedImageComponent />
+                    <FeaturedImageComponent
+                      name="featuredImage"
+                      formik={formik}
+                    />
                   </div>
 
-                  <ExcerptComponent />
+                  <ExcerptComponent name="excerpt" formik={formik} />
 
-                  <CourseSettingsComponent />
+                  <CourseSettingsComponent formik={formik} />
 
-                  <AddProductComponent />
+                  <AddProductComponent name="coursePrice" formik={formik} />
 
-                  <AdditionalDate />
+                  <AdditionalDate formik={formik} />
 
-                  <VideoComponent />
+                  <VideoComponent name="courseIntroVideo" formik={formik} />
 
                   <div>
                     <PublishComponent
-                      onClick={() =>
-                        navigate(
-                          "/user-profile/myCourses/new-course/course-builder"
-                        )
-                      }
+                    // onClick={() =>
+                    //   navigate(
+                    //     "/user-profile/myCourses/new-course/course-builder"
+                    //   )
+                    // }
                     />
                   </div>
                 </motion.div>
@@ -108,11 +237,11 @@ const NewCourse = () => {
             <div className="hidden lg:block  lg:col-span-1 space-y-4">
               <AudioAccessbility />
 
-              <CourseCategoriesComponent />
+              <CourseCategoriesComponent name="categoryids" formik={formik} />
 
               <TagsComponent name="coursetags" formik={formik} />
 
-              <FeaturedImageComponent />
+              <FeaturedImageComponent name="featuredImage" formik={formik} />
             </div>
           </div>
         </form>

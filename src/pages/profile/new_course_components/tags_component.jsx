@@ -6,20 +6,31 @@ import CustomTextField from "../../../common/custom_text_field";
 import { IoCloseSharp } from "react-icons/io5";
 
 const TagsComponent = ({ formik, name }) => {
-
   const [inputValue, setInputValue] = useState("");
   const [tagError, setTagError] = useState("");
 
   const addTagHandler = () => {
-    if (formik?.values?.coursetags.includes(inputValue.trim())) {
-      setTagError("Already exist!");
+    const trimmedValue = inputValue.trim();
+
+    if (trimmedValue === "") {
+      setTagError("Tag cannot be empty!");
+      return;
     }
+
+    if (formik?.values?.courseTags?.includes(trimmedValue)) {
+      setTagError("Already exist!");
+      return;
+    }
+
+
+    const  updatedTags = [...formik.values]
+
     if (
       inputValue.trim() &&
-      !formik?.values?.coursetags.includes(inputValue.trim())
+      !formik?.values?.courseTags.includes(inputValue.trim())
     ) {
-      formik.setFieldValue("coursetags", [
-        ...formik?.values?.coursetags,
+      formik.setFieldValue("courseTags", [
+        ...formik?.values?.courseTags,
         inputValue.trim(),
       ]);
 
@@ -32,7 +43,7 @@ const TagsComponent = ({ formik, name }) => {
 
     const newTags = currentTags.filter((oldTag) => oldTag !== tag);
 
-    formik.setFieldValue("coursetags", newTags);
+    formik.setFieldValue("courseTags", newTags);
 
     console.log("Updated Tags: ", newTags);
   };
@@ -60,7 +71,7 @@ const TagsComponent = ({ formik, name }) => {
           <span className="text-red-600 text-xs p-1">{tagError}</span>
         ) : null}
         <div className="flex flex-wrap gap-2 items-center mt-4 mb-2">
-          {formik?.values?.coursetags?.map((tag, index) => (
+          {formik?.values?.courseTags?.map((tag, index) => (
             <div
               className="flex items-center gap-1 text-base text-gray-600"
               key={index}
