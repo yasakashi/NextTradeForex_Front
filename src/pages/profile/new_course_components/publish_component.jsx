@@ -4,7 +4,7 @@ import BorderedButtonPrimary from "../../../common/bordered_button_primary";
 import { bold_font, light_font } from "../../../constants/style/fonts";
 import ContainedButtonPrimary from "../../../common/contained_button_primary";
 
-const PublishComponent = () => {
+const PublishComponent = ({ isLoading }) => {
   return (
     <NewCourceCard title={"Publish"}>
       <div style={{ width: "100%" }}>
@@ -86,9 +86,10 @@ const PublishComponent = () => {
           <button
             type="submit"
             // onClick={onClick}
-            className="px-3 py-1 bg-blue-600 rounded-md outline-none border-none text-white shadow-sm text-sm"
+            disabled={isLoading}
+            className="px-3 py-1 bg-blue-600 rounded-md disabled:cursor-not-allowed outline-none border-none text-white shadow-sm text-sm"
           >
-            Submit for preview
+            {isLoading ? "Sending ..." : "Submit for preview"}
           </button>
         </div>
       </div>

@@ -9,9 +9,9 @@ export const courseValidationSchema = Yup.object({
       meetingTitle: Yup.string().required("Meeting title is required"),
       meetingDescription: Yup.string(),
       meetingFile: Yup.mixed(), // optional file
-      meetingURL: Yup.string()
-        .url("Enter a valid URL")
-        .required("Meeting URL is required"),
+      // meetingURL: Yup.string()
+      //   .url("Enter a valid URL")
+      //   .required("Meeting URL is required"),
       meetingDateTime: Yup.date()
         .required("Meeting date and time are required")
         .typeError(
@@ -33,12 +33,12 @@ export const courseValidationSchema = Yup.object({
   maximumStudents: Yup.number()
     .required("Maximum number of students is required")
     .typeError("Must be a number"),
-  difficultyLevelId: Yup.string().required("Difficulty level ID is required"),
+  difficultyLevelId: Yup.string(),
   isPublicCourse: Yup.boolean().default(false),
   allowQA: Yup.boolean().default(true),
   coursePrice: Yup.number()
     .typeError("Must be a valid number")
-    .min(1, "Price cannot be negative"),
+    .min(0, "Price cannot be negative"),
   whatWillILearn: Yup.string().required("This field is required"),
   targetedAudience: Yup.string().required("Targeted audience is required"),
   courseDuration: Yup.number()
@@ -47,7 +47,7 @@ export const courseValidationSchema = Yup.object({
   materialsIncluded: Yup.string(),
   requirementsInstructions: Yup.string(),
   courseIntroVideo: Yup.string().url("Enter a valid YouTube link"),
-  categoryids: Yup.array().of(Yup.string().required("Category ID is required")),
+  // categoryids: Yup.array().of(Yup.string().required("Category ID is required")),
   coursetags: Yup.array()
     .min(1, "Each tag should have at least 1 character")
     .max(4, "You can add up to 10 tags only"),
@@ -79,7 +79,7 @@ export const courseInitialValues = {
   excerpt: "",
   authorId: 7,
   maximumStudents: 1, // Empty string for number field initially
-  difficultyLevelId: "",
+  difficultyLevelId: 1,
   isPublicCourse: false, // default to false
   allowQA: true, // default to false
   coursePrice: "", // Empty string for number field initially
@@ -89,7 +89,7 @@ export const courseInitialValues = {
   materialsIncluded: "",
   requirementsInstructions: "",
   courseIntroVideo: "",
-  categoryids: [402], // Empty array for category IDs
+  categoryids: "2", // Empty array for category IDs
   courseTags: ["new"], // Empty array for tags
   featuredImage: null, // Assuming this is a file input
 };

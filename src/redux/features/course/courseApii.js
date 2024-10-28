@@ -24,7 +24,29 @@ export const courseApi = createApi({
         body: data,
       }),
     }),
+
+    // add course meeting
+    addCourseMeeting: builder.mutation({
+      query: ({ data }) => ({
+        url: "/coursebuilder/addcoursemeeting",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // add video pdf
+    addCourseVideoPdf: builder.mutation({
+      query: ({ data }) => ({
+        url: "/coursebuilder/addcoursevideopdfurl",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useAddNewCourseMutation } = courseApi;
+export const {
+  useAddNewCourseMutation,
+  useAddCourseMeetingMutation,
+  useAddCourseVideoPdfMutation,
+} = courseApi;

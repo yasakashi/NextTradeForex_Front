@@ -27,18 +27,38 @@ export const courseBuilderApi = createApi({
 
     // get course topics
     getCourseTopics: builder.mutation({
-      query: ({ courseId, pageindex = 1, rowcount = 10 }) => ({
+      query: ({ data }) => ({
         url: "/coursebuilder/getcoursetopics",
         method: "POST", // Corrected to uppercase
-        body: {
-          courseId,
-          pageindex,
-          rowcount,
-        },
+        body: data,
+      }),
+    }),
+
+    // add topic lesson
+    addTopicLesson: builder.mutation({
+      query: ({ data }) => ({
+        url: "/coursebuilder/addlesson",
+        method: "POST",
+
+        body: data,
+      }),
+    }),
+
+    // get topic lesson
+    getTopicLessons: builder.mutation({
+      query: ({ data }) => ({
+        url: "/coursebuilder/getLessons",
+        method: "POST",
+
+        body: data,
       }),
     }),
   }),
 });
 
-export const { useAddCourseTopicMutation, useGetCourseTopicsMutation } =
-  courseBuilderApi;
+export const {
+  useAddCourseTopicMutation,
+  useGetCourseTopicsMutation,
+  useAddTopicLessonMutation,
+  useGetTopicLessonsMutation,
+} = courseBuilderApi;

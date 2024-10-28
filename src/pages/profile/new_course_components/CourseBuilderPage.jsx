@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import NewCourceCard from "./new_cource_card";
-import ContainedButtonPrimary from "../../../common/contained_button_primary";
 import ModalLayout from "../../../common/modal_layout";
 
 import { CgClose } from "react-icons/cg";
@@ -12,22 +11,65 @@ import { IoIosArrowDown } from "react-icons/io";
 import * as Yup from "yup";
 
 import { CiWarning } from "react-icons/ci";
-import BorderedButtonPrimary from "../../../common/bordered_button_primary";
 import NewLesson from "./NewLesson";
-import AddNewQuiz from "./AddNewQuiz";
+import AddNewQuiz from "./addNewQuiz/AddNewQuiz";
 import { useFormik } from "formik";
 import { CustomButton } from "../../../components/ui/CustomButton";
-import { useGetCourseTopicsMutation } from "../../../redux/features/course/courseBuilderApi";
+import {
+  useAddCourseTopicMutation,
+  useGetCourseTopicsMutation,
+  useGetTopicLessonsMutation,
+} from "../../../redux/features/course/courseBuilderApi";
+import { Link, useParams } from "react-router-dom";
 
 const CourseBuilderPage = () => {
+  const { courseId } = useParams();
+
   const [is_open, set_is_open] = useState(false);
   const [showNewLessonModal, setShowNewLessonModal] = useState(false);
   const [showQuizModal, setShowQuizModal] = useState(false);
+  const [topicId, setTopicId] = useState("");
+  const [lessons, setLessons] = useState({});
+  const [topics, setTopics] = useState([]);
 
-  const [topics, setTopics] = useState([]); // State for storing topics
+  const [openTopicIndex, setOpenTopicIndex] = useState(null);
 
-  const [getCourseTopics, { error, isLoading, isSuccess }] =
-    useGetCourseTopicsMutation();
+  const [
+    getCourseTopics,
+    { error, isLoading: getCourseTopicsLoading, isSuccess },
+  ] = useGetCourseTopicsMutation();
+
+  const [addCourseTopic, { isLoading: addTopicLoading }] =
+    useAddCourseTopicMutation();
+
+  const [getTopicLessons] = useGetTopicLessonsMutation();
+
+  const handleToggleTopic = async (index, topicId) => {
+    if (openTopicIndex === index) {
+      setOpenTopicIndex(null);
+    } else {
+      setOpenTopicIndex(index);
+
+      if (!lessons[topicId]) {
+        const lessonsRes = await getTopicLessons({
+          data: {
+            Id: null,
+            courseId: courseId,
+            topicId: topicId,
+            lessonName: "",
+            pageindex: 1,
+            rowcount: 50,
+          },
+        });
+        if (lessonsRes?.data?.messageCode === 200) {
+          setLessons((prev) => ({
+            ...prev,
+            [topicId]: lessonsRes?.data?.messageData,
+          }));
+        }
+      }
+    }
+  };
 
   const addTopicValidationShema = Yup.object().shape({
     topicName: Yup.string().required("Topic name is required."),
@@ -35,12 +77,21 @@ const CourseBuilderPage = () => {
   });
 
   useEffect(() => {
-    async function courseTopics({}) {
-      const topics = await getCourseTopics({ courseId: "123" });
+    async function courseTopics() {
+      const topicsRes = await getCourseTopics({
+        data: {
+          courseId: courseId,
+          Id: null,
+          topicName: "",
+          pageindex: 1,
+          rowcount: 50,
+        },
+      });
 
-      console.log({ topics });
+      if (topicsRes?.data?.messageCode === 200) {
+        setTopics(topicsRes?.data?.messageData);
+      }
     }
-
     courseTopics();
   }, []);
 
@@ -50,9 +101,30 @@ const CourseBuilderPage = () => {
       topicSummary: "",
     },
     validationSchema: addTopicValidationShema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log("Form submitted:", values);
-      set_is_open(false);
+      const res = await addCourseTopic({
+        data: { ...values, courseId: courseId },
+      });
+
+      if (res?.data?.messageCode === 200) {
+        set_is_open(false);
+
+        const topicsRes = await getCourseTopics({
+          data: {
+            courseId: courseId,
+            Id: null,
+            topicName: "",
+            pageindex: 1,
+            rowcount: 50,
+          },
+        });
+
+        if (topicsRes?.data?.messageCode === 200) {
+          setTopics(topicsRes?.data?.messageData);
+        }
+      }
+      console.log({ res });
     },
   });
 
@@ -65,22 +137,30 @@ const CourseBuilderPage = () => {
           className="wrapper mx-auto flex w-full flex-col max-h-fit "
         >
           <h4 className="text-3xl text-gray-700 font-bold mb-4 mt-4">
-            Add New Course
+            Add Course Details
           </h4>
           <NewCourceCard title={"Course Builder"}>
             <div className="p-4">
+              <div className="my-4 text-gray-700 text-lg">
+                {getCourseTopicsLoading ? "Loading ..." : ""}
+              </div>
               {topics.length > 0 && (
-                <div className="my-6">
+                <div className="my-6 space-y-2">
                   {topics.map((topic, index) => (
                     <div
                       key={index}
-                      className="border border-gray-300 rounded-md min-h-[180px] flex flex-col"
+                      className={`border border-gray-300 rounded-md ${
+                        openTopicIndex === index ? "min-h-[180px]" : ""
+                      } flex flex-col`}
                     >
                       <div className="flex items-center justify-between border bg-[#f4f6f9] px-8 py-3">
                         <div className="flex items-center gap-2">
                           <button className="border-none outline-none">
                             <FaBars size={20} className="text-gray-500" />
                           </button>
+                          <div>
+                            <h5>{topic?.topicName} : </h5>
+                          </div>
                           <h5>{topic?.name}</h5>
                         </div>
                         <div className="flex items-center gap-10">
@@ -98,7 +178,11 @@ const CourseBuilderPage = () => {
                               />
                             </button>
                           </div>
-                          <button className="border-none outline-none">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleTopic(index, topic?.id)}
+                            className="border-none outline-none"
+                          >
                             <IoIosArrowDown
                               size={20}
                               className="text-blue-accent"
@@ -107,89 +191,105 @@ const CourseBuilderPage = () => {
                         </div>
                       </div>
 
-                      <div className="relative mt-4  h-full flex-grow">
-                        {/* lessons */}
-                        <div className="mb-2 px-2">
-                          {/* single lesson */}
-                          <div className="flex items-center justify-between border border-gray-300 rounded-md px-8 py-3 w-[90%] ml-auto">
-                            <div className="flex items-center gap-2">
-                              <button className="border-none outline-none">
-                                <FaBars size={20} className="text-gray-500" />
-                              </button>
-                              <h5>Lesson 1 </h5> :{" "}
-                              <p className="text-gray-400 text-sm">
-                                Lesson 1 description
-                              </p>
-                            </div>
+                      {openTopicIndex === index ? (
+                        <div className="relative mt-4  h-full flex-grow pb-14">
+                          {/* lessons */}
+                          <div className="mb-2 px-2 space-y-2">
+                            {/* single lesson */}
+                            {lessons[topic?.id]?.map((lesson, lessonIndex) => (
+                              <div
+                                key={lessonIndex}
+                                className="flex items-center justify-between border border-gray-300 rounded-md px-8 py-3 w-[90%] ml-auto"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <button className="border-none outline-none">
+                                    <FaBars
+                                      size={20}
+                                      className="text-gray-500"
+                                    />
+                                  </button>
+                                  <h5>{lesson?.lessonName} : </h5>
+                                  <p className="text-gray-400 text-sm">
+                                    {lesson?.lessonDescription}
+                                  </p>
+                                </div>
 
-                            <div className="flex items-center gap-6">
-                              <button className="border-none outline-none">
-                                <BiSolidEdit
-                                  size={20}
-                                  className="text-gray-500"
+                                <div className="flex items-center gap-6">
+                                  <button className="border-none outline-none">
+                                    <BiSolidEdit
+                                      size={20}
+                                      className="text-gray-500"
+                                    />
+                                  </button>
+                                  <button className="border-none outline-none">
+                                    <FaRegTrashAlt
+                                      size={18}
+                                      className="text-gray-500"
+                                    />
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          {/* buttons */}
+                          <div className="flex items-center gap-3 absolute bottom-3 left-3">
+                            <button
+                              onClick={(e) => {
+                                setShowNewLessonModal(true);
+                                e.preventDefault();
+                                setTopicId(topic?.id);
+                              }}
+                              className="group text-blue-accent px-2 py-1 rounded-md border border-blue-accent text-[13px] w-max font-semibold flex items-center gap-1 hover:bg-blue-accent hover:text-white transition-all"
+                            >
+                              <span className="bg-blue-accent rounded-sm group-hover:bg-white transition-all">
+                                <FaPlus
+                                  size={14}
+                                  className="text-white group-hover:text-blue-accent transition-colors"
                                 />
-                              </button>
-                              <button className="border-none outline-none">
-                                <FaRegTrashAlt
-                                  size={18}
-                                  className="text-gray-500"
+                              </span>
+                              Lesson
+                            </button>
+
+                            <button
+                              onClick={() => setShowQuizModal(true)}
+                              className="group text-blue-accent px-4 py-1 rounded-md border border-blue-accent text-[13px] w-max font-semibold flex items-center gap-1 hover:bg-blue-accent hover:text-white transition-all"
+                            >
+                              <span className="bg-blue-accent rounded-sm group-hover:bg-white transition-all">
+                                <FaPlus
+                                  size={14}
+                                  className="text-white group-hover:text-blue-accent transition-colors"
                                 />
-                              </button>
-                            </div>
+                              </span>
+                              Quiz
+                            </button>
                           </div>
                         </div>
-                        {/* buttons */}
-                        <div className="flex items-center gap-3 absolute bottom-3 left-3">
-                          <button
-                            onClick={() => setShowNewLessonModal(true)}
-                            className="group text-blue-accent px-2 py-1 rounded-md border border-blue-accent text-[13px] w-max font-semibold flex items-center gap-1 hover:bg-blue-accent hover:text-white transition-all"
-                          >
-                            <span className="bg-blue-accent rounded-sm group-hover:bg-white transition-all">
-                              <FaPlus
-                                size={14}
-                                className="text-white group-hover:text-blue-accent transition-colors"
-                              />
-                            </span>
-                            Lesson
-                          </button>
-
-                          <button
-                            onClick={() => setShowQuizModal(true)}
-                            className="group text-blue-accent px-4 py-1 rounded-md border border-blue-accent text-[13px] w-max font-semibold flex items-center gap-1 hover:bg-blue-accent hover:text-white transition-all"
-                          >
-                            <span className="bg-blue-accent rounded-sm group-hover:bg-white transition-all">
-                              <FaPlus
-                                size={14}
-                                className="text-white group-hover:text-blue-accent transition-colors"
-                              />
-                            </span>
-                            Quiz
-                          </button>
-                        </div>
-                      </div>
+                      ) : null}
                     </div>
                   ))}
                 </div>
               )}
 
-              <CustomButton
-                type="button"
-                size="md"
-                onClick={() => set_is_open(true)}
-              >
-                Add new topic
-              </CustomButton>
+              <div className="my-4">
+                <CustomButton
+                  type="button"
+                  size="md"
+                  onClick={(e) => {
+                    console.log("clicked");
+                    e.preventDefault();
+                    set_is_open(true);
+                  }}
+                >
+                  Add new topic
+                </CustomButton>
+              </div>
               <ModalLayout
                 className="w-full sm:w-[70vw] md:w-[50vw] lg:w-[60vw] max-w-[100vh] h-[80vh]"
                 onClose={set_is_open}
                 open={is_open}
               >
                 <form
-                  onSubmit={(e) => {
-                    e.preventDefault(); // Prevents the default form submission behavior
-                    formik.handleSubmit(e); // Calls Formik's submit handler
-                    console.log("Form submitted manually");
-                  }}
+                  onSubmit={formik.handleSubmit}
                   className="flex flex-col h-full"
                 >
                   <div className="flex justify-between items-center py-4 px-8 w-full border-b border-b-gray-300">
@@ -231,8 +331,9 @@ const CourseBuilderPage = () => {
                         value={formik.values.topicSummary}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="resize px-3 py-2 text-sm text-gray-600 w-full border border-gray-300 rounded-md outline-blue-400"
+                        className="resize h-[110px] px-3 py-2 text-sm text-gray-600 w-full border border-gray-300 rounded-md outline-blue-400"
                       ></textarea>
+
                       {formik.touched.topicSummary &&
                       formik.errors?.topicSummary ? (
                         <span className="text-xs text-red-600 p-1">
@@ -259,7 +360,7 @@ const CourseBuilderPage = () => {
                       Cancel
                     </CustomButton>
                     <CustomButton type="submit" size="sm">
-                      Add Topic
+                      {addTopicLoading ? "sending ..." : "Add Topic"}
                     </CustomButton>
                   </div>
                 </form>
@@ -267,9 +368,20 @@ const CourseBuilderPage = () => {
             </div>
           </NewCourceCard>
         </motion.div>
+
+        <div className="flex py-10 px-4">
+          <Link
+            className="text-[#1976d2] hover:text-[#1565c0] hover:underline px-3 py-[6px] rounded-md shadow-sm text-base font-medium"
+            to={`/user-profile/myCourses/new-course/add-meeting-pdf/${courseId}`}
+          >
+            Add meeting and video pdf ?
+          </Link>
+        </div>
       </div>
 
       <NewLesson
+        courseId={courseId}
+        topicId={topicId}
         showNewLessonModal={showNewLessonModal}
         setShowNewLessonModal={setShowNewLessonModal}
       />

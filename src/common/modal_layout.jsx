@@ -8,7 +8,7 @@ const ModalLayout = ({ open, className ="", children }) => {
         e.stopPropagation();
       }}
       onClick={(e) => {
-        e.stopPropagation();
+        // e.stopPropagation();
       }}
       className={`
           fixed inset-0 flex justify-center items-center transition-colors z-[10000] w-screen h-screen
@@ -24,8 +24,8 @@ const ModalLayout = ({ open, className ="", children }) => {
           e.stopPropagation();
         }}
         onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
+          // e.preventDefault();
+          // e.stopPropagation();
         }}
         className={`bg-white shadow-md rounded-3xl transition-all z-[100000] ${className} 
         ${open ? "scale-100 opacity-100" : "scale-125 opacity-0"}

@@ -75,6 +75,7 @@ import NewCourse from "./pages/profile/new_course";
 import MyCourses from "./pages/profile/my_courses/view/my_courses";
 import EnrolledCourses from "./pages/profile/enrolled_courses/view/enrolled_courses";
 import CourseBuilderPage from "./pages/profile/new_course_components/CourseBuilderPage";
+import CourseMeetingAndPdf from "./pages/profile/new_course_components/CourseMeetingAndPdf";
 
 function App({ auth }) {
   const token = localStorage.getItem("loginToken");
@@ -139,9 +140,15 @@ function App({ auth }) {
                   element={<NewCourse />}
                 />
                 <Route
-                  path="/user-profile/myCourses/new-course/course-builder"
+                  path="/user-profile/myCourses/new-course/course-builder/:courseId"
                   element={<CourseBuilderPage />}
                 />
+
+                <Route
+                  path="/user-profile/myCourses/new-course/add-meeting-pdf/:courseId"
+                  element={<CourseMeetingAndPdf />}
+                />
+
                 <Route
                   path="/course/attachments/:id/:title"
                   element={<CourseAttachments />}

@@ -13,68 +13,73 @@ import CustomTextInput from "../../../components/ui/CustomTextInput";
 import LibraryModal from "./library_modal";
 import DraftEditor from "../../../admin_panel/components/editor/draft_editor";
 import { EditorState } from "draft-js";
+import { useFormik } from "formik";
+import { useAddCourseMeetingMutation } from "../../../redux/features/course/courseApii";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
-const MeetingContentComponent = ({ formik }) => {
+const MeetingContentComponent = () => {
+  const [open, setOpen] = useState(false);
+
+  const { courseId } = useParams();
   const [showMeetingComponent, setShowMeetingComponent] = useState(false);
-  const [selectedMeetingIndex, setSelectedMeetingIndex] = useState(0);
 
-  const [tempMeetingData, setTempMeetingData] = useState({
-    meetingTitle: "",
-    meetingDescription: "",
-    meetingURL: "",
-    meetingDateTime: "",
-    meetingFile: null,
-  });
+  const [addCourseMeeting, { isLoading }] = useAddCourseMeetingMutation();
 
-  const addOrUpdateMeeting = () => {
-    if (tempMeetingData.meetingTitle.trim() === "") {
-      // Prevent adding/editing empty meetings
-      return;
-    }
-
-    let newMeetings = [...formik.values.meetings];
-
-    if (selectedMeetingIndex !== null) {
-      // Update existing meeting
-      newMeetings[selectedMeetingIndex] = tempMeetingData;
-    } else {
-      // Add new meeting
-      newMeetings = [...newMeetings, tempMeetingData];
-    }
-
-    formik.setFieldValue("meetings", newMeetings);
-    setShowMeetingComponent(false);
-    setTempMeetingData({
+  const formik = useFormik({
+    initialValues: {
       meetingTitle: "",
       meetingDescription: "",
       meetingURL: "",
       meetingDateTime: "",
-    });
-    setSelectedMeetingIndex(null);
-  };
+      meetingFile: null,
+    },
 
-  const handleEditMeeting = (index) => {
-    // Populate temp data with the selected meeting for editing
-    const selectedMeeting = formik.values.meetings[index];
-    setTempMeetingData(selectedMeeting);
-    setSelectedMeetingIndex(index);
-    setShowMeetingComponent(true);
-  };
+    onSubmit: async (values, { resetForm }) => {
+      console.log({ values });
 
-  const handleTempDataChange = (name, value) => {
-    setTempMeetingData((prev) => ({ ...prev, [name]: value }));
-  };
+      const meetingFormData = new FormData();
+
+      try {
+        meetingFormData.append("meetingTitle", values?.meetingTitle);
+        meetingFormData.append(
+          "meetingDescription",
+          values?.meetingDescription
+        );
+        meetingFormData.append("meetingDateTime", values?.meetingDateTime);
+        meetingFormData.append("meetingURL", values?.meetingURL);
+        meetingFormData.append("meetingFile", values?.meetingFile);
+
+        meetingFormData.append("courseId", courseId);
+        const addMeetingRes = await addCourseMeeting({
+          data: meetingFormData,
+        });
+
+        console.log({ addMeetingRes });
+        if (addMeetingRes?.data?.messageCode === 200) {
+          toast.success("Meeting added successfully.");
+          resetForm();
+          setShowMeetingComponent();
+          // navigate(
+          //   `/user-profile/myCourses/new-course/course-builder/${addCourseRes?.data?.messageData}`
+          // );
+        }
+      } catch (error) {
+        console.log({ error });
+      }
+    },
+  });
 
   return (
-    <>
+    <form onSubmit={formik.handleSubmit}>
       <NewCourceCard title="Meeting Content">
         <div className="flex flex-col p-4" style={{ transition: "0.2s" }}>
           <p className="text-sm font-medium mb-2">Meeting Content</p>
-
+          {console.log("==========>", formik.values)}
           {/* meetings list */}
           <div className="mt-4 space-y-2">
             {/* Meeting Item  */}
-            {formik.values.meetings
+            {/* {formik.values.meetings
               ?.filter((meeting) => meeting.meetingTitle?.trim()) // Only display meetings with a title
               .map((meeting, index) => (
                 <MeetingItem
@@ -88,34 +93,29 @@ const MeetingContentComponent = ({ formik }) => {
                     formik.setFieldValue("meetings", updatedMeetings);
                   }}
                 />
-              ))}
+              ))} */}
           </div>
           <div className="mt-8">
             {showMeetingComponent && (
               <MeetingComponent
-                tempMeetingData={tempMeetingData}
-                handleTempDataChange={handleTempDataChange}
                 setShowMeetingComponent={setShowMeetingComponent}
+                formik={formik}
               />
             )}
           </div>
 
           <div style={{ alignSelf: "flex-end", marginTop: 16 }}>
             {showMeetingComponent ? (
-              <CustomButton
-                size="sm"
-                type="button"
-                onClick={addOrUpdateMeeting}
-              >
-                {selectedMeetingIndex !== null ? "Save Changes" : "Add Meeting"}
+              <CustomButton size="sm" type="submit">
+                {isLoading ? "Sending..." : "Add Meeting"}
               </CustomButton>
             ) : (
               <CustomButton
                 size="sm"
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
                   setShowMeetingComponent(true);
-                  setSelectedMeetingIndex(null); // Reset selected index when adding a new meeting
+                  e.preventDefault();
                 }}
               >
                 Add Row
@@ -124,23 +124,19 @@ const MeetingContentComponent = ({ formik }) => {
           </div>
         </div>
       </NewCourceCard>
-    </>
+    </form>
   );
 };
 
 export default MeetingContentComponent;
 
-const MeetingComponent = ({
-  tempMeetingData,
-  handleTempDataChange,
-  setShowMeetingComponent,
-}) => {
+const MeetingComponent = ({ setShowMeetingComponent, formik }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const [open, set_open] = useState(false);
 
   const handleEditorChange = (editorData) => {
-    handleTempDataChange("meetingDescription", editorData.plainText);
+    formik.setFieldValue("meetingDescription", editorData.plainText);
 
     // Update the editor state
     setEditorState(editorData.state);
@@ -174,10 +170,9 @@ const MeetingComponent = ({
             <CustomTextInput
               name="meetingTitle"
               placeholder="Meeting Title"
-              value={tempMeetingData.meetingTitle}
-              onChange={(e) =>
-                handleTempDataChange("meetingTitle", e.target.value)
-              }
+              value={formik?.values?.meetingTitle}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
           </div>
         </div>
@@ -191,7 +186,7 @@ const MeetingComponent = ({
                   variant="outlined"
                   type="button"
                   onClick={() => {
-                    setShowMeetingComponent(true);
+                    set_open(true);
                   }}
                 >
                   Add Media
@@ -205,12 +200,12 @@ const MeetingComponent = ({
               </div>
               <LibraryModal
                 accept_file="Image"
-                // file={formik?.values.meetingFile}
+                file={formik?.values?.meetingFile}
                 set_file={(file) => {
-                  handleTempDataChange("meetingFile", file);
+                  formik.setFieldValue("meetingFile", file);
                 }}
                 onSave={(val) => {
-                  handleTempDataChange("meetingFile", val);
+                  set_open(false);
                 }}
                 has_side_bar_action={false}
                 title="Add Media"
@@ -235,10 +230,9 @@ const MeetingComponent = ({
             <CustomTextInput
               name="meetingURL"
               placeholder="Meeting URL"
-              value={tempMeetingData.meetingURL}
-              onChange={(e) =>
-                handleTempDataChange("meetingURL", e.target.value)
-              }
+              value={formik?.values?.meetingURL}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
           </div>
         </div>
@@ -253,9 +247,9 @@ const MeetingComponent = ({
               calendarPosition="top-right"
               inputClass="w-full block py-2 px-3 border border-gray-300"
               containerClassName="w-full"
-              value={tempMeetingData.meetingDateTime}
+              value={formik?.values?.meetingDateTime}
               onChange={(date) =>
-                handleTempDataChange("meetingDateTime", date.format())
+                formik.setFieldValue("meetingDateTime", date.format())
               }
             />
           </div>

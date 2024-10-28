@@ -6,7 +6,6 @@ import AdditionalDate from "./new_course_components/additional_date";
 import VideoComponent from "./new_course_components/video_component";
 import AddProductComponent from "./new_course_components/add_product_component";
 
-import MeetingContentComponent from "./new_course_components/meeting_content_component";
 import ExcerptComponent from "./new_course_components/excerpt_component";
 
 import TagsComponent from "./new_course_components/tags_component";
@@ -30,17 +29,22 @@ import DraftEditor from "../../admin_panel/components/editor/draft_editor";
 
 import { EditorState } from "draft-js";
 import { useState } from "react";
-import { useAddNewCourseMutation } from "../../redux/features/course/courseApii";
+import {
+  useAddNewCourseMutation,
+} from "../../redux/features/course/courseApii";
 import LibraryModal from "./new_course_components/library_modal";
 import { BiSave } from "react-icons/bi";
 import { CustomButton } from "../../components/ui/CustomButton";
+import CourseAuthor from "./new_course_components/CourseAuthor";
+import toast from "react-hot-toast";
 
-const NewCourse = () => {
-  const navigate = useNavigate();
+const NewCourse = ({ page }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [openCourseDescFileModal, setOpenCourseDescFileModal] = useState(false);
 
   const [addNewCourse, { isLoading }] = useAddNewCourseMutation();
+
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: courseInitialValues,
@@ -49,6 +53,7 @@ const NewCourse = () => {
       console.log({ values });
 
       const formData = new FormData();
+
       formData.append("courseName", values?.courseName);
       formData.append("courseDescription", values?.courseDescription);
       // formData.append("courseFile", values?.courseFile);
@@ -64,9 +69,11 @@ const NewCourse = () => {
       formData.append("courseDuration", values?.courseDuration);
       formData.append("materialsIncluded", values?.materialsIncluded);
       formData.append("courseIntroVideo", values?.courseIntroVideo);
-      formData.append("courseTags", values?.courseTags);
+      formData.append("meetings", "2");
+      formData.append("videoPdfUrls", "dlkjaslfkj");
+      formData.append("courseTags", "new");
       // formData.append("featuredImage", values?.featuredImage);
-      formData.append("courseCategoryIds", values?.categoryids);
+      formData.append("courseCategoryIds", "2");
       formData.append(
         "requirementsInstructions",
         values?.requirementsInstructions
@@ -80,22 +87,40 @@ const NewCourse = () => {
       }
 
       try {
-        // const addCourseRes = await addNewCourse({ data: formData });
-        // console.log({ addCourseRes });
-        const response = await fetch(
-          `${import.meta.env.VITE_BASE_URL}/coursebuilder/addcourse`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("loginToken")}`,
-              "Content-Type": "multipart/form-data",
-            },
-            body: formData,
-          }
-        );
+        const addCourseRes = await addNewCourse({ data: formData });
+        console.log({ addCourseRes });
 
-        const result = await response.json();
-        console.log({ result });
+        if (addCourseRes?.data?.messageCode === 200) {
+          toast.success("Course created successfully.");
+          navigate(
+            `/user-profile/myCourses/new-course/course-builder/${addCourseRes?.data?.messageData}`
+          );
+          // meetingFormData.append(
+          //   "meetingTitle",
+          //   values?.meetings[0]?.meetingTitle
+          // );
+          // meetingFormData.append(
+          //   "meetingDescription",
+          //   values?.meetings[0]?.meetingDescription
+          // );
+          // meetingFormData.append(
+          //   "meetingDateTime",
+          //   values?.meetings[0]?.meetingDateTime
+          // );
+          // meetingFormData.append("meetingURL", values?.meetings[0]?.meetingURL);
+          // meetingFormData.append(
+          //   "meetingFile",
+          //   values?.meetings[0]?.meetingFile
+          // );
+
+          // meetingFormData.append("courseId", addCourseRes?.data?.messageData);
+          // const addMeetingRes = await addCourseMeeting({
+          //   data: meetingFormData,
+          // });
+
+          // console.log({ addMeetingRes });
+          
+        }
       } catch (error) {
         console.error("Error submitting form:", error);
       }
@@ -110,14 +135,16 @@ const NewCourse = () => {
   };
 
   return (
-    <div className="w-full bg-[#f0f0f1] top-0 p-0 m-0">
+    <div
+      className={`w-full top-0 p-0 m-0 ${
+        page === "admin" ? "" : "bg-[#f0f0f1]"
+      }`}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="wrapper mx-auto flex w-full flex-col max-h-fit "
       >
-        {/* <CourseItemSelector /> */}
-        {console.log(formik.values)}
         <h4 className="text-3xl text-gray-700 font-bold mb-4 mt-8">
           Add New Course
         </h4>
@@ -191,9 +218,9 @@ const NewCourse = () => {
                   exit={{ opacity: 0, height: 0 }}
                   className="space-y-4"
                 >
-                  <MeetingContentComponent formik={formik} />
+                  {/* <MeetingContentComponent  /> */}
 
-                  <VideoPdfUrl formik={formik} />
+                  {/* <VideoPdfUrl  /> */}
 
                   <div className="lg:hidden space-y-4">
                     <AudioAccessbility />
@@ -213,6 +240,7 @@ const NewCourse = () => {
 
                   <ExcerptComponent name="excerpt" formik={formik} />
 
+                  <CourseAuthor formik={formik} />
                   <CourseSettingsComponent formik={formik} />
 
                   <AddProductComponent name="coursePrice" formik={formik} />
@@ -222,13 +250,7 @@ const NewCourse = () => {
                   <VideoComponent name="courseIntroVideo" formik={formik} />
 
                   <div>
-                    <PublishComponent
-                    // onClick={() =>
-                    //   navigate(
-                    //     "/user-profile/myCourses/new-course/course-builder"
-                    //   )
-                    // }
-                    />
+                    <PublishComponent isLoading={isLoading} />
                   </div>
                 </motion.div>
               </AnimatePresence>

@@ -28,6 +28,7 @@ const CustomButton = React.forwardRef(
       variant = "default",
       size = "default",
       asChild = false,
+      type = "submit",
       ...props
     },
     ref
@@ -41,7 +42,7 @@ const CustomButton = React.forwardRef(
       className // Allow custom class names to be passed in
     );
 
-    return <Component ref={ref} className={classes} {...props} />;
+    return <Component ref={ref} type={type} className={classes} {...props} />;
   }
 );
 
