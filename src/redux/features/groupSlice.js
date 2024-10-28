@@ -41,10 +41,7 @@ export const removeGroup = createAsyncThunk(
   "group/removeGroup",
   async ({ axiosPrivate, toast, id, data, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/removecommunitygroups",
-        data
-      );
+      const response = await axiosPrivate.post("/api/removecommunitygroups", data);
 
       console.log("removegroup", { response });
 
@@ -114,42 +111,36 @@ export const getUserGroups = createAsyncThunk(
   }
 );
 
-export const getGroup = createAsyncThunk(
-  "group/getGroup",
-  async ({ axiosPrivate, toast, id }, { rejectWithValue }) => {
-    console.log({ id });
-    try {
-      const response = await axiosPrivate.post(
-        "/api/getcommunitygroups",
-        JSON.stringify({
-          owneruserid: null,
-          grouptypeId: null,
+export const getGroup = createAsyncThunk("group/getGroup", async ({ axiosPrivate, toast, id }, { rejectWithValue }) => {
+  console.log({ id });
+  try {
+    const response = await axiosPrivate.post(
+      "/api/getcommunitygroups",
+      JSON.stringify({
+        owneruserid: null,
+        grouptypeId: null,
 
-          id,
-        })
-      );
+        id,
+      })
+    );
 
-      console.log("getGroup", { response });
+    console.log("getGroup", { response });
 
-      return response.data;
-    } catch (error) {
-      console.log("uer groups error", error);
-      if (error?.message) {
-        toast.error(error.message);
-      }
-      return rejectWithValue(error);
+    return response.data;
+  } catch (error) {
+    console.log("uer groups error", error);
+    if (error?.message) {
+      toast.error(error.message);
     }
+    return rejectWithValue(error);
   }
-);
+});
 
 export const reqeustToJoinTheGroupAction = createAsyncThunk(
   "group/reqeustToJoinTheGroupAction",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/addcommunitygroupmember",
-        data
-      );
+      const response = await axiosPrivate.post("/api/addcommunitygroupmember", data);
 
       console.log({ response });
     } catch (error) {
@@ -229,10 +220,7 @@ export const acceptMembershipRequest = createAsyncThunk(
   "group/acceptMembershipRequest",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/acceptcommunitygroupmember",
-        data
-      );
+      const response = await axiosPrivate.post("/api/acceptcommunitygroupmember", data);
 
       if (response?.status === 200) {
         toast.success(response?.data?.messageDescription);
@@ -252,15 +240,17 @@ export const acceptMembershipRequest = createAsyncThunk(
 
 export const getGroupCategory = createAsyncThunk(
   "group/getGroupCategory",
-  async ({ axiosPrivate, toast }, { rejectWithValue }) => {
+  async ({ axiosPrivate, toast, parentId }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getcategorytree", {
-        headers: {
-          Accept: "application/json",
-        },
-      });
-
-      console.log("getCategory", { response });
+      const response = await axiosPrivate.post(
+        "/api/getcategorytree",
+        { parentId },
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
 
       return response.data;
     } catch (error) {
@@ -277,15 +267,11 @@ export const setCommunityGroupPic = createAsyncThunk(
   "group/setCommunityGroupPic",
   async ({ axiosPrivate, toast, data }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/setcommunitygrouppic",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axiosPrivate.post("/api/setcommunitygrouppic", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log("setCommunityGroupPic", { response });
 
@@ -304,15 +290,11 @@ export const setCommunityGroupCoverImage = createAsyncThunk(
   "group/setCommunityGroupCoverImage",
   async ({ axiosPrivate, toast, data }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/setcommunitycoverpic",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axiosPrivate.post("/api/setcommunitycoverpic", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log("setCommunityGroupCoverImage", { response });
 
@@ -331,12 +313,9 @@ export const getGroupImage = createAsyncThunk(
   "group/getGroupImage",
   async ({ axiosPrivate, id }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        `/api/getcommunitygroupimageurl/${id}`,
-        {
-          responseType: "arraybuffer", // Important to handle binary data
-        }
-      );
+      const response = await axiosPrivate.post(`/api/getcommunitygroupimageurl/${id}`, {
+        responseType: "arraybuffer", // Important to handle binary data
+      });
 
       console.log("getGroupImage", { response });
 
@@ -353,12 +332,9 @@ export const getGroupCoverImg = createAsyncThunk(
   "group/getGroupCoverImg",
   async ({ axiosPrivate, id }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        `/api/getcommunitycoverimageurl/${id}`,
-        {
-          responseType: "arraybuffer", // Important to handle binary data
-        }
-      );
+      const response = await axiosPrivate.post(`/api/getcommunitycoverimageurl/${id}`, {
+        responseType: "arraybuffer", // Important to handle binary data
+      });
 
       console.log("getGroupCoverImg", { response });
 
@@ -375,10 +351,7 @@ export const chagneGroupUserType = createAsyncThunk(
   "group/chagneGroupUserType",
   async ({ axiosPrivate, toast, id, data, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/changecommunitygroupmembertype",
-        data
-      );
+      const response = await axiosPrivate.post("/api/changecommunitygroupmembertype", data);
 
       console.log("chagneGroupUserType", { response });
 
