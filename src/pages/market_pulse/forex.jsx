@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Search from "../../components/market_pulse/search";
 import SelectInput from "../../components/market_pulse/SelectInput";
 import { http_instanse_level_2 } from "../../axios/auth_full_http_instanse";
-import TradingViewWidget from "react-tradingview-widget";
 
 function Forex() {
   const [topCategories, setTopCategories] = useState([]);
@@ -83,62 +82,6 @@ function Forex() {
               placeholder="Select Sub Category"
             />
           )}
-        </div>
-      </div>
-
-      <div className="flex mt-[40px]">
-        <div className="flex-1">
-          <h1 className="text-2xl text-white font-bold mb-[10px]">Market Sentiments</h1>
-
-          <div>
-            <h1 className="text-4xl text-gold-light_400 font-medium">Euro vs US Dollar-EURUSD</h1>
-
-            <div className="grid grid-cols-2 mt-[20px] gap-[35px]">
-              <div>
-                <h1 className="text-3xl text-gold-light_400 font-bold">COUNTRIES:</h1>
-                <p className="text-white text-xl">Eurozone/United States</p>
-              </div>
-              <div>
-                <h1 className="text-3xl text-gold-light_400 font-bold">COUNTRIES:</h1>
-                <p className="text-white text-xl">Eurozone/United States</p>
-              </div>
-              <div>
-                <h1 className="text-3xl text-gold-light_400 font-bold">COUNTRIES:</h1>
-                <p className="text-white text-xl">Eurozone/United States</p>
-              </div>
-              <div>
-                <h1 className="text-3xl text-gold-light_400 font-bold">COUNTRIES:</h1>
-                <p className="text-white text-xl">Eurozone/United States</p>
-              </div>
-              <div>
-                <h1 className="text-3xl text-gold-light_400 font-bold">COUNTRIES:</h1>
-                <p className="text-white text-xl">Eurozone/United States</p>
-              </div>
-            </div>
-
-            <div className="mt-[40px] w-[500px] h-[500px]">
-              <div>
-                <h1 className="text-3xl text-gold-light_400 font-bold">ONE-YEAR CHART:</h1>
-                <p className="text-white text-xl">EUR/USD Chart</p>
-              </div>
-
-              <div style={{ width: "200px", height: "200px" }}>
-                <iframe
-                  title="Google"
-                  src="https://www.google.com"
-                  style={{ width: "200px", height: "200px", border: "none" }}
-          
-                />
-              </div>
-
-              <TradingViewWidget symbol="NASDAQ:AAPL" />
-            </div>
-          </div>
-        </div>
-
-        <div className="w-[400px] bg-blue-light p-[20px]">
-          <h1 className="text-2xl text-white font-bold mb-[10px]">Currencies</h1>
-          <p className="text-gold-light_400">Euro vs US Dollar-EURUSD</p>
         </div>
       </div>
     </div>
