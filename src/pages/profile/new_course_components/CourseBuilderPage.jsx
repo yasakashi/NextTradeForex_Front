@@ -7,7 +7,7 @@ import { CgClose } from "react-icons/cg";
 import { FaBars, FaPlus } from "react-icons/fa6";
 import { BiSolidEdit } from "react-icons/bi";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown , IoIosArrowUp } from "react-icons/io";
 import * as Yup from "yup";
 
 import { CiWarning } from "react-icons/ci";
@@ -44,7 +44,28 @@ const CourseBuilderPage = () => {
 
   const [getTopicLessons] = useGetTopicLessonsMutation();
 
+  const fetchUpdatedLessons = async (topicId) => {
+    const lessonsRes = await getTopicLessons({
+      data: {
+        Id: null,
+        courseId: courseId,
+        topicId: topicId,
+        lessonName: "",
+        pageindex: 1,
+        rowcount: 50,
+      },
+    });
+
+    if (lessonsRes?.data?.messageCode === 200) {
+      setLessons((prev) => ({
+        ...prev,
+        [topicId]: lessonsRes?.data?.messageData,
+      }));
+    }
+  };
+
   const handleToggleTopic = async (index, topicId) => {
+    setOpenTopicIndex(null);
     if (openTopicIndex === index) {
       setOpenTopicIndex(null);
     } else {
@@ -124,7 +145,6 @@ const CourseBuilderPage = () => {
           setTopics(topicsRes?.data?.messageData);
         }
       }
-      console.log({ res });
     },
   });
 
@@ -159,7 +179,7 @@ const CourseBuilderPage = () => {
                             <FaBars size={20} className="text-gray-500" />
                           </button>
                           <div>
-                            <h5>{topic?.topicName} : </h5>
+                            <h5>{topic?.topicName} </h5>
                           </div>
                           <h5>{topic?.name}</h5>
                         </div>
@@ -180,13 +200,22 @@ const CourseBuilderPage = () => {
                           </div>
                           <button
                             type="button"
-                            onClick={() => handleToggleTopic(index, topic?.id)}
-                            className="border-none outline-none"
+                            onClick={() => {
+                              handleToggleTopic(index, topic?.id);
+                            }}
+                            className="border-none outline-none cursor-pointer px-3 py-1"
                           >
-                            <IoIosArrowDown
-                              size={20}
-                              className="text-blue-accent"
-                            />
+                            {openTopicIndex === index ? (
+                              <IoIosArrowUp
+                                size={20}
+                                className="text-blue-accent"
+                              />
+                            ) : (
+                              <IoIosArrowDown
+                                size={20}
+                                className="text-blue-accent"
+                              />
+                            )}
                           </button>
                         </div>
                       </div>
@@ -331,7 +360,7 @@ const CourseBuilderPage = () => {
                         value={formik.values.topicSummary}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="resize h-[110px] px-3 py-2 text-sm text-gray-600 w-full border border-gray-300 rounded-md outline-blue-400"
+                        className="resize h-[90px] px-3 py-2 text-sm text-gray-600 w-full border border-gray-300 rounded-md outline-blue-400"
                       ></textarea>
 
                       {formik.touched.topicSummary &&

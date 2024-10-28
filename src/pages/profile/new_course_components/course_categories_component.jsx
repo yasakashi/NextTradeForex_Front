@@ -3,10 +3,10 @@ import NewCourceCard from "./new_cource_card";
 // import RichTextExample from "./editor/editor_component";
 import { motion } from "framer-motion";
 import BootstrapTabs from "../../../common/bootstrap_tabs";
-import TreeChildCategory from "../../../components/TreeChildCategory";
 import { useDispatch, useSelector } from "react-redux";
 import { getGroupCategory } from "../../../redux/features/groupSlice";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import MultiChildrenCategories from "../../../components/MultiChildrenCategories";
 
 const CourseCategoriesComponent = ({ formik }) => {
   const [checked, setChecked] = useState(false);
@@ -20,7 +20,7 @@ const CourseCategoriesComponent = ({ formik }) => {
   );
 
   useEffect(() => {
-    // dispatch(getGroupCategory({ axiosPrivate }));
+    dispatch(getGroupCategory({ axiosPrivate }));
   }, []);
   return (
     <NewCourceCard title={"Course Categories"}>
@@ -63,7 +63,7 @@ const CourseCategoriesComponent = ({ formik }) => {
             </label>
           </div>
           <div className="pl-4 lg:pl-0  w-[80%] lg:w-full pb-8 mt-3">
-            <TreeChildCategory
+            <MultiChildrenCategories
               page="posts"
               // loading={getCategoryLoading}
               data={groupCategories}

@@ -42,6 +42,15 @@ export const courseApi = createApi({
         body: data,
       }),
     }),
+
+    // add authors
+    getAuthorsList: builder.query({
+      query: () => ({
+        url: "/users/getuserinstructors",
+        method: "POST",
+        body: {},
+      }),
+    }),
   }),
 });
 
@@ -49,4 +58,5 @@ export const {
   useAddNewCourseMutation,
   useAddCourseMeetingMutation,
   useAddCourseVideoPdfMutation,
+  useGetAuthorsListQuery
 } = courseApi;

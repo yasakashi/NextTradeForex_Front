@@ -16,7 +16,6 @@ import CourseSettingsComponent from "./new_course_components/course_settings_com
 import CourseCategoriesComponent from "./new_course_components/course_categories_component";
 import CategoriesComponent from "./new_course_components/categories_component";
 
-import CourseItemSelector from "./new_course_components/course_item_picker";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -29,9 +28,7 @@ import DraftEditor from "../../admin_panel/components/editor/draft_editor";
 
 import { EditorState } from "draft-js";
 import { useState } from "react";
-import {
-  useAddNewCourseMutation,
-} from "../../redux/features/course/courseApii";
+import { useAddNewCourseMutation } from "../../redux/features/course/courseApii";
 import LibraryModal from "./new_course_components/library_modal";
 import { BiSave } from "react-icons/bi";
 import { CustomButton } from "../../components/ui/CustomButton";
@@ -71,7 +68,6 @@ const NewCourse = ({ page }) => {
       formData.append("courseIntroVideo", values?.courseIntroVideo);
       formData.append("meetings", "2");
       formData.append("videoPdfUrls", "dlkjaslfkj");
-      formData.append("courseTags", "new");
       // formData.append("featuredImage", values?.featuredImage);
       formData.append("courseCategoryIds", "2");
       formData.append(
@@ -86,6 +82,16 @@ const NewCourse = ({ page }) => {
         formData.append("featuredImage", values?.featuredImage);
       }
 
+      if (values?.courseTags?.length > 0) {
+        const arrayString = values?.courseTags.slice().join(", ") + ",";
+        formData.append("courseTags", arrayString);
+      }
+
+      // if (values?.categoryids?.length > 0) {
+      //   const arrayString = values?.categoryids?.slice().join(",");
+      //   formData.append("courseCategoryIds", arrayString);
+      // }
+
       try {
         const addCourseRes = await addNewCourse({ data: formData });
         console.log({ addCourseRes });
@@ -95,33 +101,9 @@ const NewCourse = ({ page }) => {
           navigate(
             `/user-profile/myCourses/new-course/course-builder/${addCourseRes?.data?.messageData}`
           );
-          // meetingFormData.append(
-          //   "meetingTitle",
-          //   values?.meetings[0]?.meetingTitle
-          // );
-          // meetingFormData.append(
-          //   "meetingDescription",
-          //   values?.meetings[0]?.meetingDescription
-          // );
-          // meetingFormData.append(
-          //   "meetingDateTime",
-          //   values?.meetings[0]?.meetingDateTime
-          // );
-          // meetingFormData.append("meetingURL", values?.meetings[0]?.meetingURL);
-          // meetingFormData.append(
-          //   "meetingFile",
-          //   values?.meetings[0]?.meetingFile
-          // );
-
-          // meetingFormData.append("courseId", addCourseRes?.data?.messageData);
-          // const addMeetingRes = await addCourseMeeting({
-          //   data: meetingFormData,
-          // });
-
-          // console.log({ addMeetingRes });
-          
         }
       } catch (error) {
+        toast.error("Error! please try again.");
         console.error("Error submitting form:", error);
       }
     },
@@ -140,6 +122,7 @@ const NewCourse = ({ page }) => {
         page === "admin" ? "" : "bg-[#f0f0f1]"
       }`}
     >
+      {console.log(formik.values)}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -160,6 +143,9 @@ const NewCourse = ({ page }) => {
                   value={formik.values?.courseName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
+                  error={
+                    formik?.touched?.courseName ? formik.errors?.courseName : ""
+                  }
                 />
               </div>
               <div className="border border-gray-700 my-3 bg-white">
@@ -201,11 +187,18 @@ const NewCourse = ({ page }) => {
                     />
                   </div>
                 </div>
+
                 {/* <DraftEditor
                   placeholder="Course description ..."
                   value={editorState} // Pass the editor state
                   onChange={handleEditorChange} */}
               </div>
+
+              {formik.touched.courseDescription ? (
+                <span className="text-red-600 text-sm p-1">
+                  {formik.errors.courseDescription}
+                </span>
+              ) : null}
               <AnimatePresence
                 presenceAffectsLayout
                 initial={false}
@@ -218,10 +211,6 @@ const NewCourse = ({ page }) => {
                   exit={{ opacity: 0, height: 0 }}
                   className="space-y-4"
                 >
-                  {/* <MeetingContentComponent  /> */}
-
-                  {/* <VideoPdfUrl  /> */}
-
                   <div className="lg:hidden space-y-4">
                     <AudioAccessbility />
 

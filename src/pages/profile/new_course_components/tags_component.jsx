@@ -23,23 +23,20 @@ const TagsComponent = ({ formik, name }) => {
     }
 
 
-    const  updatedTags = [...formik.values]
+    const updatedTags = [...formik.values?.courseTags, inputValue];
 
     if (
       inputValue.trim() &&
       !formik?.values?.courseTags.includes(inputValue.trim())
     ) {
-      formik.setFieldValue("courseTags", [
-        ...formik?.values?.courseTags,
-        inputValue.trim(),
-      ]);
+      formik.setFieldValue("courseTags", updatedTags);
 
       setInputValue("");
     }
   };
 
   const removeTagHandler = (tag) => {
-    const currentTags = [...formik?.values?.coursetags];
+    const currentTags = [...formik?.values?.courseTags];
 
     const newTags = currentTags.filter((oldTag) => oldTag !== tag);
 
@@ -50,6 +47,7 @@ const TagsComponent = ({ formik, name }) => {
 
   return (
     <NewCourceCard title={"Tags"}>
+      
       <div
         className="flex justify-start"
         style={{ padding: 16, flexDirection: "column" }}

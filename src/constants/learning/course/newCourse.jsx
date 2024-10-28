@@ -2,32 +2,8 @@ import * as Yup from "yup";
 
 export const courseValidationSchema = Yup.object({
   courseName: Yup.string().required("Course name is required"),
-  courseDescription: Yup.string(),
+  courseDescription: Yup.string().required("Course description is required."),
   courseFile: Yup.string().optional().nullable(),
-  meetings: Yup.array().of(
-    Yup.object({
-      meetingTitle: Yup.string().required("Meeting title is required"),
-      meetingDescription: Yup.string(),
-      meetingFile: Yup.mixed(), // optional file
-      // meetingURL: Yup.string()
-      //   .url("Enter a valid URL")
-      //   .required("Meeting URL is required"),
-      meetingDateTime: Yup.date()
-        .required("Meeting date and time are required")
-        .typeError(
-          "Please enter a valid date and time (e.g., 16/10/2024 12:00 AM)"
-        ),
-    })
-  ),
-  // videoPdfUrls: Yup.array().of(
-  //   Yup.object({
-  //     pdfTitle: Yup.string().required("PDF title is required"),
-  //     pdfDescription: Yup.string(),
-  //     pdfFile: Yup.mixed().required("PDF file is required"),
-  //     viewPdfFile: Yup.string(),
-  //     downloadable: Yup.boolean().default(true),
-  //   })
-  // )
   excerpt: Yup.string(),
   authorId: Yup.string().required("Author ID is required"),
   maximumStudents: Yup.number()
@@ -58,26 +34,8 @@ export const courseInitialValues = {
   courseName: "",
   courseDescription: "",
   courseFile: null, // Assuming this is a file input
-  meetings: [
-    // {
-    //   meetingTitle: "",
-    //   meetingDescription: "",
-    //   meetingFile: null, // Assuming this is a file input
-    //   meetingURL: "",
-    //   meetingDateTime: "", // Can be an empty string or null for date input
-    // },
-  ],
-  videoPdfUrls: [
-    {
-      pdfTitle: "",
-      pdfDescription: "",
-      pdfFile: null, // Assuming this is a file input
-      viewPdfFile: "",
-      downloadable: true, // default to true
-    },
-  ],
   excerpt: "",
-  authorId: 7,
+  authorId: "",
   maximumStudents: 1, // Empty string for number field initially
   difficultyLevelId: 1,
   isPublicCourse: false, // default to false
@@ -90,6 +48,6 @@ export const courseInitialValues = {
   requirementsInstructions: "",
   courseIntroVideo: "",
   categoryids: "2", // Empty array for category IDs
-  courseTags: ["new"], // Empty array for tags
+  courseTags: [], // Empty array for tags
   featuredImage: null, // Assuming this is a file input
 };

@@ -12,6 +12,7 @@ import { FaRegImage } from "react-icons/fa";
 import { GrAttachment } from "react-icons/gr";
 import { useAddTopicLessonMutation } from "../../../redux/features/course/courseBuilderApi";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { EditorState } from "draft-js";
 import toast from "react-hot-toast";
 
@@ -32,18 +33,31 @@ const NewLesson = ({
 
   const [addTopicLesson, { isLoading }] = useAddTopicLessonMutation();
 
+  const lessonValidationSchema = Yup.object({
+    lessonName: Yup.string().required("Lesson name is required."),
+    lessonDescription: Yup.string().required("Lesson description is required"),
+    featureImage: Yup.mixed().required("featured image is required."),
+    videoSource: Yup.string().required("video source is required."),
+    lessonFile: Yup.mixed().required("Lesson file is required."),
+    videoPlaybackTime: Yup.string().required(
+      "Video playback time is required."
+    ),
+    attachments: Yup.mixed().required("Attachements is required."),
+  });
+
   const newLessonInitialValues = {
     lessonName: "",
     lessonDescription: "",
     featureImage: null,
     videoSource: null,
     lessonFile: null,
-    videoPlaybackTime: "",
+    videoPlaybackTime: 1,
     attachments: null,
   };
 
   const formik = useFormik({
     initialValues: newLessonInitialValues,
+    validationSchema: lessonValidationSchema,
 
     onSubmit: async (values, { resetForm }) => {
       console.log(values);
@@ -78,6 +92,9 @@ const NewLesson = ({
         }
 
         console.log({ response });
+        if (response?.error?.status === 400) {
+          toast.error("Please fill the inputs.");
+        }
       } catch (error) {
         console.error("Error submitting form:", error);
       }
@@ -102,7 +119,6 @@ const NewLesson = ({
         onClose={setShowNewLessonModal}
         open={showNewLessonModal}
       >
-    
         <div className="flex w-full flex-col border-b border-gray-300">
           <div className="flex justify-between items-center py-4 px-8 w-full">
             <h4 className="font-semibold">Add Lesson</h4>
@@ -128,6 +144,12 @@ const NewLesson = ({
               className="px-4 py-[6px] border border-gray-300 rounded-md bg-white placeholder:text-gray-600 outline-blue-400"
             />
             <WarningComponent description="Lesson titles are displayed publicly wherever required." />
+
+            {formik.touched?.lessonName ? (
+              <span className="text-red-600 text-sm p-1">
+                {formik.errors?.lessonName}
+              </span>
+            ) : null}
           </label>
 
           {/* Lesson Content */}
@@ -154,6 +176,11 @@ const NewLesson = ({
                   <BiSave color="white" className="text-xl" />
                 </button>
               </div>
+              {formik.touched?.lessonFile ? (
+                <span className="text-red-600 text-sm p-1">
+                  {formik.errors?.lessonFile}
+                </span>
+              ) : null}
               <LibraryModal
                 accept_file="Image"
                 file={formik.values.lessonFile}
@@ -177,6 +204,11 @@ const NewLesson = ({
                   onChange={handleEditorChange}
                 />
               </div>
+              {formik.touched?.lessonDescription ? (
+                <span className="text-red-600 text-sm p-1">
+                  {formik.errors?.lessonDescription}
+                </span>
+              ) : null}
             </div>
 
             <WarningComponent description="The idea of a summary is a short text to prepare students for the activities within the topic or week. The text is shown on the course page under the topic name" />
@@ -237,7 +269,11 @@ const NewLesson = ({
               </div>
             </div>
           </div>
-
+          {formik.touched?.featureImage ? (
+            <span className="text-red-600 text-sm p-1">
+              {formik.errors?.featureImage}
+            </span>
+          ) : null}
           {/* Video Source */}
           <div>
             <span className="text-gray-600 text-sm font-semibold mb-3">
@@ -262,6 +298,12 @@ const NewLesson = ({
                 />
               </div>
             </div>
+
+            {formik.touched?.videoSource ? (
+              <span className="text-red-600 text-sm p-1">
+                {formik.errors?.videoSource}
+              </span>
+            ) : null}
           </div>
 
           {/* Video Playback time */}
@@ -306,6 +348,11 @@ const NewLesson = ({
                 </div>
               </div>
             </div>
+            {formik.touched?.videoPlaybackTime ? (
+              <span className="text-red-600 text-sm p-1">
+                {formik.errors?.videoPlaybackTime}
+              </span>
+            ) : null}
           </div>
 
           {/* Uplaod excercise file to the lesson */}
@@ -334,6 +381,12 @@ const NewLesson = ({
               className="hidden"
             />
           </div>
+
+          {formik.touched?.attachments ? (
+            <span className="text-red-600 text-sm p-1">
+              {formik.errors?.attachments}
+            </span>
+          ) : null}
         </div>
 
         <div className="border-t border-gray-300 flex items-center justify-between px-8 py-4">
