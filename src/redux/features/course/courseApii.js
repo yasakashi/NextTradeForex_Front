@@ -16,10 +16,19 @@ export const courseApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    // add new topic
+    // add new course
     addNewCourse: builder.mutation({
       query: ({ data }) => ({
         url: "/coursebuilder/addcourse",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // get courses
+    getCourses: builder.query({
+      query: ({ data }) => ({
+        url: "/coursebuilder/getcourses",
         method: "POST",
         body: data,
       }),
@@ -56,6 +65,7 @@ export const courseApi = createApi({
 
 export const {
   useAddNewCourseMutation,
+  useGetCoursesQuery,
   useAddCourseMeetingMutation,
   useAddCourseVideoPdfMutation,
   useGetAuthorsListQuery

@@ -27,13 +27,18 @@ import {
 } from "../../pages/categories/view/category_details_view_screen";
 import { PiMemberOfBold, PiStrategy, PiWebcamBold } from "react-icons/pi";
 import { CiLock, CiSettings } from "react-icons/ci";
+
+
+
 const AdminSidebar = () => {
+
+
   const [open_item, set_open_item] = React.useState<null | number>(0);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [hoveed, set_hoverd] = React.useState<null | number>(null);
   return (
-    <div className="h-screen bg-red-600 shadow-lg" style={{ width: 200 , }}>
+    <div className="h-screen shadow-lg" style={{ width: 200 , }}>
       <div className="w-full relative">
         <h2
           style={{ height: 38, backgroundColor: yellow_medium }}

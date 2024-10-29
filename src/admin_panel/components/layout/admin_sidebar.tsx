@@ -29,7 +29,6 @@ import { PiMemberOfBold, PiStrategy, PiWebcamBold } from "react-icons/pi";
 import { CiLock, CiSettings } from "react-icons/ci";
 import { useTheme } from "@mui/material";
 
-
 const AdminSidebar = () => {
   const [open_item, set_open_item] = React.useState<null | number>(null);
   const { pathname } = useLocation();
@@ -51,8 +50,10 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
   const [hoveed, set_hoverd] = React.useState<null | number>(null);
   return (
-    <div className="h-full bg-white shadow-lg" style={{ width: 200 }}>
-      
+    <div
+      className="h-full bg-white shadow-lg fixed top-0 left-0 z-[1000] overflow-y-scroll overflow-x-hidden scrollbar-thin"
+      style={{ width: 200 }}
+    >
       <Link to="/" className="w-full relative">
         <h2
           style={{ height: 38, backgroundColor: yellow_medium }}
@@ -137,9 +138,9 @@ const AdminSidebar = () => {
                 );
               })}
             </motion.div>
-            {hoveed === i && (
+            {hoveed === i && open_item !== hoveed && (
               <div
-                className="absolute bg-white shadow-md z-50"
+                className="absolute bg-white shadow-md z-[10001]"
                 style={{ right: -200, top: 0, zIndex: drawer + 5 }}
               >
                 <motion.div
@@ -236,8 +237,8 @@ const list = [
     title: "Tutor LMS",
     Icon: TiAdjustContrast,
     sub_categories: [
-      { title: "Courses" },
-      { title: "Course", route: "/tutor/courses" },
+      // { title: "Courses" },
+      { title: "Courses", route: "/tutor/courses" },
       { title: "Lessons", route: "/tutor/lessons" },
       { title: "Email" },
       { title: "Categories" },

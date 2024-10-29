@@ -5,6 +5,8 @@ import AllBooksScreen from "../pages/pdf_books/view/all_books_screen";
 import CoursesScreen from "../pages/tutor/courses/view/courses_screen";
 import LessonsScreen from "../pages/tutor/lessons/view/lessons_screen";
 import NewCourse from "../../pages/profile/new_course";
+import CourseBuilderPage from "../../pages/profile/new_course_components/CourseBuilderPage";
+import CourseMeetingAndPdf from '../../pages/profile/new_course_components/CourseMeetingAndPdf'
 
 export const admin_panel_router = [
   { route: "/admin-panel/lesson/cateogies", component: <CategoriesScreen /> },
@@ -28,8 +30,19 @@ export const admin_panel_router = [
     route: "/admin-panel/pdf_books/all_books",
     component: <AllBooksScreen />,
   },
-  // {
-  //   route: "/admin-panel/tutor/Courses/create-new-course",
-  //   component: <NewCourse page="admin" />,
-  // },
+  {
+    route: "/admin-panel/tutor/Courses/create-new-course",
+    component: <NewCourse page="admin" />,
+  },
+  {
+    route:
+      "/admin-panel/tutor/Courses/create-new-course/course-builder/:courseId",
+    component: <CourseBuilderPage page="admin" />,
+  },
+
+  {
+    route:
+      "/admin-panel/tutor/Courses/create-new-course/add-meeting-pdf/:courseId",
+    component: <CourseMeetingAndPdf page="admin" />,
+  },
 ];

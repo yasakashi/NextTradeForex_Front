@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MaterialTable from "../../../../components/table/material_table";
 import CustomRadioButton from "../../../categories/view/components/customRadioButton";
 import BorderedButtonPrimary from "../../../../../common/bordered_button_primary";
@@ -15,6 +15,9 @@ import store from "../../../../../redux/store";
 import { set_course_data_state } from "../../../../../redux/features/courseSlise";
 import ContainedButtonPrimary from "../../../../../common/contained_button_primary";
 import { publish_course_api } from "../services/publish_course_api";
+
+import { useGetCoursesQuery } from "../../../../../redux/features/course/courseApii.js";
+
 const CoursesScreen = () => {
   const [open_delete_dialog, set_open_delete_dialog] = React.useState<{
     open: boolean;
@@ -22,19 +25,44 @@ const CoursesScreen = () => {
   }>({ open: false });
   const navigate = useNavigate();
   const [courses_type, set_courses_type] = React.useState(0);
-  const { courses } = useCourses({
-    search: { courseStatusId: courses_type },
-    reload: courses_type,
+  // const { courses } = useCourses({
+  //   search: { courseStatusId: courses_type },
+  //   reload: courses_type,
+  // });
+
+  const [searchCourses, setSearchCourses] = useState("");
+
+  const {
+    data: { messageData: courses } = { messageData: [] },
+    error,
+    isLoading,
+  } = useGetCoursesQuery({
+    data: {
+      Id: null,
+      authorId: null,
+      allowQA: null,
+      isPublicCourse: null,
+      difficultyLevelId: null,
+      courseTags: "",
+      courseName: searchCourses,
+      pageindex: 1,
+      rowcount: 21,
+    },
   });
+
+  const searchCoursesHandler = (e) => {
+    setSearchCourses(e.target.value);
+  };
 
   return (
     <div className="flex flex-col px-8 py-8">
+      {/* {console.log({data}, "===========>")} */}
       <h1 className="font-semibold text-2xl text-white mb-4">Courses</h1>
       <MaterialTable
         RenderTopCustom={({ table }) => {
           return (
-            <MySelectBox 
-            style={{position:"absolute",top:24,left:280,}}
+            <MySelectBox
+              style={{ position: "absolute", top: 24, left: 280 }}
               value={courses_type}
               fullWidth={false}
               onChange={(val) => {
@@ -70,7 +98,7 @@ const CoursesScreen = () => {
                         marginBottom: 8,
                       }}
                     >
-                      {row.original?.coursename}
+                      {row.original?.courseName}
                     </p>
                     <div className="flex flex-row" style={{ minWidth: 290 }}>
                       {["Topic", "Lesson", "Quiz", "Assignment"].map(
@@ -98,7 +126,18 @@ const CoursesScreen = () => {
             header: "Category",
             accessorKey: "coursetgas",
             Cell: ({ row }) => {
-              return <div className="w-64">{row.original?.coursetgas}</div>;
+              return (
+                <div className="w-64 flex items-center flex-wrap gap-2">
+                  {row.original?.courseCategorys?.map((item, index) => (
+                    <div
+                      className="bg-slate-200 px-2 py-[2px] rounded-xl shadow-md text-gray-600"
+                      key={index}
+                    >
+                      {item?.categoryname}
+                    </div>
+                  ))}
+                </div>
+              );
             },
           },
           {
@@ -137,8 +176,8 @@ const CoursesScreen = () => {
             Cell: ({ row }) => {
               return (
                 <p className="font-semibold">
-                  {!!row.original?.courseprice
-                    ? row.original?.courseprice
+                  {row.original?.coursePrice !== 0
+                    ? row.original?.coursePrice
                     : "Free"}
                 </p>
               );
@@ -159,8 +198,7 @@ const CoursesScreen = () => {
           },
           {
             header: " ",
-            Cell: ({ row }) => { 
-              
+            Cell: ({ row }) => {
               return (
                 <div className="flex items-center">
                   <CustomSelectBox
@@ -184,7 +222,7 @@ const CoursesScreen = () => {
                   <ContainedButtonPrimary
                     onClick={() => {
                       navigate(
-                        `/course/attachments/${row.original?.id}/${row.original?.coursename|| "Undefined"}`
+                        `/admin-panel/tutor/Courses/create-new-course/course-builder/${row.original?.id}`
                       );
                     }}
                     style={{ width: 160 }}

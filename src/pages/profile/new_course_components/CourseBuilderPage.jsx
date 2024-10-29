@@ -7,7 +7,7 @@ import { CgClose } from "react-icons/cg";
 import { FaBars, FaPlus } from "react-icons/fa6";
 import { BiSolidEdit } from "react-icons/bi";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { IoIosArrowDown , IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import * as Yup from "yup";
 
 import { CiWarning } from "react-icons/ci";
@@ -22,7 +22,7 @@ import {
 } from "../../../redux/features/course/courseBuilderApi";
 import { Link, useParams } from "react-router-dom";
 
-const CourseBuilderPage = () => {
+const CourseBuilderPage = ({ page }) => {
   const { courseId } = useParams();
 
   const [is_open, set_is_open] = useState(false);
@@ -150,13 +150,21 @@ const CourseBuilderPage = () => {
 
   return (
     <>
-      <div className="w-full bg-[#f0f0f1] top-0 p-0 m-0 min-h-screen">
+      <div
+        className={`w-full ${
+          page === "admin" ? "" : "bg-[#f0f0f1]"
+        } top-0 p-0 m-0 min-h-screen`}
+      >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="wrapper mx-auto flex w-full flex-col max-h-fit "
         >
-          <h4 className="text-3xl text-gray-700 font-bold mb-4 mt-4">
+          <h4
+            className={`text-3xl ${
+              page === "admin" ? "text-gray-100" : "text-gray-700"
+            } font-bold mb-4 mt-4`}
+          >
             Add Course Details
           </h4>
           <NewCourceCard title={"Course Builder"}>
@@ -401,7 +409,12 @@ const CourseBuilderPage = () => {
         <div className="flex py-10 px-4">
           <Link
             className="text-[#1976d2] hover:text-[#1565c0] hover:underline px-3 py-[6px] rounded-md shadow-sm text-base font-medium"
-            to={`/user-profile/myCourses/new-course/add-meeting-pdf/${courseId}`}
+            // to={`/user-profile/myCourses/new-course/add-meeting-pdf/${courseId}`}
+            to={
+              page === "admin"
+                ? `/admin-panel/tutor/Courses/create-new-course/add-meeting-pdf/${courseId}`
+                : `/user-profile/myCourses/new-course/add-meeting-pdf/${courseId}`
+            }
           >
             Add meeting and video pdf ?
           </Link>

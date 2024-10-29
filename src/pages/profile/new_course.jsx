@@ -128,7 +128,11 @@ const NewCourse = ({ page }) => {
         animate={{ opacity: 1 }}
         className="wrapper mx-auto flex w-full flex-col max-h-fit "
       >
-        <h4 className="text-3xl text-gray-700 font-bold mb-4 mt-8">
+        <h4
+          className={`text-3xl ${
+            page === "admin" ? "text-gray-100" : "text-gray-700"
+          } font-bold mb-4 mt-6`}
+        >
           Add New Course
         </h4>
 
