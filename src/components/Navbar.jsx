@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Languages from "../common/Languages";
 import { Link, useNavigate } from "react-router-dom";
-import { FaCheck } from "react-icons/fa6";
+import { FaCheck, FaUser } from "react-icons/fa6";
 import { CiUser } from "react-icons/ci";
 import { RiLogoutCircleLine } from "react-icons/ri";
 import GoogleTranslate from "./googleTranslate/GoogleTranslate";
@@ -9,6 +9,8 @@ import { logoutAction } from "../redux/features/loginSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { MdSpaceDashboard } from "react-icons/md";
+import useClickOutside from "../hooks/useClickOutside";
 
 const Navbar = () => {
   const [showLanguages, setShowLanguages] = useState(false);
@@ -17,6 +19,8 @@ const Navbar = () => {
 
   const token = localStorage.getItem("loginToken");
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const profileDropDownRef = useRef(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,6 +31,10 @@ const Navbar = () => {
 
     navigate("/");
   };
+
+  useClickOutside(profileDropDownRef, () => {
+    setShowProfileDropDown(false);
+  });
 
   return (
     <div className="navbar w-full z-[1000] relative wrapper pt-2 lg:pt-2 bg-blue-light">
@@ -329,27 +337,30 @@ const Navbar = () => {
 
                       <div className="absolute top-[124%] z-[1000] left-1/2 -translate-x-1/2">
                         {showProfileDropDown && (
-                          <div className="bg-white rounded-lg shadow-lg">
-                            <ul className=" text-gray-500 font-semibold text-sm">
-                              <li className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
-                                <CiUser size={20} />
+                          <div
+                            ref={profileDropDownRef}
+                            className="bg-white rounded-lg shadow-lg w-[180px] flex justify-center"
+                          >
+                            <ul className=" text-gray-500 font-semibold text-sm w-full">
+                              <li className="flex items-center w-full pl-4 pr-2 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
+                                <FaUser size={20} />
                                 <Link to="/user-profile/dashboard">
                                   Profile
                                 </Link>
                               </li>
 
                               {user?.userTypeId === 1 ? (
-                                <li className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
-                                  <CiUser size={20} />
+                                <li className="flex items-center w-full pl-4 pr-2 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
+                                  <MdSpaceDashboard size={20} />
                                   <Link to="/admin-panel/lesson/cateogies">
-                                    Admin
+                                    Admin Panel
                                   </Link>
                                 </li>
                               ) : null}
 
                               <li
                                 onClick={logOutHandler}
-                                className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg w-max"
+                                className="flex items-center w-full pl-4 pr-2 py-3 space-x-3 hover:bg-gray-200 rounded-lg"
                               >
                                 <RiLogoutCircleLine size={20} />
                                 <Link to="">Log Out</Link>
