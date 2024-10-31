@@ -9,7 +9,6 @@ import TechnicalSammary from './Summary/Technical';
 import RelatedRecourses from './RelatedRecourses';
 import CustomCarousel from './Carousel';
 
-
 const euroDollar = [
   { title: 'Countries', description: 'Eurozone/United States' },
   { title: '2022 HIGHS & LOWS', description: '1.15123/0.95542' },
@@ -53,7 +52,8 @@ export default function Story() {
             description={'EUR/USD Chart'}
           ></TextBox>
           <div>
-            <TradingViewWidget />
+            <img src='dist/assets/chart.png' alt='chart' />
+            {/* <TradingViewWidget /> */}
           </div>
         </div>
         <div className='w-1/3 min-h-screen bg-primary'></div>
@@ -78,8 +78,14 @@ export default function Story() {
         <FundamentalSammary />
         <TechnicalSammary />
       </div>
+      <h3 className='text-link-water text-3xl font-extrabold mb-5'>
+        Related Resources
+      </h3>
       <RelatedRecourses />
       <div>
+        <h3 className='text-link-water text-3xl font-extrabold mb-5'>
+          Related Content
+        </h3>
         <CustomCarousel />
       </div>
     </div>
