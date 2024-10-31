@@ -27,6 +27,7 @@ module.exports = {
         },
         gray: {
           light: 'rgba(233, 233, 233, 0.48)',
+          light_100: 'rgba(255, 255, 255, 0.05)',
         },
       },
 

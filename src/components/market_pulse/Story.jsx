@@ -6,6 +6,10 @@ import CountryBox from './CountryBox';
 import TradingViewWidget from './Widget';
 import FundamentalSammary from './Summary/Fundamental';
 import TechnicalSammary from './Summary/Technical';
+import RelatedRecourses from './RelatedRecourses';
+import CustomCarousel from './Carousel';
+
+
 const euroDollar = [
   { title: 'Countries', description: 'Eurozone/United States' },
   { title: '2022 HIGHS & LOWS', description: '1.15123/0.95542' },
@@ -27,6 +31,7 @@ const eur = [
   { title: 'NICKNAME', description: 'Fiber' },
   { title: '%OF AVERAGE DAILY TURNOVER', description: '39.1%' },
 ];
+
 export default function Story() {
   return (
     <div className='w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8'>
@@ -72,6 +77,10 @@ export default function Story() {
       <div className='flex flex-col gap-y-20'>
         <FundamentalSammary />
         <TechnicalSammary />
+      </div>
+      <RelatedRecourses />
+      <div>
+        <CustomCarousel />
       </div>
     </div>
   );

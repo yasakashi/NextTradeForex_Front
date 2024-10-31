@@ -39,7 +39,7 @@ const MarketPulseLayout = ({ children }: { children: React.ReactNode }) => {
       <Category />
 
       <img
-        className='w-1/4 absolute scale-x-[-1] left-3/4 top-[18%] !z-0 opacity-70 pointer-events-none select-none'
+        className='w-1/4 absolute scale-x-[-1] left-3/4 top-[10%] !z-0 opacity-70 pointer-events-none select-none'
         src='/assets/bgicon2.png'
         alt='Icon'
       />
