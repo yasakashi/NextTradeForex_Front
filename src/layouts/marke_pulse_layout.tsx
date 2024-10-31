@@ -22,7 +22,7 @@ const MarketPulseLayout = ({ children }: { children: React.ReactNode }) => {
             / Market Pulse
           </p>
         </div>
-
+        
         <svg
           className='max-[720px]:hidden select-none absolute left-0 top-[30px]'
           xmlns='http://www.w3.org/2000/svg'
@@ -39,7 +39,7 @@ const MarketPulseLayout = ({ children }: { children: React.ReactNode }) => {
       <Category />
 
       <img
-        className='absolute -right-32 top-[12%] !z-0 opacity-70 pointer-events-none select-none'
+        className='w-1/4 absolute scale-x-[-1] left-3/4 top-[18%] !z-0 opacity-70 pointer-events-none select-none'
         src='/assets/bgicon2.png'
         alt='Icon'
       />

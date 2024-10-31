@@ -19,13 +19,7 @@ function index({ currencyPair, greenPercentage, value }) {
         {currencyPair}
       </Typography>
 
-      <Box
-        display='flex'
-        flexGrow={1}
-        height={30}
-        borderRadius={1}
-        overflow='hidden'
-      >
+      <Box display='flex' flexGrow={1} height={50} overflow='hidden'>
         <Box
           display='flex'
           alignItems='center'
@@ -46,7 +40,7 @@ function index({ currencyPair, greenPercentage, value }) {
               bgcolor='success.light'
               p={0.5}
               px={1}
-              borderRadius={1}
+              borderRadius={4}
               color='success.dark'
               fontWeight='bold'
               fontSize='12px'

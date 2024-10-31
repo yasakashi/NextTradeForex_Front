@@ -4,15 +4,15 @@ import SentimentsBar from '../Common/SentimentsBar';
 export default function Sentiments() {
   return (
     <>
-      <Typography></Typography>
+      <p className='text-link-water self-start text-4xl font-bold' variant='h4'>
+        Market Sentiments
+      </p>
+
       <SentimentsBar
         currencyPair='EUR/USD'
         greenPercentage={66.55}
         value={33.1}
       />
-      <Typography sx={{ color: '#bb914a', fontSize: '33px', fontWeight: 600 }}>
-        Euro vs US Dollar-EURUSD
-      </Typography>
     </>
   );
 }
