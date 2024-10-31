@@ -14,6 +14,7 @@ function index({ currencyPair, greenPercentage, value }) {
       bgcolor='white'
       borderRadius={1}
       width='100%'
+      zIndex={1}
     >
       <Typography variant='body1' fontWeight='bold' mr={2}>
         {currencyPair}
