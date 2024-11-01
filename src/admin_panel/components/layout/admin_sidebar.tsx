@@ -296,7 +296,7 @@ const list = [
     Icon: TiAdjustBrightness,
     sub_categories: [
       { title: "Indicators" },
-      { title: "Currency Courses" },
+      { title: "Market pulse", route: "/lessons/market-pulse" },
       { title: "Crypto" },
       { title: "Indices" },
       { title: "Comodities" },

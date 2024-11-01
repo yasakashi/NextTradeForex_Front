@@ -19,6 +19,7 @@ import { courseReducer } from "./features/courseSlise";
 import { courseBuilderApi } from "./features/course/courseBuilderApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { courseApi } from "./features/course/courseApii";
+import { marketPulseReducer } from "./features/marketPulse/marketPulseSlice";
 
 const store = configureStore({
   reducer: {
@@ -41,6 +42,7 @@ const store = configureStore({
     siteMessage: siteMessageReducer,
     general: generalReducer,
     course: courseReducer,
+    marketPulse: marketPulseReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

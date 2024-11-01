@@ -1,6 +1,8 @@
 import CategoriesScreen from "../pages/categories/view/categories_screen";
 import CategoriesDetailsView from "../pages/categories/view/category_details_view_screen";
 import EditCategoryComponent from "../pages/categories/view/components/edit_category_components";
+import MarketPulseListScreen from "../pages/lessons/market-pulse/view/market_pulse_list_screen";
+import MarketPulseNewCourseScreen from "../pages/lessons/market-pulse/view/new_course_screen";
 import AllBooksScreen from "../pages/pdf_books/view/all_books_screen";
 import CoursesScreen from "../pages/tutor/courses/view/courses_screen";
 import LessonsScreen from "../pages/tutor/lessons/view/lessons_screen";
@@ -44,5 +46,14 @@ export const admin_panel_router = [
     route:
       "/admin-panel/tutor/Courses/create-new-course/add-meeting-pdf/:courseId",
     component: <CourseMeetingAndPdf page="admin" />,
+  },
+
+  {
+    route: "/admin-panel/lessons/market-pulse",
+    component: <MarketPulseListScreen />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/:id",
+    component: <MarketPulseNewCourseScreen />,
   },
 ];
