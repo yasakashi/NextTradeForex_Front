@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import Category from '../components/market_pulse/category';
-import Story from '../components/market_pulse/Story';
+import Story from '../components/market_pulse/forex/Story';
 
 const MarketPulseLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -44,7 +44,6 @@ const MarketPulseLayout = ({ children }: { children: React.ReactNode }) => {
         alt="Icon"
       />
       <Outlet />
-      <Story />
 
       <div className="mt-auto">
         <Footer />

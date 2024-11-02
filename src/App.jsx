@@ -53,7 +53,6 @@ import MarketPulseIndex from "./pages/market_pulse";
 
 function App({ auth }) {
   const token = localStorage.getItem('loginToken');
-  console.log({ auth });
 
   // React.useEffect(() => {
   //   if (!token) {

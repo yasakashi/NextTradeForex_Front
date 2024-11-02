@@ -1,40 +1,60 @@
-import { useEffect, useState } from "react";
-import Search from "../../components/market_pulse/search";
-import SelectInput from "../../components/market_pulse/SelectInput";
-import { http_instanse_level_2 } from "../../axios/auth_full_http_instanse";
+import { useEffect, useState } from 'react';
+import Search from '../../components/market_pulse/search';
+import SelectInput from '../../components/market_pulse/SelectInput';
+import { http_instanse_level_2 } from '../../axios/auth_full_http_instanse';
+import { getforexitems } from './api';
+import Story from '../../components/market_pulse/forex/Story';
 
 function Forex() {
   const [topCategories, setTopCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [selectedTopCategory, setSelectedTopCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
-
+  const [forexItems, setForexItems] = useState([]);
   // Fetch top categories
-  useEffect(() => {
-    const fetchTopCategories = async () => {
-      try {
-        const res = await http_instanse_level_2.post(
-          "api/marketpuls/gettopcategories",
-          {},
-          { headers: { "Content-Type": "application/json" } }
-        );
-        setTopCategories(res.data.messageData);
-      } catch (error) {
-        console.error("Failed to fetch top categories:", error);
-      }
-    };
+  const fetchTopCategories = async () => {
+    try {
+      const res = await http_instanse_level_2.post(
+        'api/marketpuls/gettopcategories',
+        {},
+        { headers: { 'Content-Type': 'application/json' } }
+      );
 
+      setTopCategories(res.data.messageData);
+    } catch (error) {
+      console.error('Failed to fetch top categories:', error);
+    }
+  };
+
+  const fetchForexItems = async () => {
+    try {
+      const res = await getforexitems({
+        categoryId: selectedSubCategory,
+        id: null,
+      });
+
+      setForexItems(res.data.messageData);
+    } catch (error) {
+      console.error('Failed to fetch forex items:', error);
+    }
+  };
+
+  useEffect(() => {
     fetchTopCategories();
   }, []);
+
+  useEffect(() => {
+    fetchForexItems();
+  }, [selectedTopCategory, selectedSubCategory]);
 
   // Fetch subcategories based on the selected top category
   useEffect(() => {
     const fetchSubCategories = async () => {
       try {
         const res = await http_instanse_level_2.post(
-          "api/marketpuls/getcategories",
+          'api/marketpuls/getcategories',
           {},
-          { headers: { "Content-Type": "application/json" } }
+          { headers: { 'Content-Type': 'application/json' } }
         );
 
         // Filter subcategories to only include those with a parentId matching the selected top category's id
@@ -44,7 +64,7 @@ function Forex() {
 
         setSubCategories(filteredSubCategories);
       } catch (error) {
-        console.error("Failed to fetch subcategories:", error);
+        console.error('Failed to fetch subcategories:', error);
       }
     };
 
@@ -58,9 +78,8 @@ function Forex() {
 
   return (
     <div>
-      <div className="mx-auto w-fit">
+      <div className="mx-auto w-fit ">
         <Search />
-
         <div className="flex gap-x-[10px]">
           {/* Top Category Select Input */}
           <SelectInput
@@ -84,6 +103,7 @@ function Forex() {
           )}
         </div>
       </div>
+      <Story forexItems={forexItems} />
     </div>
   );
 }

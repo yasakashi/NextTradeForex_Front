@@ -1,13 +1,13 @@
 import React from 'react';
-import Sentiments from './forex/Sentiments';
-import TextBox from './forex/TextBox';
-import ReadMoreContent from './ScrollBox';
-import CountryBox from './CountryBox';
-import TradingViewWidget from './Widget';
-import FundamentalSammary from './Summary/Fundamental';
-import TechnicalSammary from './Summary/Technical';
-import RelatedRecourses from './RelatedRecourses';
-import CustomCarousel from './Carousel';
+import Sentiments from './Sentiments';
+import TextBox from './TextBox';
+import ReadMoreContent from '../ScrollBox';
+import CountryBox from '../CountryBox';
+import TradingViewWidget from '../Widget';
+import FundamentalSammary from '../Summary/Fundamental';
+import TechnicalSammary from '../Summary/Technical';
+import RelatedRecourses from '../RelatedRecourses';
+import CustomCarousel from '../Carousel';
 
 const euroDollar = [
   { title: 'Countries', description: 'Eurozone/United States' },
@@ -31,16 +31,18 @@ const eur = [
   { title: '%OF AVERAGE DAILY TURNOVER', description: '39.1%' },
 ];
 
-export default function Story() {
+export default function Story({ forexitems }) {
+  
   return (
-    <div className='w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8'>
+
+    <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
       <Sentiments />
-      <div className='flex gap-10'>
-        <div className='w-2/3 flex flex-col  gap-y-8'>
-          <p className='text-gold-light_400 text-5xl font-bold'>
+      <div className="flex gap-10">
+        <div className="w-2/3 flex flex-col  gap-y-8">
+          <p className="text-gold-light_400 text-5xl font-bold">
             Euro vs US Dollar-EURUSD
           </p>
-          <div className='grid grid-cols-2 gap-4'>
+          <div className="grid grid-cols-2 gap-4">
             {euroDollar.map((el) => (
               <React.Fragment key={el.title}>
                 <TextBox title={el.title} description={el.description} />
@@ -51,39 +53,38 @@ export default function Story() {
             title={'ONE-YEAR CHART'}
             description={'EUR/USD Chart'}
           ></TextBox>
-          <div>
-            <img src='dist/assets/chart.png' alt='chart' />
-            {/* <TradingViewWidget /> */}
+          <div className="h-[550px]">
+            <TradingViewWidget />
           </div>
         </div>
-        <div className='w-1/3 min-h-screen bg-primary'></div>
+        <div className="w-1/3 min-h-screen bg-primary"></div>
       </div>
 
       <ReadMoreContent />
-      <div className='grid grid-cols-2'>
-        <CountryBox title='EUR' data={eur} />
-        <div className='flex gap-10'>
-          <div class='h-auto w-px bg-gold-light_400 mx-4'></div>
-          <CountryBox title='USD' data={usd} />
+      <div className="grid grid-cols-2">
+        <CountryBox title="EUR" data={eur} />
+        <div className="flex gap-10">
+          <div class="h-auto w-px bg-gold-light_400 mx-4"></div>
+          <CountryBox title="USD" data={usd} />
         </div>
       </div>
-      <p className='w-2/3 text-gray-light'>
+      <p className="w-2/3 text-gray-light">
         Foreign exchange trading carries a high level of risk that may not be
         suitable for all investors. Next Trade provides this information as an
         educational service to its clients and prospects and does not endorse
         opinions or recommendations. The information provided does not
         constitute investment or trading advice.
       </p>
-      <div className='flex flex-col gap-y-20'>
+      <div className="flex flex-col gap-y-20">
         <FundamentalSammary />
         <TechnicalSammary />
       </div>
-      <h3 className='text-link-water text-3xl font-extrabold mb-5'>
+      <h3 className="text-link-water text-3xl font-extrabold mb-5">
         Related Resources
       </h3>
       <RelatedRecourses />
       <div>
-        <h3 className='text-link-water text-3xl font-extrabold mb-5'>
+        <h3 className="text-link-water text-3xl font-extrabold mb-5">
           Related Content
         </h3>
         <CustomCarousel />

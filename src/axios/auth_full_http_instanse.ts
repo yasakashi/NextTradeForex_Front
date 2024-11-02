@@ -50,6 +50,7 @@ export const http_instanse_level_2 = axios.create({
   },
   withCredentials: true,
 });
+
 http_instanse_level_2.interceptors.request.use((config) => {
   store.dispatch(toggle_loading_level_2(true));
 

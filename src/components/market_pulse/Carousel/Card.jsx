@@ -2,15 +2,15 @@ import React from 'react';
 
 export default function CarouselCard({ label }) {
   return (
-    <div className='w-[350px] mx-4 bg-gray-light_100 text-white rounded-xl '>
-      <div className='bg-gray-100 rounded-t-xl overflow-hidden'>
-        <div className='relative'>
+    <div className='w-[300px]  bg-gray-light_100 text-white rounded-xl '>
+      <div className=' rounded-t-xl overflow-hidden'>
+        <div className='relative p-3'>
           <img
             src='dist/assets/img1.jpg'
             alt='EUR/USD Chart'
-            className='w-full h-48 object-cover'
+            className='w-full h-48 object-cover rounded-lg'
           />
-          <div className='absolute top-3 right-0 bg-white text-gold-light_400 border border-gold-light_400 rounded-e-xl font-semibold px-3 py-1 rounded-full'>
+          <div className='absolute top-6 right-3 bg-white text-gold-light_400 border border-gold-light_400 rounded-e-xl font-semibold px-3 py-1 rounded-full'>
             {label}
           </div>
         </div>
