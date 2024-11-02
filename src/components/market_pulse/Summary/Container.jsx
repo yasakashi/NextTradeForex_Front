@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CommonDashboardTable = () => {
+const CommonDashboardTable = ({ tabs: tab }) => {
   const [activeTab, setActiveTab] = useState('Summary');
   const [selectedTimeframe, setSelectedTimeframe] = useState('Monthly');
 
@@ -24,8 +24,8 @@ const CommonDashboardTable = () => {
   ];
 
   return (
-    <div className='bg-blue-dark border-[1px] border-gold-light_400 text-white p-4'>
-      <div className='flex space-x-4 mb-6'>
+    <div className="bg-blue-dark border-[1px] border-gold-light_400 text-white p-4">
+      <div className="flex space-x-4 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -41,8 +41,8 @@ const CommonDashboardTable = () => {
         ))}
       </div>
 
-      <div className='flex gap-3'>
-        <div className='flex flex-col space-y-2 bg-blue-light p-4 '>
+      <div className="flex gap-3">
+        <div className="flex flex-col space-y-2 bg-blue-light p-4 ">
           {timeframes.map((timeframe) => (
             <button
               key={timeframe}
@@ -58,35 +58,35 @@ const CommonDashboardTable = () => {
           ))}
         </div>
 
-        <div className='flex-1 grid grid-cols-3 gap-4 bg-blue-light p-4 rounded-r-lg'>
+        <div className="flex-1 grid grid-cols-3 gap-4 bg-blue-light p-4 rounded-r-lg">
           {activeTab === 'Summary' && (
             <>
-              <div className='bg-blue-dark rounded-lg p-6 text-center border-t-2 border-gold-light_400'>
-                <p className='text-gold-bg-gold-light_400 text-xl font-bold'>
+              <div className="bg-blue-dark rounded-lg p-6 text-center border-t-2 border-gold-light_400">
+                <p className="text-gold-bg-gold-light_400 text-xl font-bold">
                   EURUSD
                 </p>
-                <p className='text-3xl font-bold text-white'>
-                  1.08807 <span className='text-green-500'>▲</span>
+                <p className="text-3xl font-bold text-white">
+                  1.08807 <span className="text-green-500">▲</span>
                 </p>
               </div>
-              <div className='bg-blue-dark rounded-lg p-6 text-center border-t-2 border-gold-light_400'>
+              <div className="bg-blue-dark rounded-lg p-6 text-center border-t-2 border-gold-light_400">
                 <img
-                  src='bull-icon.svg'
-                  alt='Bull'
-                  className='mx-auto h-12 w-12 mb-4'
+                  src="bull-icon.svg"
+                  alt="Bull"
+                  className="mx-auto h-12 w-12 mb-4"
                 />{' '}
-                <p className='text-gold-bg-gold-light_400 text-xl font-bold'>
+                <p className="text-gold-bg-gold-light_400 text-xl font-bold">
                   LONG
                 </p>
               </div>
 
-              <div className='bg-blue-dark rounded-lg p-6 text-center border-t-2 border-gold-light_400'>
+              <div className="bg-blue-dark rounded-lg p-6 text-center border-t-2 border-gold-light_400">
                 <img
-                  src='strength-icon.svg'
-                  alt='Strength'
-                  className='mx-auto h-12 w-12 mb-4'
+                  src="strength-icon.svg"
+                  alt="Strength"
+                  className="mx-auto h-12 w-12 mb-4"
                 />{' '}
-                <p className='text-gold-bg-gold-light_400 text-xl font-bold'>
+                <p className="text-gold-bg-gold-light_400 text-xl font-bold">
                   STRENGTH
                 </p>
               </div>
@@ -94,11 +94,11 @@ const CommonDashboardTable = () => {
           )}
 
           {activeTab !== 'Summary' && (
-            <div className='col-span-3 bg-blue-dark rounded-lg p-6 text-center border-t-2 border-gold-light_400'>
-              <p className='text-xl font-bold text-gold-bg-gold-light_400'>
+            <div className="col-span-3 bg-blue-dark rounded-lg p-6 text-center border-t-2 border-gold-light_400">
+              <p className="text-xl font-bold text-gold-bg-gold-light_400">
                 {activeTab} Content
               </p>
-              <p className='text-white mt-2'>
+              <p className="text-white mt-2">
                 This is the content for the {activeTab} tab.
               </p>
             </div>

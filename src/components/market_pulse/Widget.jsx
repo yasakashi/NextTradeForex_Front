@@ -1,7 +1,7 @@
 // TradingViewWidget.jsx
 import React, { useEffect, useRef, memo } from 'react';
 
-function TradingViewWidget() {
+function TradingViewWidget({ symbol }) {
   const container = useRef();
 
   useEffect(() => {
@@ -10,10 +10,11 @@ function TradingViewWidget() {
       'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
     script.type = 'text/javascript';
     script.async = true;
-    script.innerHTML = `
+    script.innerHTML = 
+    `
         {
           "autosize": true,
-          "symbol": "NASDAQ:AAPL",
+          "symbol": ${symbol || "NASDAQ:AAPL"},
           "timezone": "Etc/UTC",
           "theme": "light",
           "style": "1",

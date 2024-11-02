@@ -11,6 +11,7 @@ function Forex() {
   const [selectedTopCategory, setSelectedTopCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [forexItems, setForexItems] = useState([]);
+
   // Fetch top categories
   const fetchTopCategories = async () => {
     try {
@@ -28,12 +29,14 @@ function Forex() {
 
   const fetchForexItems = async () => {
     try {
-      const res = await getforexitems({
-        categoryId: selectedSubCategory,
-        id: null,
-      });
+      if (selectedSubCategory) {
+        const res = await getforexitems({
+          categoryId: selectedSubCategory,
+          id: null,
+        });
 
-      setForexItems(res.data.messageData);
+        setForexItems(res.messageData);
+      }
     } catch (error) {
       console.error('Failed to fetch forex items:', error);
     }

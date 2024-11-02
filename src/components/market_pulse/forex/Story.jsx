@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Sentiments from './Sentiments';
 import TextBox from './TextBox';
 import ReadMoreContent from '../ScrollBox';
@@ -31,53 +31,59 @@ const eur = [
   { title: '%OF AVERAGE DAILY TURNOVER', description: '39.1%' },
 ];
 
-export default function Story({ forexitems }) {
-  
-  return (
+export default function Story({ forexItems }) {
+  const [data, setData] = useState();
 
+  useEffect(() => {
+    setData(forexItems[0]);
+  }, [forexItems]);
+
+  return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
-      <Sentiments />
+      <Sentiments
+        title={data?.marketsentimentstitle || ''}
+        data={data?.marketsentimentsscript || ''}
+      />
       <div className="flex gap-10">
         <div className="w-2/3 flex flex-col  gap-y-8">
           <p className="text-gold-light_400 text-5xl font-bold">
-            Euro vs US Dollar-EURUSD
+            {data?.coursetitle}
           </p>
           <div className="grid grid-cols-2 gap-4">
-            {euroDollar.map((el) => (
-              <React.Fragment key={el.title}>
-                <TextBox title={el.title} description={el.description} />
-              </React.Fragment>
-            ))}
+            {data?.flexibleBlocklist &&
+              Object.entries(data?.flexibleBlocklist[0])?.map((el) => (
+                <React.Fragment key={el[0]}>
+                  <TextBox title={el[0]} description={el[1]} />
+                </React.Fragment>
+              ))}
           </div>
-          <TextBox
-            title={'ONE-YEAR CHART'}
-            description={'EUR/USD Chart'}
-          ></TextBox>
           <div className="h-[550px]">
-            <TradingViewWidget />
+            <TradingViewWidget symbol={data?.chartdescription} />
           </div>
         </div>
         <div className="w-1/3 min-h-screen bg-primary"></div>
       </div>
-
-      <ReadMoreContent />
+      <ReadMoreContent content={data?.maindescription} />
       <div className="grid grid-cols-2">
-        <CountryBox title="EUR" data={eur} />
+        <CountryBox
+          title={data?.firstcountryheading || ''}
+          data={data?.firstCountryDatalist[0] || {}}
+        />
         <div className="flex gap-10">
           <div class="h-auto w-px bg-gold-light_400 mx-4"></div>
-          <CountryBox title="USD" data={usd} />
+          <CountryBox
+            title={data?.secondcountryheading || ''}
+            data={data?.secondCountryDatalist[0] || {}}
+          />
         </div>
       </div>
-      <p className="w-2/3 text-gray-light">
-        Foreign exchange trading carries a high level of risk that may not be
-        suitable for all investors. Next Trade provides this information as an
-        educational service to its clients and prospects and does not endorse
-        opinions or recommendations. The information provided does not
-        constitute investment or trading advice.
-      </p>
+      <p className="w-2/3 text-gray-light">{data?.bottomdescription}</p>
       <div className="flex flex-col gap-y-20">
-        <FundamentalSammary />
-        <TechnicalSammary />
+        <FundamentalSammary heading={data?.fundamentalheading || ''} />
+        <TechnicalSammary
+          heading={data?.technicalheading || ''}
+          tabs={data?.technicalTabslist}
+        />
       </div>
       <h3 className="text-link-water text-3xl font-extrabold mb-5">
         Related Resources
