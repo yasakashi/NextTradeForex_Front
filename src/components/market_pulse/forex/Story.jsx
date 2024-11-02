@@ -88,7 +88,13 @@ export default function Story({ forexItems }) {
       <h3 className="text-link-water text-3xl font-extrabold mb-5">
         Related Resources
       </h3>
-      <RelatedRecourses />
+      {data?.pdfSectionlist.map((pdf) => {
+        <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />;
+      })}
+      {data?.urlSectionlist.map((url) => {
+        <RelatedRecourses key={url?.id} data={url} tag="URL" />;
+      })}
+
       <div>
         <h3 className="text-link-water text-3xl font-extrabold mb-5">
           Related Content

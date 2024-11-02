@@ -22,7 +22,7 @@ export default function ReadMoreContent({ content }) {
         onClick={toggleExpand}
         className="mt-2 text-gold-light_400 hover:underline focus:outline-none"
       >
-        {isScrollOn ? 'Read Less' : 'Read More'}
+        {content && (isScrollOn ? 'Read Less' : 'Read More')}
       </button>
     </div>
   );
