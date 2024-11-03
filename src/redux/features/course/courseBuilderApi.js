@@ -25,6 +25,16 @@ export const courseBuilderApi = createApi({
       }),
     }),
 
+    // remove course topic
+    removeCourseTopic: builder.mutation({
+      query: ({ data }) => ({
+        // data: topic Id
+        url: "/coursebuilder/deletecoursetopic",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     // get course topics
     getCourseTopics: builder.mutation({
       query: ({ data }) => ({
@@ -40,6 +50,25 @@ export const courseBuilderApi = createApi({
         url: "/coursebuilder/addlesson",
         method: "POST",
 
+        body: data,
+      }),
+    }),
+
+    // remove topic lesson
+    removeTopicLesson: builder.mutation({
+      query: ({ data }) => ({
+        // data: lesson Id
+        url: "/coursebuilder/deleteLesson",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // add topic lesson
+    addTopicQuiz: builder.mutation({
+      query: ({ data }) => ({
+        url: "/coursebuilder/addlessonquiz",
+        method: "POST",
         body: data,
       }),
     }),
@@ -61,4 +90,7 @@ export const {
   useGetCourseTopicsMutation,
   useAddTopicLessonMutation,
   useGetTopicLessonsMutation,
+  useRemoveCourseTopicMutation,
+  useRemoveTopicLessonMutation, 
+  useAddTopicQuizMutation
 } = courseBuilderApi;

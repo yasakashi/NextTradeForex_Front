@@ -234,6 +234,7 @@ const NewCourse = ({ page }) => {
                   <ExcerptComponent name="excerpt" formik={formik} />
 
                   <CourseAuthor formik={formik} />
+                  
                   <CourseSettingsComponent formik={formik} />
 
                   <AddProductComponent name="coursePrice" formik={formik} />
