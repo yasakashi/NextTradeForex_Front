@@ -27,7 +27,7 @@ const types = [
   },
 ];
 
-const QuestionTypes = ({ formik }) => {
+const QuestionTypes = ({ formik, questionHandleChange }) => {
   const [showTypes, setShowTypes] = useState(false);
 
   const [selectedType, setSelectedType] = useState({
@@ -76,6 +76,7 @@ const QuestionTypes = ({ formik }) => {
               <div
                 onClick={() => {
                   formik?.setFieldValue("questionType", type.id);
+                  questionHandleChange("questionType", type?.id);
                   setSelectedType(type);
                   setShowTypes(false);
                 }}

@@ -1,7 +1,6 @@
 import React from "react";
 import NewCourceCard from "./new_cource_card";
 import { IoSettingsSharp } from "react-icons/io5";
-import { PiWarningCircle } from "react-icons/pi";
 import CustomTextInput from "../../../components/ui/CustomTextInput";
 import WarningComponent from "../../../common/WarningComponenet";
 

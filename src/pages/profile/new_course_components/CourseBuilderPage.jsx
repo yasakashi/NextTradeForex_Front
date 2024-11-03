@@ -19,8 +19,12 @@ import {
   useAddCourseTopicMutation,
   useGetCourseTopicsMutation,
   useGetTopicLessonsMutation,
+  useRemoveCourseTopicMutation,
+  useRemoveTopicLessonMutation,
 } from "../../../redux/features/course/courseBuilderApi";
 import { Link, useParams } from "react-router-dom";
+import RemoveConfirmModal from "./RemoveConfirmModal";
+import toast from "react-hot-toast";
 
 const CourseBuilderPage = ({ page }) => {
   const { courseId } = useParams();
@@ -31,6 +35,12 @@ const CourseBuilderPage = ({ page }) => {
   const [topicId, setTopicId] = useState("");
   const [lessons, setLessons] = useState({});
   const [topics, setTopics] = useState([]);
+  const [updateTopicMode, setUpdateTopicMode] = useState(false);
+
+  const [openRemoveModal, setOpenRemoveModal] = useState(false);
+  const [removingItem, setRemovingItem] = useState(null);
+
+  const [removingTopicId, setRemovingTopicId] = useState(null);
 
   const [openTopicIndex, setOpenTopicIndex] = useState(null);
 
@@ -38,6 +48,12 @@ const CourseBuilderPage = ({ page }) => {
     getCourseTopics,
     { error, isLoading: getCourseTopicsLoading, isSuccess },
   ] = useGetCourseTopicsMutation();
+
+  const [removeCourseTopic, { isLoading: removeTopicLoading }] =
+    useRemoveCourseTopicMutation();
+
+  const [removeTopicLesson, { isLoading: removeLessonLoading }] =
+    useRemoveTopicLessonMutation();
 
   const [addCourseTopic, { isLoading: addTopicLoading }] =
     useAddCourseTopicMutation();
@@ -122,7 +138,7 @@ const CourseBuilderPage = ({ page }) => {
       topicSummary: "",
     },
     validationSchema: addTopicValidationShema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log("Form submitted:", values);
       const res = await addCourseTopic({
         data: { ...values, courseId: courseId },
@@ -130,6 +146,7 @@ const CourseBuilderPage = ({ page }) => {
 
       if (res?.data?.messageCode === 200) {
         set_is_open(false);
+        resetForm();
 
         const topicsRes = await getCourseTopics({
           data: {
@@ -147,6 +164,57 @@ const CourseBuilderPage = ({ page }) => {
       }
     },
   });
+
+  const handleDelete = async () => {
+    // Topic
+    if (removingItem?.type === "topic" && removingItem?.id) {
+      const removeRes = await removeCourseTopic({
+        data: { Id: removingItem.id },
+      });
+      if (removeRes?.data?.messageCode === 200) {
+        toast.success("Topic removed.");
+        setTopics((prev) =>
+          prev.filter((topic) => topic?.id !== removingItem.id)
+        );
+        setOpenRemoveModal(false);
+        setRemovingItem(null);
+      }
+    }
+
+    //lesson
+    if (removingItem?.type === "lesson" && removingItem?.id) {
+      const removeRes = await removeTopicLesson({
+        data: { Id: removingItem.id },
+      });
+      if (removeRes?.data?.messageCode === 200) {
+        toast.success("Topic lesson removed.");
+
+        setOpenRemoveModal(false);
+        setRemovingItem(null);
+      }
+    }
+  };
+
+  const confirmRemoveHandler = (id, type) => {
+    setRemovingItem({ id, type });
+    setOpenRemoveModal(true);
+  };
+
+  const cancellRemoveTopicHandler = () => {
+    setRemovingTopicId(null);
+    setOpenRemoveModal(false);
+  };
+
+  // =================================handle Update
+  const handleUpdateTopic = (topic) => {
+    setUpdateTopicMode(true);
+    set_is_open(true);
+    formik.setValues({
+      topicName: topic?.topicName,
+      topicSummary: topic?.topicSummary,
+    });
+    console.log(topic);
+  };
 
   return (
     <>
@@ -193,13 +261,23 @@ const CourseBuilderPage = ({ page }) => {
                         </div>
                         <div className="flex items-center gap-10">
                           <div className="flex items-center gap-6">
-                            <button className="border-none outline-none">
+                            <button
+                              type="button"
+                              onClick={() => handleUpdateTopic(topic)}
+                              className="border-none outline-none"
+                            >
                               <BiSolidEdit
                                 size={20}
                                 className="text-gray-500"
                               />
                             </button>
-                            <button className="border-none outline-none">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                confirmRemoveHandler(topic?.id, "topic")
+                              }
+                              className="border-none outline-none"
+                            >
                               <FaRegTrashAlt
                                 size={18}
                                 className="text-gray-500"
@@ -258,7 +336,13 @@ const CourseBuilderPage = ({ page }) => {
                                       className="text-gray-500"
                                     />
                                   </button>
-                                  <button className="border-none outline-none">
+                                  <button
+                                    type="button"
+                                    className="border-none outline-none"
+                                    onClick={() =>
+                                      confirmRemoveHandler(lesson?.id, "lesson")
+                                    }
+                                  >
                                     <FaRegTrashAlt
                                       size={18}
                                       className="text-gray-500"
@@ -271,6 +355,7 @@ const CourseBuilderPage = ({ page }) => {
                           {/* buttons */}
                           <div className="flex items-center gap-3 absolute bottom-3 left-3">
                             <button
+                              type="button"
                               onClick={(e) => {
                                 setShowNewLessonModal(true);
                                 e.preventDefault();
@@ -288,7 +373,10 @@ const CourseBuilderPage = ({ page }) => {
                             </button>
 
                             <button
-                              onClick={() => setShowQuizModal(true)}
+                              onClick={() => {
+                                setShowQuizModal(true);
+                                setTopicId(topic?.id);
+                              }}
                               className="group text-blue-accent px-4 py-1 rounded-md border border-blue-accent text-[13px] w-max font-semibold flex items-center gap-1 hover:bg-blue-accent hover:text-white transition-all"
                             >
                               <span className="bg-blue-accent rounded-sm group-hover:bg-white transition-all">
@@ -312,7 +400,6 @@ const CourseBuilderPage = ({ page }) => {
                   type="button"
                   size="md"
                   onClick={(e) => {
-                    console.log("clicked");
                     e.preventDefault();
                     set_is_open(true);
                   }}
@@ -330,8 +417,10 @@ const CourseBuilderPage = ({ page }) => {
                   className="flex flex-col h-full"
                 >
                   <div className="flex justify-between items-center py-4 px-8 w-full border-b border-b-gray-300">
-                    <h4 style={{ fontWeight: 600 }}>Add Topic</h4>
-                    <button onClick={() => set_is_open(false)}>
+                    <h4 style={{ fontWeight: 600 }}>
+                      {updateTopicMode ? "Update Topic" : "Add Topic"}
+                    </h4>
+                    <button type="button" onClick={() => set_is_open(false)}>
                       <CgClose style={{}} />
                     </button>
                   </div>
@@ -397,7 +486,11 @@ const CourseBuilderPage = ({ page }) => {
                       Cancel
                     </CustomButton>
                     <CustomButton type="submit" size="sm">
-                      {addTopicLoading ? "sending ..." : "Add Topic"}
+                      {addTopicLoading ? (
+                        "sending ..."
+                      ) : (
+                        <>{updateTopicMode ? "Update" : "Add Topic"}</>
+                      )}
                     </CustomButton>
                   </div>
                 </form>
@@ -429,8 +522,26 @@ const CourseBuilderPage = ({ page }) => {
       />
 
       <AddNewQuiz
+        courseId={courseId}
+        topicId={topicId}
         showQuizModal={showQuizModal}
         setShowQuizModal={setShowQuizModal}
+      />
+
+      <RemoveConfirmModal
+        subTitle="Are you sure you want to delete this topic from the course ?"
+        warning="By deleteing this topic, all the lessons and topic will also be permanently deleted."
+        open={openRemoveModal}
+        setOpen={cancellRemoveTopicHandler}
+        removeHandler={handleDelete}
+        isLoading={
+          removingItem?.type === "topic"
+            ? removeTopicLoading
+            : removingItem?.type === "lesson"
+            ? removeLessonLoading
+            : false
+        }
+        itemType={removingItem?.type}
       />
     </>
   );
