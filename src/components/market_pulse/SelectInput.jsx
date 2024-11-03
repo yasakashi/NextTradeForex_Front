@@ -2,9 +2,8 @@ function SelectInput({ options, value, onChange, placeholder }) {
   return (
     <div className="mt-[5px]">
       <select
-        value={value ? value.id : ""}
+        value={value ? value.id : ''}
         onChange={(e) => {
-          console.log();
           onChange(e.target.value);
         }}
         className="bg-gold-light_200 w-full text-sm px-[3px] py-[2px]"
