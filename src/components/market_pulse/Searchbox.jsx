@@ -6,7 +6,8 @@ const SearchBox = ({
   setCurrencies,
 }) => {
   const [query, setQuery] = useState('');
-
+  const [results, setResults] = useState([]);
+  
   // const [debouncedQuery, setDebouncedQuery] = useState(query);
 
   // useEffect(() => {
@@ -19,26 +20,29 @@ const SearchBox = ({
   //   };
   // }, [query, delay]);
 
-  const handleInputChange = (e) => {
-    setQuery(e.target.value);
-  };
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setQuery(value);
 
+    if (value === '') {
+      setResults(initialData);
+    } else {
+      const filteredResults = initialData.filter((item) =>
+        item.name.toLowerCase().includes(value.toLowerCase())
+      );
+      setResults(filteredResults);
+    }
+  };
+  
   useEffect(() => {
     handleSearch(query);
   }, [query]);
-
-  const handleSearch = (searchTerm) => {
-    const newCurrencies = currencies.filter((item) =>
-      item.name.toLowerCase().includes(query.toLowerCase())
-    );
-    setCurrencies(newCurrencies);
-  };
 
   return (
     <input
       type="text"
       value={query}
-      onChange={handleInputChange}
+      onChange={handleSearch}
       placeholder={placeholder}
       className="w-full p-2 focus:outline-none rounded-sm "
     />
