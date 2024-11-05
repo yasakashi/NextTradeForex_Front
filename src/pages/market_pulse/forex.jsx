@@ -15,6 +15,7 @@ function Forex() {
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [forexItems, setForexItems] = useState([]);
   const [currencies, setCurrencies] = useState([]);
+  const [currencyId, setCurrencyId] = useState(null);
 
   const isLoading = useSelector((state) => state.loading.isLoading);
   const dispatch = useDispatch();
@@ -35,20 +36,21 @@ function Forex() {
   };
   const getCurrencies = async () => {
     try {
-      const res = await getForexCurrencies(selectedSubCategory);
-
-      setCurrencies(res.messageData);
+      if (selectedSubCategory) {
+        const res = await getForexCurrencies(selectedSubCategory);
+        setCurrencies(res.messageData);
+      }
     } catch (error) {
       console.error('Failed to fetch Currencies:', error);
     }
   };
 
-  const fetchForexItems = async () => {
+  const fetchForexItems = async (id) => {
     try {
       dispatch(startLoading());
-      if (selectedSubCategory) {
+      if (id) {
         const res = await getforexitems({
-          categoryId: selectedSubCategory,
+          categoryId: id,
           id: null,
         });
         dispatch(stopLoading());
@@ -64,7 +66,13 @@ function Forex() {
   }, []);
 
   useEffect(() => {
-    fetchForexItems();
+    if (currencyId) {
+      fetchForexItems(currencyId);
+    }
+  }, [currencyId]);
+
+  useEffect(() => {
+    fetchForexItems(selectedSubCategory);
     getCurrencies();
   }, [selectedTopCategory, selectedSubCategory]);
 
@@ -141,11 +149,12 @@ function Forex() {
       )}
 
       {isLoading && <LoadingSpinner />}
-      {forexItems.length > 0 && (
+      {forexItems.length > 0 && !isLoading && (
         <Story
           forexItems={forexItems}
           currencies={currencies}
           setCurrencies={setCurrencies}
+          setCurrencyId={setCurrencyId}
         />
       )}
     </div>

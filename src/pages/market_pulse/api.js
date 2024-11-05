@@ -27,18 +27,21 @@ export const getforexitems = async ({ categoryId, id }) => {
   }
 };
 
-export const getForexCurrencies = async ({ categoryid }) => {
+export const getForexCurrencies = async (id) => {
+  
   try {
     const { data } = await axiosPrivate.post(
       '/api/marketpuls/getforexcurrencies',
       {
-        categoryid,
+        categoryid: id,
       },
       { headers: { 'Content-Type': 'application/json' } }
     );
 
     return data;
   } catch (error) {
+    console.log('error daram');
+    
     throw new Error(`${error}`);
   }
 };

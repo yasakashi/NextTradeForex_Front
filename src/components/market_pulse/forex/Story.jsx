@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
-import Sentiments from "./Sentiments";
-import TextBox from "./TextBox";
-import ReadMoreContent from "../ScrollBox";
-import CountryBox from "../CountryBox";
-import TradingViewWidget from "../Widget";
-import FundamentalSammary from "../Summary/Fundamental";
-import TechnicalSammary from "../Summary/Technical";
-import RelatedRecourses from "../RelatedRecourses";
-import CustomCarousel from "../Carousel";
-import SearchBox from "../Searchbox";
+import React, { useEffect, useState } from 'react';
+import Sentiments from './Sentiments';
+import TextBox from './TextBox';
+import ReadMoreContent from '../ScrollBox';
+import CountryBox from '../CountryBox';
+import TradingViewWidget from './Wigets/Chart';
+import FundamentalSammary from '../Summary/Fundamental';
+import TechnicalSammary from '../Summary/Technical';
+import RelatedRecourses from '../RelatedRecourses';
+import CustomCarousel from '../Carousel';
+import SearchBox from '../Searchbox';
 
-export default function Story({ forexItems, currencies, setCurrencies }) {
+export default function Story({
+  forexItems,
+  currencies,
+  setCurrencies,
+  setCurrencyId,
+}) {
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -18,12 +23,11 @@ export default function Story({ forexItems, currencies, setCurrencies }) {
   }, [forexItems]);
 
   const onCurrencyChange = () => {};
-
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
       <Sentiments
-        title={data?.marketsentimentstitle || ""}
-        data={data?.marketsentimentsscript || ""}
+        title={data?.marketsentimentstitle || ''}
+        data={data?.marketsentimentsscript || ''}
       />
       <div className="flex gap-10">
         <div className="w-2/3 flex flex-col  gap-y-8">
@@ -49,33 +53,35 @@ export default function Story({ forexItems, currencies, setCurrencies }) {
           <h2 className="text-link-water text-xl font-bold mb-2">
             {currencies[0]?.categorytypename}
           </h2>
-          <SearchBox currencies={currencies} setCurrencies={setCurrencies} />
-          {currencies.map((el) => {
-            return (
-              <div onClick={() => onCurrencyChange(el)}>
-                <p className="text-gold-light_400">{el.categorytypename}</p>
-              </div>
-            );
-          })}
+          <SearchBox
+            currencies={currencies}
+            setCurrencies={setCurrencies}
+            setCurrencyId={setCurrencyId}
+          />
         </div>
       </div>
       <ReadMoreContent content={data?.maindescription} />
       <div className="grid grid-cols-2">
         <CountryBox
-          title={data?.firstcountryheading || ""}
+          title={data?.firstcountryheading || ''}
           data={data?.firstCountryDatalist[0] || {}}
         />
         <div className="flex gap-10">
           <div class="h-auto w-px bg-gold-light_400 mx-4"></div>
           <CountryBox
-            title={data?.secondcountryheading || ""}
+            title={data?.secondcountryheading || ''}
             data={data?.secondCountryDatalist[0] || {}}
           />
         </div>
       </div>
       <p className="w-2/3 text-gray-light">{data?.bottomdescription}</p>
       <div className="flex flex-col gap-y-20">
-        {/* {data ? <FundamentalSammary heading={data.fundamentalheading} tabs={data.technicalTabslist} /> : null} */}
+        {data ? (
+          <FundamentalSammary
+            heading={data.fundamentalheading}
+            tabs={data?.fundamentalNewsSectionlist}
+          />
+        ) : null}
         {data ? (
           <TechnicalSammary
             heading={data.technicalheading}

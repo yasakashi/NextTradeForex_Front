@@ -37,9 +37,10 @@ const TechnicalTab = ({ script }) => {
 
 
 const CommonDashboardTable = ({ tabs }) => {
+  
   const [activeTab, setActiveTab] = useState(tabs[0].id);
   const activeTabData = tabs.find((tab) => tab.id === activeTab);
-
+  
   return (
     <div className="bg-blue-dark border-[1px] border-gold-light_400 text-white p-4">
       <div className="flex space-x-4 mb-6">
