@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Search from '../../components/market_pulse/search';
 import SelectInput from '../../components/market_pulse/SelectInput';
 import { http_instanse_level_2 } from '../../axios/auth_full_http_instanse';
-import { getforexitems, getForexCurrencies } from './api';
+import { getforexitems, getForexCurrencies, getRelatedContent } from './api';
 import Story from '../../components/market_pulse/forex/Story';
 import { startLoading, stopLoading } from '../../redux/features/loading';
 import LoadingSpinner from '../../components/Loading';
@@ -16,6 +16,7 @@ function Forex() {
   const [forexItems, setForexItems] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [currencyId, setCurrencyId] = useState(null);
+  const [relatedContent, setRelatedContent] = useState();
 
   const isLoading = useSelector((state) => state.loading.isLoading);
   const dispatch = useDispatch();
@@ -32,6 +33,16 @@ function Forex() {
       setTopCategories(res.data.messageData);
     } catch (error) {
       console.error('Failed to fetch top categories:', error);
+    }
+  };
+  const getRelatedSources = async (id) => {
+    try {
+      if (id) {
+        const res = await getRelatedContent(id);
+        setRelatedContent(res.messageData);
+      }
+    } catch (error) {
+      console.error('Failed to fetch related contents', error);
     }
   };
   const getCurrencies = async () => {
@@ -73,6 +84,7 @@ function Forex() {
 
   useEffect(() => {
     fetchForexItems(selectedSubCategory);
+    getRelatedSources(selectedSubCategory);
     getCurrencies();
   }, [selectedTopCategory, selectedSubCategory]);
 
@@ -155,6 +167,7 @@ function Forex() {
           currencies={currencies}
           setCurrencies={setCurrencies}
           setCurrencyId={setCurrencyId}
+          relatedContent={relatedContent}
         />
       )}
     </div>

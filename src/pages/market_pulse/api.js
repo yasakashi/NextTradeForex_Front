@@ -45,3 +45,23 @@ export const getForexCurrencies = async (id) => {
     throw new Error(`${error}`);
   }
 };
+
+
+export const getRelatedContent = async (id) => {
+  
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getforummessages',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    console.log('error daram');
+    
+    throw new Error(`${error}`);
+  }
+};

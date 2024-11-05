@@ -15,6 +15,7 @@ export default function Story({
   currencies,
   setCurrencies,
   setCurrencyId,
+  relatedContent,
 }) {
   const [data, setData] = useState();
 
@@ -22,7 +23,6 @@ export default function Story({
     setData(forexItems[0]);
   }, [forexItems]);
 
-  const onCurrencyChange = () => {};
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
       <Sentiments
@@ -103,7 +103,7 @@ export default function Story({
         <h3 className="text-link-water text-3xl font-extrabold mb-5">
           Related Content
         </h3>
-        <CustomCarousel />
+        <CustomCarousel data={relatedContent} />
       </div>
     </div>
   );

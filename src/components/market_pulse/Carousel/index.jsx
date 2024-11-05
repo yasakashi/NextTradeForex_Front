@@ -10,7 +10,7 @@ import { Keyboard, Pagination, Navigation } from 'swiper/modules';
 import CarouselCard from './Card';
 import './styles.css';
 
-export default function App() {
+export default function App({ data }) {
   return (
     <>
       <Swiper
@@ -25,21 +25,13 @@ export default function App() {
         navigation={true}
         modules={[Keyboard, Pagination, Navigation]}
       >
-        <SwiperSlide>
-          <CarouselCard label='Course' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <CarouselCard label='Course' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <CarouselCard label='Post' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <CarouselCard label='Course' />
-        </SwiperSlide>
-        <SwiperSlide>
-          <CarouselCard label='Post' />
-        </SwiperSlide>
+        {data?.map((item) => {
+          return (
+            <SwiperSlide key={item.id}>
+              <CarouselCard data={item} />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </>
   );
