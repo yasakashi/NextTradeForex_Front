@@ -8,42 +8,28 @@ import FundamentalSammary from "../Summary/Fundamental";
 import TechnicalSammary from "../Summary/Technical";
 import RelatedRecourses from "../RelatedRecourses";
 import CustomCarousel from "../Carousel";
+import SearchBox from "../Searchbox";
 
-const euroDollar = [
-  { title: "Countries", description: "Eurozone/United States" },
-  { title: "2022 HIGHS & LOWS", description: "1.15123/0.95542" },
-  { title: "PAIRS THAT CORRELATE", description: "EUR/CAD, EUR/AUD, NZD/USD" },
-  { title: "PAIR TYPE", description: "Major" },
-  { title: "DAILY AVERAGE MOVEMENT IN PIPS", description: "107.4" },
-];
-
-const usd = [
-  { title: "Country", description: "United States" },
-  { title: "CENTRAL BANK", description: "Federal Reserve System" },
-  { title: "NICKNAME", description: "Buck,Greenback" },
-  { title: "%OF AVERAGE DAILY TURNOVER", description: "84.9%" },
-];
-
-const eur = [
-  { title: "Country", description: "Eurozone" },
-  { title: "CENTRAL BANK", description: "European Central Bank" },
-  { title: "NICKNAME", description: "Fiber" },
-  { title: "%OF AVERAGE DAILY TURNOVER", description: "39.1%" },
-];
-
-export default function Story({ forexItems }) {
+export default function Story({ forexItems, currencies, setCurrencies }) {
   const [data, setData] = useState();
 
   useEffect(() => {
     setData(forexItems[0]);
   }, [forexItems]);
 
+  const onCurrencyChange = () => {};
+
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
-      <Sentiments title={data?.marketsentimentstitle || ""} data={data?.marketsentimentsscript || ""} />
+      <Sentiments
+        title={data?.marketsentimentstitle || ""}
+        data={data?.marketsentimentsscript || ""}
+      />
       <div className="flex gap-10">
         <div className="w-2/3 flex flex-col  gap-y-8">
-          <p className="text-gold-light_400 text-5xl font-bold">{data?.coursetitle}</p>
+          <p className="text-gold-light_400 text-5xl font-bold">
+            {data?.coursetitle}
+          </p>
           <div className="grid grid-cols-2 gap-4">
             {data?.flexibleBlocklist &&
               Object.entries(data?.flexibleBlocklist[0])?.map((el) => (
@@ -54,25 +40,52 @@ export default function Story({ forexItems }) {
           </div>
           <ReadMoreContent content={data?.chartdescription} />
           <div className="h-[550px]">
-            {data?.singlepagechartimage ? <TradingViewWidget symbol={data.singlepagechartimage} /> : null}
+            {data?.singlepagechartimage ? (
+              <TradingViewWidget symbol={data.singlepagechartimage} />
+            ) : null}
           </div>
         </div>
-        <div className="w-1/3 min-h-screen bg-primary"></div>
+        <div className="w-1/3 min-h-screen bg-primary p-5">
+          <h2 className="text-link-water text-xl font-bold mb-2">
+            {currencies[0]?.categorytypename}
+          </h2>
+          <SearchBox currencies={currencies} setCurrencies={setCurrencies} />
+          {currencies.map((el) => {
+            return (
+              <div onClick={() => onCurrencyChange(el)}>
+                <p className="text-gold-light_400">{el.categorytypename}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
       <ReadMoreContent content={data?.maindescription} />
       <div className="grid grid-cols-2">
-        <CountryBox title={data?.firstcountryheading || ""} data={data?.firstCountryDatalist[0] || {}} />
+        <CountryBox
+          title={data?.firstcountryheading || ""}
+          data={data?.firstCountryDatalist[0] || {}}
+        />
         <div className="flex gap-10">
           <div class="h-auto w-px bg-gold-light_400 mx-4"></div>
-          <CountryBox title={data?.secondcountryheading || ""} data={data?.secondCountryDatalist[0] || {}} />
+          <CountryBox
+            title={data?.secondcountryheading || ""}
+            data={data?.secondCountryDatalist[0] || {}}
+          />
         </div>
       </div>
       <p className="w-2/3 text-gray-light">{data?.bottomdescription}</p>
       <div className="flex flex-col gap-y-20">
         {/* {data ? <FundamentalSammary heading={data.fundamentalheading} tabs={data.technicalTabslist} /> : null} */}
-        {data ? <TechnicalSammary heading={data.technicalheading} tabs={data.technicalTabslist} /> : null}
+        {data ? (
+          <TechnicalSammary
+            heading={data.technicalheading}
+            tabs={data.technicalTabslist}
+          />
+        ) : null}
       </div>
-      <h3 className="text-link-water text-3xl font-extrabold mb-5">Related Resources</h3>
+      <h3 className="text-link-water text-3xl font-extrabold mb-5">
+        Related Resources
+      </h3>
       {data?.pdfSectionlist.map((pdf) => {
         <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />;
       })}
@@ -81,7 +94,9 @@ export default function Story({ forexItems }) {
       })}
 
       <div>
-        <h3 className="text-link-water text-3xl font-extrabold mb-5">Related Content</h3>
+        <h3 className="text-link-water text-3xl font-extrabold mb-5">
+          Related Content
+        </h3>
         <CustomCarousel />
       </div>
     </div>
