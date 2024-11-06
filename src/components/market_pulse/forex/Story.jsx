@@ -49,7 +49,7 @@ export default function Story({
             ) : null}
           </div>
         </div>
-        <div className="w-1/3 min-h-screen bg-primary p-5">
+        <div className="w-1/3 min-h-screen bg-primary p-5 z-10">
           <h2 className="text-link-water text-xl font-bold mb-2">
             {currencies[0]?.categorytypename}
           </h2>
@@ -89,18 +89,18 @@ export default function Story({
           />
         ) : null}
       </div>
-      <h3 className="text-link-water text-3xl font-extrabold mb-5">
+      <h3 className="text-link-water text-3xl font-extrabold mt-5">
         Related Resources
       </h3>
-      {data?.pdfSectionlist.map((pdf) => {
-        <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />;
-      })}
-      {data?.urlSectionlist.map((url) => {
-        <RelatedRecourses key={url?.id} data={url} tag="URL" />;
-      })}
+      {data?.pdfSectionlist.map((pdf) => (
+        <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />
+      ))}
+      {data?.urlSectionlist.map((url) => (
+        <RelatedRecourses key={url?.id} data={url} tag="URL" />
+      ))}
 
       <div>
-        <h3 className="text-link-water text-3xl font-extrabold mb-5">
+        <h3 className="text-link-water text-3xl font-extrabold mt-6">
           Related Content
         </h3>
         <CustomCarousel data={relatedContent} />
