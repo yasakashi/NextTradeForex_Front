@@ -55,7 +55,7 @@ const Posts = () => {
         })
       );
     }
-  }, [groupId, pageNum, axiosPrivate, dispatch, post]);
+  }, [pageNum]);
 
   return (
     <div>
@@ -63,7 +63,7 @@ const Posts = () => {
         if (posts.length === i + 1) {
           return <Post key={i} ref={lastPostRef} post={post} />;
         } else {
-          return <Post key={i}  post={post} />;
+          return <Post key={i} post={post} />;
         }
       })}
 

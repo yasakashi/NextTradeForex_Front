@@ -10,7 +10,7 @@ import {
   TiMediaPlayOutline,
   TiAdjustBrightness,
 } from "react-icons/ti";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import store from "../../../redux/store";
 import { show_message } from "../../../redux/features/generalSlice";
 import { LiaToolboxSolid } from "react-icons/lia";
@@ -28,6 +28,7 @@ import {
 import { PiMemberOfBold, PiStrategy, PiWebcamBold } from "react-icons/pi";
 import { CiLock, CiSettings } from "react-icons/ci";
 import { useTheme } from "@mui/material";
+
 const AdminSidebar = () => {
   const [open_item, set_open_item] = React.useState<null | number>(null);
   const { pathname } = useLocation();
@@ -49,19 +50,21 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
   const [hoveed, set_hoverd] = React.useState<null | number>(null);
   return (
-    <div className="h-full bg-white shadow-lg" style={{ width: 200 }}>
-      <div className="w-full relative">
+    <div
+      className="h-full bg-white shadow-lg fixed top-0 left-0 z-[1000] overflow-y-scroll overflow-x-hidden scrollbar-thin"
+      style={{ width: 200 }}
+    >
+      <Link to="/" className="w-full relative">
         <h2
           style={{ height: 38, backgroundColor: yellow_medium }}
           className={`bg-yellow-500 cursor-pointer flex items-center pr-2 pl-2`}
-          onClick={() => {}}
         >
           <TiHome size={25} className="mr-" color={"white"} />
           <span className="ml-1 text-white relative top-1 font-bold">
             NextTradeForex
           </span>
         </h2>
-      </div>
+      </Link>
 
       {list.map((item, i) => {
         const { Icon } = item;
@@ -135,9 +138,9 @@ const AdminSidebar = () => {
                 );
               })}
             </motion.div>
-            {hoveed === i && (
+            {hoveed === i && open_item !== hoveed && (
               <div
-                className="absolute bg-white shadow-md z-50"
+                className="absolute bg-white shadow-md z-[10001]"
                 style={{ right: -200, top: 0, zIndex: drawer + 5 }}
               >
                 <motion.div
@@ -234,7 +237,9 @@ const list = [
     title: "Tutor LMS",
     Icon: TiAdjustContrast,
     sub_categories: [
-      { title: "Courses" },
+      // { title: "Courses" },
+      { title: "Courses", route: "/tutor/courses" },
+      { title: "Lessons", route: "/tutor/lessons" },
       { title: "Email" },
       { title: "Categories" },
       { title: "Tags" },
@@ -278,20 +283,20 @@ const list = [
     Icon: TiMediaPlayOutline,
     sub_categories: [{ title: "Library" }, { title: "Add New" }],
   },
+  // {
+  //   title: "Totur",
+  //   Icon: TiAdjustBrightness,
+  //   sub_categories: [
+  //     { title: "Lessons", route: "/tutor/lessons" },
+  //     { title: "Courses", route: "/tutor/courses" },
+  //   ],
+  // },
   {
-    title: "Totur",
-    Icon: TiAdjustBrightness,
-    sub_categories: [
-      { title: "Lessons", route: "/tutor/lessons" },
-      { title: "Courses", route: "/tutor/courses" },
-    ],
-  },
-  {
-    title: "Pre-made Lessons",
+    title: "Market Pulse",
     Icon: TiAdjustBrightness,
     sub_categories: [
       { title: "Indicators" },
-      { title: "Currency Courses" },
+      { title: "Market pulse", route: "/lessons/market-pulse" },
       { title: "Crypto" },
       { title: "Indices" },
       { title: "Comodities" },

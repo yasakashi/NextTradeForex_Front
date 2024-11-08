@@ -10,10 +10,9 @@ interface Props {
   message: { color?: string; mode?: boolean; message?: string };
 }
 const MessageSnackbar = ({ message }: Props) => {
-  const color = colors.find((item) => item.type === message?.color); 
-  const theme = useTheme() 
-  console.log({message});
-  
+  const color = colors.find((item) => item.type === message?.color);
+  const theme = useTheme();
+
   return (
     <motion.div
       onAnimationComplete={async () => {
@@ -32,6 +31,7 @@ const MessageSnackbar = ({ message }: Props) => {
           );
         } catch (error) {
           /* empty */
+          console.log("error ===========> ");
         }
       }}
       className="energy"
@@ -45,8 +45,8 @@ const MessageSnackbar = ({ message }: Props) => {
         borderRadius: 4,
         left: 24,
         backgroundColor: color?.color,
-        color: "black", 
-        zIndex:theme.zIndex.drawer+2
+        color: "black",
+        zIndex: theme.zIndex.drawer + 2,
       }}
     >
       {message?.message}

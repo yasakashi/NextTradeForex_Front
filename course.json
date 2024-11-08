@@ -1,0 +1,104 @@
+[
+  {
+    "coursename": "string (required)",
+    "courseDescription": "string (optional)",
+    "courseFile": "string (optional)",
+    "meeting": [
+      {
+        "meetingTitle": "string (required)",
+        "meetingDescription": "string (optional)",
+        "meetingFile": "formData (optional)",
+        "meetingURL": "string (required)",
+        "meetingDateTime": "Date & Time (16/10/2024 12:00 am)"
+      }
+    ],
+    "videoPdfUrl": [
+      {
+        "pdfTitle": "string (required)",
+        "PdfDescription": "string (optional)",
+        "pdfFile": "formData (required)",
+        "viewPdfFile": "string (optional)",
+        "downloadable": "boolean (default:true)"
+      }
+    ],
+    "excerpt": "string (optional)",
+    "authorId": "authoer id",
+    "maximumStudents": "number (required)",
+    "difficultyLevelId": "accepts level's id",
+    "isPublicCourse": "boolean (default is false)",
+    "allowQA": "boolean (default is false)",
+    "courseprice": "number",
+    "whatWillILearn": "string",
+    "targetedaudience": "string",
+    "courseDuration": "number in minutes",
+    "materialsincluded": "string",
+    "requirementsinstructions": "string",
+    "courseIntroVideo": "string (accepts youtube link",
+    "courseCategoriesIds": "[array of ids]",
+    "courseTags": "[array of strings]",
+    "featuredImage": "formData (optional)"
+  }
+]
+
+ 
+
+  [ {
+    "courseId":"id",
+    "topicName":"string (required)",
+    "topicSummary":"string",
+  }]
+
+,[
+  {
+  "courseId":"id",
+  "topicId":"id",
+  "lessonName":"string (required)",
+  "lessonDescription":"string (optional)",
+  "lessonFile":"formData (optional)",
+  "featureImage":"formData (optional)",
+  "videoSource":"string (accepts video URL)",
+  "videoPlaybakTime":"gets time in seconds",
+  "attachments":"[array of files in formData]"
+}
+]
+
+
+// course builder --> add quiz
+
+{
+  "courseId": "id",
+  "topicId": "id" ,
+  "quizTitle":"string (required)",
+  "quizDescription":"string (optional)",
+  "questions":[
+    {
+      "questionTitle":"string (required)",
+      "questionType": "id. ['true/false', 'single choice', 'multiple choise', 'open ended', fill in the blanks', short answer', 'matching', 'image matching', 'image answering', 'ordering']",
+      "isAnswerRequired":"boolean",
+      "isRandomized":"boolean",
+      "points":"number",
+      "displayPoints":"boolean",
+      "questionDescription":"string (optional)",
+      "options":[
+        {
+          "option":"string",
+          "isAnswer":"boolean",
+        }
+      ]
+    }
+  ],
+  "timeLimin":"number in minutes",
+  "displayQuizTime":"boolean",
+  "quizFeedbackModeId":"id.",
+  "attemptsAllowd":"number between 1 to 20",
+  "passingGrade":"number between 1 to 100%",
+  "maxQuestionAllowedToAnswer":"number",
+  "addvancedSettings":{
+    "quizAutoStart":"boolean",
+    "quizLayoutId":"id",
+    "questionsOrderid":"id", 
+    "hideQuestionNumber":"boolean",
+    "ShortAnswerCharactersLimit":"number",
+    "open-endedEssayQuestionsAnswerCharactersLimit":"number"
+  }
+}

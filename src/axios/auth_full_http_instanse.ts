@@ -33,24 +33,24 @@ http_instanse.interceptors.response.use(
         show_message({
           mode: true,
           color: "error",
-          message: err?.response?.data?.title||"",
+          message: err?.response?.data?.title || "",
         })
       );
     }
     if (err?.response?.status === 401) {
-      localStorage.clear();
-      window.location.reload();
+   
     }
   }
 );
 export const http_instanse_level_2 = axios.create({
-  baseURL: "http://178.239.151.7:8091/api",
+  baseURL: "https://api.yasakashi.ir",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
   },
   withCredentials: true,
 });
+
 http_instanse_level_2.interceptors.request.use((config) => {
   store.dispatch(toggle_loading_level_2(true));
 
@@ -73,14 +73,13 @@ http_instanse_level_2.interceptors.response.use(
         show_message({
           mode: true,
           color: "error",
-          message: err?.response?.data?.title||"",
+          message: err?.response?.data?.title || "",
         })
       );
-    } 
-    
+    }
+
     if (err?.response?.status === 401) {
-      localStorage.clear();
-      window.location.reload();
+      console.log("unauthurized error" , err)
     }
   }
 );

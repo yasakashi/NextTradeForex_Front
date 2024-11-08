@@ -7,12 +7,7 @@ import useAxiosPrivate from "../../../../../hooks/useAxiosPrivate";
 import { useParams } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {
-  createGroupPost,
-  createPostComment,
-  getPostComments,
-  route,
-} from "../../../../../redux/features/postSlice";
+import { createPostComment } from "../../../../../redux/features/postSlice";
 import toast from "react-hot-toast";
 import CustomBeatLoader from "../../../../../utils/loaders/CustomBeatLoader";
 import EmojiPicker from "../../../../EmojiPicker";
@@ -22,38 +17,58 @@ const CreateComment = ({
   communitygroupId,
   showCommentBox,
   setShowCommentBox,
+  setPostComments,
 }) => {
   const { id } = useParams();
 
   const [postIdComment, setPostIdComment] = useState("");
-    const textRef = useRef(null);
+  const textRef = useRef(null);
 
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
 
-  const { commentLoading, postComments, postCommentsLoading } = useSelector(
-    (state) => state.posts
-  );
+  const {
+    commentLoading,
+
+    postComments,
+    postCommentsLoading,
+  } = useSelector((state) => state.posts);
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     messageBody: Yup.string().required("Message body is required"),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
-    dispatch(
-      createPostComment({
-        axiosPrivate,
-        data: {
-          ...values,
-          parentId: postId,
-          communitygroupId: communitygroupId,
-          showpost: false,
-        },
-        resetForm,
-        toast,
-      })
-    );
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      const response = await dispatch(
+        createPostComment({
+          axiosPrivate,
+          data: {
+            ...values,
+            parentId: postId,
+            communitygroupId,
+            showpost: false,
+            categoryids: [],
+          },
+          toast,
+        })
+      );
+
+      console.log("comments from create post", response);
+      if (response?.payload?.messageCode === 200) {
+        setPostComments((prevComments) => [
+          ...prevComments,
+          response.payload.messageData,
+        ]);
+        resetForm(); // Clear the form after successful submission
+        console.log("close comment box");
+        setShowCommentBox(false);
+      }
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to add comment");
+    }
   };
 
   return (
@@ -94,7 +109,7 @@ const CreateComment = ({
                     name="messageBody"
                     innerRef={textRef}
                   />
-                  <span className="absolute right-6 bottom-1">
+                  <span className="absolute right-6 bottom-1 z-[1000]">
                     <EmojiPicker
                       text={values.messageBody}
                       setText={setFieldValue}

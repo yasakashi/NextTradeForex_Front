@@ -8,7 +8,7 @@ import {
   setGroupId,
 } from "../../../redux/features/groupSlice";
 import toast from "react-hot-toast";
-import Moment from "react-moment";
+// import Moment from "react-moment";
 
 const activeClass = "bg-blue-main text-gray-100";
 

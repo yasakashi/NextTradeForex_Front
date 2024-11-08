@@ -39,6 +39,7 @@ const ManageGroupMemebers = () => {
 
   return (
     <div>
+      {console.log({ acceptedMembers })}
       {membersLoading ? (
         <div className="my-4 mx-auto flex justify-center items-center">
           <CustomBeatLoader />
@@ -50,7 +51,7 @@ const ManageGroupMemebers = () => {
         {acceptedMembers?.length > 0
           ? acceptedMembers?.map((acceptedMember, index) => {
               return acceptedMember?.isadmin === true ? (
-                <div key={index} className="flex items-center justify-between">
+                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center mt-8 gap-4 md:gap-6 lg:gap-10 cursor-pointer p-3 rounded-md hover:bg-slate-100 transition-all flex-grow">
                     <div className="shrink-0 size-[50px] relative">
                       <img

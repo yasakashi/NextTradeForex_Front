@@ -5,7 +5,8 @@ import {jwtDecode} from "jwt-decode"; // Correct import as default import
 import { googleRegisterAction } from "../../redux/features/registerSlice";
 
 // Google OAuth client ID
-const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const clientId =
+  "188533324005-c3mti7r7gdg65col0l9e530gjpal61be.apps.googleusercontent.com";
 
 const GoogleLoginComponent = () => {
   const dispatch = useDispatch();

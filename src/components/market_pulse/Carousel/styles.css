@@ -1,0 +1,12 @@
+.swiper{
+  height: 480px;
+  --swiper-pagination-bullet-size: 18px;
+}
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

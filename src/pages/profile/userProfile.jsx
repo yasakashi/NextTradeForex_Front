@@ -14,6 +14,11 @@ import { LuLogOut } from "react-icons/lu";
 import { FaChartLine } from "react-icons/fa6";
 // import { MdDashboard } from "react-icons/md";
 import { ImEmbed } from "react-icons/im";
+import { NavLink, Outlet } from "react-router-dom";
+import { IoMdClose } from "react-icons/io";
+import { IoRocket } from "react-icons/io5";
+import { GiWallet } from "react-icons/gi";
+import { FaRegStar } from "react-icons/fa6";
 
 import {
   Link,
@@ -29,20 +34,280 @@ import { MdDashboard } from "react-icons/md";
 import { PiHandWithdrawDuotone } from "react-icons/pi";
 import { get_user_info_api } from "./my_courses/service/get_my_courses_api";
 import EnrolledCourses from "./enrolled_courses/view/enrolled_courses";
-import EditCourseScreen from "./my_courses/view/edit_course_screen";
 
 const UserProfile = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [closeMenu, setCloseMenu] = useState(false);
+  const [role, setRole] = useState("unknown");
+
+  useEffect(() => {
+    switch (user?.userTypeId) {
+      case 1:
+        setRole("Super Admin");
+        break;
+      case 2:
+        setRole("Admin");
+        break;
+      case 3:
+        setRole("Instructor");
+        break;
+      case 4:
+        setRole("Student");
+        break;
+      case 5:
+        setRole("Guest");
+        break;
+      default:
+        setRole("UnKnown");
+        break;
+    }
+  }, []);
+
   return (
     <>
+      {/* {isLoading && (
+        <div className="w-full h-screen fixed inset-0 z-[1001] flex justify-center items-center">
+          <div className="w-full h-full absolute bg-black opacity-65"></div>
+          <div className="z-[1002]">
+            <CustomCircleLoader />
+          </div>
+        </div>
+      )} */}
       <div className="bg-blue-dark w-full min-h-screen pb-20">
         <Navbar />
 
-        <div className="wrapper">
-          <Routes>
-            <Route path="/" element={<UserProfileComponent />} />
-            <Route path="/new-course" element={<NewCourse />} />
-            <Route path="/edit-course/:id" element={<EditCourseScreen />} />
-          </Routes>
+        <div className="px-4 md:px-8 lg:px-12 xl:px-24">
+          <header className="mt-6 sm:mt-10 md:mt-14 lg:mt-20 flex space-x-6 items-center border-b pb-4">
+            <img
+              className="size-[100px] rounded-full border-4 shadow-lg border-white"
+              src="/assets/bp-avatar.png"
+              alt="user img"
+            />
+
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 text-white">
+                <span>Hello,</span>
+                <h4 className="font-semibold text-xl">
+                  {user?.username || "---"}
+                  <span className="text-sm text-gray-400 mx-1 font-normal">
+                    ({role})
+                  </span>
+                </h4>
+              </div>
+              <div className="flex items-center gap-1">
+                <FaRegStar className="text-[#ed9700]" size={18} />
+                <FaRegStar className="text-[#ed9700]" size={18} />
+                <FaRegStar className="text-[#ed9700]" size={18} />
+                <FaRegStar className="text-[#ed9700]" size={18} />
+                <FaRegStar className="text-[#ed9700]" size={18} />
+              </div>
+            </div>
+          </header>
+
+          <div className="flex">
+            <div
+              className={`flex-initial md:relative w-full sm:w-[40%] md:w-auto md:flex-[3] fixed z-[1000] min-h-screen top-0 left-0 bg-blue-dark pt-2 duration-300 ${
+                closeMenu
+                  ? "translate-x-0"
+                  : "-translate-x-full md:translate-x-0"
+              }`}
+            >
+              <div className="flex md:hidden justify-end items-center my-4 px-6">
+                <IoMdClose
+                  className="text-gold-light_400 border border-gold-light_400 rounded-full hover:bg-gold-light_400 hover:text-white transition-all cursor-pointer"
+                  size={24}
+                  onClick={() => setCloseMenu(false)}
+                />
+              </div>
+              <ul className="text-base">
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/user-profile/dashboard`}
+                  >
+                    <MdDashboard size={20} />
+                    Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/user-profile/profile`}
+                  >
+                    <CgProfile size={20} />
+                    My Profile
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/user-profile/groups`}
+                  >
+                    <GrGroup size={20} />
+                    My Groups
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/user-profile/requests`}
+                  >
+                    <ImEmbed size={20} />
+                    Requests
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/user-profile/signals`}
+                  >
+                    <FaChartLine size={20} />
+                    Signals
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/user-profile/enrolled-courses`}
+                  >
+                    <FaGraduationCap size={20} />
+                    Enrolled Courses
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/user-profile/order-history`}
+                  >
+                    <RiShoppingCart2Fill size={20} />
+                    Order History
+                  </NavLink>
+                </li>
+              </ul>
+
+              {user?.userTypeId === 3 ||
+              user?.userTypeId === 2 ||
+              user?.userTypeId === 1 ? (
+                <>
+                  <div className="w-full h-[1px] bg-white my-2" />
+
+                  <ul>
+                    <li className="text-gray-400 text-sm p-3">Instructor</li>
+                    <li>
+                      <NavLink
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                            isActive ? "bg-gold-light_400" : ""
+                          }`
+                        }
+                        to={`/user-profile/myCourses`}
+                      >
+                        <IoRocket size={20} />
+                        My courses
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        end
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                            isActive ? "bg-gold-light_400" : ""
+                          }`
+                        }
+                        to={`/user-profile/withdrawals`}
+                      >
+                        <GiWallet size={20} />
+                        Withdrawals
+                      </NavLink>
+                    </li>
+                  </ul>
+                </>
+              ) : null}
+
+              <div className="w-full h-[1px] bg-white my-2" />
+
+              <ul className="">
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/user-profile/settings`}
+                  >
+                    <IoMdSettings size={20} />
+                    Settings
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                        isActive ? "bg-gold-light_400" : ""
+                      }`
+                    }
+                    to={`/`}
+                  >
+                    <LuLogOut size={20} />
+                    logout
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+            <div className="md:flex-[9] w-full border-l-0 md:border-l min-h-[60vh] p-8">
+              <div className="md:hidden flex">
+                <button
+                  onClick={() => setCloseMenu(true)}
+                  className="text-blue-400 text-sm border border-blue-400 rounded-md px-3 py-1 cursor-pointer mb-3"
+                >
+                  Show Menu
+                </button>
+              </div>
+
+              <Outlet />
+            </div>
+          </div>
         </div>
       </div>
     </>
@@ -51,10 +316,13 @@ const UserProfile = () => {
 
 export default UserProfile;
 
+
+
+
 const UserProfileComponent = () => {
   const [activeTab, setActiveTab] = useState("myProfile");
   const router = useNavigate();
- 
+
   const changeTabHandler = (tab) => {
     setActiveTab(tab);
   };

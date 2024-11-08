@@ -2,90 +2,120 @@ import { useEffect, useState } from "react";
 import CustomBeatLoader from "../../utils/loaders/CustomBeatLoader";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { getAllMembershipRequests } from "../../redux/features/groupSlice";
+import {
+  acceptMembershipRequest,
+  getAllMembershipRequests,
+} from "../../redux/features/groupSlice";
+import toast from "react-hot-toast";
 
 const Requests = () => {
-  const [reqeustsList, setRequestsList] = useState([]);
-  const [isLoading, setIsloading] = useState(false);
   const [errorMsg, seterrorMsg] = useState(false);
 
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
 
-  const { membershipRequest, groupId, membersLoading } = useSelector(
-    (state) => state.group
-  );
+  const {
+    membershipRequest,
+    groupId,
+    group,
+    membersLoading,
+    acceptMemberShipLoading,
+  } = useSelector((state) => state.group);
 
   useEffect(() => {
     dispatch(
       getAllMembershipRequests({ axiosPrivate, communitygroupId: groupId })
     );
-  }, []);
+  }, [group]);
+
+  const acceptMembershipRequestHandler = ({ groupId, userId }) => {
+    dispatch(
+      acceptMembershipRequest({
+        axiosPrivate,
+        data: { communitygroupId: groupId, userId },
+        toast,
+      })
+    );
+  };
+
+  function formatDate(dateString) {
+    if (dateString) {
+      const date = new Date(dateString);
+
+      // Format date to "DD Mon YYYY"
+      const formattedDate = date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+
+      // Format time to "HH:MM"
+      const formattedTime = date.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      // Return the formatted date and time as "DD Mon YYYY, HH:MM"
+      return `${formattedDate}, ${formattedTime}`;
+    } else return null;
+  }
 
   return (
     <div className="text-white">
       <h3 className="text-white text-xl my-4 font-bold">Membership Requests</h3>
       <div className="mt-10 mb-10 overflow-y-scroll max-h-[40vh] max-w-[90vw] w-full overflow-x-scroll scrollbar-none mx-auto">
         <table className="bg-gray-100 text-gray-900 w-full">
-          <thead className="bg-gray-100 text-gray-900">
+          <thead className=" text-gray-900 bg-blue-light">
             <tr className="text-sm text-white">
+              <th className="p-3 bg-blue-dark border border-white">Count</th>
+              <th className="p-3 bg-blue-dark border border-white">Username</th>
+              <th className="p-3 bg-blue-dark border border-white">Group</th>
               <th className="p-3 bg-blue-dark border border-white">
-                User Name
+                Requested Time
               </th>
-              <th className="p-3 bg-blue-dark border border-white">
-                Product Name
-              </th>
-              <th className="p-3 bg-blue-dark border border-white">
-                Product Type
-              </th>
-              <th className="p-3 bg-blue-dark border border-white"> Amount </th>
-              <th className="p-3 bg-blue-dark border border-white">
-                Sender Address
-              </th>
-              <th className="p-3 bg-blue-dark border border-white">
-                Organize Name
-              </th>
-              <th className="p-3 bg-blue-dark border border-white"> Action </th>
+              <th className="p-3 bg-blue-dark border border-white">Action</th>
             </tr>
           </thead>
           <tbody className="bg-gray-100 text-[#5a5c69]">
             {membershipRequest?.length ? (
-              membershipRequest?.map((user, index) => (
+              membershipRequest?.map((request, index) => (
                 <tr key={index} className="bg-gray-200 shadow-sm">
-                  <td className="p-3 border border-gray-300 text-center ">
-                    <input type="checkbox" />
-                  </td>
                   <td className="p-3 border border-gray-300 text-center ">
                     {index + 1}
                   </td>
                   <td className="p-3 border border-gray-300 text-center ">
-                    {user?.fname || "unknown"}
+                    {request?.username || "-"}
                   </td>
                   <td className="p-3 border border-gray-300 text-center ">
-                    {user?.lname || "unknown"}
+                    {request?.communitygrouptitle || "-"}
                   </td>
+
                   <td className="p-3 border border-gray-300 text-center ">
-                    {user?.username || "username"}
+                    {request?.requestdatetime
+                      ? formatDate(request?.requestdatetime) || "-"
+                      : null}
                   </td>
-                  <td className="p-3 border border-gray-300 text-center ">
-                    {user?.organizename === null ? "***" : user.organizename}
-                  </td>
-                  <td className="p-3 border border-gray-300 text-center ">
-                    {user?.userTypeId === "1" ? "Master" : "Student"}
-                  </td>
-                  <td className="p-3 border border-gray-300 text-center ">
-                    {user?.nationalcode || "***"}
-                  </td>
-                  <td className="p-3 border border-gray-300 text-center ">
-                    {user?.isActive ? (
-                      <span className="text-green-600 font-semibold">
-                        Active
-                      </span>
-                    ) : (
-                      <span className="text-red-600 font-semibold">
-                        In Active
-                      </span>
-                    )}
+
+                  <td className="p-3 min-w-[200px] border border-gray-300 text-center flex items-center gap-2 justify-center">
+                    <button
+                      disabled={acceptMemberShipLoading}
+                      onClick={() =>
+                        acceptMembershipRequestHandler({
+                          groupId: request?.communitygroupId,
+                          userId: request?.userId,
+                        })
+                      }
+                      className="bg-green-600 disabled:opacity-65 disabled:cursor-not-allowed px-3 py-1 rounded-md text-white text-sm cursor-pointer shadow-md"
+                    >
+                      {acceptMemberShipLoading ? (
+                        <CustomBeatLoader color="#fff" />
+                      ) : (
+                        "Accept"
+                      )}
+                    </button>
+                    <button className="bg-red-600 px-3 py-1 rounded-md text-white text-sm cursor-pointer shadow-md">
+                      Remove
+                    </button>
                   </td>
                 </tr>
               ))

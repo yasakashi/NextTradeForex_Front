@@ -8,6 +8,7 @@ import { removeMessage } from "../../../redux/features/messageSlice";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import SignalItem from "../signalchannel/SignalItem";
 
 const SingleMsg = ({ msg }) => {
   const [activeMessageModal, setActiveMessageModal] = useState(null);
@@ -59,17 +60,61 @@ const SingleMsg = ({ msg }) => {
     // Combine formatted date and time
     return `${formattedDate} ${formattedTime}`;
   };
+
+  const timeFrames = [
+    "timeframe_1min",
+    "timeframe_5min",
+    "timeframe_15min",
+    "timeframe_30min",
+    "timeframe_1houre",
+    "timeframe_4houre",
+    "timeframe_8houre",
+    "timeframe_1day",
+    "timeframe_1week",
+    "timeframe_1month",
+  ];
+  const converter = (i) => {
+    return i.replace("timeframe_", "");
+  };
+
+  const alltime = (item) => {
+    var l = [];
+    timeFrames.forEach((i, index) => {
+      if (item[i]) {
+        l.push(
+          <span className="text-gray-600 text-sm mx-1 px-1" key={index}>
+            {converter(i)},
+          </span>
+        );
+      }
+    });
+    return l;
+  };
   return (
     <div className="group cursor-pointer h-auto opacity-100 pr-5 relative flex flex-row items-center w-auto mb-3 p-0 max-w-full">
-      <div className="max-w-[100%-75px] relative flex flex-col justify-end items-end gap-2 bg-[#e8e8e8] text-black rounded-[4px] text-left py-2 px-1">
-        <div className="bg-[#8b9ae5] p-1 px-4 w-full shadow-sm rounded-md">
-          <h4 className="text-sm font-semibold text-gray-800 py-1">
-            {msg?.messagetitle}
-          </h4>
-          <p className="text-sm text-gray-700">{msg?.messagebody}</p>
-        </div>
+      <div
+        className={`max-w-[calc(100%-75px)] relative flex flex-col justify-end items-end gap-2 bg-[#e8e8e8] text-black rounded-[4px] text-left py-2 px-1 ${
+          msg?.issignaltemplate ? "w-full" : "w-max"
+        }`}
+      >
+        {msg?.issignaltemplate ? (
+          <SignalItem
+            item={JSON.parse(msg.messagebody)}
+            alltime={alltime}
+            pageType="signalTemp"
+          />
+        ) : (
+          <div className="bg-[#8b9ae5] w-max p-1 px-4 shadow-sm rounded-md">
+            <h4 className="text-sm font-semibold text-gray-800 py-1">
+              {msg?.messagetitle}
+            </h4>
+
+            <p className="text-sm text-gray-700">{msg?.messagebody}</p>
+          </div>
+        )}
+
         <span className="ml-2">
-          <span className="text-[10px] whitespace-nowrap">
+          <span className="text-[10px] whitespace-nowrap px-2">
             {msg?.registerdatetime ? formatDate(msg?.registerdatetime) : null}
           </span>
         </span>

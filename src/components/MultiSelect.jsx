@@ -25,7 +25,8 @@ const MultiSelect = ({
               key={skill}
               className="flex flex-wrap items-center bg-blue-light text-white text-sm rounded-lg cursor-pointer px-2 py-1"
             >
-              {skill}
+              {options?.find((item) => item.id === Number(skill))?.name}
+              {/* {skill} */}
               <button
                 onClick={() => handleRemoveItems(skill)}
                 className="ml-2 text-white"
@@ -55,12 +56,12 @@ const MultiSelect = ({
                 <input
                   type="checkbox"
                   name={name}
-                  value={item}
+                  value={item.id}
                   onChange={handleChange}
-                  checked={formikTargetValues?.includes(item)}
+                  checked={formikTargetValues?.includes(`${item?.id}`)}
                   className="form-checkbox"
                 />
-                <span className="ml-2">{item}</span>
+                <span className="ml-2">{item?.name}</span>
               </label>
             </li>
           ))}

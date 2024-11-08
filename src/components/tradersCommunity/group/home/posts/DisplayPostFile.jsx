@@ -1,6 +1,7 @@
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const DisplayPostFile = ({ post }) => {
+  console.log("=============> post file", post)
   const {
     photofileurl,
     videofileurl,

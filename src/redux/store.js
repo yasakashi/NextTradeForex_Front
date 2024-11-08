@@ -1,24 +1,32 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 
-import loginReducer from "./features/loginSlice";
-import registerReducer from "./features/registerSlice";
-import usersListReducer from "./features/admin/usersListSlice";
-import userDataReducer from "./features/userDataSlice";
-import userSendMessage from "./features/messages/sendMsgSlice";
-import groupReducer from "./features/groupSlice";
-import signalChannelReducer from "./features/signals/signalChannelsSlice";
-import addSignalReducer from "./features/signals/SignalSlice";
-import groupPostsReducer from "./features/postSlice";
-import ticketReducer from "./features/tickeSlice";
-import adminCourseReducer from "./features/learning/adminCourseSlice";
-import partnershipReducer from "./features/partnershipSlice";
-import galleryReducer from "./features/gallerySlice";
-import siteMessageReducer from "./features/messageSlice";
-import { generalReducer } from "./features/generalSlice"; 
-import { courseReducer } from "./features/courseSlise";
+import loginReducer from './features/loginSlice';
+import registerReducer from './features/registerSlice';
+import usersListReducer from './features/admin/usersListSlice';
+import userDataReducer from './features/userDataSlice';
+import userSendMessage from './features/messages/sendMsgSlice';
+import groupReducer from './features/groupSlice';
+import signalChannelReducer from './features/signals/signalChannelsSlice';
+import addSignalReducer from './features/signals/SignalSlice';
+import groupPostsReducer from './features/postSlice';
+import ticketReducer from './features/tickeSlice';
+import adminCourseReducer from './features/learning/adminCourseSlice';
+import partnershipReducer from './features/partnershipSlice';
+import galleryReducer from './features/gallerySlice';
+import siteMessageReducer from './features/messageSlice';
+import { generalReducer } from './features/generalSlice';
+import { courseReducer } from './features/courseSlise';
+import { courseBuilderApi } from './features/course/courseBuilderApi';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { courseApi } from './features/course/courseApii';
+import { marketPulseReducer } from './features/marketPulse/marketPulseSlice';
+import { loadingReducer } from './features/loading';
 
 const store = configureStore({
   reducer: {
+    [courseBuilderApi.reducerPath]: courseBuilderApi.reducer,
+    [courseApi.reducerPath]: courseApi.reducer,
+
     login: loginReducer,
     auth: registerReducer,
     usersList: usersListReducer,
@@ -32,11 +40,20 @@ const store = configureStore({
     adminCourse: adminCourseReducer,
     partnership: partnershipReducer,
     gallery: galleryReducer,
-    siteMessage: siteMessageReducer,  
-    general:generalReducer,
-    course:courseReducer
-
+    siteMessage: siteMessageReducer,
+    general: generalReducer,
+    course: courseReducer,
+    marketPulse: marketPulseReducer,
+    loading: loadingReducer,
   },
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      courseBuilderApi.middleware,
+      courseApi.middleware
+    ),
 });
+
+setupListeners(store.dispatch);
 
 export default store;

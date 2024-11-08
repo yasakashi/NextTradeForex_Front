@@ -5,7 +5,7 @@ export const sendMessageAction = createAsyncThunk(
   async ({ axiosPrivate, data }, { rejectWithValue }) => {
     try {
       const response = await axiosPrivate.post(
-        "/api/sitemessage/addmessage",
+        "/api/communitygroup/addmessage",
         data
       );
 
@@ -23,7 +23,7 @@ export const getMessages = createAsyncThunk(
   async ({ axiosPrivate, data }, { rejectWithValue }) => {
     try {
       const response = await axiosPrivate.post(
-        "/api/sitemessage/getmessage",
+        "/api/communitygroup/getmessage",
         data
       );
 

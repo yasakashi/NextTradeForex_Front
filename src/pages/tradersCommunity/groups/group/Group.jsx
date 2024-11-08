@@ -35,12 +35,14 @@ const CommunityGroup = () => {
   const token = localStorage.getItem("loginToken");
 
   const [url, setUrl] = useState("");
+  const [imageUpdateTrigger, setImageUpdateTrigger] = useState(false);
 
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
 
   const {
     group,
+    groupPicLoading,
     getGroupLoading,
     groupId,
     editGroupLoading,
@@ -61,13 +63,19 @@ const CommunityGroup = () => {
 
   useEffect(() => {
     dispatch(getGroup({ axiosPrivate, id: groupId }));
-  }, [groupId, groupDetail, groupImg, groupCoverImg]);
+  }, [groupId, groupDetail]);
 
   useEffect(() => {
-    // dispatch(getGroupImage({ axiosPrivate, id: groupId }));
+    async function getGroupPic() {
+      await dispatch(getGroupImage({ axiosPrivate, id: groupId }));
+    }
+
+    getGroupPic();
+  }, [ dispatch, groupId]);
+
+  useEffect(() => {
     dispatch(getGroupCoverImg({ axiosPrivate, id: groupId }));
-    dispatch(getGroupImage({ axiosPrivate, id: groupId }));
-  }, [groupCoverImg, groupImg, dispatch, groupId]);
+  }, [groupCoverImg, dispatch, groupId]);
 
   useEffect(() => {
     let subUrl = group?.title
@@ -79,6 +87,7 @@ const CommunityGroup = () => {
     setUrl(`/traders-community/groups/${subUrl}`);
     localStorage.setItem("groupname", subUrl);
   }, [group, editGroupLoading]);
+
 
   const pathParts = location?.pathname.split("/");
   const tab = pathParts[pathParts.length - 1];
@@ -95,6 +104,11 @@ const CommunityGroup = () => {
       });
   };
 
+  useEffect(() => {
+    {
+      console.log({ groupImg }, "===============>group img");
+    }
+  }, [groupImg]);
   return (
     <>
       <SideBar />
@@ -102,7 +116,7 @@ const CommunityGroup = () => {
       <div className="bg-link-water  w-full min-h-screen h-full">
         <div className="w-full">
           <CummunityNavbar />
-      
+
           <div className="w-full sm:w-[calc(100%-60px)] ml-auto">
             <div className="px-4 sm:max-w-xl md:max-w-3xl lg:max-w-4xl xl:max-w-6xl mx-auto">
               <div className="mt-10 w-full">
@@ -136,6 +150,7 @@ const CommunityGroup = () => {
                           className="object-cover object-center w-full h-full overflow-hidden rounded-full"
                           src={groupImg}
                           alt="Group Profile"
+                          key={imageUpdateTrigger}
                         />
                       ) : (
                         <img
@@ -165,6 +180,7 @@ const CommunityGroup = () => {
                             group?.title
                           )}
                         </h3>
+                        {console.log({ getGroupLoading })}
                         <span className="text-sm text-gray-400 ">
                           {getGroupLoading ? (
                             <SkeletonTheme

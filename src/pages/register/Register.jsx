@@ -1,20 +1,30 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
 import MainBannerTitle from "../../common/MainBannerTitle";
 import HeroTemp from "../../components/HeroTemp";
-import * as Yup from "yup";
-import { useFormik } from "formik";
 import InputError from "../../components/InputError";
+import CustomCircleLoader from "../../utils/loaders/CustomCircleLoader";
+import GoogleLoginComponent from "./GoogleRegister";
+import MultiSelect from "../../components/MultiSelect";
+import RegisterInputFeild from "../../components/RegisterInputFeild";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import toast from "react-hot-toast";
+import * as Yup from "yup";
 import {
+  getCountries,
+  getStates,
+  getcities,
+  getfinancialinstruments,
+  getforexexperiencelevels,
+  getinterestforexs,
+  gettargettrainers,
+  gettrainingmethods,
   registerAction,
-  googleRegisterAction,
 } from "../../redux/features/registerSlice";
-import CustomCircleLoader from "../../utils/loaders/CustomCircleLoader";
-import CustomBtnLg from "../../common/CustomBtnLg";
-import { GoogleLogin } from "react-google-login";
-import GoogleLoginComponent from "./GoogleRegister";
+
+import DatePicker from "react-multi-date-picker";
 
 const Register = () => {
   const params = useParams();
@@ -22,14 +32,32 @@ const Register = () => {
 
   const [showPass, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [financialDropdownOpen, setFainancialDropdownOpen] = useState(false);
+  const [targetTrainersDropdownOpen, setTragetTrainersDropdownOpen] =
+    useState(false);
+  const [trainingMethodDropdownOpen, setTrainingMehodDropdownOpen] =
+    useState(false);
 
   const navigate = useNavigate();
 
   // redux
   const dispatch = useDispatch();
-  const { userData, isLoading, messageCode } = useSelector(
-    (state) => state.auth
-  );
+  const {
+    userData,
+    isLoading,
+    messageCode,
+    countries,
+    states,
+    cities,
+    forexInterests,
+    trainingMethods,
+    targetTrainers,
+    forexExperincesLevel,
+    financialInstruments,
+    countriesLoading,
+    statesLoading,
+    citiesLoading,
+  } = useSelector((state) => state.auth);
 
   // formik
   const registerValidation = Yup.object({
@@ -40,44 +68,64 @@ const Register = () => {
       .required("Last Name is required.")
       .min(4, "Must be at least 4 characters."),
     username: Yup.string()
-      .required("User name is required.")
+      .required("Username is required.")
+      .matches(/^[^\d]/, "Username cannot start with a number.")
       .min(4, "Must be at least 4 characters."),
-    mobile: Yup.string()
+    Mobile: Yup.string()
       .required("Mobile number is required.")
       .matches(
         /^(\+\d{1,3}[- ]?)?\d{1,14}$/,
         "Please enter a valid phone number."
       ),
-    email: Yup.string()
+    Email: Yup.string()
       .required("Email is required.")
       .email("Invalid email adddress!"),
-    password: Yup.string()
+    Password: Yup.string()
       .required(
         "Enter a combination of alt least eight numbers, letters and punctuation marks (such as ! and &,@)"
       )
       .min(8, "Password is too short")
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
         "password must contain uppercase, lowercase, number and  special character"
       ),
     confirm_password: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .oneOf([Yup.ref("Password"), null], "Passwords must match")
       .required("Confirm Password is required"),
-    userTypeId: Yup.string().required("Choose your role."),
+    UserTypeId: Yup.string().required("Choose your role."),
+
+    financialinstrumentIds: Yup.array(),
+    trainingmethodIds: Yup.array(),
+    targettrainerIds: Yup.array(),
+    forexexperiencelevelId: Yup.string(),
+    interestforexId: Yup.string(),
+    // financialinstrumentIds: Yup.array()
+    //   .min(1, "Select at least one financial instrument")
+    //   .required("Required"),
+    // trainingmethodIds: Yup.array()
+    //   .min(1, "Select at least one training method")
+    //   .required("Required"),
+    // targettrainerIds: Yup.array()
+    //   .min(1, "Select at least one target trainer")
+    //   .required("Required"),
+    // forexexperiencelevelId: Yup.string().required("Required"),
+    // interestforexId: Yup.string().required("Required"),
   });
+
+  // "hobbyoftradingfulltime": true
 
   const formik = useFormik({
     initialValues: {
       fname: "",
       lname: "",
       username: "",
-      mobile: "",
-      email: "",
-      password: "",
+      Mobile: "",
+      Email: "",
+      Password: "",
       confirm_password: "",
       address: null,
       nationalcode: null,
-      birthDate: null,
+      BirthDate: null,
       sex: null,
       personTypeId: 0,
       userPic: null,
@@ -90,14 +138,86 @@ const Register = () => {
       telephone: null,
       postalcode: null,
       legalnationalcode: null,
-      userTypeId: "4",
+      UserTypeId: "4",
+      countryid: "",
+      stateid: "",
+      cityid: "",
+      financialinstrumentIds: [],
+      trainingmethodIds: [],
+      targettrainerIds: [],
+      forexexperiencelevelId: "",
+      interestforexId: "",
     },
     validationSchema: registerValidation,
     onSubmit: (values) => {
-      console.log(values);
-      dispatch(registerAction({ values }));
+      dispatch(
+        registerAction({
+          values: {
+            ...values,
+
+            UserTypeId: Number(values.UserTypeId),
+            interestforexId: Number(values.interestforexId),
+            targettrainerIds: convertStrToNum(values.targettrainerIds),
+            trainingmethodIds: convertStrToNum(values.trainingmethodIds),
+            financialinstrumentIds: convertStrToNum(
+              values.financialinstrumentIds
+            ),
+            forexexperiencelevelId: Number(values.forexexperiencelevelId),
+          },
+          toast,
+        })
+      );
     },
   });
+
+  const handleRemoveSkill = (skill) => {
+    let newVal = formik.values.trainingmethodIds?.filter(
+      (item) => item !== skill
+    );
+    formik.setFieldValue("trainingmethodIds", newVal);
+  };
+
+  const handleTragetTrainersRemove = (skill) => {
+    let newVal = formik.values.targettrainerIds?.filter(
+      (item) => item !== skill
+    );
+    formik.setFieldValue("targettrainerIds", newVal);
+  };
+
+  const handleFinancialInstrumentsRemove = (skill) => {
+    let newVal = formik.values.financialinstrumentIds?.filter(
+      (item) => item !== skill
+    );
+    formik.setFieldValue("financialinstrumentIds", newVal);
+  };
+
+  useEffect(() => {
+    dispatch(getinterestforexs());
+    dispatch(gettrainingmethods());
+    dispatch(gettargettrainers());
+    dispatch(getforexexperiencelevels());
+    dispatch(getfinancialinstruments());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getCountries());
+  }, []);
+
+  useEffect(() => {
+    if (formik.values?.countryid) {
+      dispatch(getStates({ countryid: parseInt(formik.values?.countryid) }));
+    }
+  }, [formik.values.countryid]);
+
+  useEffect(() => {
+    if (formik.values?.countryid && formik.values?.stateid) {
+      dispatch(getcities({ stateid: parseInt(formik.values?.stateid) }));
+    }
+  }, [formik.values?.stateid, formik.values.countryid]);
+
+  const convertStrToNum = (stringArray) => {
+    return stringArray.map((item) => Number(item));
+  };
 
   return (
     <>
@@ -120,6 +240,48 @@ const Register = () => {
         <div className="mt-16 pb-20 wrapper flex justify-center ">
           <div className="bg-blue-light w-full sm:w-[510px] z-[50] rounded-2xl p-5 shadow-2xl">
             <form onSubmit={formik.handleSubmit}>
+              <div className="flex flex-col gap-2 mb-3">
+                <span className="text-gray-400 text-sm pb-1">
+                  Register as :
+                </span>
+                <div className="flex items-center gap-4 w-full">
+                  <label
+                    htmlFor="student"
+                    className="flex items-center justify-center w-full gap-1 border border-gray-400 px-2 py-3 rounded-lg cursor-pointer text-gray-400"
+                  >
+                    <input
+                      name="UserTypeId"
+                      id="student"
+                      checked={Number(formik.values.UserTypeId) === 4}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value="4"
+                      type="radio"
+                    />
+                    Student
+                  </label>
+                  <label
+                    htmlFor="indicator"
+                    className="flex items-center justify-center w-full gap-1 border border-gray-400 px-2 py-3 rounded-lg cursor-pointer text-gray-400"
+                  >
+                    <input
+                      name="UserTypeId"
+                      id="indicator"
+                      checked={Number(formik.values.UserTypeId) === 3}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value="3"
+                      type="radio"
+                    />
+                    Instructor
+                  </label>
+                </div>
+
+                {formik.touched.UserTypeId && formik.errors.UserTypeId ? (
+                  <InputError title={formik.errors.UserTypeId} />
+                ) : null}
+              </div>
+
               <div className="flex flex-col space-y-4">
                 {/* first name, last name */}
                 <div className="flex flex-col sm:flex-row items-start gap-3">
@@ -157,86 +319,64 @@ const Register = () => {
                   </label>
                 </div>
 
-                <label className="space-y-2">
-                  <span className="text-gray-400 text-sm">Username *</span>
-                  <input
-                    name="username"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.username}
-                    type="text"
-                    className="formInputText"
-                    placeholder="Username"
-                  />
-                  {formik.touched.username && formik.errors.username ? (
-                    <InputError title={formik.errors.username} />
-                  ) : null}
-                </label>
+                <RegisterInputFeild
+                  label="Username *"
+                  name="username"
+                  formik={formik}
+                  type="text"
+                  placeholder="Username"
+                  touched={formik.touched.username}
+                  errors={formik.errors.username}
+                  errorMsg={formik.errors.username}
+                />
+                <RegisterInputFeild
+                  label="Mobile *"
+                  name="Mobile"
+                  formik={formik}
+                  type="text"
+                  placeholder="Mobile"
+                  touched={formik.touched.Mobile}
+                  errors={formik.errors.Mobile}
+                  errorMsg={formik.errors.Mobile}
+                />
 
-                <label className="space-y-2">
-                  <span className="text-gray-400 text-sm">Mobile *</span>
-                  <input
-                    name="mobile"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.mobile}
-                    type="text"
-                    className="formInputText"
-                    placeholder="Mobile"
-                  />
+                <RegisterInputFeild
+                  label="Email *"
+                  name="Email"
+                  formik={formik}
+                  type="text"
+                  placeholder="Email"
+                  touched={formik.touched.Email}
+                  errors={formik.errors.Email}
+                  errorMsg={formik.errors.Email}
+                />
+                <RegisterInputFeild
+                  label="Address"
+                  name="address"
+                  formik={formik}
+                  type="text"
+                  placeholder="Address"
+                  touched={formik.touched.address}
+                  errors={formik.errors.address}
+                  errorMsg={formik.errors.address}
+                />
 
-                  {formik.touched.mobile && formik.errors.mobile ? (
-                    <InputError title={formik.errors.mobile} />
-                  ) : null}
-                </label>
-
-                <label className="space-y-2">
-                  <span className="text-gray-400 text-sm">Email *</span>
-                  <input
-                    name="email"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                    type="email"
-                    className="formInputText"
-                    placeholder="Email"
-                  />
-                  {formik.touched.email && formik.errors.email ? (
-                    <InputError title={formik.errors.email} />
-                  ) : null}
-                </label>
-
-                <label className="space-y-2">
-                  <span className="text-gray-400 text-sm">Address</span>
-                  <input
-                    name="address"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.address}
-                    type="text"
-                    className="formInputText"
-                    placeholder="Address"
-                  />
-
-                  {formik.touched.address && formik.errors.address ? (
-                    <InputError title={formik.errors.address} />
-                  ) : null}
-                </label>
-
-                <label className="space-y-2">
+                <label className="space-y-2 flex flex-col">
                   <span className="text-gray-400 text-sm">Birth Date</span>
-                  <input
-                    name="birthDate"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.birthDate}
-                    type="text"
-                    className="formInputText"
+                  <DatePicker
+                    name="BirthDate"
+                    calendarPosition="bottom-right"
+                    onChange={(date) => {
+                      formik.setFieldValue("BirthDate", date.format());
+                    }}
+                    value={formik.values.BirthDate}
+                    format={"YYYY-MM-DD"}
+                    inputClass="formInputText"
                     placeholder="Birth Date"
                   />
 
-                  {formik.touched.birthDate && formik.errors.birthDate ? (
-                    <InputError title={formik.errors.birthDate} />
+                  {formik.touched.BirthDate && formik.errors.BirthDate ? (
+                    <InputError title={formik.errors.BirthDate} />
                   ) : null}
                 </label>
 
@@ -244,10 +384,10 @@ const Register = () => {
                   <span className="text-gray-400 text-sm">Password *</span>
                   <div className="w-full relative">
                     <input
-                      name="password"
+                      name="Password"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.password}
+                      value={formik.values.Password}
                       type={showPass ? "text" : "password"}
                       className="formInputText"
                       placeholder="Password"
@@ -266,11 +406,10 @@ const Register = () => {
                     )}
                   </div>
 
-                  {formik.touched.password && formik.errors.password ? (
-                    <InputError title={formik.errors.password} />
+                  {formik.touched.Password && formik.errors.Password ? (
+                    <InputError title={formik.errors.Password} />
                   ) : null}
                 </label>
-
                 <label className="space-y-2">
                   <span className="text-gray-400 text-sm">
                     Confirm Password *
@@ -303,8 +442,172 @@ const Register = () => {
                     <InputError title={formik.errors.confirm_password} />
                   ) : null}
                 </label>
-
                 <label className="space-y-2">
+                  <span className="text-gray-400 text-sm">Country</span>
+                  <select
+                    className="bg-[#d1b06e] text-blue-light rounded-md py-[5px] px-1 w-full block outline-none border-none shadow-md"
+                    name="countryid"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.countryid}
+                  >
+                    <option value="">select country</option>
+                    {countries?.length > 0
+                      ? countries.map((country, index) => (
+                          <option key={index} value={country?.countryid}>
+                            {country?.countryname}
+                          </option>
+                        ))
+                      : null}
+                  </select>
+
+                  {formik.touched.countryid && formik.errors.countryid ? (
+                    <InputError title={formik.errors.countryid} />
+                  ) : null}
+                </label>
+                <label className="space-y-2">
+                  <span className="text-gray-400 text-sm">State</span>
+                  <select
+                    className="bg-[#d1b06e] text-blue-light rounded-md py-[5px] px-1 w-full block outline-none border-none shadow-md"
+                    name="stateid"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.stateid}
+                  >
+                    <option value="" disabled>
+                      select state
+                    </option>
+                    {states?.length > 0
+                      ? states.map((state, index) => (
+                          <option key={index} value={state?.stateid}>
+                            {state?.statename}
+                          </option>
+                        ))
+                      : null}
+                  </select>
+
+                  {formik.touched.stateid && formik.errors.stateid ? (
+                    <InputError title={formik.errors.stateid} />
+                  ) : null}
+                </label>
+                <label className="space-y-2">
+                  <span className="text-gray-400 text-sm">City</span>
+                  <select
+                    className="bg-[#d1b06e] text-blue-light rounded-md py-[5px] px-1 w-full block outline-none border-none shadow-md"
+                    name="cityid"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.cityid}
+                  >
+                    <option value="" disabled>
+                      select city
+                    </option>
+                    {cities?.length > 0
+                      ? cities.map((city, index) => (
+                          <option key={index} value={city?.cityid}>
+                            {city?.cityname}
+                          </option>
+                        ))
+                      : null}
+                  </select>
+
+                  {formik.touched.cityid && formik.errors.cityid ? (
+                    <InputError title={formik.errors.cityid} />
+                  ) : null}
+                </label>
+
+                {formik.values.UserTypeId === "4" && (
+                  <>
+                    <label className="space-y-2">
+                      <span className="text-gray-400 text-sm">
+                        Forex Experience Level
+                      </span>
+                      <select
+                        className="bg-[#d1b06e] text-blue-light rounded-md py-[5px] px-1 w-full block outline-none border-none shadow-md"
+                        name="forexexperiencelevelId"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.forexexperiencelevelId}
+                      >
+                        {forexExperincesLevel?.length > 0 &&
+                          forexExperincesLevel?.map((item, index) => (
+                            <option key={index} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+
+                    <label className="space-y-2">
+                      <span className="text-gray-400 text-sm">
+                        Interest in Forex
+                      </span>
+                      <select
+                        className="bg-[#d1b06e] text-blue-light rounded-md py-[5px] px-1 w-full block outline-none border-none shadow-md"
+                        name="interestforexId"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.interestforexId}
+                      >
+                        {forexInterests?.length &&
+                          forexInterests?.map((item, index) => (
+                            <option key={index} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+                  </>
+                )}
+
+                {Number(formik.values.UserTypeId) === 3 && (
+                  <>
+                    {/* 00000000 Financial Instruments 000000000000 */}
+                    <MultiSelect
+                      formikTargetValues={formik.values?.financialinstrumentIds}
+                      handleRemoveItems={handleFinancialInstrumentsRemove}
+                      options={financialInstruments}
+                      setDropDownOpen={setFainancialDropdownOpen}
+                      dropDownOPen={financialDropdownOpen}
+                      handleChange={formik.handleChange}
+                      label="Financial Instruments"
+                      name="financialinstrumentIds"
+                    />
+
+                    {/* 0000000000  Training Methods 0000000000000000 */}
+                    <MultiSelect
+                      formikTargetValues={formik.values?.trainingmethodIds}
+                      handleRemoveItems={handleRemoveSkill}
+                      options={trainingMethods}
+                      setDropDownOpen={setTrainingMehodDropdownOpen}
+                      dropDownOPen={trainingMethodDropdownOpen}
+                      handleChange={formik.handleChange}
+                      label="Training Methods"
+                      name="trainingmethodIds"
+                    />
+
+                    {/* 0000000000 Trarget Trainers 0000000000000000 */}
+                    <MultiSelect
+                      formikTargetValues={formik.values?.targettrainerIds}
+                      handleRemoveItems={handleTragetTrainersRemove}
+                      options={targetTrainers}
+                      setDropDownOpen={setTragetTrainersDropdownOpen}
+                      dropDownOPen={targetTrainersDropdownOpen}
+                      handleChange={formik.handleChange}
+                      label="Target Trainers"
+                      name="targettrainerIds"
+                    />
+                  </>
+                )}
+                <label className="space-y-2 flex items-center mt-4 gap-3">
+                  <span className="text-gray-400 text-base">
+                    Referral Code :{" "}
+                  </span>
+                  <span className="bg-transparent border border-gray-400 px-2 py-3 rounded-lg w-1/2 text-center outline-none placeholder:text-gray-500 placeholder:text-sm text-sm">
+                    1
+                  </span>
+                </label>
+                {/* <label className="space-y-2">
                   <span className="text-gray-400 text-sm">Referral Code</span>
                   <input
                     name="referral_code"
@@ -320,47 +623,7 @@ const Register = () => {
                   formik.errors.referral_code ? (
                     <InputError title={formik.errors.referral_code} />
                   ) : null}
-                </label>
-                <div className="flex flex-col gap-2">
-                  <span className="text-gray-400 text-sm pb-2">
-                    Register as :
-                  </span>
-                  <div className="flex items-center gap-4 w-full">
-                    <label
-                      htmlFor="student"
-                      className="flex items-center justify-center w-[120px] gap-1 border border-gray-400 px-2 py-3 rounded-lg cursor-pointer text-gray-400"
-                    >
-                      <input
-                        name="userTypeId"
-                        id="student"
-                        checked={formik.values.userTypeId == 4}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value="4"
-                        type="radio"
-                      />
-                      Student
-                    </label>
-                    <label
-                      htmlFor="master"
-                      className="flex items-center justify-center w-[120px] gap-1 border border-gray-400 px-2 py-3 rounded-lg cursor-pointer text-gray-400"
-                    >
-                      <input
-                        name="userTypeId"
-                        id="master"
-                        checked={formik.values.userTypeId == 3}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value="3"
-                        type="radio"
-                      />
-                      Master
-                    </label>
-                  </div>
-                  {formik.touched.userTypeId && formik.errors.userTypeId ? (
-                    <InputError title={formik.errors.userTypeId} />
-                  ) : null}
-                </div>
+                </label> */}
               </div>
               <button
                 className="outline-none  mt-8 bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] shadow-md rounded-full px-8 py-2 text-blue-dark font-semibold uppercase hover:shadow-none transition-all shadow-gold-light_400"

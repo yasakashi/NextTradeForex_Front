@@ -1,6 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import store from "../store";
-import { reload_auth } from "./generalSlice";
 
 export const createGallery = createAsyncThunk(
   "gallery/createGallery",
@@ -10,8 +8,6 @@ export const createGallery = createAsyncThunk(
         "/api/gallery/creategallery",
         data
       );
-
-      store.dispatch(reload_auth());
       return response.data;
     } catch (error) {
       console.log("creat gallery error", error);

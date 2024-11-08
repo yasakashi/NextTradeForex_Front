@@ -3,7 +3,7 @@ import PodcastItem from "./PodcastItem";
 
 const Provisions = () => {
   return (
-    <section className="wrapper mt-[60px]">
+    <section className="wrapper mt-[60px] body_max_width">
       <div className="flex flex-col lg:flex-row lg:overflow-auto justify-between items-stretch gap-5">
         {/* ///////////////////////////////////////////// */}
         <div className="flex-1 mb-8 md:mb-16 lg:mb-0">
@@ -34,7 +34,7 @@ const Provisions = () => {
               </div>
 
               <ul className="mt-4 max-h-[200px] overflow-auto space-y-4 pl-0 list-none">
-                {Array.from(new Array(3).keys()).map((item,index) => (
+                {Array.from(new Array(3).keys()).map((item, index) => (
                   <PodcastItem
                     key={index}
                     title="Text Podcast on Forex"

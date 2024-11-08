@@ -11,7 +11,7 @@ export const createGroupAction = createAsyncThunk(
       if (error?.message) {
         toast.error(error.message);
       }
-      rejectWithValue(error);
+      return rejectWithValue(error);
     }
   }
 );
@@ -41,10 +41,7 @@ export const removeGroup = createAsyncThunk(
   "group/removeGroup",
   async ({ axiosPrivate, toast, id, data, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/removecommunitygroups",
-        data
-      );
+      const response = await axiosPrivate.post("/api/removecommunitygroups", data);
 
       console.log("removegroup", { response });
 
@@ -114,42 +111,36 @@ export const getUserGroups = createAsyncThunk(
   }
 );
 
-export const getGroup = createAsyncThunk(
-  "group/getGroup",
-  async ({ axiosPrivate, toast, id }, { rejectWithValue }) => {
-    console.log({ id });
-    try {
-      const response = await axiosPrivate.post(
-        "/api/getcommunitygroups",
-        JSON.stringify({
-          owneruserid: null,
-          grouptypeId: null,
+export const getGroup = createAsyncThunk("group/getGroup", async ({ axiosPrivate, toast, id }, { rejectWithValue }) => {
+  console.log({ id });
+  try {
+    const response = await axiosPrivate.post(
+      "/api/getcommunitygroups",
+      JSON.stringify({
+        owneruserid: null,
+        grouptypeId: null,
 
-          id,
-        })
-      );
+        id,
+      })
+    );
 
-      console.log("getGroup", { response });
+    console.log("getGroup", { response });
 
-      return response.data;
-    } catch (error) {
-      console.log("uer groups error", error);
-      if (error?.message) {
-        toast.error(error.message);
-      }
-      return rejectWithValue(error);
+    return response.data;
+  } catch (error) {
+    console.log("uer groups error", error);
+    if (error?.message) {
+      toast.error(error.message);
     }
+    return rejectWithValue(error);
   }
-);
+});
 
 export const reqeustToJoinTheGroupAction = createAsyncThunk(
   "group/reqeustToJoinTheGroupAction",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/addcommunitygroupmember",
-        data
-      );
+      const response = await axiosPrivate.post("/api/addcommunitygroupmember", data);
 
       console.log({ response });
     } catch (error) {
@@ -229,10 +220,7 @@ export const acceptMembershipRequest = createAsyncThunk(
   "group/acceptMembershipRequest",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/acceptcommunitygroupmember",
-        data
-      );
+      const response = await axiosPrivate.post("/api/acceptcommunitygroupmember", data);
 
       if (response?.status === 200) {
         toast.success(response?.data?.messageDescription);
@@ -252,15 +240,17 @@ export const acceptMembershipRequest = createAsyncThunk(
 
 export const getGroupCategory = createAsyncThunk(
   "group/getGroupCategory",
-  async ({ axiosPrivate, toast }, { rejectWithValue }) => {
+  async ({ axiosPrivate, toast, parentId }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getcategorytree", {
-        headers: {
-          Accept: "application/json",
-        },
-      });
-
-      console.log("getCategory", { response });
+      const response = await axiosPrivate.post(
+        "/api/getcategorytree",
+        { parentId },
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
 
       return response.data;
     } catch (error) {
@@ -275,20 +265,16 @@ export const getGroupCategory = createAsyncThunk(
 
 export const setCommunityGroupPic = createAsyncThunk(
   "group/setCommunityGroupPic",
-  async ({ axiosPrivate, toast, data }, { rejectWithValue }) => {
+  async ({ axiosPrivate, toast, data, id }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/setcommunitygrouppic",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axiosPrivate.post("/api/setcommunitygrouppic", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log("setCommunityGroupPic", { response });
-
+      
       return response.data;
     } catch (error) {
       console.log("setCommunityGroupPic error", error);
@@ -304,15 +290,11 @@ export const setCommunityGroupCoverImage = createAsyncThunk(
   "group/setCommunityGroupCoverImage",
   async ({ axiosPrivate, toast, data }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/setcommunitycoverpic",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axiosPrivate.post("/api/setcommunitycoverpic", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log("setCommunityGroupCoverImage", { response });
 
@@ -331,12 +313,9 @@ export const getGroupImage = createAsyncThunk(
   "group/getGroupImage",
   async ({ axiosPrivate, id }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        `/api/getcommunitygroupimageurl/${id}`,
-        {
-          responseType: "arraybuffer", // Important to handle binary data
-        }
-      );
+      const response = await axiosPrivate.post(`/api/getcommunitygroupimageurl/${id}`, {
+        responseType: "arraybuffer", // Important to handle binary data
+      });
 
       console.log("getGroupImage", { response });
 
@@ -353,12 +332,9 @@ export const getGroupCoverImg = createAsyncThunk(
   "group/getGroupCoverImg",
   async ({ axiosPrivate, id }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        `/api/getcommunitycoverimageurl/${id}`,
-        {
-          responseType: "arraybuffer", // Important to handle binary data
-        }
-      );
+      const response = await axiosPrivate.post(`/api/getcommunitycoverimageurl/${id}`, {
+        responseType: "arraybuffer", // Important to handle binary data
+      });
 
       console.log("getGroupCoverImg", { response });
 
@@ -375,10 +351,7 @@ export const chagneGroupUserType = createAsyncThunk(
   "group/chagneGroupUserType",
   async ({ axiosPrivate, toast, id, data, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post(
-        "/api/changecommunitygroupmembertype",
-        data
-      );
+      const response = await axiosPrivate.post("/api/changecommunitygroupmembertype", data);
 
       console.log("chagneGroupUserType", { response });
 
@@ -404,10 +377,10 @@ const groupSlice = createSlice({
     getGroupLoading: false,
     popularGroupsLoading: false,
     membersLoading: false,
-    setGroupPicLoading: false,
+    groupPicLoading: false,
+    groupCoverImgLoading: false,
     groupsForDisplayLoading: false,
     editGroupLoading: false,
-    getGroupImgLoading: false,
     acceptMemberShipLoading: false,
     changeUserTypeLoading: false,
     groupImg: "",
@@ -586,37 +559,72 @@ const groupSlice = createSlice({
       // ----------------------------
 
       .addCase(setCommunityGroupPic.pending, (state) => {
-        state.setGroupPicLoading = true;
+        state.groupPicLoading = true;
         state.errorMsg = null;
       })
       .addCase(setCommunityGroupPic.fulfilled, (state, action) => {
         console.log("setCommunityGroupPic", { action });
-        state.setGroupPicLoading = false;
+        state.groupPicLoading = false;
         state.errorMsg = null;
-        state.groupCoverPic = action.payload?.messageData;
-        state.group = action?.payload?.messageData[0];
+        // state.groupImg = action?.payload?.messageData;
       })
       .addCase(setCommunityGroupPic.rejected, (state, action) => {
         console.log({ action });
-        state.setGroupPicLoading = false;
+        state.groupPicLoading = false;
+        state.errorMsg = action.payload;
+      })
+
+      // -------------------------------
+
+      .addCase(getGroupImage.pending, (state) => {
+        state.groupPicLoading = true;
+        state.errorMsg = null;
+      })
+      .addCase(getGroupImage.fulfilled, (state, action) => {
+        state.groupPicLoading = false;
+        state.errorMsg = null;
+        state.groupImg = action?.payload?.messageData;
+      })
+      .addCase(getGroupImage.rejected, (state, action) => {
+        console.log({ action });
+        state.groupPicLoading = false;
         state.errorMsg = action.payload;
       })
 
       // ----------------------------
 
       .addCase(getGroupCoverImg.pending, (state) => {
-        state.setGroupPicLoading = true;
+        state.groupCoverImgLoading = true;
         state.errorMsg = null;
       })
       .addCase(getGroupCoverImg.fulfilled, (state, action) => {
         console.log("getGroupCoverImg", { action });
-        state.setGroupPicLoading = false;
+        state.groupCoverImgLoading = false;
         state.errorMsg = null;
         state.groupCoverImg = action.payload?.messageData;
       })
       .addCase(getGroupCoverImg.rejected, (state, action) => {
         console.log({ action });
-        state.setGroupPicLoading = false;
+        state.groupCoverImgLoading = false;
+        state.errorMsg = action.payload;
+      })
+
+      // -------------------------------
+
+      .addCase(setCommunityGroupCoverImage.pending, (state) => {
+        state.groupCoverImgLoading = true;
+        state.errorMsg = null;
+      })
+      .addCase(setCommunityGroupCoverImage.fulfilled, (state, action) => {
+        console.log({ action });
+        state.groupCoverImgLoading = false;
+        state.errorMsg = null;
+        state.groupCoverImg = action?.payload?.messageData;
+        // state.group = action.payload?.messageData[0];
+      })
+      .addCase(setCommunityGroupCoverImage.rejected, (state, action) => {
+        console.log({ action });
+        state.groupCoverImgLoading = false;
         state.errorMsg = action.payload;
       })
 
@@ -649,42 +657,6 @@ const groupSlice = createSlice({
       .addCase(editGroupDetail.rejected, (state, action) => {
         console.log({ action });
         state.editGroupLoading = false;
-        state.errorMsg = action.payload;
-      })
-      // -------------------------------
-
-      .addCase(getGroupImage.pending, (state) => {
-        state.getGroupImgLoading = true;
-        state.errorMsg = null;
-      })
-      .addCase(getGroupImage.fulfilled, (state, action) => {
-        console.log({ action });
-        state.getGroupImgLoading = false;
-        state.errorMsg = null;
-        state.groupImg = action?.payload?.messageData;
-      })
-      .addCase(getGroupImage.rejected, (state, action) => {
-        console.log({ action });
-        state.getGroupImgLoading = false;
-        state.errorMsg = action.payload;
-      })
-
-      // -------------------------------
-
-      .addCase(setCommunityGroupCoverImage.pending, (state) => {
-        state.setGroupPicLoading = true;
-        state.errorMsg = null;
-      })
-      .addCase(setCommunityGroupCoverImage.fulfilled, (state, action) => {
-        console.log({ action });
-        state.setGroupPicLoading = false;
-        state.errorMsg = null;
-        state.groupCoverImg = action?.payload?.messageData;
-        // state.group = action.payload?.messageData[0];
-      })
-      .addCase(setCommunityGroupCoverImage.rejected, (state, action) => {
-        console.log({ action });
-        state.setGroupPicLoading = false;
         state.errorMsg = action.payload;
       })
 
