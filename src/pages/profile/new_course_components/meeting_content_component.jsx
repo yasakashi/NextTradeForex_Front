@@ -7,8 +7,7 @@ import { motion } from "framer-motion";
 import { FiMinusCircle } from "react-icons/fi";
 
 import { CustomButton } from "../../../components/ui/CustomButton";
-import MeetingContentModal from "./meeting-content-modal";
-import MeetingItem from "./meeting-item";
+
 import CustomTextInput from "../../../components/ui/CustomTextInput";
 import LibraryModal from "./library_modal";
 import DraftEditor from "../../../admin_panel/components/editor/draft_editor";

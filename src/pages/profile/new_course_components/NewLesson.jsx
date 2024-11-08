@@ -181,18 +181,7 @@ const NewLesson = ({
                   {formik.errors?.lessonFile}
                 </span>
               ) : null}
-              <LibraryModal
-                accept_file="Image"
-                file={formik.values.lessonFile}
-                set_file={(file) => formik.setFieldValue("lessonFile", file)}
-                onSave={(val) => {
-                  set_open(false);
-                }}
-                has_side_bar_action={false}
-                title="Add Media"
-                open={open}
-                set_open={set_open}
-              />
+
               <div className="w-full relative h-[300px]">
                 {/* <EditorComponent /> */}
                 <DraftEditor
@@ -406,6 +395,19 @@ const NewLesson = ({
           </button>
         </div>
       </ModalLayout>
+
+      <LibraryModal
+        accept_file="Image"
+        file={formik.values.lessonFile}
+        set_file={(file) => formik.setFieldValue("lessonFile", file)}
+        onSave={(val) => {
+          set_open(false);
+        }}
+        has_side_bar_action={false}
+        title="Add Media"
+        open={open}
+        set_open={set_open}
+      />
     </form>
   );
 };
