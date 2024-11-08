@@ -3,9 +3,10 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToRaw, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
+
 const DraftEditor = ({
-  value, // EditorState passed from the parent
-  onChange, // Function to pass the updated state to the parent
+  editorState: value, // EditorState passed from the parent
+  set_editor_value:  onChange, // Function to pass the updated state to the parent
   className = "",
   placeholder = "",
   h = "400",

@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material";
-import React, { useId } from "react";
+import { TextField } from '@mui/material';
+import React, { useId } from 'react';
 
 const CustomTextField = ({
   type,
@@ -12,21 +12,22 @@ const CustomTextField = ({
   disable_key_down,
 }) => {
   const classes = helper_text_up_position
-    ? "flex-col-reverse items-start"
-    : "items-center";
+    ? 'flex-col-reverse items-start'
+    : 'items-center';
 
   return (
     <div className={`relative flex w-full ${classes}`}>
       <TextField
         size="small"
-        value={value || ""}
-        type={type || "text"}
+        value={value || ''}
+        type={type || 'text'}
         style={{
-          width: "100%",
+          width: '100%',
           borderRadius: 4,
           ...style,
         }}
         placeholder={placeHolder}
+        onChange={onChange}
       />
       <p
         style={{
@@ -34,7 +35,7 @@ const CustomTextField = ({
           marginTop: 4,
           opacity: helper_text_up_position ? 1 : 0.8,
         }}
-        className={`${helper_text_up_position ? "mb-1" : 0}`}
+        className={`${helper_text_up_position ? 'mb-1' : 0}`}
       >
         {helper_text}
       </p>
@@ -45,12 +46,7 @@ const CustomTextField = ({
 
 export default CustomTextField;
 
-export const CustomTextArea = ({
-  label,
-  placeHolder,
-  set_value,
-  value,
-}) => {
+export const CustomTextArea = ({ label, placeHolder, set_value, value }) => {
   const id = useId();
 
   return (
@@ -68,11 +64,9 @@ export const CustomTextArea = ({
         disabled={!set_value}
         value={value}
         style={{
-          backgroundColor: !set_value ? "rgba(0,0,0,0.1)" : undefined,
+          backgroundColor: !set_value ? 'rgba(0,0,0,0.1)' : undefined,
         }}
-        onChange={(e) => {
-          set_value?.(e.target.value);
-        }}
+        onChange={(e) => set_value?.(e.target.value)}
         id={`${id}`}
         onKeyDown={(e) => e.stopPropagation()}
         rows={4}

@@ -1,52 +1,75 @@
-import { useEffect, useState } from "react";
-import DraftEditor from "../../../../admin_panel/components/editor/draft_editor";
-import CustomTextField, { CustomTextArea } from "../../../../common/custom_text_field";
-import { convertToRaw, EditorState } from "draft-js";
-import Expandable from "../../../Expandable";
-import CountryGeneralData from "../../CountryGeneralData";
-import CountrySpecificData from "../../CountrySpecificData";
-import { useSelector } from "react-redux";
-import { selectForexData } from "../../../../redux/features/marketPulse/marketPulseSlice";
+import { useEffect, useState } from 'react';
+import DraftEditor from '../../../../admin_panel/components/editor/draft_editor';
+import CustomTextField, {
+  CustomTextArea,
+} from '../../../../common/custom_text_field';
+import { convertToRaw, EditorState } from 'draft-js';
+import Expandable from '../../../Expandable';
+import CountryGeneralData from '../../CountryGeneralData';
+import CountrySpecificData from '../../CountrySpecificData';
+import { useSelector } from 'react-redux';
+import { selectForexData } from '../../../../redux/features/marketPulse/marketPulseSlice';
 
 function Currency({ onCurrencyChange }) {
   const forexData = useSelector(selectForexData);
 
-  const [firstCountryHeading, setFirstCountryHeading] = useState(forexData?.firstcountryheading || "");
-  const [secondCountryHeading, setSecondCountryHeading] = useState(forexData?.secondcountryheading || "");
-  const [singlePageChartImage, setSinglePageChartImage] = useState(forexData?.singlePageChartImage || "");
+  const [firstCountryHeading, setFirstCountryHeading] = useState(
+    forexData?.firstcountryheading || ''
+  );
+  const [secondCountryHeading, setSecondCountryHeading] = useState(
+    forexData?.secondcountryheading || ''
+  );
+  const [singlePageChartImage, setSinglePageChartImage] = useState(
+    forexData?.singlePageChartImage || ''
+  );
 
   const [FlexibleBlocklist, setFlexibleBlocklist] = useState([]);
   const [FirstCountryDatalist, setFirstCountryDatalist] = useState([]);
   const [SecondCountryDatalist, setSecondCountryDatalist] = useState([]);
 
-  // const [privotTitle, setPivotTitle] = useState(forexData?.firstcountryheading || "");
-  // const [pivotScript, setPivotScript] = useState("");
-
-  // const [fibbonacciTitle, setFibbonacciTitle] = useState("");
-  // const [fibbonacciScript, setFibbonacciScript] = useState("");
-
-  // const [marketStrengthTitle, setMarketStrengthTitle] = useState("");
-  // const [marketStrengthScript, setMarketStrengthScript] = useState("");
-
   // editors
-  const [oneYearEditor, setOneYearEditor] = useState(() => EditorState.createEmpty());
-  const [chartDescriptionEditor, setChartDescriptionEditor] = useState(() => EditorState.createEmpty());
-  const [firstCountryEditor, setFirstCountryEditor] = useState(() => EditorState.createEmpty());
-  const [secondCountryEditor, setSecondCountryEditor] = useState(() => EditorState.createEmpty());
-  const [bottomDescriptionEditor, setBottomDescriptionEditor] = useState(() => EditorState.createEmpty());
-  const [mainDescriptionEditor, setMainDescriptionEditor] = useState(() => EditorState.createEmpty());
+  const [oneYearEditor, setOneYearEditor] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [chartDescriptionEditor, setChartDescriptionEditor] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [firstCountryEditor, setFirstCountryEditor] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [secondCountryEditor, setSecondCountryEditor] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [bottomDescriptionEditor, setBottomDescriptionEditor] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const [mainDescriptionEditor, setMainDescriptionEditor] = useState(() =>
+    EditorState.createEmpty()
+  );
 
   useEffect(() => {
     const currencyData = {
       firstCountryHeading,
       secondCountryHeading,
       singlePageChartImage,
-      oneYearDescription: JSON.stringify(convertToRaw(oneYearEditor.getCurrentContent())),
-      chartDescription: JSON.stringify(convertToRaw(chartDescriptionEditor.getCurrentContent())),
-      firstCountryDescription: JSON.stringify(convertToRaw(firstCountryEditor.getCurrentContent())),
-      secondCountryDescription: JSON.stringify(convertToRaw(secondCountryEditor.getCurrentContent())),
-      bottomDescription: JSON.stringify(convertToRaw(bottomDescriptionEditor.getCurrentContent())),
-      mainDescription: JSON.stringify(convertToRaw(mainDescriptionEditor.getCurrentContent())),
+      oneYearDescription: JSON.stringify(
+        convertToRaw(oneYearEditor.getCurrentContent())
+      ),
+      chartDescription: JSON.stringify(
+        convertToRaw(chartDescriptionEditor.getCurrentContent())
+      ),
+      firstCountryDescription: JSON.stringify(
+        convertToRaw(firstCountryEditor.getCurrentContent())
+      ),
+      secondCountryDescription: JSON.stringify(
+        convertToRaw(secondCountryEditor.getCurrentContent())
+      ),
+      bottomDescription: JSON.stringify(
+        convertToRaw(bottomDescriptionEditor.getCurrentContent())
+      ),
+      mainDescription: JSON.stringify(
+        convertToRaw(mainDescriptionEditor.getCurrentContent())
+      ),
       FlexibleBlocklist,
       FirstCountryDatalist,
       SecondCountryDatalist,
@@ -69,6 +92,7 @@ function Currency({ onCurrencyChange }) {
     secondCountryEditor,
   ]);
 
+ 
   return (
     <Expandable title="Currency">
       <div className="rounded-sm bg-white p-[30px]">
@@ -100,7 +124,7 @@ function Currency({ onCurrencyChange }) {
         <h2>First Country Heading</h2>
         <CustomTextField
           value={firstCountryHeading}
-          onChange={setFirstCountryHeading}
+          onChange={(e) => setFirstCountryHeading(e.target.value)}
           helper_text="First country heading"
           helper_text_up_position
         />
@@ -125,7 +149,7 @@ function Currency({ onCurrencyChange }) {
         <h2>Second Country Heading</h2>
         <CustomTextField
           value={secondCountryHeading}
-          onChange={setSecondCountryHeading}
+          onChange={(e) => setSecondCountryHeading(e.target.value)}
           helper_text="Second country heading"
           helper_text_up_position
         />
