@@ -96,7 +96,7 @@ const CreateGallery = () => {
             onBlur={formik.handleBlur}
             className="w-[200px] px-1 rounded-[3px] text-sm text-gray-600 outline-none"
           >
-            <option value={1}>Publick</option>
+            <option value={1}>public</option>
             <option value={2}>Logged in users only</option>
             <option value={3}>Group only</option>
           </select>
