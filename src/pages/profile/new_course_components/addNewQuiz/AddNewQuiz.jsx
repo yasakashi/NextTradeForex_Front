@@ -114,7 +114,7 @@ const AddNewQuiz = ({ setShowQuizModal, showQuizModal, courseId, topicId }) => {
               <button
                 type="button"
                 onClick={handleBack}
-                className="text-blue-accent px-4 py-[6px] hover:bg-blue-accent hover:text-white border border-blue-accent rounded-md"
+                className="text-blue-accent px-4 py-[6px] hover:bg-blue-acckent hover:text-white border border-blue-accent rounded-md"
               >
                 Back
               </button>

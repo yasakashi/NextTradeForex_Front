@@ -69,6 +69,7 @@ const CourseBuilderPage = ({ page }) => {
         lessonName: "",
         pageindex: 1,
         rowcount: 50,
+        lessonorder:""
       },
     });
 
