@@ -138,24 +138,26 @@ export const CourceCard = ({ props }) => {
       onMouseLeave={() => {
         set_show_edit(false);
       }}
-      className="border border-white rounded-lg  flex flex-col p-4 mt-4 items-center bg-blue-950 "
+      className="border border-white rounded-lg  max-w-[220px] flex flex-col p-4 mt-4 items-center bg-blue-950 "
     >
+      {console.log({ props })}
       <div
-        style={{ width: 220, height: 200, overflow: "clip", borderRadius: 8 }}
+        // style={{ width: 220, height: 200, overflow: "clip", borderRadius: 8 }}
+        className="w-full h-[120px]"
       >
         <CourseImgTag id={props.id} />
       </div>
-      <p
-        className="text-sm text-yellow-500 mt-6 mb-24"
-        style={{ textAlign: "left", width: "100%" }}
-      >
-        {props.coursename}
-      </p>
-
+      <div className="mt-8 mb-3 flex flex-col items-start w-full leading-5">
+        <p className="text-[15px] text-yellow-500 capitalize">
+          {props.courseName}
+        </p>
+        <p className="text-gray-200 text-sm pl-1">{props?.courseDescription}</p>
+      </div>
       <CustomDivider />
       <div className="flex w-full justify-between mt-4 relative items-center">
         <p className="text-white text-sm">
-          Price : {props?.courseprice || "Free"}
+          Price :{" "}
+          {props?.coursePrice === 0 ? "Free" : <span className="text-gray-200 font-bold text-base">$ {props?.coursePrice}</span>}
         </p>
         <div className="flex w-fit relative">
           {show_edit && (
@@ -209,6 +211,7 @@ export const CourceCard = ({ props }) => {
   );
 };
 export const CourseImgTag = ({ id, img }) => {
+  
   const [cover, set_cover] = React.useState(null);
   React.useEffect(() => {
     if (img) return;

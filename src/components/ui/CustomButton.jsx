@@ -9,8 +9,10 @@ const buttonVariants = {
   secondary: "bg-gray-200 text-gray-900 hover:bg-gray-300",
   ghost: "bg-transparent hover:bg-gray-100",
   link: "text-blue-600 underline hover:text-blue-800",
+  remove:
+    "text-red-600 border border-red-600 hover:bg-red-600 hover:text-white",
   outlined:
-    "text-[#1976d2] bg-white hover:bg-[#1976d2] border border-[#1976d2] rounded-md hover:text-white",
+    "text-[#1976d2] bg-white hover:bg-[#1976d2] border border-[#1976d2] rounded-md hover:text-white outline-none",
 };
 
 const buttonSizes = {
