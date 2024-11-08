@@ -3,35 +3,20 @@ import Sentiments from './Sentiments';
 import TextBox from './TextBox';
 import ReadMoreContent from '../ScrollBox';
 import CountryBox from '../CountryBox';
-import TradingViewWidget from '../Widget';
+import TradingViewWidget from './Wigets/Chart';
 import FundamentalSammary from '../Summary/Fundamental';
 import TechnicalSammary from '../Summary/Technical';
 import RelatedRecourses from '../RelatedRecourses';
 import CustomCarousel from '../Carousel';
+import SearchBox from '../Searchbox';
 
-const euroDollar = [
-  { title: 'Countries', description: 'Eurozone/United States' },
-  { title: '2022 HIGHS & LOWS', description: '1.15123/0.95542' },
-  { title: 'PAIRS THAT CORRELATE', description: 'EUR/CAD, EUR/AUD, NZD/USD' },
-  { title: 'PAIR TYPE', description: 'Major' },
-  { title: 'DAILY AVERAGE MOVEMENT IN PIPS', description: '107.4' },
-];
-
-const usd = [
-  { title: 'Country', description: 'United States' },
-  { title: 'CENTRAL BANK', description: 'Federal Reserve System' },
-  { title: 'NICKNAME', description: 'Buck,Greenback' },
-  { title: '%OF AVERAGE DAILY TURNOVER', description: '84.9%' },
-];
-
-const eur = [
-  { title: 'Country', description: 'Eurozone' },
-  { title: 'CENTRAL BANK', description: 'European Central Bank' },
-  { title: 'NICKNAME', description: 'Fiber' },
-  { title: '%OF AVERAGE DAILY TURNOVER', description: '39.1%' },
-];
-
-export default function Story({ forexItems }) {
+export default function Story({
+  forexItems,
+  currencies,
+  setCurrencies,
+  setCurrencyId,
+  relatedContent,
+}) {
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -57,11 +42,23 @@ export default function Story({ forexItems }) {
                 </React.Fragment>
               ))}
           </div>
+          <ReadMoreContent content={data?.chartdescription} />
           <div className="h-[550px]">
-            <TradingViewWidget symbol={data?.chartdescription} />
+            {data?.singlepagechartimage ? (
+              <TradingViewWidget symbol={data.singlepagechartimage} />
+            ) : null}
           </div>
         </div>
-        <div className="w-1/3 min-h-screen bg-primary"></div>
+        <div className="w-1/3 min-h-screen bg-primary p-5 z-10">
+          <h2 className="text-link-water text-xl font-bold mb-2">
+            {currencies[0]?.categorytypename}
+          </h2>
+          <SearchBox
+            currencies={currencies}
+            setCurrencies={setCurrencies}
+            setCurrencyId={setCurrencyId}
+          />
+        </div>
       </div>
       <ReadMoreContent content={data?.maindescription} />
       <div className="grid grid-cols-2">
@@ -79,27 +76,34 @@ export default function Story({ forexItems }) {
       </div>
       <p className="w-2/3 text-gray-light">{data?.bottomdescription}</p>
       <div className="flex flex-col gap-y-20">
-        <FundamentalSammary heading={data?.fundamentalheading || ''} />
-        <TechnicalSammary
-          heading={data?.technicalheading || ''}
-          tabs={data?.technicalTabslist}
-        />
+        {data ? (
+          <FundamentalSammary
+            heading={data.fundamentalheading}
+            tabs={data?.fundamentalNewsSectionlist}
+          />
+        ) : null}
+        {data ? (
+          <TechnicalSammary
+            heading={data.technicalheading}
+            tabs={data.technicalTabslist}
+          />
+        ) : null}
       </div>
-      <h3 className="text-link-water text-3xl font-extrabold mb-5">
+      <h3 className="text-link-water text-3xl font-extrabold mt-5">
         Related Resources
       </h3>
-      {data?.pdfSectionlist.map((pdf) => {
-        <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />;
-      })}
-      {data?.urlSectionlist.map((url) => {
-        <RelatedRecourses key={url?.id} data={url} tag="URL" />;
-      })}
+      {data?.pdfSectionlist.map((pdf) => (
+        <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />
+      ))}
+      {data?.urlSectionlist.map((url) => (
+        <RelatedRecourses key={url?.id} data={url} tag="URL" />
+      ))}
 
       <div>
-        <h3 className="text-link-water text-3xl font-extrabold mb-5">
+        <h3 className="text-link-water text-3xl font-extrabold mt-6">
           Related Content
         </h3>
-        <CustomCarousel />
+        <CustomCarousel data={relatedContent} />
       </div>
     </div>
   );

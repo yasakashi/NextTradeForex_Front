@@ -1,3 +1,6 @@
+import { useSelector } from 'react-redux';
+import LoadingSpinner from '../Loading';
+
 function SelectInput({ options, value, onChange, placeholder }) {
   return (
     <div className="mt-[5px]">
@@ -8,7 +11,9 @@ function SelectInput({ options, value, onChange, placeholder }) {
         }}
         className="bg-gold-light_200 w-full text-sm px-[3px] py-[2px]"
       >
-        <option value="">{placeholder}</option>
+        <option value="" disabled>
+          {placeholder}
+        </option>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.name} {/* Display the name from the API */}

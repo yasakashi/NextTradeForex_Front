@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import Search from '../../components/market_pulse/search';
 import SelectInput from '../../components/market_pulse/SelectInput';
 import { http_instanse_level_2 } from '../../axios/auth_full_http_instanse';
-import { getforexitems } from './api';
+import { getforexitems, getForexCurrencies, getRelatedContent } from './api';
 import Story from '../../components/market_pulse/forex/Story';
+import { startLoading, stopLoading } from '../../redux/features/loading';
+import LoadingSpinner from '../../components/Loading';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Forex() {
   const [topCategories, setTopCategories] = useState([]);
@@ -11,30 +14,57 @@ function Forex() {
   const [selectedTopCategory, setSelectedTopCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [forexItems, setForexItems] = useState([]);
+  const [currencies, setCurrencies] = useState([]);
+  const [currencyId, setCurrencyId] = useState(null);
+  const [relatedContent, setRelatedContent] = useState();
 
+  const isLoading = useSelector((state) => state.loading.isLoading);
+  const dispatch = useDispatch();
   // Fetch top categories
   const fetchTopCategories = async () => {
     try {
+      dispatch(startLoading());
       const res = await http_instanse_level_2.post(
         'api/marketpuls/gettopcategories',
         {},
         { headers: { 'Content-Type': 'application/json' } }
       );
-
+      dispatch(stopLoading());
       setTopCategories(res.data.messageData);
     } catch (error) {
       console.error('Failed to fetch top categories:', error);
     }
   };
-
-  const fetchForexItems = async () => {
+  const getRelatedSources = async (id) => {
+    try {
+      if (id) {
+        const res = await getRelatedContent(id);
+        setRelatedContent(res.messageData);
+      }
+    } catch (error) {
+      console.error('Failed to fetch related contents', error);
+    }
+  };
+  const getCurrencies = async () => {
     try {
       if (selectedSubCategory) {
+        const res = await getForexCurrencies(selectedSubCategory);
+        setCurrencies(res.messageData);
+      }
+    } catch (error) {
+      console.error('Failed to fetch Currencies:', error);
+    }
+  };
+
+  const fetchForexItems = async (id) => {
+    try {
+      dispatch(startLoading());
+      if (id) {
         const res = await getforexitems({
-          categoryId: selectedSubCategory,
+          categoryId: id,
           id: null,
         });
-
+        dispatch(stopLoading());
         setForexItems(res.messageData);
       }
     } catch (error) {
@@ -47,13 +77,22 @@ function Forex() {
   }, []);
 
   useEffect(() => {
-    fetchForexItems();
+    if (currencyId) {
+      fetchForexItems(currencyId);
+    }
+  }, [currencyId]);
+
+  useEffect(() => {
+    fetchForexItems(selectedSubCategory);
+    getRelatedSources(selectedSubCategory);
+    getCurrencies();
   }, [selectedTopCategory, selectedSubCategory]);
 
   // Fetch subcategories based on the selected top category
   useEffect(() => {
     const fetchSubCategories = async () => {
       try {
+        dispatch(startLoading());
         const res = await http_instanse_level_2.post(
           'api/marketpuls/getcategories',
           {},
@@ -64,7 +103,7 @@ function Forex() {
         const filteredSubCategories = res.data.messageData.filter(
           (subcategory) => subcategory.parentId === +selectedTopCategory
         );
-
+        dispatch(stopLoading());
         setSubCategories(filteredSubCategories);
       } catch (error) {
         console.error('Failed to fetch subcategories:', error);
@@ -106,7 +145,31 @@ function Forex() {
           )}
         </div>
       </div>
-      <Story forexItems={forexItems} />
+      {!selectedTopCategory && (
+        <div>
+          <p className="text-gray-light text-center my-16">
+            Please select a category
+          </p>
+        </div>
+      )}
+      {selectedTopCategory && !selectedSubCategory && (
+        <div>
+          <p className="text-gray-light text-center my-16">
+            Please select a category
+          </p>
+        </div>
+      )}
+
+      {isLoading && <LoadingSpinner />}
+      {forexItems.length > 0 && !isLoading && (
+        <Story
+          forexItems={forexItems}
+          currencies={currencies}
+          setCurrencies={setCurrencies}
+          setCurrencyId={setCurrencyId}
+          relatedContent={relatedContent}
+        />
+      )}
     </div>
   );
 }
