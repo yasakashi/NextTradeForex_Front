@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
-import CustomTextField from "../../common/custom_text_field";
+import { useEffect, useState } from 'react';
+import CustomTextField from '../../common/custom_text_field';
 
 function CountrySpecificData({ countryData, onCountryDataChange }) {
   const [data, setData] = useState(countryData || []);
 
-  const [countries, setCountrName] = useState("");
-  const [centralbank, setCentralBank] = useState("");
-  const [nickname, setNickName] = useState("");
-  const [avragedaily, setDailyAvg] = useState("");
+  const [countries, setCountrName] = useState('');
+  const [centralbank, setCentralBank] = useState('');
+  const [nickname, setNickName] = useState('');
+  const [avragedaily, setDailyAvg] = useState('');
 
   const addRow = () => {
     if (countries && centralbank && nickname && avragedaily) {
       setData([...data, { countries, centralbank, nickname, avragedaily }]);
       // Reset input fields after adding a row
-      setCountrName("");
-      setCentralBank("");
-      setNickName("");
-      setDailyAvg("");
+      setCountrName('');
+      setCentralBank('');
+      setNickName('');
+      setDailyAvg('');
     }
   };
 
@@ -34,45 +34,55 @@ function CountrySpecificData({ countryData, onCountryDataChange }) {
       <div className="grid grid-cols-4 gap-2">
         <CustomTextField
           value={countries}
-          onChange={setCountrName}
+          onChange={(e) => setCountrName(e.target.value)}
           helper_text="COUNTRY"
           helper_text_up_position
           placeHolder="Course Title"
         />
         <CustomTextField
           value={centralbank}
-          onChange={setCentralBank}
+          onChange={(e) => setCentralBank(e.target.value)}
           helper_text="CENTRAL BANK"
           helper_text_up_position
           placeHolder="Course Title"
         />
         <CustomTextField
           value={nickname}
-          onChange={setNickName}
+          onChange={(e) => setNickName(e.target.value)}
           helper_text="NICKNAME"
           helper_text_up_position
           placeHolder="Course Title"
         />
         <CustomTextField
           value={avragedaily}
-          onChange={setDailyAvg}
+          onChange={(e) => setDailyAvg(e.target.value)}
           helper_text="% OF AVERAGE DAILY TURNOVER"
           helper_text_up_position
           placeHolder="Course Title"
         />
       </div>
 
-      <button className="mt-[5px] text-sm bg-blue-700 rounded-sm text-white px-[12px] py-[7px]" onClick={addRow}>
+      <button
+        className="mt-[5px] text-sm bg-blue-700 rounded-sm text-white px-[12px] py-[7px]"
+        onClick={addRow}
+      >
         Add row
       </button>
 
       <div className="mt-4">
         {data.map((item, index) => (
-          <div key={index} className="flex items-center justify-between border-b py-2">
+          <div
+            key={index}
+            className="flex items-center justify-between border-b py-2"
+          >
             <span>
-              {item.countries} - {item.centralbank} - {item.nickname} - {item.avragedaily}
+              {item.countries} - {item.centralbank} - {item.nickname} -{' '}
+              {item.avragedaily}
             </span>
-            <button className="text-red-500 ml-4" onClick={() => removeRow(index)}>
+            <button
+              className="text-red-500 ml-4"
+              onClick={() => removeRow(index)}
+            >
               X
             </button>
           </div>

@@ -1,52 +1,79 @@
-import { useEffect, useState } from "react";
-import DraftEditor from "../../../../admin_panel/components/editor/draft_editor";
-import CustomTextField, { CustomTextArea } from "../../../../common/custom_text_field";
-import { convertToRaw, EditorState } from "draft-js";
-import Expandable from "../../../Expandable";
-import CountryGeneralData from "../../CountryGeneralData";
-import CountrySpecificData from "../../CountrySpecificData";
-import { useSelector } from "react-redux";
-import { selectForexData } from "../../../../redux/features/marketPulse/marketPulseSlice";
+import { createEditorState } from '../../../../utils/createEditorState';
+import { useEffect, useState } from 'react';
+import DraftEditor from '../../../../admin_panel/components/editor/draft_editor';
+import CustomTextField, {
+  CustomTextArea,
+} from '../../../../common/custom_text_field';
+import { convertToRaw, EditorState, convertFromRaw } from 'draft-js';
+import Expandable from '../../../Expandable';
+import CountryGeneralData from '../../CountryGeneralData';
+import CountrySpecificData from '../../CountrySpecificData';
+import { useSelector } from 'react-redux';
+import { selectForexData } from '../../../../redux/features/marketPulse/marketPulseSlice';
 
 function Currency({ onCurrencyChange }) {
   const forexData = useSelector(selectForexData);
-
-  const [firstCountryHeading, setFirstCountryHeading] = useState(forexData?.firstcountryheading || "");
-  const [secondCountryHeading, setSecondCountryHeading] = useState(forexData?.secondcountryheading || "");
-  const [singlePageChartImage, setSinglePageChartImage] = useState(forexData?.singlePageChartImage || "");
+  const [firstCountryHeading, setFirstCountryHeading] = useState(
+    forexData?.firstcountryheading || ''
+  );
+  const [secondCountryHeading, setSecondCountryHeading] = useState(
+    forexData?.secondcountryheading || ''
+  );
+  const [singlePageChartImage, setSinglePageChartImage] = useState(
+    forexData?.singlePageChartImage || ''
+  );
 
   const [FlexibleBlocklist, setFlexibleBlocklist] = useState([]);
   const [FirstCountryDatalist, setFirstCountryDatalist] = useState([]);
   const [SecondCountryDatalist, setSecondCountryDatalist] = useState([]);
-
-  // const [privotTitle, setPivotTitle] = useState(forexData?.firstcountryheading || "");
-  // const [pivotScript, setPivotScript] = useState("");
-
-  // const [fibbonacciTitle, setFibbonacciTitle] = useState("");
-  // const [fibbonacciScript, setFibbonacciScript] = useState("");
-
-  // const [marketStrengthTitle, setMarketStrengthTitle] = useState("");
-  // const [marketStrengthScript, setMarketStrengthScript] = useState("");
-
   // editors
-  const [oneYearEditor, setOneYearEditor] = useState(() => EditorState.createEmpty());
-  const [chartDescriptionEditor, setChartDescriptionEditor] = useState(() => EditorState.createEmpty());
-  const [firstCountryEditor, setFirstCountryEditor] = useState(() => EditorState.createEmpty());
-  const [secondCountryEditor, setSecondCountryEditor] = useState(() => EditorState.createEmpty());
-  const [bottomDescriptionEditor, setBottomDescriptionEditor] = useState(() => EditorState.createEmpty());
-  const [mainDescriptionEditor, setMainDescriptionEditor] = useState(() => EditorState.createEmpty());
+ const [oneYearEditor, setOneYearEditor] = useState(() => {
+    return createEditorState(forexData?.oneyeardescription);
+  });
+
+  const [chartDescriptionEditor, setChartDescriptionEditor] = useState(() => {
+    return createEditorState(forexData?.chartdescription);
+  });
+
+  const [firstCountryEditor, setFirstCountryEditor] = useState(() => {
+    return createEditorState(forexData?.firstcountrydescription);
+  });
+
+  const [secondCountryEditor, setSecondCountryEditor] = useState(() => {
+    return createEditorState(forexData?.secondcountrydescription);
+  });
+
+  const [bottomDescriptionEditor, setBottomDescriptionEditor] = useState(() => {
+    return createEditorState(forexData?.bottomdescription);
+  });
+
+  const [mainDescriptionEditor, setMainDescriptionEditor] = useState(() => {
+    return createEditorState(forexData?.maindescription);
+  });
 
   useEffect(() => {
     const currencyData = {
       firstCountryHeading,
       secondCountryHeading,
       singlePageChartImage,
-      oneYearDescription: JSON.stringify(convertToRaw(oneYearEditor.getCurrentContent())),
-      chartDescription: JSON.stringify(convertToRaw(chartDescriptionEditor.getCurrentContent())),
-      firstCountryDescription: JSON.stringify(convertToRaw(firstCountryEditor.getCurrentContent())),
-      secondCountryDescription: JSON.stringify(convertToRaw(secondCountryEditor.getCurrentContent())),
-      bottomDescription: JSON.stringify(convertToRaw(bottomDescriptionEditor.getCurrentContent())),
-      mainDescription: JSON.stringify(convertToRaw(mainDescriptionEditor.getCurrentContent())),
+      oneYearDescription: JSON.stringify(
+        convertToRaw(oneYearEditor.getCurrentContent())
+      ),
+      chartDescription: JSON.stringify(
+        convertToRaw(chartDescriptionEditor.getCurrentContent())
+      ),
+      firstCountryDescription: JSON.stringify(
+        convertToRaw(firstCountryEditor.getCurrentContent())
+      ),
+      secondCountryDescription: JSON.stringify(
+        convertToRaw(secondCountryEditor.getCurrentContent())
+      ),
+      bottomDescription: JSON.stringify(
+        convertToRaw(bottomDescriptionEditor.getCurrentContent())
+      ),
+      mainDescription: JSON.stringify(
+        convertToRaw(mainDescriptionEditor.getCurrentContent())
+      ),
       FlexibleBlocklist,
       FirstCountryDatalist,
       SecondCountryDatalist,
@@ -69,6 +96,8 @@ function Currency({ onCurrencyChange }) {
     secondCountryEditor,
   ]);
 
+
+
   return (
     <Expandable title="Currency">
       <div className="rounded-sm bg-white p-[30px]">
@@ -83,7 +112,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={oneYearEditor}
-          set_editor_value={setOneYearEditor}
+          set_editor_value={(_data) => setOneYearEditor(_data.state)}
           initialContent={forexData?.oneyeardescription}
         />
 
@@ -92,7 +121,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={chartDescriptionEditor}
-          set_editor_value={setChartDescriptionEditor}
+          set_editor_value={(_data) => setChartDescriptionEditor(_data.state)}
           initialContent={forexData?.chartdescription}
         />
 
@@ -100,7 +129,7 @@ function Currency({ onCurrencyChange }) {
         <h2>First Country Heading</h2>
         <CustomTextField
           value={firstCountryHeading}
-          onChange={setFirstCountryHeading}
+          onChange={(e) => setFirstCountryHeading(e.target.value)}
           helper_text="First country heading"
           helper_text_up_position
         />
@@ -110,7 +139,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={firstCountryEditor}
-          set_editor_value={setFirstCountryEditor}
+          set_editor_value={(_data) => setFirstCountryEditor(_data.state)}
           initialContent={forexData?.firstcountrydescription}
         />
 
@@ -125,7 +154,7 @@ function Currency({ onCurrencyChange }) {
         <h2>Second Country Heading</h2>
         <CustomTextField
           value={secondCountryHeading}
-          onChange={setSecondCountryHeading}
+          onChange={(e) => setSecondCountryHeading(e.target.value)}
           helper_text="Second country heading"
           helper_text_up_position
         />
@@ -135,7 +164,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={secondCountryEditor}
-          set_editor_value={setSecondCountryEditor}
+          set_editor_value={(_data) => setSecondCountryEditor(_data.state)}
           initialContent={forexData?.secondcountrydescription}
         />
 
@@ -151,7 +180,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={bottomDescriptionEditor}
-          set_editor_value={setBottomDescriptionEditor}
+          set_editor_value={(_data) => setBottomDescriptionEditor(_data.state)}
           initialContent={forexData?.bottomdescription}
         />
 
@@ -160,7 +189,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={mainDescriptionEditor}
-          set_editor_value={setMainDescriptionEditor}
+          set_editor_value={(_data) => setMainDescriptionEditor(_data.state)}
           initialContent={forexData?.maindescription}
         />
 

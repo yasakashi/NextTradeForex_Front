@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import CustomTextField from "../../common/custom_text_field";
+import { useEffect, useState } from 'react';
+import CustomTextField from '../../common/custom_text_field';
 
 function UrlSection({ urlData, onDataChange }) {
   const [data, setData] = useState(urlData || []);
 
-  const [url, setUrl] = useState("");
-  const [urlTitle, setUrlTitle] = useState("");
+  const [url, setUrl] = useState('');
+  const [urlTitle, setUrlTitle] = useState('');
 
   const addRow = () => {
     if (url && urlTitle) {
       setData([...data, { url, urlTitle }]);
       // Reset input fields after adding a row
-      setUrl("");
-      setUrlTitle("");
+      setUrl('');
+      setUrlTitle('');
     }
   };
 
@@ -30,31 +30,40 @@ function UrlSection({ urlData, onDataChange }) {
       <div className="grid grid-cols-2 gap-2">
         <CustomTextField
           value={url}
-          onChange={setUrl}
+          onChange={(e) => setUrl(e.target.value)}
           helper_text="URL"
           helper_text_up_position
           placeHolder="Enter URL"
         />
         <CustomTextField
           value={urlTitle}
-          onChange={setUrlTitle}
+          onChange={(e) => setUrlTitle(e.target.value)}
           helper_text="URL TITLE"
           helper_text_up_position
           placeHolder="Enter URL Title"
         />
       </div>
 
-      <button className="mt-[5px] text-sm bg-blue-700 rounded-sm text-white px-[12px] py-[7px]" onClick={addRow}>
+      <button
+        className="mt-[5px] text-sm bg-blue-700 rounded-sm text-white px-[12px] py-[7px]"
+        onClick={addRow}
+      >
         Add URL
       </button>
 
       <div className="mt-4">
         {data.map((item, index) => (
-          <div key={index} className="flex items-center justify-between border-b py-2">
+          <div
+            key={index}
+            className="flex items-center justify-between border-b py-2"
+          >
             <span>
               {item.url} - {item.urlTitle}
             </span>
-            <button className="text-red-500 ml-4" onClick={() => removeRow(index)}>
+            <button
+              className="text-red-500 ml-4"
+              onClick={() => removeRow(index)}
+            >
               X
             </button>
           </div>
