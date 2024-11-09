@@ -1,9 +1,10 @@
+import { createEditorState } from '../../../../utils/createEditorState';
 import { useEffect, useState } from 'react';
 import DraftEditor from '../../../../admin_panel/components/editor/draft_editor';
 import CustomTextField, {
   CustomTextArea,
 } from '../../../../common/custom_text_field';
-import { convertToRaw, EditorState } from 'draft-js';
+import { convertToRaw, EditorState, convertFromRaw } from 'draft-js';
 import Expandable from '../../../Expandable';
 import CountryGeneralData from '../../CountryGeneralData';
 import CountrySpecificData from '../../CountrySpecificData';
@@ -12,7 +13,6 @@ import { selectForexData } from '../../../../redux/features/marketPulse/marketPu
 
 function Currency({ onCurrencyChange }) {
   const forexData = useSelector(selectForexData);
-
   const [firstCountryHeading, setFirstCountryHeading] = useState(
     forexData?.firstcountryheading || ''
   );
@@ -26,26 +26,30 @@ function Currency({ onCurrencyChange }) {
   const [FlexibleBlocklist, setFlexibleBlocklist] = useState([]);
   const [FirstCountryDatalist, setFirstCountryDatalist] = useState([]);
   const [SecondCountryDatalist, setSecondCountryDatalist] = useState([]);
-
   // editors
-  const [oneYearEditor, setOneYearEditor] = useState(() =>
-    EditorState.createEmpty()
-  );
-  const [chartDescriptionEditor, setChartDescriptionEditor] = useState(() =>
-    EditorState.createEmpty()
-  );
-  const [firstCountryEditor, setFirstCountryEditor] = useState(() =>
-    EditorState.createEmpty()
-  );
-  const [secondCountryEditor, setSecondCountryEditor] = useState(() =>
-    EditorState.createEmpty()
-  );
-  const [bottomDescriptionEditor, setBottomDescriptionEditor] = useState(() =>
-    EditorState.createEmpty()
-  );
-  const [mainDescriptionEditor, setMainDescriptionEditor] = useState(() =>
-    EditorState.createEmpty()
-  );
+ const [oneYearEditor, setOneYearEditor] = useState(() => {
+    return createEditorState(forexData?.oneyeardescription);
+  });
+
+  const [chartDescriptionEditor, setChartDescriptionEditor] = useState(() => {
+    return createEditorState(forexData?.chartdescription);
+  });
+
+  const [firstCountryEditor, setFirstCountryEditor] = useState(() => {
+    return createEditorState(forexData?.firstcountrydescription);
+  });
+
+  const [secondCountryEditor, setSecondCountryEditor] = useState(() => {
+    return createEditorState(forexData?.secondcountrydescription);
+  });
+
+  const [bottomDescriptionEditor, setBottomDescriptionEditor] = useState(() => {
+    return createEditorState(forexData?.bottomdescription);
+  });
+
+  const [mainDescriptionEditor, setMainDescriptionEditor] = useState(() => {
+    return createEditorState(forexData?.maindescription);
+  });
 
   useEffect(() => {
     const currencyData = {

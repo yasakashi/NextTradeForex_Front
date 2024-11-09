@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { useState } from 'react';
 
 const DraftEditor = ({
   editorState: value, // EditorState passed from the parent
@@ -20,26 +21,11 @@ const DraftEditor = ({
       .map((block) => block.text)
       .join(' ');
 
+    console.log(JSON.stringify(rawContentState))
+
     // Call the onChange function with the new editor state and extracted values
     onChange?.({ state, rawContent: rawContentState, plainText });
   };
-
-  const initializeEditorState = (data) => {
-    if (data) {
-      try {
-        const rawContent = JSON.parse(data);
-        const contentState = convertFromRaw(rawContent);
-        return EditorState.createWithContent(contentState);
-      } catch (error) {
-        console.error('Failed to parse editor state:', error);
-      }
-    }
-    return EditorState.createEmpty();
-  };
-
-  useEffect(() => {
-    initializeEditorState(value);
-  }, []);
 
   return (
     <div
