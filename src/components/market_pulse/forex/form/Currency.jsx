@@ -92,7 +92,8 @@ function Currency({ onCurrencyChange }) {
     secondCountryEditor,
   ]);
 
- 
+
+
   return (
     <Expandable title="Currency">
       <div className="rounded-sm bg-white p-[30px]">
@@ -107,7 +108,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={oneYearEditor}
-          set_editor_value={setOneYearEditor}
+          set_editor_value={(_data) => setOneYearEditor(_data.state)}
           initialContent={forexData?.oneyeardescription}
         />
 
@@ -116,7 +117,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={chartDescriptionEditor}
-          set_editor_value={setChartDescriptionEditor}
+          set_editor_value={(_data) => setChartDescriptionEditor(_data.state)}
           initialContent={forexData?.chartdescription}
         />
 
@@ -134,7 +135,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={firstCountryEditor}
-          set_editor_value={setFirstCountryEditor}
+          set_editor_value={(_data) => setFirstCountryEditor(_data.state)}
           initialContent={forexData?.firstcountrydescription}
         />
 
@@ -159,7 +160,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={secondCountryEditor}
-          set_editor_value={setSecondCountryEditor}
+          set_editor_value={(_data) => setSecondCountryEditor(_data.state)}
           initialContent={forexData?.secondcountrydescription}
         />
 
@@ -175,7 +176,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={bottomDescriptionEditor}
-          set_editor_value={setBottomDescriptionEditor}
+          set_editor_value={(_data) => setBottomDescriptionEditor(_data.state)}
           initialContent={forexData?.bottomdescription}
         />
 
@@ -184,7 +185,7 @@ function Currency({ onCurrencyChange }) {
 
         <DraftEditor
           editorState={mainDescriptionEditor}
-          set_editor_value={setMainDescriptionEditor}
+          set_editor_value={(_data) => setMainDescriptionEditor(_data.state)}
           initialContent={forexData?.maindescription}
         />
 
