@@ -66,14 +66,14 @@ function FundamentalSection({ subItemName, onDataChange }) {
       <div className="grid grid-cols-2 gap-2">
         <CustomTextField
           value={mainTitle}
-          onChange={setMainTitle}
+          onChange={(e) => setMainTitle(e.target.value)}
           helper_text="Main Title"
           helper_text_up_position
           placeHolder="Enter Main Title"
         />
         <CustomTextField
           value={script}
-          onChange={setScript}
+          onChange={(e) => setScript(e.target.value)}
           helper_text="Script"
           helper_text_up_position
           placeHolder="Enter Script"
