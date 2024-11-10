@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import Search from '../../components/market_pulse/search';
 import SelectInput from '../../components/market_pulse/SelectInput';
 import { http_instanse_level_2 } from '../../axios/auth_full_http_instanse';
-import { getforexitems, getForexCurrencies, getRelatedContent } from './api';
 import Story from '../../components/market_pulse/forex/Story';
 import { startLoading, stopLoading } from '../../redux/features/loading';
 import LoadingSpinner from '../../components/Loading';
@@ -13,10 +12,6 @@ function Forex() {
   const [subCategories, setSubCategories] = useState([]);
   const [selectedTopCategory, setSelectedTopCategory] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
-  const [forexItems, setForexItems] = useState([]);
-  const [currencies, setCurrencies] = useState([]);
-  const [currencyId, setCurrencyId] = useState(null);
-  const [relatedContent, setRelatedContent] = useState();
 
   const isLoading = useSelector((state) => state.loading.isLoading);
   const dispatch = useDispatch();
@@ -35,58 +30,10 @@ function Forex() {
       console.error('Failed to fetch top categories:', error);
     }
   };
-  const getRelatedSources = async (id) => {
-    try {
-      if (id) {
-        const res = await getRelatedContent(id);
-        setRelatedContent(res.messageData);
-      }
-    } catch (error) {
-      console.error('Failed to fetch related contents', error);
-    }
-  };
-  const getCurrencies = async () => {
-    try {
-      if (selectedSubCategory) {
-        const res = await getForexCurrencies(selectedSubCategory);
-        setCurrencies(res.messageData);
-      }
-    } catch (error) {
-      console.error('Failed to fetch Currencies:', error);
-    }
-  };
-
-  const fetchForexItems = async (id) => {
-    try {
-      dispatch(startLoading());
-      if (id) {
-        const res = await getforexitems({
-          categoryId: id,
-          id: null,
-        });
-        dispatch(stopLoading());
-        setForexItems(res.messageData);
-      }
-    } catch (error) {
-      console.error('Failed to fetch forex items:', error);
-    }
-  };
 
   useEffect(() => {
     fetchTopCategories();
   }, []);
-
-  useEffect(() => {
-    if (currencyId) {
-      fetchForexItems(currencyId);
-    }
-  }, [currencyId]);
-
-  useEffect(() => {
-    fetchForexItems(selectedSubCategory);
-    getRelatedSources(selectedSubCategory);
-    getCurrencies();
-  }, [selectedTopCategory, selectedSubCategory]);
 
   // Fetch subcategories based on the selected top category
   useEffect(() => {
@@ -161,14 +108,8 @@ function Forex() {
       )}
 
       {isLoading && <LoadingSpinner />}
-      {forexItems.length > 0 && !isLoading && (
-        <Story
-          forexItems={forexItems}
-          currencies={currencies}
-          setCurrencies={setCurrencies}
-          setCurrencyId={setCurrencyId}
-          relatedContent={relatedContent}
-        />
+      {selectedSubCategory && !isLoading && (
+        <Story selectedSubCategory={selectedSubCategory} />
       )}
     </div>
   );
