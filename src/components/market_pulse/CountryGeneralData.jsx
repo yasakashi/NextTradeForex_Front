@@ -9,7 +9,7 @@ function CountryGeneralData({ flexibleBlocklist, onCountryDataChange }) {
   const [highslows, setHighslows] = useState('');
   const [pairtype, setPairtype] = useState('');
   const [dailyavrage, setDailyavrage] = useState('');
-  const [mainTitle, setMainTitle] = useState(flexibleBlocklist[0]?.mainTitle || '');
+  const [mainTitle, setMainTitle] = useState('');
 
   const addRow = () => {
     if (

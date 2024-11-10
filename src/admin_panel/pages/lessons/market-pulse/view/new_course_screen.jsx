@@ -48,8 +48,19 @@ function MarketPulseNewCourseScreen() {
       isVisible,
       ...currencyData,
       ...fundamentalData,
-      NewsMainContentlist: [{ maintitle: 'y6', script: 'y6' }],
-      FundamentalNewsSectionlist: [{ maintitle: 'u7', script: 'u7' }],
+      NewsMainContentlist: [{ maintitle: 'w2', script: 'w2' }],
+      FundamentalNewsSectionlist: [
+        {
+          maintitle: 'u7',
+          script: 'u7',
+          NewsMainContentlist: [
+            {
+              maintitle: 'e3',
+              script: 'e3',
+            },
+          ],
+        },
+      ],
     };
 
     try {
@@ -62,7 +73,7 @@ function MarketPulseNewCourseScreen() {
       dispatch(
         show_message({
           mode: true,
-          color: 'error',
+          color: 'success',
           message: 'Post Created Successfully',
         })
       );

@@ -48,7 +48,7 @@ export default function Story({
               <TradingViewWidget symbol={data.singlepagechartimage} />
             ) : null}
           </div>
-        </div>
+        </div>  
         <div className="w-1/3 min-h-screen bg-primary p-5 z-10">
           <h2 className="text-link-water text-xl font-bold mb-2">
             {currencies[0]?.categorytypename}
@@ -74,7 +74,7 @@ export default function Story({
           />
         </div>
       </div>
-      <p className="w-2/3 text-gray-light">{data?.bottomdescription}</p>
+      <ReadMoreContent content={data?.bottomdescription} />
       <div className="flex flex-col gap-y-20">
         {data ? (
           <FundamentalSammary

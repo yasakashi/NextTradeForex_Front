@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { createEditorState } from '../../utils/createEditorState';
+import { stateToHTML } from 'draft-js-export-html';
+import { convertFromRaw } from 'draft-js';
 
 export default function ReadMoreContent({ content }) {
   const [isScrollOn, setisScrollOn] = useState(false);
@@ -6,6 +9,14 @@ export default function ReadMoreContent({ content }) {
   const toggleExpand = () => {
     setisScrollOn(!isScrollOn);
   };
+
+  const contentState = convertFromRaw(content);
+  const editorState = createEditorState(contentState);
+
+  const htmlContent = stateToHTML(editorState.getCurrentContent());
+
+    console.log(editorState);
+    
 
   return (
     <div className="p-4 mx-auto">
@@ -16,7 +27,7 @@ export default function ReadMoreContent({ content }) {
             : 'max-h-20 overflow-hidden'
         }`}
       >
-        <p className="text-link-water opacity-50">{content}</p>
+        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
       </div>
       <button
         onClick={toggleExpand}
