@@ -10,7 +10,7 @@ const CourseInfo = ({ course }) => {
   const [activeTab, setActiveTab] = useState("info");
   return (
     <>
-      {console.log({ course })}
+      
 
       <div className="text-base bg-[#061258] font-medium text-center text-white border mt-4 border-[#041996]">
         <ul className="flex flex-wrap -mb-px">

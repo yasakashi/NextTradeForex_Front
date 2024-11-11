@@ -40,7 +40,15 @@
     "src/common/custom_text_field.jsx",
     "src/admin_panel/utils/admin_pannel_router.jsx",
     "src/pages/profile/my_courses/view/my_courses.jsx",
-    "src/admin_panel/pages/tutor/courses/view/courses_screen.jsx"
-, "src/admin_panel/components/table/material_table.jsx", "src/admin_panel/pages/tutor/courses/course_details/view/course_detasils.jsx", "src/admin_panel/pages/tutor/courses/course_details/view/components/rating.jsx", "src/admin_panel/pages/tutor/courses/course_details/view/components/course_info.jsx", "src/admin_panel/pages/tutor/courses/course_details/view/components/course_progress_component.jsx"  ],
+    "src/admin_panel/pages/tutor/courses/view/courses_screen.jsx",
+    "src/admin_panel/components/table/material_table.jsx",
+    "src/admin_panel/pages/tutor/courses/course_details/view/course_detasils.jsx",
+    "src/admin_panel/pages/tutor/courses/course_details/view/components/rating.jsx",
+    "src/admin_panel/pages/tutor/courses/course_details/view/components/course_info.jsx",
+    "src/admin_panel/pages/tutor/courses/course_details/view/components/course_progress_component.jsx",
+    "src/pages/learn_to_trade/select_learn_to_trade.jsx",
+    "src/admin_panel/pages/categories/view/category_details_view_screen.jsx",
+    "src/pages/learn_to_trade/courses_to_learn_screen.jsx"
+, "src/admin_panel/pages/tutor/lessons/view/lessons_screen.jsx", "src/admin_panel/pages/categories/view/components/add_new_category_component.jsx", "src/admin_panel/pages/categories/view/components/edit_category_components.jsx"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

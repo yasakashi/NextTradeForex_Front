@@ -6,8 +6,7 @@ import { useParams } from "react-router-dom";
 import placeholder from "../../../../../../asset/img/placeholder (1).svg";
 import {
   yellow_color,
-  yellow_dark,
-  yellow_medium,
+
 } from "../../../../categories/view/category_details_view_screen";
 import { BiShare } from "react-icons/bi";
 import { LiaStreamSolid } from "react-icons/lia";
@@ -15,10 +14,8 @@ import CourseInfo from "./components/course_info";
 import CourseProgressComponent, {
   CourseBy,
 } from "./components/course_progress_component";
-import { Grid } from "@mui/material";
 import { useAppSelector } from "../../../../../../redux/features/generalSlice";
 import { course_data_selector } from "../../../../../../redux/features/courseSlise";
-import { get_course_cover_image_api } from "../../../../../../pages/profile/my_courses/service/get_course_cover_image_api";
 import { useGetCoursesQuery } from "../../../../../../redux/features/course/courseApii";
 
 const CourseDetails = () => {
@@ -58,7 +55,7 @@ const CourseDetails = () => {
 
   return (
     <div className="w-full">
-      {console.log({ courses })}
+
       <Navbar />
       <div className="mt-12 w-full px-8 mb-12">
         <div className="flex items-center gap-3">
