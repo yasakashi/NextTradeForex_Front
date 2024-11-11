@@ -82,6 +82,16 @@ export const courseBuilderApi = createApi({
         body: data,
       }),
     }),
+
+    // get topic quizes
+    getTopicQuiz: builder.mutation({
+      query: ({ data }) => ({
+        url: "/coursebuilder/getLessonquizs",
+        method: "POST",
+
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -92,5 +102,6 @@ export const {
   useGetTopicLessonsMutation,
   useRemoveCourseTopicMutation,
   useRemoveTopicLessonMutation, 
-  useAddTopicQuizMutation
+  useAddTopicQuizMutation,
+  useGetTopicQuizMutation
 } = courseBuilderApi;

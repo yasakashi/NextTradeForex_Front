@@ -80,6 +80,7 @@ import { market_pulse_router } from "./admin_panel/utils/market_pulse_router";
 import MarketPulseLayout from "./layouts/marke_pulse_layout";
 import MarketPulseIndex from "./pages/market_pulse";
 import StartLearning from "./pages/profile/new_course_components/start-learning/StartLearning";
+import Courses from "./pages/courses/Courses";
 function App({ auth }) {
   const token = localStorage.getItem("loginToken");
   console.log({ auth });
@@ -133,6 +134,9 @@ function App({ auth }) {
                 );
               })}
             </Route>
+
+            <Route path="/course-category/top-courses" element={<Courses />} />
+            
             {token ? (
               <>
                 <Route path="/partnership" element={<PartnerShip />} />
@@ -168,6 +172,7 @@ function App({ auth }) {
                   path="/course/attachments/:id/:title"
                   element={<CourseAttachments />}
                 />
+
                 <Route path="/learn_to_trade" element={<LearnToTradeScreen />}>
                   <Route
                     path="/learn_to_trade"
@@ -175,11 +180,11 @@ function App({ auth }) {
                   />
 
                   <Route
-                    path="/learn_to_trade/courses/:level"
+                    path="/learn_to_trade/courses/:level/:levelId"
                     element={<CategoriesToLearnScreen />}
                   />
                   <Route
-                    path="/learn_to_trade/courses/:coursename/:id"
+                    path="/learn_to_trade/course/:coursename/:id"
                     element={<CategoriesDetailsView />}
                   />
                 </Route>
