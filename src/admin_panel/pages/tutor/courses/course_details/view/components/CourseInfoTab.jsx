@@ -4,10 +4,10 @@ import { AiOutlineExclamation } from "react-icons/ai";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiQuestionMark } from "react-icons/ri";
 
-
 import {
   useGetCourseTopicsMutation,
   useGetTopicLessonsMutation,
+  useGetTopicQuizMutation,
 } from "../../../../../../../redux/features/course/courseBuilderApi";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Link } from "react-router-dom";
@@ -17,6 +17,7 @@ const CourseInfoTab = ({ course }) => {
 
   const [topics, setTopics] = useState([]);
   const [lessons, setLessons] = useState({});
+  const [quizes, setQuizes] = useState({});
 
   const [openTopicIndex, setOpenTopicIndex] = useState(null);
 
@@ -25,6 +26,7 @@ const CourseInfoTab = ({ course }) => {
     { error, isLoading: getCourseTopicsLoading, isSuccess },
   ] = useGetCourseTopicsMutation();
   const [getTopicLessons] = useGetTopicLessonsMutation();
+  const [getTopicQuiz] = useGetTopicQuizMutation();
 
   useEffect(() => {
     async function courseTopics() {
@@ -53,7 +55,7 @@ const CourseInfoTab = ({ course }) => {
       setOpenTopicIndex(null);
     } else {
       setOpenTopicIndex(index);
-      return;
+
       if (!lessons[topicId]) {
         const lessonsRes = await getTopicLessons({
           data: {
@@ -72,13 +74,33 @@ const CourseInfoTab = ({ course }) => {
           }));
         }
       }
+
+      if (!quizes[topicId]) {
+        const quizRes = await getTopicQuiz({
+          data: {
+            Id: null,
+            courseId: course?.id,
+            topicId: topicId,
+            quizTitle: "",
+            pageindex: 1,
+            rowcount: 50,
+          },
+        });
+
+        if (quizRes?.data?.messageCode === 200) {
+          setQuizes((prev) => ({
+            ...prev,
+            [topicId]: quizRes?.data?.messageData,
+          }));
+        }
+      }
     }
   };
 
   return (
     <div className="w-full flex flex-col space-y-10">
       {/* about course */}
-      {console.log({ topics })}
+
       <div>
         <h5 className="font-bold text-xl mb-4">About Course</h5>
         <div>
@@ -168,8 +190,14 @@ const CourseInfoTab = ({ course }) => {
                   {/* lessons */}
                   <div className="mb-2 px-2 space-y-2">
                     {/* single lesson */}
-                    <div className="flex items-center rounded-md px-4 py-3 ml-auto">
-                      <div className="flex items-center gap-2">
+                    {/* <div className="flex items-center rounded-md px-4 py-3 ml-auto">
+                     
+                    </div> */}
+                    {lessons[topic?.id]?.map((lesson, lessonIndex) => (
+                      <div
+                        key={lessonIndex}
+                        className="flex items-center gap-2"
+                      >
                         <span className="border-none outline-none">
                           <IoDocumentTextOutline
                             size={16}
@@ -177,38 +205,23 @@ const CourseInfoTab = ({ course }) => {
                           />
                         </span>
                         <h4 className="text-gray-700 text-base font-normal capitalize">
-                          Trading Diary
+                          {lesson?.lessonName}
                         </h4>
-                      </div>
-                    </div>
-                    {lessons[topic?.id]?.map((lesson, lessonIndex) => (
-                      <div
-                        key={lessonIndex}
-                        className="flex items-center justify-between border border-gray-300 rounded-md px-8 py-3 w-[90%] ml-auto"
-                      >
-                        <div className="flex items-center gap-2">
-                          <button className="border-none outline-none">
-                            <FaBars size={20} className="text-gray-500" />
-                          </button>
-                          <h5>{lesson?.lessonName} : </h5>
-                          <p className="text-gray-400 text-sm">
-                            {lesson?.lessonDescription} Lesson Name
-                          </p>
-                        </div>
                       </div>
                     ))}
 
                     {/* Quiz */}
-                    <div className="flex items-center rounded-md px-4 py-3 ml-auto">
-                      <div className="flex items-center gap-2">
+
+                    {quizes[topic?.id]?.map((quiz, quizIndex) => (
+                      <div key={quizIndex} className="flex items-center gap-2">
                         <span className="border border-gray-600 p-[2px] rounded-full outline-none">
                           <RiQuestionMark size={11} className="text-gray-500" />
                         </span>
                         <h4 className="text-gray-700 text-base font-normal capitalize">
-                          Accumulation/Distribution AD
+                          {quiz?.quizTitle}
                         </h4>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               ) : null}

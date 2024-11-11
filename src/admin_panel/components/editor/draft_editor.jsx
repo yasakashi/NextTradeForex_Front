@@ -21,7 +21,7 @@ const DraftEditor = ({
       .map((block) => block.text)
       .join(' ');
 
-    console.log(JSON.stringify(rawContentState))
+
 
     // Call the onChange function with the new editor state and extracted values
     onChange?.({ state, rawContent: rawContentState, plainText });
