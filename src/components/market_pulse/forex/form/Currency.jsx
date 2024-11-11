@@ -51,6 +51,8 @@ function Currency({ onCurrencyChange }) {
     return createEditorState(forexData?.maindescription);
   });
 
+
+
   useEffect(() => {
     const currencyData = {
       firstCountryHeading,

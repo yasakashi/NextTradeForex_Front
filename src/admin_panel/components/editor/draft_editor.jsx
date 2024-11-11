@@ -27,6 +27,7 @@ const DraftEditor = ({
     onChange?.({ state, rawContent: rawContentState, plainText });
   };
 
+
   return (
     <div
       className={`w-full bg-white text-gray-700 rounded-[8px] p-2 h-[${h}px] ${className}`}

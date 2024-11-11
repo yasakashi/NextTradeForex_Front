@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-const SearchBox = ({ currencies, setCurrencies, setCurrencyId }) => {
+const SearchBox = ({
+  currencies,
+  setCurrencies,
+  setCurrencyId,
+  fetchForexItems,
+}) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(currencies); // State for filtered results
   const [initialData] = useState(currencies); // State to store initial data
+
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -20,6 +26,12 @@ const SearchBox = ({ currencies, setCurrencies, setCurrencyId }) => {
       setResults(filteredResults);
     }
   };
+
+  const onClickHandler = (item) => {
+    setCurrencyId(item.id);
+    fetchForexItems(item.id);
+  };
+  
   useEffect(() => {
     setCurrencies(results);
   }, [results]);
@@ -37,7 +49,7 @@ const SearchBox = ({ currencies, setCurrencies, setCurrencyId }) => {
       <ul>
         {results.map((item) => (
           <li
-            onClick={() => setCurrencyId(item.id)}
+            onClick={() => onClickHandler(item)}
             key={item.id}
             className="p-2 text-gold-light_400 cursor-pointer hover:font-bold hover:font-weight-800"
           >
