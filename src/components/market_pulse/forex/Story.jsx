@@ -18,13 +18,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { startLoading, stopLoading } from '../../../redux/features/loading';
 
 export default function Story({ selectedSubCategory }) {
-  const [data, setData] = useState();
   const [currencies, setCurrencies] = useState([]);
+  const [data, setData] = useState(null);
   const [currencyId, setCurrencyId] = useState(null);
   const [relatedContent, setRelatedContent] = useState();
-
-  const isLoading = useSelector((state) => state.loading.isLoading);
   const dispatch = useDispatch();
+
   const getRelatedSources = async (id) => {
     try {
       if (id) {
@@ -42,33 +41,41 @@ export default function Story({ selectedSubCategory }) {
         setCurrencies(res.messageData);
       }
     } catch (error) {
-      console.error('Failed to fetch Currencies:', error);
+      console.error("Failed to fetch Currencies:", error);
     }
   };
 
   const fetchForexItems = async (id) => {
     try {
-      dispatch(startLoading());
       if (id) {
         const res = await getforexitems({
           categoryId: id,
           id: null,
         });
-        setData(res.messageData);
-        dispatch(stopLoading());
+        setData(res.messageData[0])
       }
     } catch (error) {
-      console.error('Failed to fetch forex items:', error);
+      console.error("Failed to fetch forex items:", error);
+    } finally {
     }
   };
 
   useEffect(() => {
-    // fetchForexItems(selectedSubCategory);
     getRelatedSources(selectedSubCategory);
     getCurrencies();
   }, [selectedSubCategory]);
-  
 
+  useEffect(() => {
+      if(!currencies.length) return;
+      const firstItem = currencies[0];
+      fetchForexItems(firstItem.id)
+  }, [currencies]);
+
+  useEffect(() => {
+    console.log(currencyId)
+    setData(null)
+    fetchForexItems()
+  }, [currencyId])
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
       {data && (
