@@ -10,7 +10,7 @@ const SearchBox = ({
   const [results, setResults] = useState(currencies); // State for filtered results
   const [initialData] = useState(currencies); // State to store initial data
 
-
+  
   const handleSearch = (e) => {
     const value = e.target.value;
     setQuery(value);
@@ -33,6 +33,8 @@ const SearchBox = ({
   };
   
   useEffect(() => {
+    console.log(results);
+    
     setCurrencies(results);
   }, [results]);
 

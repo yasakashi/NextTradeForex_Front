@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const TechnicalTab = ({ script }) => {
   const containerRef = React.useRef(null);
-  console.log(script);
+  
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -43,6 +43,8 @@ const TechnicalTab = ({ script }) => {
 };
 
 const CommonDashboardTable = ({ tabs }) => {
+
+
   const [activeTab, setActiveTab] = useState(tabs[0]?.id);
   const activeTabData = tabs.find((tab) => tab?.id === activeTab);
 

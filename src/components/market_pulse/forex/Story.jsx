@@ -15,7 +15,6 @@ import {
   getRelatedContent,
 } from '../../../pages/market_pulse/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { startLoading, stopLoading } from '../../../redux/features/loading';
 
 export default function Story({ selectedSubCategory }) {
   const [currencies, setCurrencies] = useState([]);
@@ -72,7 +71,6 @@ export default function Story({ selectedSubCategory }) {
   }, [currencies]);
 
   useEffect(() => {
-    console.log(currencyId)
     setData(null)
     fetchForexItems()
   }, [currencyId])

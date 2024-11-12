@@ -107,8 +107,8 @@ function Forex() {
         </div>
       )}
 
-      {isLoading && <LoadingSpinner />}
-      {selectedSubCategory && !isLoading && (
+      {/* {isLoading && <LoadingSpinner />} */}
+      {selectedSubCategory && (
         <Story selectedSubCategory={selectedSubCategory} />
       )}
     </div>
