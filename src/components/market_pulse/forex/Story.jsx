@@ -13,8 +13,8 @@ import {
   getforexitems,
   getRelatedContent,
 } from '../../../pages/market_pulse/api';
-import { useDispatch, useSelector } from 'react-redux';
 import SearchBox from '../Searchbox';
+import LoadingSpinner from '../../Loading';
 
 export default function Story({ selectedSubCategory }) {
   const [currencies, setCurrencies] = useState([]);
@@ -22,7 +22,8 @@ export default function Story({ selectedSubCategory }) {
   const [currencyId, setCurrencyId] = useState(null);
   const [relatedContent, setRelatedContent] = useState();
   const [query, setQuery] = useState('');
-  const dispatch = useDispatch();
+  const [currenciesLoading, setCurrenciesLoading] = useState(false);
+  const [forexItemsLoading, setForexItemsLoading] = useState(false);
 
   const getRelatedSources = async (id) => {
     try {
@@ -38,8 +39,10 @@ export default function Story({ selectedSubCategory }) {
     setCurrencies([]);
     try {
       if (selectedSubCategory) {
+        setCurrenciesLoading(true);
         const res = await getForexCurrencies(selectedSubCategory);
         setCurrencies(res.messageData);
+        setCurrenciesLoading(false);
       }
     } catch (error) {
       console.error('Failed to fetch Currencies:', error);
@@ -49,10 +52,12 @@ export default function Story({ selectedSubCategory }) {
   const fetchForexItems = async (id) => {
     try {
       if (id) {
+        setForexItemsLoading(true);
         const res = await getforexitems({
           categoryId: id,
           id: null,
         });
+        setForexItemsLoading(false);
         setData(res.messageData[0]);
       }
     } catch (error) {
@@ -75,6 +80,8 @@ export default function Story({ selectedSubCategory }) {
   useEffect(() => {
     setData(null);
     fetchForexItems();
+    
+    
   }, [currencyId]);
 
   return (
@@ -87,7 +94,7 @@ export default function Story({ selectedSubCategory }) {
       )}
       <div className="flex gap-10">
         <div className="w-2/3 flex flex-col gap-y-8">
-          {data && (
+          {data ? (
             <>
               <p className="text-gold-light_400 text-5xl font-bold">
                 {data.coursetitle}
@@ -107,6 +114,8 @@ export default function Story({ selectedSubCategory }) {
                 ) : null}
               </div>
             </>
+          ) : (
+            forexItemsLoading && <LoadingSpinner />
           )}
         </div>
         <div className="w-1/3 h-screen  bg-primary p-5 z-10 relative right-0">
@@ -128,11 +137,11 @@ export default function Story({ selectedSubCategory }) {
               query={query}
             />
           ) : (
-            <></>
+            currenciesLoading && <LoadingSpinner />
           )}
         </div>
       </div>
-      {data && (
+      {data ? (
         <>
           <ReadMoreContent content={data.maindescription} />
           <div className="grid grid-cols-2">
@@ -180,6 +189,8 @@ export default function Story({ selectedSubCategory }) {
             <CustomCarousel data={relatedContent} />
           </div>
         </>
+      ) : (
+        <></>
       )}
     </div>
   );

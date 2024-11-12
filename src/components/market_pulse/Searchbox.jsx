@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import LoadingSpinner from '../Loading';
 
 const SearchBox = ({
   currencies,
@@ -9,15 +10,11 @@ const SearchBox = ({
 }) => {
   const [results, setResults] = useState(currencies); // State for filtered results
   const [initialData] = useState(currencies); // State to store initial data
-  console.log(currencies);
-  
-  console.log(initialData);
+
   const handleSearch = () => {
     if (query === '') {
       // If search box is empty, reset to initial data
       setResults(initialData);
-      console.log('query is empty');
-      
     } else {
       // Filter data based on query
       const filteredResults = initialData.filter((item) =>
@@ -34,11 +31,8 @@ const SearchBox = ({
 
   useEffect(() => {
     handleSearch();
-    console.log(query);
-    
   }, [query]);
-  console.log('im search box');
-  
+
   return (
     <div>
       <ul className="max-h-[calc(100vh-130px)] overflow-y-auto">

@@ -4,7 +4,9 @@ import { convertFromRaw, Editor, EditorState } from 'draft-js';
 
 export default function ReadMoreContent({ content }) {
   const [isScrollOn, setisScrollOn] = useState(false);
-  const [editorState, setEditorState] = useState(() => createEditorState(content));
+  const [editorState, setEditorState] = useState(() =>
+    createEditorState(content)
+  );
   const [showToggleButton, setShowToggleButton] = useState(false);
   const editorContainerRef = useRef(null);
 
@@ -25,7 +27,9 @@ export default function ReadMoreContent({ content }) {
       <div
         ref={editorContainerRef}
         className={`w-full transition-all duration-300 ${
-          isScrollOn ? 'max-h-[200px] overflow-y-scroll' : 'max-h-20 overflow-hidden'
+          isScrollOn
+            ? 'max-h-[200px] overflow-y-scroll'
+            : 'max-h-20 overflow-hidden'
         }`}
       >
         <Editor
