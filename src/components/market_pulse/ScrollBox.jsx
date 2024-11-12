@@ -1,38 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { createEditorState } from '../../utils/createEditorState';
-import { stateToHTML } from 'draft-js-export-html';
+import { convertFromRaw, Editor, EditorState } from 'draft-js';
 
 export default function ReadMoreContent({ content }) {
   const [isScrollOn, setisScrollOn] = useState(false);
+  const [editorState, setEditorState] = useState(() => createEditorState(content));
+  const [showToggleButton, setShowToggleButton] = useState(false);
+  const editorContainerRef = useRef(null);
 
   const toggleExpand = () => {
     setisScrollOn(!isScrollOn);
   };
-  const editorState = createEditorState(content)
-  const htmlContent = stateToHTML(editorState.getCurrentContent());
 
-  const isHtmlContentEmpty = (htmlString) => {
-    const cleaned = htmlString.replace(/<(\w+)[^>]*>(\s|<br\s*\/?>)*<\/\1>/g, '').trim();
-    return cleaned.length === 0;
-  }
+  useEffect(() => {
+    // Check if editor content height exceeds 200px
+    if (editorContainerRef.current) {
+      const editorHeight = editorContainerRef.current.clientHeight;
+      setShowToggleButton(editorHeight > 200);
+    }
+  }, [editorState]);
 
   return (
-    <div className="p-4 mx-auto">
+    <div className="w-full text-white p-4 mx-auto">
       <div
-        className={`transition-all duration-300  ${
-          isScrollOn
-            ? 'max-h-[200px] overflow-y-scroll'
-            : 'max-h-20 overflow-hidden'
+        ref={editorContainerRef}
+        className={`w-full transition-all duration-300 ${
+          isScrollOn ? 'max-h-[200px] overflow-y-scroll' : 'max-h-20 overflow-hidden'
         }`}
       >
-        <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        <Editor
+          editorState={editorState}
+          readOnly={true}
+          onChange={setEditorState}
+        />
       </div>
-      <button
-        onClick={toggleExpand}
-        className="mt-2 text-gold-light_400 hover:underline focus:outline-none"
-      >
-        {!isHtmlContentEmpty(htmlContent) && (isScrollOn ? 'Read Less' : 'Read More')}
-      </button>
+      {showToggleButton && (
+        <button
+          onClick={toggleExpand}
+          className="mt-2 text-gold-light_400 hover:underline focus:outline-none"
+        >
+          {isScrollOn ? 'Read Less' : 'Read More'}
+        </button>
+      )}
     </div>
   );
 }
