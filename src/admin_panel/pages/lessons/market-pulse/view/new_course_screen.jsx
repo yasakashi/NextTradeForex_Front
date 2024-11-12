@@ -49,19 +49,7 @@ function MarketPulseNewCourseScreen() {
       ...currencyData,
       ...fundamentalData,
       NewsMainContentlist: [{ maintitle: 'w2', script: 'w2' }],
-      FundamentalNewsSectionlist: [
-        {
-          maintitle: 'u7',
-          script: 'u7',
-          NewsMainContentlist: [
-            {
-              maintitle: 'e3',
-              script: 'e3',
-            },
-          ],
-        },
-      ],
-    };
+   };
 
     try {
       dispatch(toggle_loading(true));

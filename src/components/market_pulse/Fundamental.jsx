@@ -33,9 +33,10 @@ function Fundamental({ onFundamentalChange }) {
     forexData?.marketsentimentsscript || ''
   );
 
-  const [TechnicalTabslist, setTechnicalTabslist] = useState({});
-  const [URLSectionlist, setURLSectionlist] = useState({});
-  const [PDFSectionlist, setPDFSectionlist] = useState({});
+  const [TechnicalTabslist, setTechnicalTabslist] = useState([]);
+  const [FundamentalNewsSectionlist, setFundamentalNewsSectionlist] = useState([]);
+  const [URLSectionlist, setURLSectionlist] = useState([]);
+  const [PDFSectionlist, setPDFSectionlist] = useState([]);
 
   useEffect(() => {
     const currencyData = {
@@ -45,6 +46,7 @@ function Fundamental({ onFundamentalChange }) {
       marketsentimentstitle,
       marketsentimentsscript,
       TechnicalTabslist,
+      FundamentalNewsSectionlist,
       URLSectionlist,
       PDFSectionlist,
     };
@@ -93,6 +95,12 @@ function Fundamental({ onFundamentalChange }) {
         <FundamentalSection
           subItemName="technicalBreakingNewslist"
           onDataChange={setTechnicalTabslist}
+        />
+
+        <h2>Fundamental Tabs</h2>
+        <FundamentalSection
+          subItemName="technicalBreakingNewslist"
+          onDataChange={setFundamentalNewsSectionlist}
         />
 
         <hr className="my-[20px]" />
