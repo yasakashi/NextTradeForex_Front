@@ -5,23 +5,22 @@ const SearchBox = ({
   setCurrencies,
   setCurrencyId,
   fetchForexItems,
+  query,
 }) => {
-  const [query, setQuery] = useState('');
   const [results, setResults] = useState(currencies); // State for filtered results
   const [initialData] = useState(currencies); // State to store initial data
-
   
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-
-    if (value === '') {
+  const handleSearch = () => {
+    console.log(initialData);
+    if (query === '') {
       // If search box is empty, reset to initial data
       setResults(initialData);
+      console.log('query is empty');
+      
     } else {
       // Filter data based on query
       const filteredResults = initialData.filter((item) =>
-        item.name.toLowerCase().includes(value.toLowerCase())
+        item.name.toLowerCase().includes(query.toLowerCase())
       );
       setResults(filteredResults);
     }
@@ -31,33 +30,31 @@ const SearchBox = ({
     setCurrencyId(item.id);
     fetchForexItems(item.id);
   };
-  
+
   useEffect(() => {
-    console.log(results);
+    handleSearch();
+    console.log(query);
     
-    setCurrencies(results);
-  }, [results]);
+  }, [query]);
 
   return (
     <div>
-      <input
-        type="text"
-        value={query}
-        onChange={handleSearch}
-        placeholder="Search by name..."
-        className="border p-2 rounded-md w-full max-w-md mb-4"
-      />
-
-      <ul>
-        {results.map((item) => (
-          <li
-            onClick={() => onClickHandler(item)}
-            key={item.id}
-            className="p-2 text-gold-light_400 cursor-pointer hover:font-bold hover:font-weight-800"
-          >
-            {item.name}
-          </li>
-        ))}
+      <ul className="max-h-[calc(100vh-130px)] overflow-y-auto">
+        {results.length > 0 ? (
+          results?.map((item) => (
+            <li
+              onClick={() => onClickHandler(item)}
+              key={item.id}
+              className="p-2 text-gold-light_400 cursor-pointer hover:font-bold hover:font-weight-800"
+            >
+              {item.name}
+            </li>
+          ))
+        ) : (
+          <div>
+            <p>No data found! </p>
+          </div>
+        )}
       </ul>
     </div>
   );
