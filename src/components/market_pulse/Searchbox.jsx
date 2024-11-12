@@ -9,9 +9,10 @@ const SearchBox = ({
 }) => {
   const [results, setResults] = useState(currencies); // State for filtered results
   const [initialData] = useState(currencies); // State to store initial data
+  console.log(currencies);
   
+  console.log(initialData);
   const handleSearch = () => {
-    console.log(initialData);
     if (query === '') {
       // If search box is empty, reset to initial data
       setResults(initialData);
@@ -36,7 +37,8 @@ const SearchBox = ({
     console.log(query);
     
   }, [query]);
-
+  console.log('im search box');
+  
   return (
     <div>
       <ul className="max-h-[calc(100vh-130px)] overflow-y-auto">

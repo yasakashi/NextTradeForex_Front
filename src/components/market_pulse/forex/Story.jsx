@@ -35,6 +35,7 @@ export default function Story({ selectedSubCategory }) {
     }
   };
   const getCurrencies = async () => {
+    setCurrencies([]);
     try {
       if (selectedSubCategory) {
         const res = await getForexCurrencies(selectedSubCategory);
@@ -75,7 +76,6 @@ export default function Story({ selectedSubCategory }) {
     setData(null);
     fetchForexItems();
   }, [currencyId]);
-console.log(currencies);
 
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
@@ -110,13 +110,7 @@ console.log(currencies);
           )}
         </div>
         <div className="w-1/3 h-screen  bg-primary p-5 z-10 relative right-0">
-          {currencies?.length > 0 ? (
-            <h2 className="text-link-water text-xl font-bold mb-2">
-              {currencies[0]?.categorytypename}
-            </h2>
-          ) : (
-            <></>
-          )}
+          <h2 className="text-link-water text-xl font-bold mb-2">Currencies</h2>
 
           <input
             type="text"
