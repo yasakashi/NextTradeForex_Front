@@ -8,21 +8,22 @@ import FundamentalSammary from '../Summary/Fundamental';
 import TechnicalSammary from '../Summary/Technical';
 import RelatedRecourses from '../RelatedRecourses';
 import CustomCarousel from '../Carousel';
-import SearchBox from '../Searchbox';
 import {
   getForexCurrencies,
   getforexitems,
   getRelatedContent,
 } from '../../../pages/market_pulse/api';
-import { useDispatch, useSelector } from 'react-redux';
-import { startLoading, stopLoading } from '../../../redux/features/loading';
+import SearchBox from '../Searchbox';
+import LoadingSpinner from '../../Loading';
 
 export default function Story({ selectedSubCategory }) {
   const [currencies, setCurrencies] = useState([]);
   const [data, setData] = useState(null);
   const [currencyId, setCurrencyId] = useState(null);
   const [relatedContent, setRelatedContent] = useState();
-  const dispatch = useDispatch();
+  const [query, setQuery] = useState('');
+  const [currenciesLoading, setCurrenciesLoading] = useState(false);
+  const [forexItemsLoading, setForexItemsLoading] = useState(false);
 
   const getRelatedSources = async (id) => {
     try {
@@ -35,27 +36,32 @@ export default function Story({ selectedSubCategory }) {
     }
   };
   const getCurrencies = async () => {
+    setCurrencies([]);
     try {
       if (selectedSubCategory) {
+        setCurrenciesLoading(true);
         const res = await getForexCurrencies(selectedSubCategory);
         setCurrencies(res.messageData);
+        setCurrenciesLoading(false);
       }
     } catch (error) {
-      console.error("Failed to fetch Currencies:", error);
+      console.error('Failed to fetch Currencies:', error);
     }
   };
 
   const fetchForexItems = async (id) => {
     try {
       if (id) {
+        setForexItemsLoading(true);
         const res = await getforexitems({
           categoryId: id,
           id: null,
         });
-        setData(res.messageData[0])
+        setForexItemsLoading(false);
+        setData(res.messageData[0]);
       }
     } catch (error) {
-      console.error("Failed to fetch forex items:", error);
+      console.error('Failed to fetch forex items:', error);
     } finally {
     }
   };
@@ -66,16 +72,18 @@ export default function Story({ selectedSubCategory }) {
   }, [selectedSubCategory]);
 
   useEffect(() => {
-      if(!currencies.length) return;
-      const firstItem = currencies[0];
-      fetchForexItems(firstItem.id)
+    if (!currencies?.length) return;
+    const firstItem = currencies?.[0];
+    fetchForexItems(firstItem.id);
   }, [currencies]);
 
   useEffect(() => {
-    console.log(currencyId)
-    setData(null)
-    fetchForexItems()
-  }, [currencyId])
+    setData(null);
+    fetchForexItems();
+    
+    
+  }, [currencyId]);
+
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
       {data && (
@@ -86,7 +94,7 @@ export default function Story({ selectedSubCategory }) {
       )}
       <div className="flex gap-10">
         <div className="w-2/3 flex flex-col gap-y-8">
-          {data && (
+          {data ? (
             <>
               <p className="text-gold-light_400 text-5xl font-bold">
                 {data.coursetitle}
@@ -106,23 +114,34 @@ export default function Story({ selectedSubCategory }) {
                 ) : null}
               </div>
             </>
+          ) : (
+            forexItemsLoading && <LoadingSpinner />
           )}
         </div>
-        {currencies.length > 0 && (
-          <div className="w-1/3 h-screen bg-primary p-5 z-10 relative right-0">
-            <h2 className="text-link-water text-xl font-bold mb-2">
-              {currencies[0].categorytypename}
-            </h2>
+        <div className="w-1/3 h-screen  bg-primary p-5 z-10 relative right-0">
+          <h2 className="text-link-water text-xl font-bold mb-2">Currencies</h2>
+
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by name..."
+            className="border p-2 rounded-md w-full max-w-md mb-4"
+          />
+          {currencies?.length > 0 ? (
             <SearchBox
               currencies={currencies}
               setCurrencies={setCurrencies}
               setCurrencyId={setCurrencyId}
               fetchForexItems={fetchForexItems}
+              query={query}
             />
-          </div>
-        )}
+          ) : (
+            currenciesLoading && <LoadingSpinner />
+          )}
+        </div>
       </div>
-      {data && (
+      {data ? (
         <>
           <ReadMoreContent content={data.maindescription} />
           <div className="grid grid-cols-2">
@@ -131,7 +150,7 @@ export default function Story({ selectedSubCategory }) {
               data={data.firstCountryDatalist[0] || {}}
             />
             <div className="flex gap-10">
-              <div class="h-auto w-px bg-gold-light_400 mx-4"></div>
+              <div className="h-auto w-px bg-gold-light_400 mx-4"></div>
               <CountryBox
                 title={data.secondcountryheading || ''}
                 data={data.secondCountryDatalist[0] || {}}
@@ -170,6 +189,8 @@ export default function Story({ selectedSubCategory }) {
             <CustomCarousel data={relatedContent} />
           </div>
         </>
+      ) : (
+        <></>
       )}
     </div>
   );

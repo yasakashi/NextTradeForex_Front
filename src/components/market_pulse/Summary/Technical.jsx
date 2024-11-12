@@ -7,7 +7,7 @@ export default function TechnicalSammary({ heading, tabs }) {
       <h3 className="text-link-water text-3xl font-extrabold mb-5">
         {heading}
       </h3>
-      <CommonDashboardTable tabs={tabs} />
+      {tabs && tabs.length > 0 && <CommonDashboardTable tabs={tabs} />}
     </div>
   );
 }

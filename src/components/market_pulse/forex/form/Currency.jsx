@@ -4,7 +4,7 @@ import DraftEditor from '../../../../admin_panel/components/editor/draft_editor'
 import CustomTextField, {
   CustomTextArea,
 } from '../../../../common/custom_text_field';
-import { convertToRaw, EditorState, convertFromRaw } from 'draft-js';
+import { convertToRaw } from 'draft-js';
 import Expandable from '../../../Expandable';
 import CountryGeneralData from '../../CountryGeneralData';
 import CountrySpecificData from '../../CountrySpecificData';
@@ -27,7 +27,7 @@ function Currency({ onCurrencyChange }) {
   const [FirstCountryDatalist, setFirstCountryDatalist] = useState([]);
   const [SecondCountryDatalist, setSecondCountryDatalist] = useState([]);
   // editors
- const [oneYearEditor, setOneYearEditor] = useState(() => {
+  const [oneYearEditor, setOneYearEditor] = useState(() => {
     return createEditorState(forexData?.oneyeardescription);
   });
 
@@ -50,8 +50,6 @@ function Currency({ onCurrencyChange }) {
   const [mainDescriptionEditor, setMainDescriptionEditor] = useState(() => {
     return createEditorState(forexData?.maindescription);
   });
-
-
 
   useEffect(() => {
     const currencyData = {
@@ -97,8 +95,6 @@ function Currency({ onCurrencyChange }) {
     oneYearEditor,
     secondCountryEditor,
   ]);
-
-
 
   return (
     <Expandable title="Currency">

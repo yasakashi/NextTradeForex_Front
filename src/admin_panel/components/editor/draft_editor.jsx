@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Editor } from 'react-draft-wysiwyg';
-import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import { convertToRaw } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { useState } from 'react';
 
@@ -17,16 +17,13 @@ const DraftEditor = ({
     const rawContentState = convertToRaw(state.getCurrentContent());
 
     // Extract plain text from editor state (optional)
-    const plainText = rawContentState.blocks
-      .map((block) => block.text)
-      .join(' ');
-
-    console.log(JSON.stringify(rawContentState))
+    // const plainText = rawContentState.blocks
+    //   .map((block) => block.text)
+    //   .join(' ');
 
     // Call the onChange function with the new editor state and extracted values
-    onChange?.({ state, rawContent: rawContentState, plainText });
+    // onChange?.({ state, rawContent: rawContentState, plainText });
   };
-
 
   return (
     <div
