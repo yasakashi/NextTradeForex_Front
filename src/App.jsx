@@ -29,7 +29,6 @@ import SocialProfile from './components/profile/settings/SociaProfile';
 // import MyCourses from "./components/profile/instructorCourses/MyCourses";
 import Withdrawals from './components/profile/withdrawals/Withdrawals';
 
-<<<<<<< HEAD
 import { Toaster } from "react-hot-toast";
 import AllMemberShipRequest from "./pages/master/AllMemberShipRequest";
 import CreateSignalChannel from "./pages/tradersCommunity/signalChannals/CreateSignalChannel";
