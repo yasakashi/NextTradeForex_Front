@@ -25,7 +25,8 @@ const CustomTextArea = ({
         {...props}
       ></textarea>
 
-      {error ? <span className="text-red-600 text-sm p-1">{error}</span> : null}
+      {error
+        ? <span className="text-red-600 text-sm p-1">{error}</span> : null}
     </div>
   );
 };

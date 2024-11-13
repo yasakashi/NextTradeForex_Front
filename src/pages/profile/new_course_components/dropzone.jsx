@@ -2,11 +2,7 @@ import React, { useCallback, useRef } from "react";
 import BorderedButtonPrimary from "../../../common/bordered_button_primary";
 import { motion } from "framer-motion";
 import { useDropzone } from "react-dropzone";
-const DropZone = ({
-  file,
-  set_file,
-  accept_file,
-}) => {
+const DropZone = ({ file, set_file, accept_file, ...props }) => {
   //   let [file, set_file] = React.useState<File | null>(null);
   const show_img_ref = useRef(null);
   const onDrop = useCallback((acceptedFiles) => {
@@ -86,7 +82,7 @@ const DropZone = ({
             </a>
           </p>
         </div>
-        <input {...getInputProps()} />
+        <input {...props} {...getInputProps()} />
       </label>
       {file && accept_file === "Image" && (
         <div
@@ -108,7 +104,9 @@ const DropZone = ({
           />
         </div>
       )}
-      {file && accept_file !== "Image" && <p className="text-black self-start">{file.name}</p>}
+      {file && accept_file !== "Image" && (
+        <p className="text-black self-start">{file.name}</p>
+      )}
     </motion.div>
   );
 };

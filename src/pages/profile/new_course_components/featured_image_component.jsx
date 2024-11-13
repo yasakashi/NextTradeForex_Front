@@ -4,7 +4,6 @@ import LibraryModal from "./library_modal";
 
 const FeaturedImageComponent = ({ name, formik }) => {
   const [is_open, set_is_open] = React.useState(false);
-  const [current_tab, set_current_tab] = React.useState("upload");
 
   return (
     <NewCourceCard title={"Featured image"}>
@@ -20,6 +19,11 @@ const FeaturedImageComponent = ({ name, formik }) => {
         >
           Set featured image
         </a>
+        {formik.touched.featuredImage && formik.errors.featuredImage ? (
+          <div className="text-red-600 text-sm p-1">
+            {formik.errors.featuredImage}
+          </div>
+        ) : null}
         <LibraryModal
           accept_file="Image"
           has_side_bar_action={false}
@@ -30,6 +34,7 @@ const FeaturedImageComponent = ({ name, formik }) => {
           set_file={(file) => {
             formik.setFieldValue("featuredImage", file);
           }}
+          onBlur={formik.handleBlur}
           onSave={(val) => {
             set_is_open(false);
           }}

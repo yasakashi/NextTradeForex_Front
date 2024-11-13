@@ -25,7 +25,7 @@ const AdditionalDate = ({ formik }) => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched?.whatWillILearn
+              formik.touched?.whatWillILearn && formik.errors.whatWillILearn
                 ? formik?.errors?.whatWillILearn
                 : ""
             }

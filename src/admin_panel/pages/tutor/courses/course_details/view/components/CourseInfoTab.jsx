@@ -105,12 +105,11 @@ const CourseInfoTab = ({ course }) => {
         <h5 className="font-bold text-xl mb-4">About Course</h5>
         <div>
           <div
-            className={`font-normal text-[15px] mb-4 w-full overflow-y-hidden text-justify ${
+            className={`font-normal text-[15px] space-y-4 mb-4 w-full overflow-y-hidden text-justify ${
               descShowMore ? "h-auto" : "h-[250px]"
             }`}
-          >
-            {course?.courseDescription}
-          </div>
+            dangerouslySetInnerHTML={{ __html: course?.courseDescription }}
+          ></div>
           {descShowMore ? (
             <div
               onClick={() => setDescShowMore(false)}

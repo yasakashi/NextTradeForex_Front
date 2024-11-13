@@ -58,7 +58,7 @@ const CourseProgressComponent = ({ course }) => {
         <li className="text-base flex items-center my-4">
           <FaRegClock className="mr-3" />
           {course?.courseDuration && course?.courseDuration > 60
-            ? course?.courseDuration / 60
+            ? Math.floor(course?.courseDuration / 60)
             : course?.courseDuration && course?.courseDuration < 60
             ? course?.courseDuration
             : ""}
