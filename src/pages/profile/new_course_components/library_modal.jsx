@@ -27,6 +27,8 @@ const LibraryModal = ({
   file,
   set_file,
   accept_file,
+  error,
+  ...props
 }) => {
   const [current_tab, set_current_tab] = useState(`Upload files`);
   // let [file, set_file] = useState<File | null>(null);
@@ -119,9 +121,15 @@ const LibraryModal = ({
                 key={`${current_tab} -1`}
                 file={file}
                 set_file={set_file}
+                {...props}
               />
             )}
           </AnimatePresence>
+          {error ? (
+            <div className="px-8 my-9 text-red-600 text-sm capitalize">
+              {error}
+            </div>
+          ) : null}{" "}
         </div>
       </div>
       <motion.div
