@@ -18,7 +18,6 @@ const DraftEditor = ({
       .map((block) => block.text)
       .join(" ");
     const htmlContent = stateToHTML(state.getCurrentContent()); // Convert to HTML
-
     // Pass the editor state, raw content, plain text, and HTML to the parent
     onChange?.({
       state,
