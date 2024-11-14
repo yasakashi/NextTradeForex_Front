@@ -40,6 +40,7 @@ export default function Story({ selectedSubCategory }) {
     try {
       if (selectedSubCategory) {
         setCurrenciesLoading(true);
+        setForexItemsLoading(true);
         const res = await getForexCurrencies(selectedSubCategory);
         setCurrencies(res.messageData);
         setCurrenciesLoading(false);
@@ -67,8 +68,8 @@ export default function Story({ selectedSubCategory }) {
   };
 
   useEffect(() => {
-    getRelatedSources(selectedSubCategory);
     getCurrencies();
+    getRelatedSources(selectedSubCategory);
   }, [selectedSubCategory]);
 
   useEffect(() => {
@@ -112,15 +113,17 @@ export default function Story({ selectedSubCategory }) {
                 ) : null}
               </div>
             </>
-          ) : forexItemsLoading ? <LoadingSpinner /> : (
-            !data && !forexItemsLoading
-          ) ? (
+          ) : forexItemsLoading ? (
+            <LoadingSpinner />
+          ) : !forexItemsLoading && !data ? (
             <div>
               <h2 className="text-link-water text-xl font-bold mb-2">
                 There is no data to show !
               </h2>
             </div>
-          ): <></>}
+          ) : (
+            <></>
+          )}
         </div>
         <div className="w-1/3 h-screen  bg-primary p-5 z-10 relative right-0">
           <h2 className="text-link-water text-xl font-bold mb-2">Currencies</h2>
