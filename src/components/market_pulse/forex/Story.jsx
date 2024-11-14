@@ -80,8 +80,6 @@ export default function Story({ selectedSubCategory }) {
   useEffect(() => {
     setData(null);
     fetchForexItems();
-    
-    
   }, [currencyId]);
 
   return (
@@ -114,9 +112,15 @@ export default function Story({ selectedSubCategory }) {
                 ) : null}
               </div>
             </>
-          ) : (
-            forexItemsLoading && <LoadingSpinner />
-          )}
+          ) : forexItemsLoading ? <LoadingSpinner /> : (
+            !data && !forexItemsLoading
+          ) ? (
+            <div>
+              <h2 className="text-link-water text-xl font-bold mb-2">
+                There is no data to show !
+              </h2>
+            </div>
+          ): <></>}
         </div>
         <div className="w-1/3 h-screen  bg-primary p-5 z-10 relative right-0">
           <h2 className="text-link-water text-xl font-bold mb-2">Currencies</h2>

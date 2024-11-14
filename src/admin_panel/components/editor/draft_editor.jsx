@@ -16,13 +16,13 @@ const DraftEditor = ({
     // Convert editor state to raw content (optional)
     const rawContentState = convertToRaw(state.getCurrentContent());
 
-    // Extract plain text from editor state (optional)
-    // const plainText = rawContentState.blocks
-    //   .map((block) => block.text)
-    //   .join(' ');
+    //  Extract plain text from editor state (optional)
+     const plainText = rawContentState.blocks
+       .map((block) => block.text)
+       .join(' ');
 
-    // Call the onChange function with the new editor state and extracted values
-    // onChange?.({ state, rawContent: rawContentState, plainText });
+     // Call the onChange function with the new editor state and extracted values
+     onChange?.({ state, rawContent: rawContentState, plainText });
   };
 
   return (

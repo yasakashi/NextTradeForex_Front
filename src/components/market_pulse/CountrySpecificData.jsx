@@ -26,6 +26,8 @@ function CountrySpecificData({ countryData, onCountryDataChange }) {
   };
 
   useEffect(() => {
+    console.log(data);
+
     onCountryDataChange(data);
   }, [data, onCountryDataChange]);
 
