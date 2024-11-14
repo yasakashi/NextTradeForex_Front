@@ -1,44 +1,45 @@
-import React, { useEffect } from 'react';
-import { Editor } from 'react-draft-wysiwyg';
-import { convertToRaw } from 'draft-js';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { Editor } from "react-draft-wysiwyg";
+import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { stateToHTML } from "draft-js-export-html";
 
 const DraftEditor = ({
-  editorState: value, // EditorState passed from the parent
-  set_editor_value: onChange, // Function to pass the updated state to the parent
-  className = '',
-  placeholder = '',
-  h = '400',
+  editorState, // EditorState passed from parent
+  onChange,
+  className = "",
+  placeholder = "",
+  h = "400",
 }) => {
   // Handle editor state changes
   const handleEditorStateChange = (state) => {
-    // Convert editor state to raw content (optional)
     const rawContentState = convertToRaw(state.getCurrentContent());
-
-    //  Extract plain text from editor state (optional)
-     const plainText = rawContentState.blocks
-       .map((block) => block.text)
-       .join(' ');
-
-     // Call the onChange function with the new editor state and extracted values
-     onChange?.({ state, rawContent: rawContentState, plainText });
+    const plainText = rawContentState.blocks
+      .map((block) => block.text)
+      .join(" ");
+    const htmlContent = stateToHTML(state.getCurrentContent()); // Convert to HTML
+    // Pass the editor state, raw content, plain text, and HTML to the parent
+    onChange?.({
+      state,
+      rawContent: rawContentState,
+      plainText,
+      htmlContent,
+    });
   };
-
   return (
     <div
       className={`w-full bg-white text-gray-700 rounded-[8px] p-2 h-[${h}px] ${className}`}
     >
       <Editor
-        editorState={value} // Use the editor state from the parent
+        editorState={editorState}
         toolbarClassName="toolbarClassName"
-        wrapperClassName="wrapperClassName"
-        editorClassName="editorClassName"
-        editorStyle={{ height: '100%', padding: 4 }}
+        wrapperClassName="wrapperClassName placeholder:font-normal"
+        editorClassName="editorClassName placeholder:font-normal"
+        editorStyle={{ height: "100" }}
         spellCheck
-        toolbar={{}} // Customize the toolbar here
+        toolbar={{}}
         placeholder={placeholder}
-        onEditorStateChange={handleEditorStateChange} // Handle editor state change
+        onEditorStateChange={handleEditorStateChange}
       />
     </div>
   );

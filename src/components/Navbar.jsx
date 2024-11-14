@@ -41,7 +41,7 @@ const Navbar = () => {
       <div className='max_w_main mx-auto w-full'>
         <div className=''>
           <div className='flex items-center justify-between lg:justify-normal relative'>
-            <a href='/' className='max-w-[150px]'>
+            <a href='/' className='max-w-[150px] p-1'>
               <img src='/assets/logo.png' className='w-full' alt='Logo' />
             </a>
             {/* _________________________ */}

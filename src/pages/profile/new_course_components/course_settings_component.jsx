@@ -54,7 +54,7 @@ const CourseSettings = ({ formik }) => {
                 className="w-full col-span-2 bg-white border border-gray-300 py-[8px] text-gray-600  pl-2 rounded-lg outline-blue-500"
               >
                 <option value="1">All levels</option>
-                <option value="2">Beginner</option>
+                <option value="2">Newbie</option>
                 <option value="3">Intermediate</option>
                 <option value="4">Expert</option>
               </select>

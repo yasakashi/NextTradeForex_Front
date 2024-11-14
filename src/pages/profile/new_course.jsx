@@ -110,7 +110,7 @@ const NewCourse = ({ page }) => {
   });
 
   const handleEditorChange = (editorData) => {
-    formik.setFieldValue("courseDescription", editorData.plainText);
+    formik.setFieldValue("courseDescription", editorData.htmlContent); // Use HTML content
 
     // Update the editor state
     setEditorState(editorData.state);
@@ -122,7 +122,7 @@ const NewCourse = ({ page }) => {
         page === "admin" ? "" : "bg-[#f0f0f1]"
       }`}
     >
-      {console.log(formik.values)}
+      {console.log(formik.errors)}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -154,7 +154,7 @@ const NewCourse = ({ page }) => {
               </div>
               <div className="border border-gray-700 my-3 bg-white">
                 <div className="w-full pt-2 pl-2">
-                  <div className="mb-2 flex">
+                  <div className="mb-2 flex relative">
                     <CustomButton
                       onClick={() => setOpenCourseDescFileModal(true)}
                       size="sm"
@@ -169,12 +169,20 @@ const NewCourse = ({ page }) => {
                     >
                       <BiSave color="white" className="text-xl" />
                     </button>
+
+                    {formik.errors?.courseFile && formik.touched?.courseFile ? (
+                      <div className="absolute bg-red-600 max-w-[300px] bottom-[110%] left-0 rounded-lg p-2 text-white font-semibold text-sm">
+                        {formik.errors?.courseFile}
+                      </div>
+                    ) : null}
                   </div>
                   <LibraryModal
                     file={formik?.values?.courseFile}
                     set_file={(file) => {
                       formik.setFieldValue("courseFile", file);
                     }}
+                    error={formik.errors?.courseFile}
+                    onBlur={formik.handleBlur}
                     accept_file="Image"
                     has_side_bar_action={false}
                     title="Add Media"
@@ -182,11 +190,11 @@ const NewCourse = ({ page }) => {
                     set_open={setOpenCourseDescFileModal}
                     onSave={() => setOpenCourseDescFileModal(false)}
                   />
-                  <div style={{ width: "100%", position: "relative" }}>
+                  <div className="w-full relative overflow-y-scroll">
                     {/* <EditorComponent /> */}
                     <DraftEditor
-                      placeholder="Course description ..."
-                      value={editorState} // Pass the editor state
+                      placeholder="Description"
+                      editorState={editorState}
                       onChange={handleEditorChange}
                     />
                   </div>
@@ -234,7 +242,7 @@ const NewCourse = ({ page }) => {
                   <ExcerptComponent name="excerpt" formik={formik} />
 
                   <CourseAuthor formik={formik} />
-                  
+
                   <CourseSettingsComponent formik={formik} />
 
                   <AddProductComponent name="coursePrice" formik={formik} />

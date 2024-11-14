@@ -1,19 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-// import MaterialTable from "../../../../components/table/material_table.js";
 import MaterialTable from "../../../../components/table/material_table";
-import CustomRadioButton from "../../../categories/view/components/customRadioButton";
-import BorderedButtonPrimary from "../../../../../common/bordered_button_primary";
-import DeleteMenuModal from "../../../categories/view/components/delete_menu_modal";
+
 import temp from "../../../../../asset/img/play-button-arrow.svg";
 import { MySelectBox } from "../../../../../pages/profile/new_course_components/custom_select_box";
-import useCourses from "../hook/use_courses";
 import { Link, useNavigate } from "react-router-dom";
 import store from "../../../../../redux/store";
 import { set_course_data_state } from "../../../../../redux/features/courseSlise";
-import ContainedButtonPrimary from "../../../../../common/contained_button_primary";
-import { publish_course_api } from "../services/publish_course_api";
 
 import {
+  useChangeCourseStatusMutation,
   useGetCoursesQuery,
   useRemoveCourseMutation,
 } from "../../../../../redux/features/course/courseApii";
@@ -22,10 +17,11 @@ import useClickOutside from "../../../../../hooks/useClickOutside";
 import { HiDotsVertical } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
 import { IoTrashOutline } from "react-icons/io5";
+import { useGetCourseStatusListQuery } from "../../../../../redux/features/course/commonApi";
+import toast from "react-hot-toast";
 
 const CoursesScreen = () => {
   const navigate = useNavigate();
-
 
   const [courses_type, set_courses_type] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -36,6 +32,13 @@ const CoursesScreen = () => {
   const [removeCourse, { isLoading: removeCourseLoading }] =
     useRemoveCourseMutation();
 
+  const {
+    data: { messageData: courseStatus } = { messageData: [] },
+    isLoading: courseStatusLoading,
+  } = useGetCourseStatusListQuery();
+
+  const [changeCourseStatus] = useChangeCourseStatusMutation();
+
   const modalRef = useRef(null);
 
   useClickOutside(modalRef, () => {
@@ -44,7 +47,7 @@ const CoursesScreen = () => {
 
   const {
     data: { messageData: courses } = { messageData: [] },
-    error,
+
     isLoading,
   } = useGetCoursesQuery({
     data: {
@@ -60,13 +63,21 @@ const CoursesScreen = () => {
     },
   });
 
-  const searchCoursesHandler = (e) => {
-    setSearchCourses(e.target.value);
-  };
-
   const removeCourseHandler = async (id) => {
     const removeRes = await removeCourse({ data: { Id: id } });
-    console.log({ removeRes });
+
+    if (removeRes?.data?.messageCode === 200) {
+      toast.success("Course removed.");
+      setSearchCourses("");
+    }
+  };
+
+  const changeCourseStatusHandler = async (statusId, id) => {
+    const chagneStatusRes = await changeCourseStatus({
+      data: { Id: id, coursestatusid: statusId },
+    });
+
+    console.log(chagneStatusRes);
   };
 
   return (
@@ -224,12 +235,22 @@ const CoursesScreen = () => {
               return (
                 <div className="flex items-center">
                   {/* publish */}
-                  <select className="text-[#24a148] bg-[#24a14826] text-sm cursor-pointer w-[130px] rounded-full py-2 px-2 outline-none border border-[#24a148]">
-                    <option value="1">Publish</option>
-                    <option value="2">Pending</option>
-                    <option value="3">Trash</option>
-                    <option value="4">Draft</option>
-                    <option value="DE">Private</option>
+                  <select
+                    value={row?.original?.coursestatusid}
+                    onChange={(e) =>
+                      changeCourseStatusHandler(
+                        e.target.value,
+                        row?.original?.id
+                      )
+                    }
+                    className="text-[#24a148] bg-[#24a14826] text-sm cursor-pointer w-[130px] rounded-full py-2 px-2 outline-none border border-[#24a148]"
+                  >
+                    {courseStatus?.length > 0 &&
+                      courseStatus?.map((status, index) => (
+                        <option key={index} value={status.id}>
+                          {status?.name}
+                        </option>
+                      ))}
                   </select>
 
                   {/* course attachemetns */}
@@ -294,7 +315,7 @@ const CoursesScreen = () => {
                               }
                               disabled={removeCourseLoading}
                               type="button"
-                              className="flex disabled:cursor-not-allowed items-center border-none outline-none"
+                              className="flex gap-2 disabled:cursor-not-allowed items-center border-none outline-none"
                             >
                               <IoTrashOutline size={14} />
                               Remove Permanently

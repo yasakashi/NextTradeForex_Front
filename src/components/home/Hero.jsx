@@ -1,5 +1,6 @@
 import React from "react";
 import HeroTemp from "../HeroTemp";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -22,7 +23,10 @@ const Hero = () => {
                   type="text"
                   placeholder="Search ..."
                 />
-                <button className="flex w-max h-full items-center  bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] px-3 rounded-lg  space-x-2">
+                <Link
+                  to="/course-category/top-courses"
+                  className="flex w-max h-full items-center  bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] px-3 rounded-lg  space-x-2"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -39,7 +43,7 @@ const Hero = () => {
                   </svg>
 
                   <span className="w-max hidden md:block">Search Courses</span>
-                </button>
+                </Link>
               </div>
             </div>
             {/* //////////////////////////// */}

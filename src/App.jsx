@@ -29,57 +29,58 @@ import SocialProfile from './components/profile/settings/SociaProfile';
 // import MyCourses from "./components/profile/instructorCourses/MyCourses";
 import Withdrawals from './components/profile/withdrawals/Withdrawals';
 
-import { Toaster } from 'react-hot-toast';
-import AllMemberShipRequest from './pages/master/AllMemberShipRequest';
-import CreateSignalChannel from './pages/tradersCommunity/signalChannals/CreateSignalChannel';
-import CreateSignal from './pages/tradersCommunity/signalChannals/CreateSignal';
-import GoogleTranslate from './components/googleTranslate/GoogleTranslate';
-import SignalChannel from './pages/tradersCommunity/signalChannals/SignalChannel';
-import GroupHome from './components/tradersCommunity/group/home';
-import Messages from './components/tradersCommunity/group/Messages';
-import MessagesSnackbar from './components/message_snackbar';
-import SignalsList from './pages/tradersCommunity/groups/SignalsList';
-import GroupMembers from './pages/tradersCommunity/groups/group/GroupMembers';
-import DashboardScreen from './pages/dashboard/view/dashboard_screen';
-import React from 'react';
-import { http_instanse } from './axios/auth_full_http_instanse';
-import { get_user_info_api } from './pages/profile/my_courses/service/get_my_courses_api';
-import MainLayout from './admin_panel/components/layout/main_layout';
-import { admin_panel_router } from './admin_panel/utils/admin_pannel_router';
-import LearnToTradeScreen from './pages/learn_to_trade/view/learn_to_trade_screen';
-import SelectLearnToTrade from './pages/learn_to_trade/select_learn_to_trade';
-import CategoriesToLearnScreen from './pages/learn_to_trade/courses_to_learn_screen';
-import CategoryListToLearnScreen from './pages/learn_to_trade/category_list_to_learn_screen';
-import CategoriesDetailsView from './admin_panel/pages/categories/view/category_details_view_screen';
-import CourseDetails from './admin_panel/pages/tutor/courses/course_details/view/course_detasils';
-import CourseAttachments from './admin_panel/pages/tutor/courses/course_atachments/view/course_attachments';
-import PartnerShip from './pages/home/partnership/PartnerShip';
-import PartnershipProfileView from './pages/home/partnership/PartnershipProfileView';
-import { connect } from 'react-redux';
-import SupportPortal from './pages/tradersCommunity/supportPortal/SupportPortal';
-import SupportPortalsList from './pages/tradersCommunity/supportPortal/SupportPortalsList';
-import CreateTicket from './pages/tradersCommunity/supportPortal/CreateTicket';
-import EditGroup from './components/tradersCommunity/group/manageGroup/EditGroup';
-import GroupSettings from './components/tradersCommunity/group/manageGroup/GroupSettings';
-import GroupAvatar from './components/tradersCommunity/group/manageGroup/GroupAvatar';
-import GroupCoverImage from './components/tradersCommunity/group/manageGroup/GroupCoverImage';
-import ManageGroupMemebers from './components/tradersCommunity/group/manageGroup/ManageGroupMembers';
-import DeleteGroup from './components/tradersCommunity/group/manageGroup/DeleteGroup';
-import Gallery from './pages/tradersCommunity/groups/group/gallery/Gallery';
-import AllGalleries from './components/tradersCommunity/group/gallery/AllGalleries';
-import MyGalleries from './components/tradersCommunity/group/gallery/MyGalleries';
-import CreateGallery from './components/tradersCommunity/group/gallery/CreateGallery';
-import ManageGroup from './components/tradersCommunity/group/manageGroup/ManageGroup';
-import LiveMeeting from './pages/tradersCommunity/groups/group/liveMeeting/LiveMeeting';
-import NewCourse from './pages/profile/new_course';
-import MyCourses from './pages/profile/my_courses/view/my_courses';
-import EnrolledCourses from './pages/profile/enrolled_courses/view/enrolled_courses';
-import CourseBuilderPage from './pages/profile/new_course_components/CourseBuilderPage';
-import CourseMeetingAndPdf from './pages/profile/new_course_components/CourseMeetingAndPdf';
-import { market_pulse_router } from './admin_panel/utils/market_pulse_router';
-import MarketPulseLayout from './layouts/marke_pulse_layout';
-import MarketPulseIndex from './pages/market_pulse';
-import StartLearning from './pages/profile/new_course_components/start-learning/StartLearning';
+import { Toaster } from "react-hot-toast";
+import AllMemberShipRequest from "./pages/master/AllMemberShipRequest";
+import CreateSignalChannel from "./pages/tradersCommunity/signalChannals/CreateSignalChannel";
+import CreateSignal from "./pages/tradersCommunity/signalChannals/CreateSignal";
+import GoogleTranslate from "./components/googleTranslate/GoogleTranslate";
+import SignalChannel from "./pages/tradersCommunity/signalChannals/SignalChannel";
+import GroupHome from "./components/tradersCommunity/group/home";
+import Messages from "./components/tradersCommunity/group/Messages";
+import MessagesSnackbar from "./components/message_snackbar";
+import SignalsList from "./pages/tradersCommunity/groups/SignalsList";
+import GroupMembers from "./pages/tradersCommunity/groups/group/GroupMembers";
+import DashboardScreen from "./pages/dashboard/view/dashboard_screen";
+import React from "react";
+import { http_instanse } from "./axios/auth_full_http_instanse";
+import { get_user_info_api } from "./pages/profile/my_courses/service/get_my_courses_api";
+import MainLayout from "./admin_panel/components/layout/main_layout";
+import { admin_panel_router } from "./admin_panel/utils/admin_pannel_router";
+import LearnToTradeScreen from "./pages/learn_to_trade/view/learn_to_trade_screen";
+import SelectLearnToTrade from "./pages/learn_to_trade/select_learn_to_trade";
+import CategoriesToLearnScreen from "./pages/learn_to_trade/courses_to_learn_screen";
+import CategoryListToLearnScreen from "./pages/learn_to_trade/category_list_to_learn_screen";
+import CategoriesDetailsView from "./admin_panel/pages/categories/view/category_details_view_screen";
+import CourseDetails from "./admin_panel/pages/tutor/courses/course_details/view/course_detasils";
+import CourseAttachments from "./admin_panel/pages/tutor/courses/course_atachments/view/course_attachments";
+import PartnerShip from "./pages/home/partnership/PartnerShip";
+import PartnershipProfileView from "./pages/home/partnership/PartnershipProfileView";
+import { connect } from "react-redux";
+import SupportPortal from "./pages/tradersCommunity/supportPortal/SupportPortal";
+import SupportPortalsList from "./pages/tradersCommunity/supportPortal/SupportPortalsList";
+import CreateTicket from "./pages/tradersCommunity/supportPortal/CreateTicket";
+import EditGroup from "./components/tradersCommunity/group/manageGroup/EditGroup";
+import GroupSettings from "./components/tradersCommunity/group/manageGroup/GroupSettings";
+import GroupAvatar from "./components/tradersCommunity/group/manageGroup/GroupAvatar";
+import GroupCoverImage from "./components/tradersCommunity/group/manageGroup/GroupCoverImage";
+import ManageGroupMemebers from "./components/tradersCommunity/group/manageGroup/ManageGroupMembers";
+import DeleteGroup from "./components/tradersCommunity/group/manageGroup/DeleteGroup";
+import Gallery from "./pages/tradersCommunity/groups/group/gallery/Gallery";
+import AllGalleries from "./components/tradersCommunity/group/gallery/AllGalleries";
+import MyGalleries from "./components/tradersCommunity/group/gallery/MyGalleries";
+import CreateGallery from "./components/tradersCommunity/group/gallery/CreateGallery";
+import ManageGroup from "./components/tradersCommunity/group/manageGroup/ManageGroup";
+import LiveMeeting from "./pages/tradersCommunity/groups/group/liveMeeting/LiveMeeting";
+import NewCourse from "./pages/profile/new_course";
+import MyCourses from "./pages/profile/my_courses/view/my_courses";
+import EnrolledCourses from "./pages/profile/enrolled_courses/view/enrolled_courses";
+import CourseBuilderPage from "./pages/profile/new_course_components/CourseBuilderPage";
+import CourseMeetingAndPdf from "./pages/profile/new_course_components/CourseMeetingAndPdf";
+import { market_pulse_router } from "./admin_panel/utils/market_pulse_router";
+import MarketPulseLayout from "./layouts/marke_pulse_layout";
+import MarketPulseIndex from "./pages/market_pulse";
+import StartLearning from "./pages/profile/new_course_components/start-learning/StartLearning";
+import Courses from "./pages/courses/Courses";
 function App({ auth }) {
   const token = localStorage.getItem('loginToken');
 
@@ -132,6 +133,9 @@ function App({ auth }) {
                 );
               })}
             </Route>
+
+            <Route path="/course-category/top-courses" element={<Courses />} />
+            
             {token ? (
               <>
                 <Route path="/partnership" element={<PartnerShip />} />
@@ -167,6 +171,7 @@ function App({ auth }) {
                   path="/course/attachments/:id/:title"
                   element={<CourseAttachments />}
                 />
+
                 <Route path="/learn_to_trade" element={<LearnToTradeScreen />}>
                   <Route
                     path="/learn_to_trade"
@@ -174,11 +179,11 @@ function App({ auth }) {
                   />
 
                   <Route
-                    path="/learn_to_trade/courses/:level"
+                    path="/learn_to_trade/courses/:level/:levelId"
                     element={<CategoriesToLearnScreen />}
                   />
                   <Route
-                    path="/learn_to_trade/courses/:coursename/:id"
+                    path="/learn_to_trade/course/:coursename/:id"
                     element={<CategoriesDetailsView />}
                   />
                 </Route>
