@@ -18,7 +18,7 @@ export default function ReadMoreContent({ content }) {
     // Check if editor content height exceeds 200px
     if (editorContainerRef.current) {
       const editorHeight = editorContainerRef.current.clientHeight;
-      setShowToggleButton(editorHeight > 200);
+      setShowToggleButton(editorHeight > 100);
     }
   }, [editorState]);
 
@@ -29,7 +29,7 @@ export default function ReadMoreContent({ content }) {
         className={`w-full transition-all duration-300 ${
           isScrollOn
             ? 'max-h-[200px] overflow-y-scroll'
-            : 'max-h-20 overflow-hidden'
+            : 'max-h-24 overflow-hidden'
         }`}
       >
         <Editor

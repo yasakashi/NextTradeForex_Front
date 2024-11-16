@@ -100,11 +100,17 @@ export default function Story({ selectedSubCategory }) {
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {data.flexibleBlocklist &&
-                  Object.entries(data.flexibleBlocklist[0]).map((el) => (
-                    <React.Fragment key={el[0]}>
-                      <TextBox title={el[0]} description={el[1]} />
-                    </React.Fragment>
-                  ))}
+                  Object.entries(data.flexibleBlocklist[0])
+                    .filter((el) => {
+                      return el[0] !== 'marketpulsforexid' && el[0] !== 'id';
+                    })
+                    .map((el) => {
+                      return (
+                        <React.Fragment key={el[0]}>
+                          <TextBox title={el[0]} description={el[1]} />
+                        </React.Fragment>
+                      );
+                    })}
               </div>
               <ReadMoreContent content={data.chartdescription} />
               <div className="h-[550px]">

@@ -9,7 +9,7 @@ export default function CarouselCard({ data }) {
           <img
             src={
               data?.photofileurl
-                ? data.photofileurl
+                ?"https://api.yasakashi.ir/api"+ data.photofileurl
                 : '/dist/assets/Market-Sentiments.png'
             }
             alt="EUR/USD"
