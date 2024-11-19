@@ -20,6 +20,14 @@ import { IoTrashOutline } from "react-icons/io5";
 import { useGetCourseStatusListQuery } from "../../../../../redux/features/course/commonApi";
 import toast from "react-hot-toast";
 
+const statusStyle = {
+  pending: "text-[#ed9700] bg-[#ed970026] border-[#ed97004d]",
+  publish: "text-[#24a148] bg-[#24a14826] border-[#24a148]",
+  trash: "text-[#f44337] bg-[#f4433726] border-[#f443374d]",
+  draft: "text-[#41454fe6] bg-[#eff1f6] border-[#eff1f6]",
+  private: "text-[#41454fe6] bg-[#eff1f6] border-[#eff1f6]",
+};
+
 const CoursesScreen = () => {
   const navigate = useNavigate();
 
@@ -243,7 +251,22 @@ const CoursesScreen = () => {
                         row?.original?.id
                       )
                     }
-                    className="text-[#24a148] bg-[#24a14826] text-sm cursor-pointer w-[130px] rounded-full py-2 px-2 outline-none border border-[#24a148]"
+                    className={`
+                      text-[13px] cursor-pointer w-[130px] rounded-full py-2 px-2 outline-none border
+                      ${
+                        row?.original?.coursestatusid === 3
+                          ? statusStyle?.publish
+                          : row?.original?.coursestatusid === 2
+                          ? statusStyle?.pending
+                          : row?.original?.coursestatusid === 4
+                          ? statusStyle?.trash
+                          : row?.original?.coursestatusid === 5
+                          ? statusStyle?.private
+                          : row?.original?.coursestatusid === 1
+                          ? statusStyle?.draft
+                          : "text-[#41454fe6] bg-[#eff1f6] border-[#eff1f6]"
+                      }
+                      `}
                   >
                     {courseStatus?.length > 0 &&
                       courseStatus?.map((status, index) => (
