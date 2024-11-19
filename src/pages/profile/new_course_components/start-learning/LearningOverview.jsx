@@ -9,10 +9,12 @@ import { FaBars } from "react-icons/fa6";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { AiOutlineExclamation } from "react-icons/ai";
+import { motion } from "framer-motion";
 
-const LearningOverview = () => {
-  
+const LearningOverview = ({ isLoading }) => {
   const { courseId, lessonId } = useParams();
+
+  const [activeLesson, setActiveLesson] = useState();
 
   const [topics, setTopics] = useState([]);
   const [lessons, setLessons] = useState({});
@@ -42,8 +44,40 @@ const LearningOverview = () => {
         setTopics(topicsRes?.data?.messageData);
       }
     }
+
+    async function getFirstLesson() {
+      const tId = topics[0]?.id || "";
+      const cId = topics[0]?.courseId || "";
+
+      if (!lessons[tId]) {
+        const lessonsRes = await getTopicLessons({
+          data: {
+            Id: null,
+            courseId: cId,
+            topicId: tId,
+            lessonName: "",
+            pageindex: 1,
+            rowcount: 50,
+          },
+        });
+        if (lessonsRes?.data?.messageCode === 200) {
+          console.log(lessonsRes?.data?.messageData, "---------------");
+          setActiveLesson((prev) => ({
+            ...prev,
+            [tId]: lessonsRes?.data?.messageData,
+          }));
+        }
+      }
+    }
+
     courseTopics();
+
+    if (topics?.length > 0) {
+      getFirstLesson();
+    }
   }, []);
+
+  useEffect(() => {}, []);
 
   const handleToggleTopic = async (index, topicId) => {
     setOpenTopicIndex(null);
@@ -52,7 +86,7 @@ const LearningOverview = () => {
       setOpenTopicIndex(null);
     } else {
       setOpenTopicIndex(index);
-      return;
+
       if (!lessons[topicId]) {
         const lessonsRes = await getTopicLessons({
           data: {
@@ -74,16 +108,32 @@ const LearningOverview = () => {
     }
   };
 
+  const lessonPreviewHandler = (lesson) => {
+    setActiveLesson(lesson);
+  };
+
   return (
     <div>
-      <div className="w-[80%] mx-auto mt-8 mb-4">
+      <div className="w-[80%] mx-auto mt-8 mb-4 h-screen overflow-y-scroll scrollbar-none">
         <h4 className="text-white font-normal text-xl">About lesson</h4>
         <div className="w-full h-[400px] mt-4">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3HVNrLyYiZgApryJ4U8mwybjt950o3AKphA&s"
-            alt=""
-            className="aspect-video w-full h-full"
-          />
+          <h4 className="text-white text-base my-2">
+            {activeLesson?.lessonName}
+          </h4>
+          <div className="my-8 border border-gray-300 rounded-lg shadow-sm">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3HVNrLyYiZgApryJ4U8mwybjt950o3AKphA&s"
+              alt=""
+              className="aspect-video w-full h-full max-w-[800px] mx-auto"
+            />
+          </div>
+
+          <p
+            dangerouslySetInnerHTML={{
+              __html: activeLesson?.lessonDescription,
+            }}
+            className="text-base text-white py-3"
+          ></p>
         </div>
       </div>
 
@@ -106,8 +156,43 @@ const LearningOverview = () => {
       </div>
 
       {/* topics */}
+
+      {isLoading && (
+        <motion.div
+          key={`${isLoading}`}
+          initial={{ opacity: 0, y: 8 }}
+          exit={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            width: "100%",
+            marginTop: 24,
+            display: "flex",
+            justifyContent: "center",
+          }}
+          className="w-full my-14"
+        >
+          <motion.div
+            style={{
+              width: 80,
+              height: 80,
+              border: "5px solid white",
+              alignSelf: "center",
+            }}
+            transition={{
+              repeat: Infinity,
+              repeatType: "mirror",
+              duration: 3,
+            }}
+            animate={{
+              scale: [0.5, 1, 0.5, 1, 0.5, 1],
+              rotate: [0, 270, 0, 270, 0, 270],
+              borderRadius: ["20%", "50%", "20%", "50%", "20%", "50%"],
+            }}
+          />
+        </motion.div>
+      )}
       {topics.length > 0 && (
-        <div className="my-10 mb-10 space-y-2">
+        <div className="my-10 mb-10 space-y-2 wrapper">
           {topics.map((topic, index) => (
             <div
               key={index}
@@ -154,32 +239,23 @@ const LearningOverview = () => {
                   {/* lessons */}
                   <div className="mb-2 px-2 space-y-2">
                     {/* single lesson */}
-                    <div className="flex items-center rounded-md px-4 py-3 ml-auto">
-                      <div className="flex items-center gap-2">
-                        <span className="border-none outline-none">
-                          <IoDocumentTextOutline
-                            size={16}
-                            className="text-gray-500"
-                          />
-                        </span>
-                        <h4 className="text-gray-700 text-base font-normal capitalize">
-                          Trading Diary
-                        </h4>
-                      </div>
-                    </div>
+
                     {lessons[topic?.id]?.map((lesson, lessonIndex) => (
                       <div
                         key={lessonIndex}
-                        className="flex items-center justify-between border border-gray-300 rounded-md px-8 py-3 w-[90%] ml-auto"
+                        className="flex items-center rounded-md px-4 py-3 ml-auto group"
+                        onClick={() => lessonPreviewHandler(lesson)}
                       >
                         <div className="flex items-center gap-2">
-                          <button className="border-none outline-none">
-                            <FaBars size={20} className="text-gray-500" />
-                          </button>
-                          <h5>{lesson?.lessonName} : </h5>
-                          <p className="text-gray-400 text-sm">
-                            {lesson?.lessonDescription} Lesson Name
-                          </p>
+                          <span className="border-none outline-none">
+                            <IoDocumentTextOutline
+                              size={16}
+                              className="text-gray-500 group-hover:text-blue-accent transition-colors"
+                            />
+                          </span>
+                          <h4 className="text-gray-700 text-base font-normal capitalize group-hover:text-blue-accent group-hover:cursor-pointer transition-colors">
+                            {lesson?.lessonName}
+                          </h4>
                         </div>
                       </div>
                     ))}

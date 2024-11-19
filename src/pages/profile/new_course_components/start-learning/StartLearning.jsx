@@ -15,6 +15,8 @@ import LearningComments from "./LearningComments";
 const StartLearning = () => {
   const { courseId, lessonId } = useParams();
 
+
+
   const [activeTab, setActiveTab] = useState("overview");
 
   const [topics, setTopics] = useState([]);
@@ -110,7 +112,7 @@ const StartLearning = () => {
       </div>
 
       {activeTab === "overview" ? (
-        <LearningOverview />
+        <LearningOverview isLoading={getCourseTopicsLoading} />
       ) : activeTab === "comments" ? (
         <LearningComments />
       ) : null}

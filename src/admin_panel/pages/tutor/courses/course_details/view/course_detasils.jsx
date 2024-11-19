@@ -116,7 +116,7 @@ const CourseDetails = () => {
             <CourseInfo course={course} />
           </div>
           <div item className="col-span-1 md:col-span-1">
-            <CourseProgressComponent course={course} />
+            <CourseProgressComponent course={course}  isLoading={isLoading} />
             <CourseBy course={course} />
           </div>
         </div>
