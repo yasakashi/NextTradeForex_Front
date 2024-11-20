@@ -8,19 +8,22 @@ import { Link, useParams } from "react-router-dom";
 import { useGetCoursesQuery } from "../../../../../../redux/features/course/courseApii";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { motion } from "framer-motion";
-
 import CoverImage from "../../../../../../asset/img/placeholder (1).svg";
 
-const Topics = ({ setLoading }) => {
+const Lessons = ({ setLoading }) => {
   const { id } = useParams();
 
   const [topics, setTopics] = useState([]);
+  const [lessons, setLessons] = useState([]);
+
+  const [openTopicIndex, setOpenTopicIndex] = useState(0);
 
   const [
     getCourseTopics,
     { error: getTopicError, isLoading: getCourseTopicsLoading, isSuccess },
   ] = useGetCourseTopicsMutation();
-  const [getTopicLessons] = useGetTopicLessonsMutation();
+  const [getTopicLessons, { isLoading: getLessonsLoading }] =
+    useGetTopicLessonsMutation();
 
   const {
     data: { messageData: courses } = { messageData: [] },
@@ -43,8 +46,29 @@ const Topics = ({ setLoading }) => {
   const course = courses[0] || {};
 
   useEffect(() => {
-    setLoading(getCourseTopicsLoading);
-  }, [getCourseTopicsLoading]);
+    async function getLessons() {
+      const lessonsRes = await getTopicLessons({
+        data: {
+          Id: null,
+          courseId: id,
+          topicId: null,
+          lessonName: "",
+          pageindex: 1,
+          rowcount: 50,
+        },
+      });
+
+      if (lessonsRes?.data?.messageCode === 200) {
+        setLessons(lessonsRes?.data?.messageData);
+      }
+    }
+
+    getLessons();
+  }, []);
+
+  useEffect(() => {
+    setLoading(getLessonsLoading);
+  }, [getLessonsLoading]);
 
   useEffect(() => {
     async function courseTopics() {
@@ -68,11 +92,12 @@ const Topics = ({ setLoading }) => {
 
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {topics?.length > 0
-        ? topics?.map((topic, index) => (
+      {console.log(lessons)}
+      {lessons?.length > 0
+        ? lessons?.map((lesson, index) => (
             <Link
               key={index}
-              // to={`/learn_to_trade/course/${course?.courseName}/${course?.id}`}
+              to={`/courses/${course?.courseName}/${course?.courseId}/lesson/${lesson?.id}`}
               className="w-full max-w-[450px] px-4 cursor-pointer"
             >
               <div
@@ -86,8 +111,8 @@ const Topics = ({ setLoading }) => {
                 <div className="h-[250px] w-full overflow-hidden rounded-[6px]">
                   <LazyLoadImage
                     src={
-                      course?.courseFilepath
-                        ? course.courseFilepath
+                      lesson?.featureImagepath
+                        ? lesson.featureImagepath
                         : CoverImage
                     }
                     effect="blur"
@@ -98,11 +123,14 @@ const Topics = ({ setLoading }) => {
                   />
                 </div>
                 <h5 className="text-[22px] font-bold text-gold-light_400 mt-4 pb-10">
-                  {topic?.topicName}
+                  {lesson?.lessonName}
                 </h5>
-                <p className="text-gray-300 text-[15px] font-normal h-[95px] overflow-hidden bg-gradient-to-r from-inherit via-purple-500 to-pink-500">
-                  {topic?.topicSummary}
-                </p>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: lesson?.lessonDescription,
+                  }}
+                  className="text-gray-300 text-[15px] font-normal h-[95px] overflow-hidden bg-gradient-to-r from-inherit via-purple-500 to-pink-500"
+                ></div>
                 <button
                   onClick={() =>
                     navigate(
@@ -139,11 +167,11 @@ const Topics = ({ setLoading }) => {
               </div>
             </Link>
           ))
-        : !getCourseTopicsLoading
-        ? "Topics not found."
+        : !getLessonsLoading
+        ? "Lessons Not found"
         : null}
     </div>
   );
 };
 
-export default Topics;
+export default Lessons;
