@@ -292,7 +292,7 @@ const list = [
   //   ],
   // },
   {
-    title: "Forex",
+    title: "Market Pulse",
     Icon: TiAdjustBrightness,
     sub_categories: [
       { title: "Indicators" },
