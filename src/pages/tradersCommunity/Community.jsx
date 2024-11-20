@@ -17,21 +17,21 @@ const JOIN_TRADERS_SOCIAL_NETWORK = [
     Icon: IoLogoWechat,
     title: "Meet Great People",
     description:
-      "When an unknown printer took a galley of scrambled it to make a type specimen It has survived not only.",
+      "Connect with great people in the Forex trading community! Build relationships, exchange ideas, and collaborate with exprienced traders to enhance your knowledge and trading success.",
   },
   {
     id: 2,
     Icon: FaUsers,
     title: "Forum Discussion",
     description:
-      "When an unknown printer took a galley of scrambled it to make a type specimen It has survived not only.",
+      "Engage in insightful discussions on our Forex forum! Share your expriences, ask questions, and participate in conversatins with fellow traders to enhance your trading startegies and stay ahead of market trends.",
   },
   {
     id: 3,
     Icon: RiFilePaper2Line,
     title: "Active Groups",
     description:
-      "When an unknown printer took a galley of scrambled it to make a type specimen It has survived not only.",
+      "Explore our active Forex trading groups! Join dynamic communities where traders share real-time insights, tips, and strategies to maximize their profits. Stay engaged, learn, and grow together with experienced traders.",
   },
 ];
 
