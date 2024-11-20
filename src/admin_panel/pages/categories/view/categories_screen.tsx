@@ -11,7 +11,7 @@ import MAterialTable, {
   data_list,
 } from "../../../components/table/material_table";
 
-const AddNewCategoryScreen = () => {
+const CategoriesScreen = () => {
   const { categories } = useCategories({make_id_tree:true});
   const navigate = useNavigate();
   const [open_delete_dialog, set_open_delete_dialog] = React.useState<{
@@ -158,4 +158,4 @@ const AddNewCategoryScreen = () => {
   );
 };
 
-export default AddNewCategoryScreen;
+export default CategoriesScreen;

@@ -11,7 +11,7 @@ import CourseBuilderPage from "../../pages/profile/new_course_components/CourseB
 import CourseMeetingAndPdf from '../../pages/profile/new_course_components/CourseMeetingAndPdf'
 
 export const admin_panel_router = [
-  { route: "/admin-panel/lesson/cateogies", component: <CategoriesScreen /> },
+  // { route: "/admin-panel/lesson/cateogies", component: <CategoriesScreen /> },
   {
     route: "/admin-panel/lesson/cateogies/edit/:id",
     component: <EditCategoryComponent />,

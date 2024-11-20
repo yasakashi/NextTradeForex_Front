@@ -60,26 +60,6 @@ const CourseBuilderPage = ({ page }) => {
 
   const [getTopicLessons] = useGetTopicLessonsMutation();
 
-  const fetchUpdatedLessons = async (topicId) => {
-    const lessonsRes = await getTopicLessons({
-      data: {
-        Id: null,
-        courseId: courseId,
-        topicId: topicId,
-        lessonName: "",
-        pageindex: 1,
-        rowcount: 50,
-        lessonorder:""
-      },
-    });
-
-    if (lessonsRes?.data?.messageCode === 200) {
-      setLessons((prev) => ({
-        ...prev,
-        [topicId]: lessonsRes?.data?.messageData,
-      }));
-    }
-  };
 
   const handleToggleTopic = async (index, topicId) => {
     setOpenTopicIndex(null);
@@ -107,6 +87,12 @@ const CourseBuilderPage = ({ page }) => {
         }
       }
     }
+  };
+  const handleNewLessonAdded = (topicId, newLesson) => {
+    setLessons((prev) => ({
+      ...prev,
+      [topicId]: [...(prev[topicId] || []), newLesson],
+    }));
   };
 
   const addTopicValidationShema = Yup.object().shape({
@@ -326,7 +312,7 @@ const CourseBuilderPage = ({ page }) => {
                                   </button>
                                   <h5>{lesson?.lessonName} : </h5>
                                   <p className="text-gray-400 text-sm">
-                                    {lesson?.lessonDescription}
+                                    {lesson?.lessonDescription.slice(0, 16) + " . . ."}
                                   </p>
                                 </div>
 
@@ -409,7 +395,7 @@ const CourseBuilderPage = ({ page }) => {
                 </CustomButton>
               </div>
               <ModalLayout
-                className="w-full sm:w-[70vw] md:w-[50vw] lg:w-[60vw] max-w-[100vh] h-[80vh]"
+                className="w-full z-[9999] sm:w-[70vw] md:w-[50vw] lg:w-[60vw] max-w-[100vh] h-[90vh]"
                 onClose={set_is_open}
                 open={is_open}
               >
@@ -450,31 +436,33 @@ const CourseBuilderPage = ({ page }) => {
                           assignments.
                         </p>
                       </div>
-                      <h3 className="text-sm font-semibold my-4 mx-0 mt-10">
-                        Topic Summery
-                      </h3>
-                      <textarea
-                        name="topicSummary"
-                        value={formik.values.topicSummary}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className="resize h-[90px] px-3 py-2 text-sm text-gray-600 w-full border border-gray-300 rounded-md outline-blue-400"
-                      ></textarea>
+                      <label className="w-full">
+                        <h3 className="text-sm font-semibold my-4 mx-0 mt-10">
+                          Topic Summery
+                        </h3>
+                        <textarea
+                          name="topicSummary"
+                          value={formik.values.topicSummary}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className="resize h-[90px] px-3 py-2 text-sm text-gray-600 w-full border border-gray-300 rounded-md outline-blue-400"
+                        ></textarea>
 
-                      {formik.touched.topicSummary &&
-                      formik.errors?.topicSummary ? (
-                        <span className="text-xs text-red-600 p-1">
-                          {formik.errors?.topicSummary}
-                        </span>
-                      ) : null}
-                      <div className="flex items-start justify-center mb-4">
-                        <CiWarning style={{ color: "black" }} />
-                        <p className="text-xs opacity-70 ml-1">
-                          Topic titles are displayed publicly wherever required.
-                          Each topic may contain one or more lessons, quiz and
-                          assignments.
-                        </p>
-                      </div>
+                        {formik.touched.topicSummary &&
+                        formik.errors?.topicSummary ? (
+                          <span className="text-xs text-red-600 p-1">
+                            {formik.errors?.topicSummary}
+                          </span>
+                        ) : null}
+                        <div className="flex items-start justify-center mb-4">
+                          <CiWarning style={{ color: "black" }} />
+                          <p className="text-xs opacity-70 ml-1">
+                            Topic titles are displayed publicly wherever
+                            required. Each topic may contain one or more
+                            lessons, quiz and assignments.
+                          </p>
+                        </div>
+                      </label>
                     </div>
                   </div>
                   <div className="flex justify-between z-[1000] items-center p-4 border-t border-t-gray-300">
@@ -515,35 +503,42 @@ const CourseBuilderPage = ({ page }) => {
         </div>
       </div>
 
-      <NewLesson
-        courseId={courseId}
-        topicId={topicId}
-        showNewLessonModal={showNewLessonModal}
-        setShowNewLessonModal={setShowNewLessonModal}
-      />
+      {showNewLessonModal ? (
+        <NewLesson
+          courseId={courseId}
+          topicId={topicId}
+          showNewLessonModal={showNewLessonModal}
+          setShowNewLessonModal={setShowNewLessonModal}
+          onNewLessonAdded={handleNewLessonAdded}
+        />
+      ) : null}
 
-      <AddNewQuiz
-        courseId={courseId}
-        topicId={topicId}
-        showQuizModal={showQuizModal}
-        setShowQuizModal={setShowQuizModal}
-      />
+      {showQuizModal ? (
+        <AddNewQuiz
+          courseId={courseId}
+          topicId={topicId}
+          showQuizModal={showQuizModal}
+          setShowQuizModal={setShowQuizModal}
+        />
+      ) : null}
 
-      <RemoveConfirmModal
-        subTitle="Are you sure you want to delete this topic from the course ?"
-        warning="By deleteing this topic, all the lessons and topic will also be permanently deleted."
-        open={openRemoveModal}
-        setOpen={cancellRemoveTopicHandler}
-        removeHandler={handleDelete}
-        isLoading={
-          removingItem?.type === "topic"
-            ? removeTopicLoading
-            : removingItem?.type === "lesson"
-            ? removeLessonLoading
-            : false
-        }
-        itemType={removingItem?.type}
-      />
+      {openRemoveModal ? (
+        <RemoveConfirmModal
+          subTitle="Are you sure you want to delete this topic from the course ?"
+          warning="By deleteing this topic, all the lessons and topic will also be permanently deleted."
+          open={openRemoveModal}
+          setOpen={cancellRemoveTopicHandler}
+          removeHandler={handleDelete}
+          isLoading={
+            removingItem?.type === "topic"
+              ? removeTopicLoading
+              : removingItem?.type === "lesson"
+              ? removeLessonLoading
+              : false
+          }
+          itemType={removingItem?.type}
+        />
+      ) : null}
     </>
   );
 };

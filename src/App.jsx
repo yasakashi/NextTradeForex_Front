@@ -1,6 +1,6 @@
-import { Routes, Route } from 'react-router-dom';
-import AdminPage from './pages/admin/AdminPage';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import AdminPage from "./pages/admin/AdminPage";
+import "./App.css";
 import {
   CommunityGroup,
   CommunityGroups,
@@ -9,25 +9,25 @@ import {
   Login,
   Register,
   TradersCommunity,
-} from './pages';
+} from "./pages";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
-import UserProfile from './pages/profile/userProfile';
-import ProfileDashboard from './components/profile/ProfileDashboard';
+import UserProfile from "./pages/profile/userProfile";
+import ProfileDashboard from "./components/profile/ProfileDashboard";
 
-import MyProfile from './components/profile/MyProfile';
-import MyGroups from './components/profile/MyGroups';
-import Requests from './components/profile/Requests';
-import MySignals from './components/profile/MySignals';
+import MyProfile from "./components/profile/MyProfile";
+import MyGroups from "./components/profile/MyGroups";
+import Requests from "./components/profile/Requests";
+import MySignals from "./components/profile/MySignals";
 // import EnrolledCourses from "./components/profile/EnrolledCourses";
-import OrderHistory from './components/profile/OrderHistory';
-import Settings from './components/profile/settings/Settings';
-import Profile from './components/profile/settings/Profile';
-import ResetPassword from './components/profile/settings/ResetPassword';
-import Withdraw from './components/profile/settings/withdraw/Withdraw';
-import SocialProfile from './components/profile/settings/SociaProfile';
+import OrderHistory from "./components/profile/OrderHistory";
+import Settings from "./components/profile/settings/Settings";
+import Profile from "./components/profile/settings/Profile";
+import ResetPassword from "./components/profile/settings/ResetPassword";
+import Withdraw from "./components/profile/settings/withdraw/Withdraw";
+import SocialProfile from "./components/profile/settings/SociaProfile";
 // import MyCourses from "./components/profile/instructorCourses/MyCourses";
-import Withdrawals from './components/profile/withdrawals/Withdrawals';
+import Withdrawals from "./components/profile/withdrawals/Withdrawals";
 
 import { Toaster } from "react-hot-toast";
 import AllMemberShipRequest from "./pages/master/AllMemberShipRequest";
@@ -81,8 +81,10 @@ import MarketPulseLayout from "./layouts/marke_pulse_layout";
 import MarketPulseIndex from "./pages/market_pulse";
 import StartLearning from "./pages/profile/new_course_components/start-learning/StartLearning";
 import Courses from "./pages/courses/Courses";
+import CategoriesScreen from "./admin_panel/pages/categories/view/categories_screen";
+
 function App({ auth }) {
-  const token = localStorage.getItem('loginToken');
+  const token = localStorage.getItem("loginToken");
 
   // React.useEffect(() => {
   //   if (!token) {
@@ -135,7 +137,7 @@ function App({ auth }) {
             </Route>
 
             <Route path="/course-category/top-courses" element={<Courses />} />
-            
+
             {token ? (
               <>
                 <Route path="/partnership" element={<PartnerShip />} />
@@ -188,6 +190,12 @@ function App({ auth }) {
                   />
                 </Route>
                 <Route path="/admin-panel" element={<MainLayout />}>
+                  <Route
+                    path="/admin-panel/lesson/cateogies"
+                    element={<CategoriesScreen />}
+                  />
+
+                  
                   {admin_panel_router.map((item, i) => {
                     return (
                       <Route

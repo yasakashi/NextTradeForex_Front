@@ -13,6 +13,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const CourseInfoTab = ({ course }) => {
+ 
   const [descShowMore, setDescShowMore] = useState(false);
 
   const [topics, setTopics] = useState([]);
@@ -185,7 +186,7 @@ const CourseInfoTab = ({ course }) => {
               </div>
 
               {openTopicIndex === index ? (
-                <div className="relative bg-white h-full">
+                <div className="relative bg-white h-full min-h-[100px]">
                   {/* lessons */}
                   <div className="mb-2 px-2 space-y-2">
                     {/* single lesson */}
@@ -195,7 +196,7 @@ const CourseInfoTab = ({ course }) => {
                     {lessons[topic?.id]?.map((lesson, lessonIndex) => (
                       <div
                         key={lessonIndex}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 py-2"
                       >
                         <span className="border-none outline-none">
                           <IoDocumentTextOutline

@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 const NewLesson = ({
   showNewLessonModal,
   setShowNewLessonModal,
+  onNewLessonAdded,
   topicId,
   courseId,
 }) => {
@@ -105,10 +106,10 @@ const NewLesson = ({
       parseInt(hours) * 60 * 60 + parseInt(minutes) * 60 + parseInt(seconds);
     formik.setFieldValue("videoPlaybackTime", totalSeconds);
   }, [hours, minutes, seconds]);
-  const handleEditorChange = (editorData) => {
-    formik.setFieldValue("lessonDescription", editorData.plainText);
 
-    // Update the editor state
+  const handleEditorChange = (editorData) => {
+    formik.setFieldValue("lessonDescription", editorData.htmlContent);
+
     setEditorState(editorData.state);
   };
 
@@ -144,7 +145,7 @@ const NewLesson = ({
               className="px-4 py-[6px] border border-gray-300 rounded-md bg-white placeholder:text-gray-600 outline-blue-400"
             />
             <WarningComponent description="Lesson titles are displayed publicly wherever required." />
-
+            {console.log(formik.errors)}
             {formik.touched?.lessonName ? (
               <span className="text-red-600 text-sm p-1">
                 {formik.errors?.lessonName}
@@ -185,11 +186,8 @@ const NewLesson = ({
               <div className="w-full relative h-[300px]">
                 {/* <EditorComponent /> */}
                 <DraftEditor
-                  h={300}
-                  // editorState=""
-                  // set_editor_value={(val) => console.log({ val })}
-                  placeholder="Lesson description ..."
-                  value={editorState} // Pass the editor state
+                  placeholder="Description"
+                  editorState={editorState}
                   onChange={handleEditorChange}
                 />
               </div>
@@ -397,7 +395,7 @@ const NewLesson = ({
       </ModalLayout>
 
       <LibraryModal
-        accept_file="Image"
+        // accept_file="Image"
         file={formik.values.lessonFile}
         set_file={(file) => formik.setFieldValue("lessonFile", file)}
         onSave={(val) => {

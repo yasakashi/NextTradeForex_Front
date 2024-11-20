@@ -6,7 +6,7 @@ const MainBannerTitle = ({ title, subRoute }) => {
   return (
     <div className="w-full flex items-center justify-center pt-14 mb-4">
       <div>
-        <h2 className="text-3xl font-semibold mb-5">{title}</h2>
+        <h2 className="text-3xl font-semibold mb-5 text-center">{title}</h2>
         <div>
           <ol className="flex items-center flex-wrap gap-2">
             {subRoutes.map((route, index) => {
