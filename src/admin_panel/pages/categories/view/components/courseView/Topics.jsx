@@ -4,26 +4,43 @@ import {
   useGetTopicLessonsMutation,
 } from "../../../../../../redux/features/course/courseBuilderApi";
 
-import { AiOutlineExclamation } from "react-icons/ai";
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { RiQuestionMark } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { FaBars } from "react-icons/fa6";
+import { useGetCoursesQuery } from "../../../../../../redux/features/course/courseApii";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { motion } from "framer-motion";
+
+import CoverImage from "../../../../../../asset/img/placeholder (1).svg";
 
 const Topics = ({ setLoading }) => {
   const { id } = useParams();
 
   const [topics, setTopics] = useState([]);
-  const [lessons, setLessons] = useState({});
-
-  const [openTopicIndex, setOpenTopicIndex] = useState(0);
 
   const [
     getCourseTopics,
-    { error, isLoading: getCourseTopicsLoading, isSuccess },
+    { error: getTopicError, isLoading: getCourseTopicsLoading, isSuccess },
   ] = useGetCourseTopicsMutation();
   const [getTopicLessons] = useGetTopicLessonsMutation();
+
+  const {
+    data: { messageData: courses } = { messageData: [] },
+    error,
+    isLoading,
+  } = useGetCoursesQuery({
+    data: {
+      Id: id,
+      authorId: null,
+      allowQA: null,
+      isPublicCourse: null,
+      difficultyLevelId: null,
+      courseTags: "",
+      courseName: "",
+      pageindex: 1,
+      rowcount: 21,
+    },
+  });
+
+  const course = courses[0] || {};
 
   useEffect(() => {
     setLoading(getCourseTopicsLoading);
@@ -49,120 +66,82 @@ const Topics = ({ setLoading }) => {
     courseTopics();
   }, []);
 
-  const handleToggleTopic = async (index, topicId) => {
-    setOpenTopicIndex(null);
-
-    if (openTopicIndex === index) {
-      setOpenTopicIndex(null);
-    } else {
-      setOpenTopicIndex(index);
-
-      if (!lessons[topicId]) {
-        const lessonsRes = await getTopicLessons({
-          data: {
-            Id: null,
-            courseId: id,
-            topicId: topicId,
-            lessonName: "",
-            pageindex: 1,
-            rowcount: 50,
-          },
-        });
-        if (lessonsRes?.data?.messageCode === 200) {
-          setLessons((prev) => ({
-            ...prev,
-            [topicId]: lessonsRes?.data?.messageData,
-          }));
-        }
-      }
-    }
-  };
-
   return (
-    <div className="w-full">
-      {topics.length > 0 && (
-        <div className="my-6 space-y-2">
-          {topics.map((topic, index) => (
-            <div
+    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {topics?.length > 0
+        ? topics?.map((topic, index) => (
+            <Link
               key={index}
-              className={`border border-gray-300 rounded-md w-full ${
-                openTopicIndex === index ? "" : ""
-              } flex flex-col`}
+              // to={`/learn_to_trade/course/${course?.courseName}/${course?.id}`}
+              className="w-full max-w-[450px] px-4 cursor-pointer"
             >
-              <div className="flex items-center justify-between border bg-[#eff1f6] px-8 py-3">
-                <div className="flex items-center gap-2">
-                  <div className="text-[#222] text-base flex items-center gap-2">
-                    <h5 className="capitalize font-medium">
-                      {topic?.topicName}{" "}
-                    </h5>
-                    <Link
-                      className="border border-gray-600 p-[1px] rounded-full"
-                      to="#"
-                    >
-                      <AiOutlineExclamation
-                        className="text-gray-600"
-                        size={13}
-                      />
-                    </Link>
-                  </div>
+              <div
+                className="flex flex-col  shadow-xl p-4  bg-blue-950 mb-4 rounded-md"
+                style={{
+                  minHeight: 500,
+                  backgroundColor: "#020E51",
+                  paddingBottom: 32,
+                }}
+              >
+                <div className="h-[250px] w-full overflow-hidden rounded-[6px]">
+                  <LazyLoadImage
+                    src={
+                      course?.courseFilepath
+                        ? course.courseFilepath
+                        : CoverImage
+                    }
+                    effect="blur"
+                    alt="post Imgae"
+                    className=" z-50 w-full h-full rounded-lg hover:scale-105 transition-transform"
+                    width="100%"
+                    height="100%"
+                  />
                 </div>
-                <div className="flex items-center gap-10">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      handleToggleTopic(index, topic?.id);
+                <h5 className="text-[22px] font-bold text-gold-light_400 mt-4 pb-10">
+                  {topic?.topicName}
+                </h5>
+                <p className="text-gray-300 text-[15px] font-normal h-[95px] overflow-hidden bg-gradient-to-r from-inherit via-purple-500 to-pink-500">
+                  {topic?.topicSummary}
+                </p>
+                <button
+                  onClick={() =>
+                    navigate(
+                      `/learn_to_trade/course/${course?.courseName}/${course?.id}`
+                    )
+                  }
+                  className="w-max px-4 bg-gradient-to-r from-[#F0D785] to-[#9C7049] py-[10px] mt-4"
+                  style={{
+                    borderRadius: 50,
+                    position: "relative",
+                    color: "black",
+                    overflow: "clip",
+                  }}
+                >
+                  <motion.div
+                    transition={{ ease: "linear", duration: 0.5 }}
+                    whileHover={{
+                      backgroundPosition: "50px 0px",
                     }}
-                    className="border-none outline-none cursor-pointer px-3 py-1"
-                  >
-                    {openTopicIndex === index ? (
-                      <IoIosArrowUp size={20} className="text-blue-accent" />
-                    ) : (
-                      <IoIosArrowDown size={20} className="text-blue-accent" />
-                    )}
-                  </button>
-                </div>
+                    style={{
+                      width: "100%",
+                      height: "100%",
+
+                      backgroundPosition: "350px 0px",
+                      backgroundImage:
+                        "linear-gradient(to right,rgba(0,0,0,0), rgba(0,0,0,0.1), rgba(0,0,0,0))",
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                    }}
+                  ></motion.div>
+                  Explore More
+                </button>
               </div>
-
-              {openTopicIndex === index ? (
-                <div className="relative bg-white h-full">
-                  {/* lessons */}
-                  <div className="mb-2 px-2 space-y-2">
-                    {/* single lesson */}
-                    {lessons[topic?.id]?.map((lesson, lessonIndex) => (
-                      <div
-                        key={lessonIndex}
-                        className="flex items-center gap-2"
-                      >
-                        <span className="border-none outline-none">
-                          <IoDocumentTextOutline
-                            size={16}
-                            className="text-gray-500"
-                          />
-                        </span>
-                        <h4 className="text-gray-700 text-base font-normal capitalize">
-                          {lesson?.lessonName}
-                        </h4>
-                      </div>
-                    ))}
-
-                    {/* Quiz */}
-                    <div className="flex items-center rounded-md px-4 py-3 ml-auto">
-                      <div className="flex items-center gap-2">
-                        <span className="border border-gray-600 p-[2px] rounded-full outline-none">
-                          <RiQuestionMark size={11} className="text-gray-500" />
-                        </span>
-                        <h4 className="text-gray-700 text-base font-normal capitalize">
-                          Accumulation/Distribution AD
-                        </h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          ))}
-        </div>
-      )}
+            </Link>
+          ))
+        : !getCourseTopicsLoading
+        ? "Topics not found."
+        : null}
     </div>
   );
 };
