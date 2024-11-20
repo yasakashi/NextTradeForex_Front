@@ -5,14 +5,14 @@ export default function CarouselCard({ data }) {
   return (
     <div className="w-[300px]  bg-gray-light_100 text-white rounded-xl ">
       <div className=" rounded-t-xl overflow-hidden">
-        <div className="relative p-3">
+        <div className="relative p-3 h-64">
           <img
             src={
               data?.photofileurl
                 ?"https://api.yasakashi.ir/api"+ data.photofileurl
                 : '/dist/assets/Market-Sentiments.png'
             }
-            alt="EUR/USD"
+            
             className="w-full h-48 object-cover rounded-lg"
           />
 
