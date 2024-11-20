@@ -2,7 +2,9 @@ import { axiosInstance, axiosPrivate } from '../../axios/axiosInstance';
 
 export const getCurrencies = async () => {
   try {
-    const { data } = await axiosInstance.get('/api/marketpuls/getcurrencies',{ headers: { 'Content-Type': 'application/json' } });
+    const { data } = await axiosInstance.get('/api/marketpuls/getcurrencies', {
+      headers: { 'Content-Type': 'application/json' },
+    });
 
     return data;
   } catch (error) {
@@ -27,8 +29,23 @@ export const getforexitems = async ({ categoryId, id }) => {
   }
 };
 
+export const getIndiceItems = async ({ categoryId, id }) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getindiceitems',
+      {
+        categoryid: categoryId,
+        id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
 export const getForexCurrencies = async (id) => {
-  
   try {
     const { data } = await axiosPrivate.post(
       '/api/marketpuls/getforexcurrencies',
@@ -40,15 +57,27 @@ export const getForexCurrencies = async (id) => {
 
     return data;
   } catch (error) {
-    console.log('error daram');
-    
     throw new Error(`${error}`);
   }
 };
 
+export const getIndiceCurrencies = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getIndicecurrencies',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
 
-export const getRelatedContent = async (id) => {
-  
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getForexRelatedContent = async (id) => {
   try {
     const { data } = await axiosPrivate.post(
       '/api/marketpuls/getforummessages',
@@ -61,7 +90,25 @@ export const getRelatedContent = async (id) => {
     return data;
   } catch (error) {
     console.log('error daram');
-    
+
+    throw new Error(`${error}`);
+  }
+};
+
+export const getIndiceRelatedContent = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getindicesforummessages',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    console.log('error daram');
+
     throw new Error(`${error}`);
   }
 };

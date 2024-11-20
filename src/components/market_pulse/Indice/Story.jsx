@@ -9,26 +9,26 @@ import TechnicalSammary from '../Summary/Technical';
 import RelatedRecourses from '../RelatedRecourses';
 import CustomCarousel from '../Carousel';
 import {
-  getForexCurrencies,
-  getforexitems,
-  getForexRelatedContent,
+  getIndiceItems,
+  getIndiceCurrencies,
+  getIndiceRelatedContent,
 } from '../../../pages/market_pulse/api';
 import SearchBox from '../Searchbox';
 import LoadingSpinner from '../../Loading';
 
-export default function ForexStory({ selectedSubCategory }) {
+export default function IndicesStory({ selectedSubCategory }) {
   const [currencies, setCurrencies] = useState([]);
   const [data, setData] = useState(null);
   const [currencyId, setCurrencyId] = useState(null);
   const [relatedContent, setRelatedContent] = useState();
   const [query, setQuery] = useState('');
   const [currenciesLoading, setCurrenciesLoading] = useState(false);
-  const [forexItemsLoading, setForexItemsLoading] = useState(false);
+  const [indiceItemLoading, setIndiceItemLoading] = useState(false);
 
   const getRelatedSources = async (id) => {
     try {
       if (id) {
-        const res = await getForexRelatedContent(id);
+        const res = await getIndiceRelatedContent(id);
         setRelatedContent(res.messageData);
       }
     } catch (error) {
@@ -40,8 +40,8 @@ export default function ForexStory({ selectedSubCategory }) {
     try {
       if (selectedSubCategory) {
         setCurrenciesLoading(true);
-        setForexItemsLoading(true);
-        const res = await getForexCurrencies(selectedSubCategory);
+        setIndiceItemLoading(true);
+        const res = await getIndiceCurrencies(selectedSubCategory);
         setCurrencies(res.messageData);
         setCurrenciesLoading(false);
       }
@@ -50,15 +50,15 @@ export default function ForexStory({ selectedSubCategory }) {
     }
   };
 
-  const fetchForexItems = async (id) => {
+  const fetchIndiceItem = async (id) => {
     try {
       if (id) {
-        setForexItemsLoading(true);
-        const res = await getforexitems({
+        setIndiceItemLoading(true);
+        const res = await getIndiceItems({
           categoryId: id,
           id: null,
         });
-        setForexItemsLoading(false);
+        setIndiceItemLoading(false);
         setData(res.messageData[0]);
       }
     } catch (error) {
@@ -75,7 +75,7 @@ export default function ForexStory({ selectedSubCategory }) {
   useEffect(() => {
     if (!currencies?.length) return;
     const firstItem = currencies?.[0];
-    fetchForexItems(firstItem.id);
+    fetchIndiceItem(firstItem.id);
   }, [currencies]);
 
   useEffect(() => {
@@ -119,9 +119,9 @@ export default function ForexStory({ selectedSubCategory }) {
                 ) : null}
               </div>
             </>
-          ) : forexItemsLoading ? (
+          ) : indiceItemLoading ? (
             <LoadingSpinner />
-          ) : !forexItemsLoading && !data ? (
+          ) : !indiceItemLoading && !data ? (
             <div>
               <h2 className="text-link-water text-xl font-bold mb-2">
                 There is no data to show !
