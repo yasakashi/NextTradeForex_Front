@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Sentiments from './Sentiments';
-import TextBox from './TextBox';
+// import Sentiments from './Sentiments';
+import TextBox from '../forex/TextBox';
 import ReadMoreContent from '../ScrollBox';
 import CountryBox from '../CountryBox';
-import TradingViewWidget from './Wigets/Chart';
 import FundamentalSammary from '../Summary/Fundamental';
 import TechnicalSammary from '../Summary/Technical';
 import RelatedRecourses from '../RelatedRecourses';
@@ -15,8 +14,14 @@ import {
 } from '../../../pages/market_pulse/api';
 import SearchBox from '../Searchbox';
 import LoadingSpinner from '../../Loading';
+import InfoTable from './InfoTable';
+import ListedExchange from './ListedExchanges';
 
-export default function IndicesStory({ selectedSubCategory }) {
+export default function IndicesStory({
+  selectedTopCategory,
+  selectedSubCategory,
+  setSecondCategory,
+}) {
   const [currencies, setCurrencies] = useState([]);
   const [data, setData] = useState(null);
   const [currencyId, setCurrencyId] = useState(null);
@@ -38,7 +43,7 @@ export default function IndicesStory({ selectedSubCategory }) {
   const getCurrencies = async () => {
     setCurrencies([]);
     try {
-      if (selectedSubCategory) {
+      if (selectedSubCategory || selectedTopCategory == 1175) {
         setCurrenciesLoading(true);
         setIndiceItemLoading(true);
         const res = await getIndiceCurrencies(selectedSubCategory);
@@ -59,7 +64,157 @@ export default function IndicesStory({ selectedSubCategory }) {
           id: null,
         });
         setIndiceItemLoading(false);
-        setData(res.messageData[0]);
+        setData({
+          id: '3b272e51-8d53-445d-b985-91883d06fa96',
+          categoryid: 900,
+          createdatetime: '2024-11-20T09:36:18.32',
+          creatoruserid: 21,
+          price: 0.0,
+          isvisible: true,
+          courseleveltypeId: 1,
+          coursetitle: 'coursetitle',
+          excerpt: 'excerpt',
+          author: 'author',
+          instrumentname: 'instrumentname',
+          fundamentalheading: 'fundamentalheading',
+          technicalheading: 'technicalheading',
+          marketsessiontitle: 'marketsessiontitle',
+          marketsessionscript: 'marketsessionscript',
+          marketsentimentstitle: 'marketsentimentstitle',
+          marketsentimentsscript: 'marketsentimentsscript',
+          relatedresorces: 'relatedresorces',
+          privatenotes: 'privatenotes',
+          newstickernew: 'newstickernew',
+          newstickerupdate: 'newstickerupdate',
+          newstickerimportant: 'newstickerimportant',
+          parentindex: 'parentindex',
+          indicesinformations_countriesrepresented:
+            'indicesinformations_countriesrepresented',
+          indicesinformations_centralbank: 'indicesinformations_centralbank',
+          indicesinformations_nickname: 'indicesinformations_nickname',
+          indicesinformations_relatedconstituents:
+            'indicesinformations_relatedconstituents',
+          indicesinformations_weightageoflargestconstituent:
+            'indicesinformations_weightageoflargestconstituent',
+          indicesinformations_weightageoftop5constituents:
+            'indicesinformations_weightageoftop5constituents',
+          indicesinformations_alltimehigh: 'indicesinformations_alltimehigh',
+          indicesinformations_alltimelow: 'indicesinformations_alltimelow',
+          indicesinformations_warketcapitalization:
+            'indicesinformations_warketcapitalization',
+          indicesinformations_weightingmethodology:
+            'indicesinformations_weightingmethodology',
+          indicesinformations_yeartodatereturn:
+            'indicesinformations_yeartodatereturn',
+          indicesinformations_pricetoearningratio:
+            'indicesinformations_pricetoearningratio',
+          chart: 'chart',
+          maindescription: 'maindescription',
+          maindescription_filecontenttype: 'maindescription_filecontenttype',
+          maindescription_filepath: null,
+          maindescription_filename: null,
+          indicefundamentalnewssectionlist: [
+            {
+              id: 'c59ad699-13c5-44db-b52c-6b0617db3184',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              maintitle: 'maintitle',
+              script: 'script',
+              newsmaincontentlist: [
+                {
+                  id: '32f3af2e-91bb-46d6-bee2-c0bd0d0f6934',
+                  marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+                  fundamentalnewssectionid:
+                    'c59ad699-13c5-44db-b52c-6b0617db3184',
+                  title: 'title',
+                  description: 'description',
+                  link: 'link',
+                  newsmaincontentfilename: null,
+                  newsmaincontentfilepath: null,
+                  newsmaincontentfilecontenttype: null,
+                },
+              ],
+            },
+          ],
+          indicealternateindicelist: [
+            {
+              id: 'f893d9b8-29df-4d89-b7c3-e41dc9d338ac',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              name: 'name',
+              link: 'link',
+            },
+          ],
+          indicechildindicelist: [
+            {
+              id: 'b1c82cc3-8317-4041-bb7f-6ead7e23491a',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              name: 'name',
+              link: 'link',
+            },
+          ],
+          indicepdfsectionlist: [
+            {
+              id: '7e73d9ab-6074-4b46-b2c2-20cbf2ca680a',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              pdftitle: 'pdftitle',
+              pdfshortcodeid: 'pdfshortcodeid',
+              author: 'author',
+              shortdescription: 'shortdescription',
+            },
+          ],
+          indicelistedexchangelist: [
+            {
+              id: '519931bd-b63f-4c95-be7d-83e423121c7d',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              label: 'label',
+              link: 'link',
+            },
+          ],
+          indiceurlsectionlist: [
+            {
+              id: '6dabbe68-1bbb-41de-a9b0-cfc1e1695fb3',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              urltitle: 'urltitle',
+              url: 'url',
+            },
+          ],
+          indicesectorrepresentedlist: [
+            {
+              id: '404be833-5dda-42ae-bf20-f5edbaac9c98',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              label: 'label',
+              link: 'link',
+            },
+          ],
+          indicetechnicaltabslist: [
+            {
+              id: 'b9baf046-808e-4060-9717-7ebdb46cad82',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              tabtitle: 'tabtitle',
+              script: 'script',
+              technicalbreakingnewslist: [
+                {
+                  id: '8417d8d3-94c8-4739-8e9e-d5b8f31a7da5',
+                  marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+                  technicaltabsid: 'b9baf046-808e-4060-9717-7ebdb46cad82',
+                  title: 'title',
+                  description: 'description',
+                  link: 'link',
+                  newsmaincontentfilename: null,
+                  newsmaincontentfilepath: null,
+                  newsmaincontentfilecontenttype: null,
+                },
+              ],
+            },
+          ],
+          indicerelatedinstumentlist: [
+            {
+              id: '3e731187-8025-432b-948c-cccc671f4376',
+              marketpulsindiceid: '3b272e51-8d53-445d-b985-91883d06fa96',
+              label: 'label',
+              link: 'link',
+            },
+          ],
+        });
       }
     } catch (error) {
       console.error('Failed to fetch forex items:', error);
@@ -68,6 +223,12 @@ export default function IndicesStory({ selectedSubCategory }) {
   };
 
   useEffect(() => {
+    if (selectedTopCategory == 1175) {
+      fetchIndiceItem(1175);
+    }
+    if (selectedSubCategory == 1194) {
+      fetchIndiceItem(1194);
+    }
     getCurrencies();
     getRelatedSources(selectedSubCategory);
   }, [selectedSubCategory]);
@@ -80,17 +241,17 @@ export default function IndicesStory({ selectedSubCategory }) {
 
   useEffect(() => {
     setData(null);
-    fetchForexItems();
+    fetchIndiceItem();
   }, [currencyId]);
 
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
-      {data && (
+      {/* {data && (
         <Sentiments
           title={data.marketsentimentstitle || ''}
           data={data.marketsentimentsscript || ''}
         />
-      )}
+      )} */}
       <div className="flex gap-10">
         <div className="w-2/3 flex flex-col gap-y-8">
           {data ? (
@@ -98,26 +259,21 @@ export default function IndicesStory({ selectedSubCategory }) {
               <p className="text-gold-light_400 text-5xl font-bold">
                 {data.coursetitle}
               </p>
-              <div className="grid grid-cols-2 gap-4">
-                {data.flexibleBlocklist &&
-                  Object.entries(data.flexibleBlocklist[0])
-                    .filter((el) => {
-                      return el[0] !== 'marketpulsforexid' && el[0] !== 'id';
-                    })
-                    .map((el) => {
-                      return (
-                        <React.Fragment key={el[0]}>
-                          <TextBox title={el[0]} description={el[1]} />
-                        </React.Fragment>
-                      );
-                    })}
+              <div className="flex">
+                <div>
+                  <p className="text-gold-light_400 text-xl font-bold">
+                    Indices Informations
+                  </p>
+                  <InfoTable data={data} />
+                </div>
+                <div>
+                  <p className="text-gold-light_400 text-xl font-bold">
+                    Listed Exchanges
+                  </p>
+                  <ListedExchange/>
+                </div>
               </div>
               <ReadMoreContent content={data.chartdescription} />
-              <div className="h-[550px]">
-                {data.singlepagechartimage ? (
-                  <TradingViewWidget symbol={data.singlepagechartimage} />
-                ) : null}
-              </div>
             </>
           ) : indiceItemLoading ? (
             <LoadingSpinner />
@@ -146,7 +302,7 @@ export default function IndicesStory({ selectedSubCategory }) {
               currencies={currencies}
               setCurrencies={setCurrencies}
               setCurrencyId={setCurrencyId}
-              fetchForexItems={fetchForexItems}
+              fetchForexItems={fetchIndiceItem}
               query={query}
             />
           ) : (
@@ -157,41 +313,28 @@ export default function IndicesStory({ selectedSubCategory }) {
       {data ? (
         <>
           <ReadMoreContent content={data.maindescription} />
-          <div className="grid grid-cols-2">
-            <CountryBox
-              title={data.firstcountryheading || ''}
-              data={data.firstCountryDatalist[0] || {}}
-            />
-            <div className="flex gap-10">
-              <div className="h-auto w-px bg-gold-light_400 mx-4"></div>
-              <CountryBox
-                title={data.secondcountryheading || ''}
-                data={data.secondCountryDatalist[0] || {}}
-              />
-            </div>
-          </div>
           <ReadMoreContent content={data.bottomdescription} />
           <div className="flex flex-col gap-y-20">
             {data ? (
               <FundamentalSammary
-                heading={data.fundamentalheading}
-                tabs={data.fundamentalNewsSectionlist}
+                heading="Fundamental"
+                tabs={data.indicefundamentalnewssectionlist}
               />
             ) : null}
             {data ? (
               <TechnicalSammary
-                heading={data.technicalheading}
-                tabs={data.technicalTabslist}
+                heading="Technical"
+                tabs={data.indicetechnicaltabslist}
               />
             ) : null}
           </div>
           <h3 className="text-link-water text-3xl font-extrabold mt-5">
             Related Resources
           </h3>
-          {data.pdfSectionlist.map((pdf) => (
+          {data.indicepdfsectionlist.map((pdf) => (
             <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />
           ))}
-          {data.urlSectionlist.map((url) => (
+          {data.indiceurlsectionlist.map((url) => (
             <RelatedRecourses key={url?.id} data={url} tag="URL" />
           ))}
 

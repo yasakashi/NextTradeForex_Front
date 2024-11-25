@@ -77,6 +77,22 @@ export const getIndiceCurrencies = async (id) => {
   }
 };
 
+export const getIndiceSubCurrencies = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getindicesubcategories',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
 export const getForexRelatedContent = async (id) => {
   try {
     const { data } = await axiosPrivate.post(
