@@ -174,13 +174,13 @@ export default function ForexStory({ selectedSubCategory }) {
           <div className="flex flex-col gap-y-20">
             {data ? (
               <FundamentalSammary
-                heading={data.fundamentalheading}
+                heading='Fundamental'
                 tabs={data.fundamentalNewsSectionlist}
               />
             ) : null}
             {data ? (
               <TechnicalSammary
-                heading={data.technicalheading}
+                heading='Technical'
                 tabs={data.technicalTabslist}
               />
             ) : null}
