@@ -9,10 +9,21 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
   const isSelected = selectedIds.includes(node.id);
 
   return (
-    <div className={`px-3 select-none ${node.parentId ? "" : ""}`} style={{ marginLeft: node.parentId ? "20px" : "0" }}>
+    <div
+      className={`px-3 select-none ${node.parentId ? "" : ""}`}
+      style={{ marginLeft: node.parentId ? "20px" : "0" }}
+    >
       {hasChildren && (
-        <button type="button" onClick={() => onToggle(node.id)} style={{ marginRight: "5px" }}>
-          {isOpen ? <FaMinus className="text-gray-700" size={12} /> : <FaPlus className="text-gray-700" size={12} />}
+        <button
+          type="button"
+          onClick={() => onToggle(node.id)}
+          style={{ marginRight: "5px" }}
+        >
+          {isOpen ? (
+            <FaMinus className="text-gray-700" size={12} />
+          ) : (
+            <FaPlus className="text-gray-700" size={12} />
+          )}
         </button>
       )}
       <span
@@ -21,7 +32,9 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
           fontWeight: isSelected ? "bold" : "normal",
         }}
         className={`${
-          hasChildren ? "text-gray-800" : "text-gray-600 hover:bg-slate-100 rounded-sm px-2 py-[2px] w-full block my-1"
+          hasChildren
+            ? "text-gray-800"
+            : "text-gray-600 hover:bg-slate-100 rounded-sm px-2 py-[2px] w-full block my-1"
         }`}
         onClick={(e) => {
           e.preventDefault();
@@ -51,7 +64,14 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
 };
 
 // Main searchable tree component
-const TreeChildCategory = ({ data, page, loading, setCategory, selectedCategories, setSelectedCategories }) => {
+const TreeChildCategory = ({
+  data,
+  page,
+  loading,
+  setCategory,
+  selectedCategories,
+  setSelectedCategories,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isVisible, setIsVisible] = useState(false);
 
@@ -76,17 +96,24 @@ const TreeChildCategory = ({ data, page, loading, setCategory, selectedCategorie
   useEffect(() => {
     const flatData = flattenData(data);
 
-    const filtered = flatData.filter((category) => category.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filtered = flatData.filter((category) =>
+      category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const buildFilteredTree = (nodes, filteredIds) => {
       return nodes.reduce((acc, node) => {
         if (filteredIds.has(node.id)) {
           acc.push({
             ...node,
-            children: node.children ? buildFilteredTree(node.children, filteredIds) : [],
+            children: node.children
+              ? buildFilteredTree(node.children, filteredIds)
+              : [],
           });
         } else if (node.children) {
-          const filteredChildren = buildFilteredTree(node.children, filteredIds);
+          const filteredChildren = buildFilteredTree(
+            node.children,
+            filteredIds
+          );
           if (filteredChildren.length > 0) {
             acc.push({
               ...node,
@@ -141,7 +168,9 @@ const TreeChildCategory = ({ data, page, loading, setCategory, selectedCategorie
         let newSelectedCategories;
         if (prevSelectedCategories.some((cat) => cat.id === node.id)) {
           // If the category is already selected, remove it
-          newSelectedCategories = prevSelectedCategories.filter((cat) => cat.id !== node.id);
+          newSelectedCategories = prevSelectedCategories.filter(
+            (cat) => cat.id !== node.id
+          );
         } else {
           // Add the new category
           newSelectedCategories = [...prevSelectedCategories, node];
@@ -204,7 +233,9 @@ const TreeChildCategory = ({ data, page, loading, setCategory, selectedCategorie
           <ul
             ref={categoryRef}
             className={`list-none scrollbar-thin overflow-y-scroll w-full p-0 ${
-              page === "admin" ? "max-h-[80vh]" : "h-[30vh] border border-gray-300 rounded-sm py-4 px-2"
+              page === "admin"
+                ? "max-h-[80vh]"
+                : "h-[30vh] border border-gray-300 rounded-sm py-4 px-2"
             }`}
           >
             {filteredTreeData?.length > 0 ? (
@@ -249,7 +280,9 @@ const TreeChildCategory = ({ data, page, loading, setCategory, selectedCategorie
       ) : null}
       {/* Display selected categories */}
       <div className="mt-4">
-        {selectedCategories?.length > 0 ? <h3 className="font-semibold mb-2">Selected Categories:</h3> : null}
+        {selectedCategories?.length > 0 ? (
+          <h3 className="font-semibold mb-2">Selected Categories:</h3>
+        ) : null}
 
         {selectedCategories?.length > 0 ? (
           <ul className="list-disc pl-5 flex items-center gap-2 flex-wrap">
@@ -262,7 +295,11 @@ const TreeChildCategory = ({ data, page, loading, setCategory, selectedCategorie
                 <button
                   type="button"
                   className="ml-2 text-red-500"
-                  onClick={() => setSelectedCategories((prev) => prev.filter((cat) => cat.id !== category.id))}
+                  onClick={() =>
+                    setSelectedCategories((prev) =>
+                      prev.filter((cat) => cat.id !== category.id)
+                    )
+                  }
                 >
                   <MdClose size={12} className="text-red-700" />
                 </button>

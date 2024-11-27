@@ -46,6 +46,8 @@ const TradersCommunity = () => {
   useEffect(() => {
     dispatch(getPopularGroups({ axiosPrivate }));
   }, []);
+
+
   return (
     <div>
       <CummunityNavbar />
@@ -68,7 +70,7 @@ const TradersCommunity = () => {
 
           <Link
             className="mt-6 flex items-center  text-white text-base border border-gray-200 rounded-[25px] px-1 py-1 w-max group "
-            to="#"
+            to="/traders-community/groups"
           >
             <span className="group-hover:bg-blue-light pr-2 py-1 rounded-tl-[25px] rounded-bl-[25px] px-2 transition-all">
               Discover Now

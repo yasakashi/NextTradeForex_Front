@@ -1,50 +1,57 @@
-import React from "react";
+import React, { useEffect } from "react";
 // import useCategories from "../../admin_panel/pages/categories/hook/use_categories";
 import { DetailsCart } from "../../admin_panel/pages/categories/view/category_details_view_screen.jsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetCoursesQuery } from "../../redux/features/course/courseApii.js";
 import CourseCard from "../../admin_panel/pages/categories/view/components/CourseCard.jsx";
+import { useGetCategoriesMutation } from "../../redux/features/categories/categoriesApi.js";
+import CategoryCard from "../../components/learnToTrade/CategoryCard.jsx";
 
 const CoursesToLearnScreen = () => {
   const { level, levelId } = useParams();
 
-  const { data: { messageData: courses } = { messageData: [] }, isLoading } =
-    useGetCoursesQuery({
-      data: {
-        Id: null,
-        authorId: null,
-        allowQA: null,
-        isPublicCourse: null,
-        difficultyLevelId: levelId,
-        courseTags: "",
-        courseName: "",
-        coursePrice: null,
-        pageindex: 1,
-        rowcount: 50,
-      },
-    });
+  const [getCategories, { data, error, isLoading: getCategoriesLoading }] =
+    useGetCategoriesMutation();
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        await getCategories().unwrap();
+      } catch (err) {
+        toast.error("Failed to fetch categories: ");
+      }
+    }
+    fetchCategories();
+  }, [getCategories]);
 
   const navigate = useNavigate();
   return (
     <div className="w-full">
+      {console.log("========> categories", data?.slice(0, 15))}
       <AnimatePresence mode="wait">
-        {!isLoading && (
+        {!getCategoriesLoading && (
           <motion.div
-            key={`${isLoading}`}
+            key={`${getCategoriesLoading}`}
             className="flex mt-12 flex-wrap items-center"
             initial={{ opacity: 0, y: 8 }}
             exit={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            {courses?.map((course, index) => {
+            {/* {courses?.map((course, index) => {
               return <CourseCard key={index} course={course} />;
-            })}
+            })} */}
+            {data?.length > 0 &&
+              data
+                ?.slice(0, 15)
+                ?.map((category, index) => (
+                  <CategoryCard category={category} key={index} />
+                ))}
           </motion.div>
         )}
-        {isLoading && (
+        {getCategoriesLoading && (
           <motion.div
-            key={`${isLoading}`}
+            key={`${getCategoriesLoading}`}
             initial={{ opacity: 0, y: 8 }}
             exit={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}

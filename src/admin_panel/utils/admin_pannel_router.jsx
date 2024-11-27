@@ -8,10 +8,42 @@ import CoursesScreen from "../pages/tutor/courses/view/courses_screen";
 import LessonsScreen from "../pages/tutor/lessons/view/lessons_screen";
 import NewCourse from "../../pages/profile/new_course";
 import CourseBuilderPage from "../../pages/profile/new_course_components/CourseBuilderPage";
-import CourseMeetingAndPdf from '../../pages/profile/new_course_components/CourseMeetingAndPdf'
+import CourseMeetingAndPdf from "../../pages/profile/new_course_components/CourseMeetingAndPdf";
+import LTRVideos from "../pages/learn-to-trade/videos/LTRVieos";
+import LTRPodcasts from "../pages/learn-to-trade/podcasts/LTRPodcasts";
+import AddNewVideo from "../pages/learn-to-trade/videos/AddNewVideo";
+import AddNewPodcast from "../pages/learn-to-trade/podcasts/AddNewPodcast";
+import LTRLessons from "../pages/learn-to-trade/lessons/LTRLessons";
+import AddNewLesson from "../pages/learn-to-trade/lessons/AddNewLesson";
 
 export const admin_panel_router = [
   // { route: "/admin-panel/lesson/cateogies", component: <CategoriesScreen /> },
+
+  {
+    route: "/admin-panel/learn-to-trade/lessons",
+    component: <LTRLessons />,
+  },
+  {
+    route: "/admin-panel/learn-to-trade/videos/add-new-lesson",
+    component: <AddNewLesson />,
+  },
+  {
+    route: "/admin-panel/learn-to-trade/videos",
+    component: <LTRVideos />,
+  },
+  {
+    route: "/admin-panel/learn-to-trade/videos/add-new-video",
+    component: <AddNewVideo />,
+  },
+
+  {
+    route: "/admin-panel/learn-to-trade/podcasts",
+    component: <LTRPodcasts />,
+  },
+  {
+    route: "/admin-panel/learn-to-trade/videos/add-new-podcast",
+    component: <AddNewPodcast />,
+  },
   {
     route: "/admin-panel/lesson/cateogies/edit/:id",
     component: <EditCategoryComponent />,

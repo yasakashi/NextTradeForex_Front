@@ -170,7 +170,6 @@ export const getPostReactions = createAsyncThunk(
         data
       );
 
-      console.log("getPostReactions", { response });
 
       return response.data;
     } catch (error) {

@@ -15,23 +15,69 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import CustomTextInput from "../../../../../components/ui/CustomTextInput";
 import CustomTextArea from "../../../../../components/ui/CustomTextArea";
 import { CustomButton } from "../../../../../components/ui/CustomButton";
+import { useFormik } from "formik";
+import { EditorState } from "draft-js";
 
 const AddNewCategoryComponent = ({ categories }) => {
-  const [open, set_open] = useState(false);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [customImgOpen, setCustomImgOpen] = useState(false);
+  const [categoryFileOpen, setCategoryFileOpen] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      slug: "",
+      parentId: "",
+      description: "",
+      customDescription: "",
+      customFile: null,
+      chartImage: "",
+      isVisible: true,
+      isVisibleDropdown: true,
+      categoryImage: null,
+      isTopCategory: false,
+      coursesOfCategory: false,
+    },
+
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
+  const handleEditorChange = (editorData) => {
+    formik.setFieldValue("customDescription", editorData.htmlContent); // Use HTML content
+
+    // Update the editor state
+    setEditorState(editorData.state);
+  };
 
   return (
-    <div className="pb-16 text-white">
+    <form onSubmit={formik.handleSubmit} className="pb-16">
       <h4 className="mb-6 text-lg text-white">Add new Category</h4>
 
       <div className="mt-4">
-        <h4 className="text-sm mb-1">Name</h4>
-        <CustomTextInput placeholder="Category name" />
+        <h4 className="text-sm text-white mb-1">Name</h4>
+        <CustomTextInput
+          name="name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          placeholder="Category name"
+          className="text-gray-700"
+        />
       </div>
 
       <div className="mt-4">
         <div className="mt-4">
-          <h4 className="text-sm mb-1">Slug</h4>
-          <CustomTextInput placeholder="Slug" />
+          <h4 className="text-sm text-white mb-1">Slug</h4>
+          <CustomTextInput
+            name="slug"
+            value={formik.values.slug}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="text-gray-700"
+            placeholder="Slug"
+          />
         </div>
         <h6 className="text-xs text-white mt-2">
           The “slug” is the URL-friendly version of the name. It is usually all
@@ -49,7 +95,14 @@ const AddNewCategoryComponent = ({ categories }) => {
       </div>
       <div>
         <h5 className="mt-4 text-white">Description</h5>
-        <CustomTextArea className="h-[100px]" placeholder="Description" />
+        <CustomTextArea
+          name="description"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          className="h-[100px] text-gray-700"
+          placeholder="Description"
+        />
         <h6 className="text-xs text-white mt-1">
           The description is not prominent by default; however, some themes may
           show it.
@@ -59,7 +112,7 @@ const AddNewCategoryComponent = ({ categories }) => {
             size="sm"
             variant="outlined"
             onClick={() => {
-              set_open(true);
+              setCustomImgOpen(true);
             }}
           >
             Add Media
@@ -67,69 +120,178 @@ const AddNewCategoryComponent = ({ categories }) => {
         </div>
 
         <LibraryModal
+          file={formik?.values?.customFile}
+          set_file={(file) => {
+            formik.setFieldValue("customFile", file);
+          }}
+          error={formik.errors?.customFile}
+          onBlur={formik.handleBlur}
           accept_file="Image"
-          has_side_bar_action
           title="Add Media"
-          open={open}
-          set_open={set_open}
+          open={customImgOpen}
+          set_open={setCustomImgOpen}
+          onSave={() => setCustomImgOpen(false)}
         />
-        <DraftEditor />
+        <DraftEditor
+          placeholder="Custom Description ..."
+          editorState={editorState}
+          onChange={handleEditorChange}
+        />
         {/* <EditorComponent /> */}
         <div>
           <h5 className="mt-4 text-white">Chart Image</h5>
-          <CustomTextArea className="h-[100px]" placeholder="Chart Image" />
+          <CustomTextArea
+            name="chartImage"
+            value={formik.values.chartImage}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="h-[100px] text-gray-700"
+            placeholder="Chart Image"
+          />
         </div>
         <div className="mt-4 text-white">
           <h5>Is Visible</h5>
-          <div className="my-2">
-            <CustomRadioButton label="Yes" label_color="white" />
+
+          <div className="my-2 space-y-2">
+            <CustomRadioButton
+              onChange={(e) => {
+                formik.setFieldValue("isVisible", e.target.value === "Yes");
+              }}
+              label="Yes"
+              label_color="white"
+              name="isVisible"
+              checked={formik.values.isVisible === true}
+            />
+            <CustomRadioButton
+              onChange={(e) => {
+                formik.setFieldValue("isVisible", e.target.value === "Yes");
+              }}
+              label="No"
+              label_color="white"
+              name="isVisible"
+              checked={formik.values.isVisible === false}
+            />
           </div>
-          <CustomRadioButton label="No" label_color="white" />
         </div>
         <div className="mt-4">
-          <h5>Is Visible Dropdown</h5>
-          <div className="my-2">
-            <CustomRadioButton label="Yes" label_color="white" />
+          <h5 className="text-white">Is Visible Dropdown</h5>
+          <div className="my-2 space-y-2">
+            <CustomRadioButton
+              onChange={(e) => {
+                formik.setFieldValue(
+                  "isVisibleDropdown",
+                  e.target.value === "Yes"
+                );
+              }}
+              label="Yes"
+              label_color="white"
+              name="isVisibleDropdown"
+              checked={formik.values.isVisibleDropdown === true}
+            />
+            <CustomRadioButton
+              onChange={(e) => {
+                formik.setFieldValue(
+                  "isVisibleDropdown",
+                  e.target.value === "Yes"
+                );
+              }}
+              label="No"
+              label_color="white"
+              name="isVisibleDropdown"
+              checked={formik.values.isVisibleDropdown === false}
+            />
           </div>
-          <CustomRadioButton label="No" label_color="white" />
         </div>
         <div className="mt-4">
-          <h5>Is This Top Category?</h5>
-          <div className="my-2 flex">
-            <CustomRadioButton label="No" label_color="white" />
-            <span className="w-4"></span>
-            <CustomRadioButton label="Yes" label_color="white" />
+          <h5 className="text-white">Is This Top Category?</h5>
+          <div className="my-2 flex items-center space-x-4">
+            <CustomRadioButton
+              onChange={(e) => {
+                formik.setFieldValue("isTopCategory", e.target.value === "Yes");
+              }}
+              label="Yes"
+              label_color="white"
+              name="isTopCategory"
+              checked={formik.values.isTopCategory === true}
+            />
+            <CustomRadioButton
+              onChange={(e) => {
+                formik.setFieldValue("isTopCategory", e.target.value === "Yes");
+              }}
+              label="No"
+              label_color="white"
+              name="isTopCategory"
+              checked={formik.values.isTopCategory === false}
+            />
           </div>
         </div>
         <div className="mt-4">
-          <h5>Category Image</h5>
+          <h5 className="text-white">Category Image</h5>
           <div className="flex items-center">
-            <h5 className="mr-6">No file Selected</h5>
+            <h5 className="mr-6 text-white">No file Selected</h5>
 
             <CustomButton
+              type="button"
               size="sm"
               variant="outlined"
               onClick={() => {
-                set_open(true);
+                setCategoryFileOpen(true);
               }}
             >
               Add Image
             </CustomButton>
           </div>
+
+          <LibraryModal
+            file={formik?.values?.categoryImage}
+            set_file={(file) => {
+              formik.setFieldValue("categoryImage", file);
+            }}
+            error={formik.errors?.categoryImage}
+            onBlur={formik.handleBlur}
+            accept_file="Image"
+            title="Add Media"
+            open={categoryFileOpen}
+            set_open={setCategoryFileOpen}
+            onSave={() => setCategoryFileOpen(false)}
+          />
         </div>
         <div className="mt-4">
-          <h5>Courses Of Category</h5>
-          <div className="my-2 flex">
-            <CustomRadioButton label="No" label_color="white" />
-            <span className="w-4"></span>
-            <CustomRadioButton label="Yes" label_color="white" />
+          <h5 className="text-white">Courses Of Category</h5>
+          <div className="my-2 flex items-center space-x-4">
+            <CustomRadioButton
+              onChange={(e) => {
+                formik.setFieldValue(
+                  "coursesOfCategory",
+                  e.target.value === "Yes"
+                );
+              }}
+              label="Yes"
+              label_color="white"
+              name="coursesOfCategory"
+              checked={formik.values.coursesOfCategory === true}
+            />
+            <CustomRadioButton
+              onChange={(e) => {
+                formik.setFieldValue(
+                  "coursesOfCategory",
+                  e.target.value === "Yes"
+                );
+              }}
+              label="No"
+              label_color="white"
+              name="coursesOfCategory"
+              checked={formik.values.coursesOfCategory === false}
+            />
           </div>
         </div>
         <div className="mt-4">
-          <ContainedButtonPrimary title="Add New Category" />
+          <CustomButton type="submit" size="sm">
+            Add New Category
+          </CustomButton>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
