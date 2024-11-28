@@ -40,6 +40,7 @@ const AdminSidebar = () => {
     const active_route = `/${route?.[route.length - 2]}/${
       route?.[route.length - 1]
     }`;
+    
     const list_index = list.findIndex((item) =>
       item.sub_categories?.some((sub) => sub?.route === active_route)
     );
@@ -47,6 +48,7 @@ const AdminSidebar = () => {
       set_open_item(list_index);
     }
   }, []);
+  
   const navigate = useNavigate();
   const [hoveed, set_hoverd] = React.useState<null | number>(null);
   return (
@@ -298,7 +300,7 @@ const list = [
       { title: "Indicators" },
       { title: "Forex", route: "/lessons/market-pulse" },
       { title: "Crypto" },
-      { title: "Indices" },
+      { title: "Indices",route: "/lessons/market-pulse/indices" },
       { title: "Comodities" },
       { title: "Stocks" },
       { title: "Forex Chart" },

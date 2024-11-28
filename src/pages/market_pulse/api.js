@@ -31,14 +31,15 @@ export const getforexitems = async ({ categoryId, id }) => {
 
 export const getIndiceItems = async ({ categoryId, id }) => {
   try {
-    const { data } = await axiosPrivate.post(
-      '/api/marketpuls/getindiceitems',
-      {
+    const { data } = await axiosPrivate.post('/api/marketpuls/getindiceitems', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         categoryid: categoryId,
         id,
-      },
-      { headers: { 'Content-Type': 'application/json' } }
-    );
+      }),
+    });
 
     return data;
   } catch (error) {
