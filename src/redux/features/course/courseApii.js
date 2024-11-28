@@ -59,6 +59,14 @@ export const courseApi = createApi({
       }),
     }),
 
+    getCourseMeetings: builder.query({
+      query: () => ({
+        url: "/coursebuilder/getcoursemeeting",
+        method: "POST",
+        body: {},
+      }),
+    }),
+
     // add video pdf
     addCourseVideoPdf: builder.mutation({
       query: ({ data }) => ({
@@ -86,5 +94,6 @@ export const {
   useAddCourseVideoPdfMutation,
   useGetAuthorsListQuery,
   useRemoveCourseMutation,
-  useChangeCourseStatusMutation
+  useChangeCourseStatusMutation,
+  useGetCourseMeetingsQuery
 } = courseApi;
