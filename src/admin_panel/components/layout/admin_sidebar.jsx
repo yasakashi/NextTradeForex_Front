@@ -207,13 +207,13 @@ const list = [
     title: "Learn To Trader",
     Icon: TiPin,
     sub_categories: [
-      { title: "Topics", route: "/tutor/courses" },
+      { title: "Topics" },
       { title: "Lessons", route: "/learn-to-trade/lessons" },
-      { title: "E-Books", route: "/tutor/courses" },
+      { title: "E-Books" },
       { title: "Podcasts", route: "/learn-to-trade/podcasts" },
-      { title: "Webinars", route: "/tutor/courses" },
+      { title: "Webinars" },
       { title: "Videos", route: "/learn-to-trade/videos" },
-      { title: "Meetings", route: "/tutor/courses" },
+      { title: "Meetings" },
     ],
   },
   {

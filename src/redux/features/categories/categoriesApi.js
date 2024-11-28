@@ -16,7 +16,7 @@ export const categoriesApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    // add new course
+    // get all categories
     getCategories: builder.mutation({
       query: () => ({
         url: "/getcategorytree",
@@ -25,7 +25,29 @@ export const categoriesApi = createApi({
       }),
       transformResponse: (response) => response?.messageData,
     }),
+
+    getMainCategoriesByInfo: builder.mutation({
+      query: ({ parentId }) => ({
+        url: "/categorymangment/getcategoryinfo",
+        method: "POST",
+        body: {
+          parentId,
+        },
+      }),
+      transformResponse: (response) => response?.messageData,
+    }),
+
+    getSubCategoriesByInfo: builder.mutation({
+      query: ({ parentId }) => ({
+        url: "/categorymangment/getcategoryinfo",
+        method: "POST",
+        body: {
+          parentId,
+        },
+      }),
+      transformResponse: (response) => response?.messageData,
+    }),
   }),
 });
 
-export const { useGetCategoriesMutation } = categoriesApi;
+export const { useGetCategoriesMutation, useGetMainCategoriesByInfoMutation, useGetSubCategoriesByInfoMutation } = categoriesApi;

@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import MAterialTable from "../../../components/table/material_table";
 import CustomRadioButton from "../../categories/view/components/customRadioButton";
@@ -19,6 +17,10 @@ const LTRPodcasts = () => {
   const [lessons, setLessons] = useState([]);
   const isLoading = false;
 
+  const test = {
+    
+  }
+
   return (
     <div className="flex flex-col px-8 py-10">
       <h1 className="font-semibold text-2xl text-white mb-4">Videos</h1>
@@ -26,7 +28,7 @@ const LTRPodcasts = () => {
       <div>
         <CustomButton
           onClick={() =>
-            navigate("/admin-panel/learn-to-trade/videos/add-new-podcast")
+            navigate("/admin-panel/learn-to-trade/podcasts/add-new-podcast")
           }
           className=" mb-10 mt-6"
           variant="outlined"

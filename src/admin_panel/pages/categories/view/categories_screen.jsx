@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddNewCategoryComponent from "./components/add_new_category_component";
 
 import useCategories from "../hook/use_categories";
@@ -7,18 +7,81 @@ import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 import CustomRadioButton from "./components/customRadioButton";
 import { useNavigate } from "react-router-dom";
 import MAterialTable from "../../../components/table/material_table";
+import {
+  useGetMainCategoriesByInfoMutation,
+  useGetSubCategoriesByInfoMutation,
+} from "../../../../redux/features/categories/categoriesApi";
 
 const CategoriesScreen = () => {
   const { categories } = useCategories({ make_id_tree: true });
+
+  const [mainCategoryId, setMainCategoryId] = useState(771);
+
+  
 
   const navigate = useNavigate();
   const [open_delete_dialog, set_open_delete_dialog] = useState({
     open: false,
   });
+
+  const [
+    getMainCategoriesByInfo,
+    { data: maincategories, error, isLoading: getCategoriesLoading },
+  ] = useGetMainCategoriesByInfoMutation();
+
+  const [
+    getSubCategoriesByInfo,
+    { data: subCategories, isLoading: getSubCategoriesLoading },
+  ] = useGetSubCategoriesByInfoMutation();
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        await getMainCategoriesByInfo({ parentId: 770 }).unwrap();
+      } catch (err) {
+        toast.error("Failed to fetch categories: ");
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    async function fetchSubCategories() {
+      try {
+        await getSubCategoriesByInfo({
+          parentId: mainCategoryId,
+        }).unwrap();
+      } catch (err) {
+        toast.error("Failed to fetch categories: ");
+      }
+    }
+    fetchSubCategories();
+  }, [mainCategoryId]);
+
   return (
     <div className="w-full h-ful px-8 pt-8">
       <h1 className="font-semibold text-white text-2xl">Categories</h1>
 
+      <div className="w-full md:w-[40%] mt-8 mb-4">
+        <select
+          value={mainCategoryId}
+          onChange={(e) => setMainCategoryId(e.target.value)}
+          className="w-full border border-gray-300 pl-2 py-[6px] rounded-md shadow-sm bg-slate-200 outline-blue-500"
+        >
+          <option disabled>Select Category</option>
+          {maincategories?.length > 0 ? (
+            maincategories?.map((mainCategory, index) => (
+              <option value={mainCategory?.id} key={index}>
+                {mainCategory?.name}
+              </option>
+            ))
+          ) : getCategoriesLoading ? (
+            <option>Loading ...</option>
+          ) : (
+            <option>Categories not found!</option>
+          )}
+        </select>
+      </div>
       <div className="flex flex-col md:flex-row mt-4">
         <div className="w-full md:w-2/5">
           <AddNewCategoryComponent categories={categories} />
@@ -27,9 +90,11 @@ const CategoriesScreen = () => {
           className="w-full md:w-3/5"
           style={{ paddingLeft: 16, height: 800 }}
         >
+          {console.log(subCategories)}
           <MAterialTable
-            rows={categories}
+            rows={subCategories}
             // rows={categories}
+            loading={getSubCategoriesLoading}
             columns={[
               {
                 header: "Name",
@@ -66,7 +131,7 @@ const CategoriesScreen = () => {
                           title="Edit"
                           onClick={() => {
                             navigate(
-                              `/admin-panel/lesson/cateogies/edit/${row.original.name}`
+                              `/admin-panel/lesson/cateogies/edit/${row.original.id}`
                             );
                           }}
                           style={{ padding: 4, border: "none" }}
@@ -107,6 +172,7 @@ const CategoriesScreen = () => {
                 header: "Description",
                 accessorKey: "description",
                 enableEditing: false,
+                Cell: ({ row }) => <div>{row?.original?.description}</div>,
               },
               { header: "Slug", accessorKey: "slug" },
               { header: "Count", accessorKey: "count", enableEditing: false },

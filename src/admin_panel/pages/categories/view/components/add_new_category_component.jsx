@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import LibraryModal from "../../../../../pages/profile/new_course_components/library_modal";
 import BorderedButtonPrimary from "../../../../../common/bordered_button_primary";
-// import EditorComponent from "../../../../../pages/profile/new_course_components/editor/editor_component";
 import CustomRadioButton from "./customRadioButton";
-import ContainedButtonPrimary from "../../../../../common/contained_button_primary";
 import DraftEditor from "../../../../components/editor/draft_editor";
 import { IoIosArrowDown } from "react-icons/io";
 import { AnimatePresence, motion } from "framer-motion";
@@ -302,10 +300,14 @@ export const GroupedSelectBox = ({ options, onChange }) => {
   const [level, set_level] = useState(null);
 
   const [opened_item, set_opened_item] = useState(null);
+
   // const [search, set_search] = React.useState("");
-  React.useEffect(() => {
+
+  useEffect(() => {
     onChange?.(level?.id);
   }, [level]);
+
+
   return (
     <ClickAwayListener
       onClickAway={() => {

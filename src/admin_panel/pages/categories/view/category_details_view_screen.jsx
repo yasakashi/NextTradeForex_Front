@@ -1,9 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
-
 import React, { useState } from "react";
 import { CourseImgTag } from "../../../../pages/profile/my_courses/view/my_courses";
 import { LinearProgress } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Topics from "./components/courseView/Topics";
 import Lessons from "./components/courseView/Lessons";
 import Meetings from "./components/courseView/Meetings";
@@ -12,7 +11,11 @@ import EBooks from "./components/courseView/EBooks";
 const CategoriesDetailsView = () => {
   const [activeTab, setActiveTab] = useState(0);
 
+  const location = useLocation();
+  const { subCategoryId, levelId } = location.state || {};
   const [loading, setLoading] = useState(false);
+
+  
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-start text-white  relative">
@@ -110,18 +113,6 @@ export const DetailsCart = ({ img, title, id, descr, item }) => {
           }}
         >
           <CourseImgTag id={id} img={img} />
-
-          {/* <motion.img
-            transition={{ ease: "linear" }}
-            initial={{ scale: 1 }}
-            animate={{ scale: hoverd ? 1.1 : 1 }}
-            style={{
-              width: "100%",
-              height: 250,
-            }}
-            src={img || imgs?.[index]}
-            alt=""
-          /> */}
         </div>
         <h5
           style={{

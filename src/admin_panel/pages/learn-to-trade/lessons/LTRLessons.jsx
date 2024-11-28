@@ -36,7 +36,7 @@ const LTRLessons = () => {
       <div>
         <CustomButton
           onClick={() =>
-            navigate("/admin-panel/learn-to-trade/videos/add-new-lesson")
+            navigate("/admin-panel/learn-to-trade/lessons/add-new-lesson")
           }
           className=" mb-10 mt-6"
           variant="outlined"

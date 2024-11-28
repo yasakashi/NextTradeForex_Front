@@ -24,7 +24,7 @@ export const admin_panel_router = [
     component: <LTRLessons />,
   },
   {
-    route: "/admin-panel/learn-to-trade/videos/add-new-lesson",
+    route: "/admin-panel/learn-to-trade/lessons/add-new-lesson",
     component: <AddNewLesson />,
   },
   {
@@ -41,7 +41,7 @@ export const admin_panel_router = [
     component: <LTRPodcasts />,
   },
   {
-    route: "/admin-panel/learn-to-trade/videos/add-new-podcast",
+    route: "/admin-panel/learn-to-trade/podcasts/add-new-podcast",
     component: <AddNewPodcast />,
   },
   {
