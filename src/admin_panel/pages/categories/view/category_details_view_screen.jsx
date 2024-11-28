@@ -1,29 +1,31 @@
 import { AnimatePresence, motion } from "framer-motion";
-
-import useCategoryDetails from "../hook/use_category_details";
 import React, { useState } from "react";
 import { CourseImgTag } from "../../../../pages/profile/my_courses/view/my_courses";
 import { LinearProgress } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Topics from "./components/courseView/Topics";
+import Lessons from "./components/courseView/Lessons";
+import Meetings from "./components/courseView/Meetings";
+import EBooks from "./components/courseView/EBooks";
 
 const CategoriesDetailsView = () => {
   const [activeTab, setActiveTab] = useState(0);
 
+  const location = useLocation();
+  const { subCategoryId, levelId } = location.state || {};
   const [loading, setLoading] = useState(false);
+
+  
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-start text-white  relative">
-      <div className="text-gray-500 w-1/2 self-start my-8 px-3.5 sm:w-2/3">
+      <div className="text-gray-500 w-full text-center md:text-left md:w-1/2 self-start my-8 px-3.5 sm:w-2/3">
         In this chapter we will be covering topics related to foundation of a
         professional trader. These topics will act as foundation to your trading
         career.
       </div>
 
-      <div
-        className="flex justify-start py-2 mt-4 flex-wrap"
-        style={{ borderBottom: "1px solid white", width: "calc(100% - 24px)" }}
-      >
+      <div className="flex justify-start py-2 mt-4 flex-wrap border-b border-white w-[calc(100%-24px)]">
         {list.map((item, i) => (
           <button
             className={`transition-all mr-2 mt-2`}
@@ -51,7 +53,7 @@ const CategoriesDetailsView = () => {
           />
         )}
       </div>
-      <div className="px-4 py-2 w-full">
+      <div className="px-4 py-2 mt-10 w-full">
         <AnimatePresence initial={false} mode="wait">
           <motion.div
             initial={{ opacity: 0 }}
@@ -59,19 +61,16 @@ const CategoriesDetailsView = () => {
             exit={{ opacity: 0 }}
             className="flex w-full flex-wrap justify-start mt-4"
           >
-            <Topics setLoading={setLoading} />
+            {activeTab === 0 ? (
+              <Topics setLoading={setLoading} />
+            ) : activeTab === 1 ? (
+              <Lessons setLoading={setLoading} />
+            ) : activeTab === 6 ? (
+              <Meetings setLoading={setLoading} />
+            ) : activeTab === 2 ? (
+              <EBooks setLoading={setLoading} />
+            ) : null}
           </motion.div>
-
-          {/* {!items.length && !loading && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="w-full flex h-96 justify-center items-center"
-            >
-              <h1>No Data</h1>
-            </motion.div>
-          )} */}
         </AnimatePresence>
       </div>
     </div>
@@ -88,30 +87,15 @@ const list = [
   { title: "Videos" },
   { title: "Meetings" },
 ];
+
 export const yellow_color = "#F0D785";
 export const yellow_dark = "#9C7049";
 export const yellow_medium = "#d0b06e";
 export const blue_medium = "#020E51";
 
-export const DetailsCart = ({
-  index,
-  img,
-  title,
-  hide_descr,
-  onClick,
-  id,
-  descr,
-  item,
-  course,
-}) => {
-  const [hoverd, set_hovered] = React.useState(false);
+export const DetailsCart = ({ img, title, id, descr, item }) => {
   return (
-    <div
-      className="sm:w-full  md:w-3/6 lg:w-2/6 px-4"
-      // style={{minWidth:300}}
-      onMouseEnter={() => set_hovered(true)}
-      onMouseLeave={() => set_hovered(false)}
-    >
+    <div className="sm:w-full  md:w-3/6 lg:w-2/6 px-4">
       <div
         className="flex flex-col  shadow-xl p-4  bg-blue-950 mb-4"
         style={{
@@ -129,18 +113,6 @@ export const DetailsCart = ({
           }}
         >
           <CourseImgTag id={id} img={img} />
-
-          {/* <motion.img
-            transition={{ ease: "linear" }}
-            initial={{ scale: 1 }}
-            animate={{ scale: hoverd ? 1.1 : 1 }}
-            style={{
-              width: "100%",
-              height: 250,
-            }}
-            src={img || imgs?.[index]}
-            alt=""
-          /> */}
         </div>
         <h5
           style={{
@@ -160,18 +132,9 @@ export const DetailsCart = ({
         >
           {descr}
         </h5>
-        <button
-          // onClick={() => {
-          //   onClick?.({ title: title || "Unknown", index });
-          // }}
-          className="w-max  bg-gradient-to-r from-[#F0D785] to-[#9C7049] py-[10px] mt-4"
-          style={{
-            // padding: "8px 24px",
-            borderRadius: 50,
-            position: "relative",
-            color: "black",
-            overflow: "clip",
-          }}
+        <Link
+          to={`/learn_to_trade/courses/${item?.name}/${item?.value}`}
+          className="w-max py-3 px-4 text-blue-dark font-normal bg-gradient-to-r from-[#F0D785] to-[#9C7049] mt-4 rounded-full relative overflow-clip shadow-lg outline-blue-dark"
         >
           <motion.div
             transition={{ ease: "linear", duration: 0.5 }}
@@ -186,26 +149,13 @@ export const DetailsCart = ({
               backgroundImage:
                 "linear-gradient(to right,rgba(0,0,0,0), rgba(0,0,0,0.1), rgba(0,0,0,0))",
               position: "absolute",
+              top: 0,
+              left: 0,
             }}
           ></motion.div>
-          <Link
-            to={`/learn_to_trade/courses/${item?.name}/${item?.value}`}
-            className="px-6 py-3 text-sm font-semibold"
-          >
-            Explore More
-          </Link>
-        </button>
+          Explore More
+        </Link>
       </div>
     </div>
   );
 };
-
-const imgs = [
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3eE4IwgbB-YO5-cuoAyvfGlHJRKk3P4nMFQ&s",
-  "https://img.freepik.com/free-vector/illustration-financial-concept_53876-37658.jpg?size=626&ext=jpg&ga=GA1.1.1413502914.1720224000&semt=ais_user",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3eE4IwgbB-YO5-cuoAyvfGlHJRKk3P4nMFQ&s",
-  "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/advisor/wp-content/uploads/2022/07/finance.jpeg.jpg",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3Px9ijQq3SgFxc8AdEf5hNKh6rt2KoGXXaw&s",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW90pHVig3xEI-_lBuk2nsLWa3JaXn4Kn8qw&s",
-  "https://extension.harvard.edu/wp-content/uploads/sites/8/2022/07/careers-in-corporate-finance.jpg",
-];

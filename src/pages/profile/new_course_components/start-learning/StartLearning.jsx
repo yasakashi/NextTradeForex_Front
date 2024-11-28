@@ -4,16 +4,14 @@ import {
   useGetTopicLessonsMutation,
 } from "../../../../redux/features/course/courseBuilderApi";
 import { Link, useParams } from "react-router-dom";
-import { RiQuestionMark } from "react-icons/ri";
-import { FaBars } from "react-icons/fa6";
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { AiOutlineExclamation } from "react-icons/ai";
+
 import LearningOverview from "./LearningOverview";
-import LearningComments from "./LearningComments";
+import LearningComments from "./learning-comments/LearningComments";
 
 const StartLearning = () => {
   const { courseId, lessonId } = useParams();
+
+
 
   const [activeTab, setActiveTab] = useState("overview");
 
@@ -55,7 +53,6 @@ const StartLearning = () => {
       setOpenTopicIndex(null);
     } else {
       setOpenTopicIndex(index);
-      return;
       if (!lessons[topicId]) {
         const lessonsRes = await getTopicLessons({
           data: {
@@ -110,7 +107,7 @@ const StartLearning = () => {
       </div>
 
       {activeTab === "overview" ? (
-        <LearningOverview />
+        <LearningOverview isLoading={getCourseTopicsLoading} />
       ) : activeTab === "comments" ? (
         <LearningComments />
       ) : null}

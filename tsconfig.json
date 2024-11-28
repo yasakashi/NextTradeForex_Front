@@ -48,7 +48,16 @@
     "src/admin_panel/pages/tutor/courses/course_details/view/components/course_progress_component.jsx",
     "src/pages/learn_to_trade/select_learn_to_trade.jsx",
     "src/admin_panel/pages/categories/view/category_details_view_screen.jsx",
-    "src/pages/learn_to_trade/courses_to_learn_screen.jsx"
-, "src/admin_panel/pages/tutor/lessons/view/lessons_screen.jsx", "src/admin_panel/pages/categories/view/components/add_new_category_component.jsx", "src/admin_panel/pages/categories/view/components/edit_category_components.jsx"  ],
+    "src/pages/learn_to_trade/LearnToTradeCategories.jsx",
+    "src/admin_panel/pages/tutor/lessons/view/lessons_screen.jsx",
+    "src/admin_panel/pages/categories/view/components/add_new_category_component.jsx",
+    "src/admin_panel/pages/categories/view/components/edit_category_components.jsx",
+    "src/pages/learn_to_trade/view/LearnToTrade.jsx",
+    "src/admin_panel/components/layout/admin_sidebar.jsx",
+    "src/admin_panel/components/layout/admin_navbar.jsx",
+    "src/admin_panel/components/layout/main_layout.jsx",
+    "src/admin_panel/pages/categories/view/categories_screen.jsx",
+    "src/admin_panel/pages/categories/view/components/customRadioButton.jsx"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

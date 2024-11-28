@@ -16,6 +16,7 @@ import {
 } from '../../../../../redux/features/generalSlice';
 
 function MarketPulseNewCourseScreen() {
+  
   const dispatch = useDispatch();
   const data = useSelector(selectForexData);
   const [title, setTitle] = useState(data?.coursetitle || '');

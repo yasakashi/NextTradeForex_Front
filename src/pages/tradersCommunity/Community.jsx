@@ -17,21 +17,21 @@ const JOIN_TRADERS_SOCIAL_NETWORK = [
     Icon: IoLogoWechat,
     title: "Meet Great People",
     description:
-      "When an unknown printer took a galley of scrambled it to make a type specimen It has survived not only.",
+      "Connect with great people in the Forex trading community! Build relationships, exchange ideas, and collaborate with exprienced traders to enhance your knowledge and trading success.",
   },
   {
     id: 2,
     Icon: FaUsers,
     title: "Forum Discussion",
     description:
-      "When an unknown printer took a galley of scrambled it to make a type specimen It has survived not only.",
+      "Engage in insightful discussions on our Forex forum! Share your expriences, ask questions, and participate in conversatins with fellow traders to enhance your trading startegies and stay ahead of market trends.",
   },
   {
     id: 3,
     Icon: RiFilePaper2Line,
     title: "Active Groups",
     description:
-      "When an unknown printer took a galley of scrambled it to make a type specimen It has survived not only.",
+      "Explore our active Forex trading groups! Join dynamic communities where traders share real-time insights, tips, and strategies to maximize their profits. Stay engaged, learn, and grow together with experienced traders.",
   },
 ];
 
@@ -46,6 +46,8 @@ const TradersCommunity = () => {
   useEffect(() => {
     dispatch(getPopularGroups({ axiosPrivate }));
   }, []);
+
+
   return (
     <div>
       <CummunityNavbar />
@@ -68,7 +70,7 @@ const TradersCommunity = () => {
 
           <Link
             className="mt-6 flex items-center  text-white text-base border border-gray-200 rounded-[25px] px-1 py-1 w-max group "
-            to="#"
+            to="/traders-community/groups"
           >
             <span className="group-hover:bg-blue-light pr-2 py-1 rounded-tl-[25px] rounded-bl-[25px] px-2 transition-all">
               Discover Now

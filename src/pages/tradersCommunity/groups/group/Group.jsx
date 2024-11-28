@@ -71,7 +71,7 @@ const CommunityGroup = () => {
     }
 
     getGroupPic();
-  }, [ dispatch, groupId]);
+  }, [dispatch, groupId]);
 
   useEffect(() => {
     dispatch(getGroupCoverImg({ axiosPrivate, id: groupId }));
@@ -88,7 +88,6 @@ const CommunityGroup = () => {
     localStorage.setItem("groupname", subUrl);
   }, [group, editGroupLoading]);
 
-
   const pathParts = location?.pathname.split("/");
   const tab = pathParts[pathParts.length - 1];
 
@@ -104,11 +103,7 @@ const CommunityGroup = () => {
       });
   };
 
-  useEffect(() => {
-    {
-      console.log({ groupImg }, "===============>group img");
-    }
-  }, [groupImg]);
+
   return (
     <>
       <SideBar />
@@ -180,7 +175,6 @@ const CommunityGroup = () => {
                             group?.title
                           )}
                         </h3>
-                        {console.log({ getGroupLoading })}
                         <span className="text-sm text-gray-400 ">
                           {getGroupLoading ? (
                             <SkeletonTheme

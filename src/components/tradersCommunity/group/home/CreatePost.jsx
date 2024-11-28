@@ -15,6 +15,7 @@ import TreeChildCategory from "../../../TreeChildCategory";
 import UploadPostFile from "./posts/UploadFile";
 import EmojiPicker from "../../../EmojiPicker";
 import InputError from "../../../InputError";
+import CheckBoxTreeChildCategory from "../../../CheckBoxTreeChildCategory";
 
 const CreatePost = React.forwardRef(({ page = "" }, ref) => {
   const postId = localStorage.getItem("postId");
@@ -143,7 +144,6 @@ const CreatePost = React.forwardRef(({ page = "" }, ref) => {
               toast,
             })
           );
-          console.log(uploadPostFileRes, "uploadPostFileRes");
           if (uploadPostFileRes?.payload?.messageCode === 200) {
             toast.success("New post created.");
             resetForm();
@@ -191,7 +191,6 @@ const CreatePost = React.forwardRef(({ page = "" }, ref) => {
       ref={formRef}
       className="bg-white rounded-lg shadow-md p-4 my-6 w-full"
     >
-      {console.log(postFile)}
       <div className="flex justify-center items-center font-semibold text-xl py-1 pb-3 text-gray-700 w-full">
         <div>New Post</div>
       </div>
@@ -244,7 +243,7 @@ const CreatePost = React.forwardRef(({ page = "" }, ref) => {
             Select Category :
           </h3>
           {/* <TreeCategories data={groupCategories} /> */}
-          <TreeChildCategory
+          <CheckBoxTreeChildCategory
             page="posts"
             loading={getCategoryLoading}
             data={groupCategories}

@@ -11,8 +11,11 @@ import { GroupedSelectBox } from "./add_new_category_component";
 import useCategories from "../../hook/use_categories";
 import CustomTextInput from "../../../../../components/ui/CustomTextInput";
 import CustomTextArea from "../../../../../components/ui/CustomTextArea";
+import { useParams } from "react-router-dom";
 
 const EditCategoryComponent = () => {
+  const { id } = useParams();
+
   const { categories } = useCategories({ make_id_tree: true });
   const [open, set_open] = React.useState(false);
 
