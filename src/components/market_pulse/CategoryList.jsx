@@ -11,6 +11,7 @@ function CourseLevelType({ categoryId, onCategoryChange }) {
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
   const { groupCategories, getCategoryLoading } = useSelector((state) => state.group);
+  console.log(groupCategories,getCategoryLoading);
 
   useEffect(() => {
     dispatch(getGroupCategory({ axiosPrivate, parentId: 895 }));

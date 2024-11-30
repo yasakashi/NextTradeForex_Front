@@ -108,7 +108,7 @@ function MarketPulseListScreen() {
                     onClick={() => {
                       // navigate to edit page
                       dispatch(setForexData(row.original));
-                      navigate(`/admin-panel/lessons/market-pulse/${row.original.id}`);
+                      navigate(`/admin-panel/lessons/market-pulse/forex/${row.original.id}`);
                     }}
                     style={{ padding: 4, border: "none" }}
                   />

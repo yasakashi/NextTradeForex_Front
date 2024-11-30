@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ListedExchange = () => {
-  const data = [
+const ListedExchange = ({ data }) => {
+  const dataa = [
     {
-      label: 'Bombay Stock Exchange',
+      label: data,
       value: '',
     },
   ];
@@ -12,7 +12,7 @@ const ListedExchange = () => {
     <div className="bg-blue-light  text-white p-6 rounded-lg shadow-lg">
       <table className="w-full text-left border-collapse">
         <tbody>
-          {data.map((row, index) => (
+          {dataa.map((row, index) => (
             <tr
               key={index}
               className={`border-t border-gray-700 ${
@@ -20,9 +20,9 @@ const ListedExchange = () => {
               }`}
             >
               <td className="py-2 font-extralight text-sm">{row.label}</td>
-              <td className="py-2 text-right  text-sm font-extralight">
+              {/* <td className="py-2 text-right  text-sm font-extralight">
                 {row.value}
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

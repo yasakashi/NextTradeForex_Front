@@ -10,6 +10,7 @@ import NewCourse from "../../pages/profile/new_course";
 import CourseBuilderPage from "../../pages/profile/new_course_components/CourseBuilderPage";
 import CourseMeetingAndPdf from '../../pages/profile/new_course_components/CourseMeetingAndPdf'
 import IndicesList from "../pages/lessons/market-pulse/indice/indiceList";
+import AddIndice from "../pages/lessons/market-pulse/indice/newIndice";
 
 export const admin_panel_router = [
   // { route: "/admin-panel/lesson/cateogies", component: <CategoriesScreen /> },
@@ -54,7 +55,7 @@ export const admin_panel_router = [
     component: <MarketPulseListScreen />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/forex/add",
+    route: "/admin-panel/lessons/market-pulse/forex/:id",
     component: <MarketPulseNewCourseScreen />,
   },
   {
@@ -62,7 +63,7 @@ export const admin_panel_router = [
     component: <IndicesList />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/indices/add",
-    component: <IndicesList />,
+    route: "/admin-panel/lessons/market-pulse/indices/:id",
+    component: <AddIndice />,
   },
 ];

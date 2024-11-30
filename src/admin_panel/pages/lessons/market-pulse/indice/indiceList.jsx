@@ -21,24 +21,22 @@ function IndicesList() {
   });
   const [indiceData, setIndicesData] = useState([]);
 
+  const fetchCourses = async () => {
+    dispatch(toggle_loading(true));
+    try {
+      const res = await getIndiceItems({
+        categoryId: null,
+        id: null,
+      });
+      const { messageData } = res;
+      setIndicesData(messageData);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      dispatch(toggle_loading(false));
+    }
+  };
   useEffect(() => {
-    const fetchCourses = async () => {
-      dispatch(toggle_loading(true));
-      try {
-        const res = await getIndiceItems({
-          categoryId: null,
-          id: null,
-        });
-
-        const { messageData } = res.data;
-        setIndicesData(messageData);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        dispatch(toggle_loading(false));
-      }
-    };
-
     fetchCourses();
   }, [dispatch]);
 
@@ -74,7 +72,7 @@ function IndicesList() {
           className="bg-white rounded-md px-[12px] py-[7px]"
           onClick={() => dispatch(clearIndiceData())}
         >
-          <Link to="/admin-panel/lessons/market-pulse/create">New</Link>
+          <Link to="/admin-panel/lessons/market-pulse/indices/add">New</Link>
         </button>
       </div>
       <MAterialTable
@@ -117,7 +115,7 @@ function IndicesList() {
                       // navigate to edit page
                       dispatch(setIndiceData(row.original));
                       navigate(
-                        `/admin-panel/lessons/market-pulse/${row.original.id}`
+                        `/admin-panel/lessons/market-pulse/indices/${row.original.id}`
                       );
                     }}
                     style={{ padding: 4, border: 'none' }}
