@@ -60,11 +60,12 @@ function Indice() {
       );
 
       // Filter subcategories to only include those with a parentId matching the selected top category's id
-      const filteredSubCategories = res.data.messageData.filter(
-        (subcategory) => subcategory.parentId === +selectedTopCategory
-      );
-
-      setSecondCategory(filteredSubCategories);
+      // const filteredSubCategories = res.data.messageData.filter(
+      //   (subcategory) => subcategory.parentId === +selectedTopCategory
+      // );
+      // console.log(filteredSubCategories);
+      
+      setSecondCategory(res.data.messageData);
     } catch (error) {
       console.error('Failed to fetch subcategories:', error);
     }
@@ -148,6 +149,7 @@ function Indice() {
           selectedTopCategory={selectedTopCategory}
           selectedSubCategory={selectedSubCategory}
           setSecondCategory={setSecondCategory}
+          selectedSecondCategory={selectedSecondCategory}
         />
       )}
     </div>

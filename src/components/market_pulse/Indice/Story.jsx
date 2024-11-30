@@ -21,6 +21,7 @@ export default function IndicesStory({
   selectedTopCategory,
   selectedSubCategory,
   setSecondCategory,
+  selectedSecondCategory,
 }) {
   const [currencies, setCurrencies] = useState([]);
   const [data, setData] = useState(null);
@@ -91,8 +92,13 @@ export default function IndicesStory({
 
   useEffect(() => {
     setData(null);
-    fetchIndiceItem();
+    fetchIndiceItem(currencyId);
   }, [currencyId]);
+
+  useEffect(() => {
+    setData(null);
+    fetchIndiceItem(selectedSecondCategory);
+  }, [selectedSecondCategory]);
 
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
@@ -109,27 +115,26 @@ export default function IndicesStory({
               <p className="text-gold-light_400 text-5xl font-bold">
                 {data.coursetitle}
               </p>
-              <div className="flex gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <p className="text-gold-light_400 text-xl font-bold">
+                  <p className="text-gold-light_400 text-xl font-bold mb-3">
                     Indices Informations
                   </p>
                   <InfoTable data={data} />
                 </div>
-                <div >
-                  <p className="text-gold-light_400 text-xl font-bold">
+                <div>
+                  <p className="text-gold-light_400 text-xl font-bold mb-3">
                     Listed Exchanges
                   </p>
-                  {/* <ListedExchange data={data.}/> */}
+                  <ListedExchange data={data.instrumentname} />
 
-                  <p className="text-gold-light_400 text-xl font-bold mt-12">
+                  <p className="text-gold-light_400 text-xl font-bold mt-12 mb-3">
                     Related Instuments
                   </p>
-                  <ListedExchange data={data.instrumentname}/>
+                  <ListedExchange data={data.instrumentname} />
                 </div>
               </div>
 
-              <ReadMoreContent content={data.chartdescription} />
             </>
           ) : indiceItemLoading ? (
             <LoadingSpinner />
@@ -168,9 +173,8 @@ export default function IndicesStory({
       </div>
       {data ? (
         <>
-          <ReadMoreContent content={data.maindescription} />
-          <ReadMoreContent content={data.bottomdescription} />
-          <div className="flex flex-col gap-y-20">
+          
+          <div className="flex flex-col gap-y-20 mt-5">
             {data ? (
               <FundamentalSammary
                 heading="Fundamental"
