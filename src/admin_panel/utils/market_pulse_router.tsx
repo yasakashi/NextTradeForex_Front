@@ -1,4 +1,5 @@
 import Forex from '../../pages/market_pulse/forex';
+import Indice from '../../pages/market_pulse/indice';
 
 export const market_pulse_router = [
   {
@@ -11,7 +12,7 @@ export const market_pulse_router = [
   },
   {
     route: '/market-pulse/indices',
-    component: <Forex />,
+    component: <Indice />,
   },
   {
     route: '/market-pulse/crypto',

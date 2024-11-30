@@ -14,11 +14,13 @@ function SelectInput({ options, value, onChange, placeholder }) {
         <option value="" disabled>
           {placeholder}
         </option>
-        {options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.name} {/* Display the name from the API */}
-          </option>
-        ))}
+        {options.map((option) => {          
+          return (
+            <option key={option.id} value={option.id}>
+              {option.name} {/* Display the name from the API */}
+            </option>
+          );
+        })}
       </select>
     </div>
   );

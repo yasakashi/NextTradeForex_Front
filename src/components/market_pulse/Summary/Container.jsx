@@ -68,7 +68,7 @@ const CommonDashboardTable = ({ tabs }) => {
       </div>
 
       <div className="flex gap-3">
-        <div className="flex-1 grid grid-cols-3 gap-4 bg-blue-light p-4 rounded-r-lg">
+        <div className="flex-1 grid  gap-4 bg-blue-light p-4 rounded-r-lg">
           {activeTabData?.script && (
             <TechnicalTab script={activeTabData.script} />
           )}
