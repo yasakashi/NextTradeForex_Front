@@ -8,10 +8,8 @@ import PublishComponent from "../../../../pages/profile/new_course_components/pu
 import FeaturedImageComponent from "../../../../pages/profile/new_course_components/featured_image_component";
 import CategoriesComponent from "../../../../pages/profile/new_course_components/categories_component";
 import CourseAuthor from "../../../../pages/profile/new_course_components/CourseAuthor";
-
-import LessonTextOnly from "./LessonTextOnly";
-import LessonCategory from "../../../components/LessonCategory";
 import TagsComponent from "../../../../pages/profile/new_course_components/tags_component";
+import LTRCategory from "../../../components/LTRCategory";
 
 const dropdownOptions = [
   { label: "Text Only", value: "TextOnly" },
@@ -229,7 +227,7 @@ const AddNewLesson = () => {
           <CourseAuthor formik={formik} />
 
           <div className="lg:hidden space-y-4">
-            <LessonCategory formik={formik} />
+            <LTRCategory formik={formik} />
             <TagsComponent formik={formik} />
           </div>
 
@@ -244,7 +242,7 @@ const AddNewLesson = () => {
         <div className="hidden lg:block lg:col-span-1">
           <PublishComponent isLoading={isLoading} />
 
-          <LessonCategory formik={formik} />
+          <LTRCategory formik={formik} />
           <TagsComponent formik={formik} />
 
           <FeaturedImageComponent name="featuredImage" formik={formik} />

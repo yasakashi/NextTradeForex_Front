@@ -1,15 +1,9 @@
 import React, { useId, useState, useEffect, useRef } from "react";
 import NewCourceCard from "./new_cource_card";
-import CustomTextField from "../../../common/custom_text_field";
 import { AnimatePresence, motion } from "framer-motion";
-import useCategories from "../../../admin_panel/pages/categories/hook/use_categories";
-// import { CustomSelectBox } from "./custom_select_box";
 import BootstrapTabs from "../../../common/bootstrap_tabs";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import { getGroupCategory } from "../../../redux/features/groupSlice";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useGetCategoriesMutation } from "../../../redux/features/categories/categoriesApi";
 import toast from "react-hot-toast";
 
@@ -48,6 +42,7 @@ const CategoriesComponent = () => {
       });
     };
     recurse(nodes);
+
     return result;
   };
 

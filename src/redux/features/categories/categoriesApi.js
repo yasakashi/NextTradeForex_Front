@@ -16,12 +16,32 @@ export const categoriesApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    // add new category
+    addNewCategory: builder.mutation({
+      query: ({ data }) => ({
+        url: "/categorymangment/addcategory",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Update category
+    updateCategory: builder.mutation({
+      query: ({ data }) => ({
+        url: "/categorymangment/editcategory",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     // get all categories
     getCategories: builder.mutation({
       query: () => ({
         url: "/getcategorytree",
         method: "POST",
-        body: {},
+        body: {
+          parentId: 770,
+        },
       }),
       transformResponse: (response) => response?.messageData,
     }),
@@ -47,7 +67,22 @@ export const categoriesApi = createApi({
       }),
       transformResponse: (response) => response?.messageData,
     }),
+
+    getCategoryInfo: builder.mutation({
+      query: ({ data }) => ({
+        url: "/categorymangment/getcategoryinfo",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetCategoriesMutation, useGetMainCategoriesByInfoMutation, useGetSubCategoriesByInfoMutation } = categoriesApi;
+export const {
+  useGetCategoriesMutation,
+  useGetMainCategoriesByInfoMutation,
+  useGetSubCategoriesByInfoMutation,
+  useAddNewCategoryMutation,
+  useGetCategoryInfoMutation,
+  useUpdateCategoryMutation
+} = categoriesApi;

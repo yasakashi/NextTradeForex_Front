@@ -352,7 +352,7 @@ const Navbar = () => {
                               {user?.userTypeId === 1 ? (
                                 <li className="flex items-center w-full pl-4 pr-2 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
                                   <MdSpaceDashboard size={20} />
-                                  <Link to="/admin-panel/lesson/cateogies">
+                                  <Link to="/admin-panel/lesson/categories">
                                     Admin Panel
                                   </Link>
                                 </li>

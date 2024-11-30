@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import LibraryModal from "../../../../../pages/profile/new_course_components/library_modal";
-import BorderedButtonPrimary from "../../../../../common/bordered_button_primary";
 import CustomRadioButton from "./customRadioButton";
 import DraftEditor from "../../../../components/editor/draft_editor";
 import { IoIosArrowDown } from "react-icons/io";
@@ -9,23 +8,51 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ClickAwayListener, Collapse } from "@mui/material";
 import { Row } from "../../../../../pages/profile/new_course_components/categories_component";
 
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdClose, MdKeyboardArrowRight } from "react-icons/md";
 import CustomTextInput from "../../../../../components/ui/CustomTextInput";
 import CustomTextArea from "../../../../../components/ui/CustomTextArea";
 import { CustomButton } from "../../../../../components/ui/CustomButton";
 import { useFormik } from "formik";
 import { EditorState } from "draft-js";
+import {
+  useAddNewCategoryMutation,
+  useGetMainCategoriesByInfoMutation,
+} from "../../../../../redux/features/categories/categoriesApi";
+import toast from "react-hot-toast";
+import * as Yup from "yup";
+
+const SUPPORTED_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/web"];
+
+const FILE_SIZE = 500 * 1024; // 500KB
 
 const AddNewCategoryComponent = ({ categories }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [customImgOpen, setCustomImgOpen] = useState(false);
   const [categoryFileOpen, setCategoryFileOpen] = useState(false);
 
+  const [addNewCategory, { isLoading }] = useAddNewCategoryMutation();
+
+  const [
+    getMainCategoriesByInfo,
+    { data: maincategories, error, isLoading: getCategoriesLoading },
+  ] = useGetMainCategoriesByInfoMutation();
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        await getMainCategoriesByInfo({ parentId: 770 }).unwrap();
+      } catch (err) {
+        toast.error("Failed to fetch categories: ");
+      }
+    }
+    fetchCategories();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
+      parentId: 770,
       name: "",
       slug: "",
-      parentId: "",
       description: "",
       customDescription: "",
       customFile: null,
@@ -37,8 +64,80 @@ const AddNewCategoryComponent = ({ categories }) => {
       coursesOfCategory: false,
     },
 
-    onSubmit: (values) => {
-      console.log(values);
+    validationSchema: Yup.object({
+      name: Yup.string().required("Category name is required."),
+      description: Yup.string().required("Description is required."),
+      categoryImage: Yup.mixed()
+        .optional()
+        .nullable()
+        .test("fileSize", "File must be less than 500 KB", (value) => {
+          return typeof value === "string" || !value
+            ? true
+            : value.size < FILE_SIZE;
+        })
+        .test(
+          "fileFormat",
+          "File must be in JPG, PNG, JPEG, or WEBP format",
+          (value) => {
+            return typeof value === "string" || !value
+              ? true
+              : SUPPORTED_FORMATS.includes(value?.type);
+          }
+        ),
+
+      customFile: Yup.mixed()
+        .optional()
+        .nullable()
+        .test("fileSize", "File must be less than 500 KB", (value) => {
+          return typeof value === "string" || !value
+            ? true
+            : value.size < FILE_SIZE;
+        })
+        .test(
+          "fileFormat",
+          "File must be in JPG, PNG, JPEG, or WEBP format",
+          (value) => {
+            return typeof value === "string" || !value
+              ? true
+              : SUPPORTED_FORMATS.includes(value?.type);
+          }
+        ),
+    }),
+
+    onSubmit: async (values, { rsetForm }) => {
+      const formData = new FormData();
+
+      formData.append("parentId", values?.parentId);
+      formData.append("name", values?.name);
+      formData.append("Slug", values?.slug);
+      formData.append("Description", values?.description);
+      formData.append("customDescription", values?.customDescription);
+      formData.append("chartImage", values?.chartImage);
+      formData.append("IsVisible", values?.isVisible);
+      formData.append("IsVisibleDropdown", values?.isVisibleDropdown);
+      formData.append("IsThisTopCategory", values?.isTopCategory);
+      formData.append("CoursesOfCategory", values?.coursesOfCategory);
+      formData.append("categorytypeid_old", 1);
+      formData.append("categorytypeid", 14);
+
+      if (values?.customFile instanceof File) {
+        formData.append("customFile", values?.customFile);
+      }
+
+      if (values?.categoryImage instanceof File) {
+        formData.append("categoryImage", values?.categoryImage);
+      }
+
+      try {
+        const res = await addNewCategory({ data: formData }).unwrap();
+        if (res?.messageCode === 200) {
+          toast.success("Category Created.");
+          rsetForm();
+        }
+        console.log({ res });
+      } catch (err) {
+        console.log("Creating new category", err);
+      }
     },
   });
 
@@ -62,6 +161,7 @@ const AddNewCategoryComponent = ({ categories }) => {
           onBlur={formik.handleBlur}
           placeholder="Category name"
           className="text-gray-700"
+          error={formik.touched?.name ? formik.errors.name : null}
         />
       </div>
 
@@ -85,7 +185,27 @@ const AddNewCategoryComponent = ({ categories }) => {
       <div style={{ color: "black" }}>
         <h5 className="mt-4 text-white">Parent Category</h5>
 
-        <GroupedSelectBox options={categories} />
+        <div className="w-full md:w-full mt-8 mb-4">
+          <select
+            name="parentId"
+            value={formik.values?.parentId}
+            onChange={formik.handleChange}
+            className="w-full border border-gray-300 pl-2 py-[6px] rounded-md shadow-sm bg-white outline-blue-500"
+          >
+            <option value="">Select Category</option>
+            {maincategories?.length > 0 ? (
+              maincategories?.map((mainCategory, index) => (
+                <option value={mainCategory?.id} key={index}>
+                  {mainCategory?.name}
+                </option>
+              ))
+            ) : getCategoriesLoading ? (
+              <option>Loading ...</option>
+            ) : (
+              <option>Categories not found!</option>
+            )}
+          </select>
+        </div>
         <h6 className="text-xs text-white mt-1">
           Assign a parent term to create a hierarchy. The term Jazz, for
           example, would be the parent of Bebop and Big Band.
@@ -100,6 +220,7 @@ const AddNewCategoryComponent = ({ categories }) => {
           onBlur={formik.handleBlur}
           className="h-[100px] text-gray-700"
           placeholder="Description"
+          error={formik.touched?.description ? formik.errors.description : null}
         />
         <h6 className="text-xs text-white mt-1">
           The description is not prominent by default; however, some themes may
@@ -107,6 +228,7 @@ const AddNewCategoryComponent = ({ categories }) => {
         </h6>
         <div className="my-4">
           <CustomButton
+            type="button"
             size="sm"
             variant="outlined"
             onClick={() => {
@@ -116,6 +238,11 @@ const AddNewCategoryComponent = ({ categories }) => {
             Add Media
           </CustomButton>
         </div>
+        {formik?.touched?.customFile && formik.errors?.customFile ? (
+          <span className="text-red-600 text-sm p-1">
+            {formik.errors.customFile}
+          </span>
+        ) : null}
 
         <LibraryModal
           file={formik?.values?.customFile}
@@ -155,6 +282,7 @@ const AddNewCategoryComponent = ({ categories }) => {
               onChange={(e) => {
                 formik.setFieldValue("isVisible", e.target.value === "Yes");
               }}
+              type="button"
               label="Yes"
               label_color="white"
               name="isVisible"
@@ -226,7 +354,24 @@ const AddNewCategoryComponent = ({ categories }) => {
         <div className="mt-4">
           <h5 className="text-white">Category Image</h5>
           <div className="flex items-center">
-            <h5 className="mr-6 text-white">No file Selected</h5>
+            {formik.values?.categoryImage ? (
+              <div className="size-[150px] flex items-center justify-center mx-10 my-4 border border-gray-300 p-2 rounded-md relative">
+                <img
+                  src={URL.createObjectURL(formik.values?.categoryImage)}
+                  alt=""
+                  className="object-contain w-full h-full"
+                />
+
+                <div
+                  onClick={() => formik.setFieldValue("categoryImage", null)}
+                  className="absolute text-red-500 top-2 right-2 bg-gray-300 rounded-full p-1 shadow-md cursor-pointer"
+                >
+                  <MdClose size={20} />
+                </div>
+              </div>
+            ) : (
+              <h5 className="mr-6 text-white">No file Selected</h5>
+            )}
 
             <CustomButton
               type="button"
@@ -239,6 +384,11 @@ const AddNewCategoryComponent = ({ categories }) => {
               Add Image
             </CustomButton>
           </div>
+          {formik?.touched?.categoryImage && formik.errors?.categoryImage ? (
+            <span className="text-red-600 text-sm p-1">
+              {formik.errors.categoryImage}
+            </span>
+          ) : null}
 
           <LibraryModal
             file={formik?.values?.categoryImage}
@@ -284,8 +434,8 @@ const AddNewCategoryComponent = ({ categories }) => {
           </div>
         </div>
         <div className="mt-4">
-          <CustomButton type="submit" size="sm">
-            Add New Category
+          <CustomButton disabled={isLoading} type="submit" size="sm">
+            {isLoading ? "Sending ..." : "Add New Category"}
           </CustomButton>
         </div>
       </div>
@@ -306,7 +456,6 @@ export const GroupedSelectBox = ({ options, onChange }) => {
   useEffect(() => {
     onChange?.(level?.id);
   }, [level]);
-
 
   return (
     <ClickAwayListener

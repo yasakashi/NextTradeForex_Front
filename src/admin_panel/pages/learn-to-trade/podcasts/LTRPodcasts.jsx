@@ -76,7 +76,7 @@ const LTRPodcasts = () => {
                       title="Edit"
                       onClick={() => {
                         // navigate(
-                        //   `/admin-panel/lesson/cateogies/edit/${row.original.title}`
+                        //   `/admin-panel/lesson/categories/edit/${row.original.title}`
                         // );
                       }}
                       style={{ padding: 4, border: "none" }}
@@ -94,7 +94,7 @@ const LTRPodcasts = () => {
                       onClick={() => {
                         // navigate(`/learn_to_trade/${row.original.title}`);
                         // navigate(
-                        //   `/admin-panel/lesson/cateogies/${row.original.slug}`
+                        //   `/admin-panel/lesson/categories/${row.original.slug}`
                         // );
                       }}
                       style={{ padding: 4, border: "none" }}

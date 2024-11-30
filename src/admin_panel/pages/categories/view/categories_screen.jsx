@@ -11,13 +11,12 @@ import {
   useGetMainCategoriesByInfoMutation,
   useGetSubCategoriesByInfoMutation,
 } from "../../../../redux/features/categories/categoriesApi";
+import { useFormik } from "formik";
 
 const CategoriesScreen = () => {
   const { categories } = useCategories({ make_id_tree: true });
 
-  const [mainCategoryId, setMainCategoryId] = useState(771);
-
-  
+  const [mainCategory, setMainCategory] = useState({});
 
   const navigate = useNavigate();
   const [open_delete_dialog, set_open_delete_dialog] = useState({
@@ -29,10 +28,10 @@ const CategoriesScreen = () => {
     { data: maincategories, error, isLoading: getCategoriesLoading },
   ] = useGetMainCategoriesByInfoMutation();
 
-  const [
-    getSubCategoriesByInfo,
-    { data: subCategories, isLoading: getSubCategoriesLoading },
-  ] = useGetSubCategoriesByInfoMutation();
+  const [getSubCategoriesByInfo, { data, isLoading: getSubCategoriesLoading }] =
+    useGetSubCategoriesByInfoMutation();
+
+  const subCategories = data || [];
 
   useEffect(() => {
     async function fetchCategories() {
@@ -48,40 +47,22 @@ const CategoriesScreen = () => {
   useEffect(() => {
     async function fetchSubCategories() {
       try {
-        await getSubCategoriesByInfo({
-          parentId: mainCategoryId,
-        }).unwrap();
+        if (mainCategory?.id) {
+          await getSubCategoriesByInfo({
+            parentId: mainCategory?.id || "",
+          }).unwrap();
+        }
       } catch (err) {
         toast.error("Failed to fetch categories: ");
       }
     }
     fetchSubCategories();
-  }, [mainCategoryId]);
+  }, [mainCategory]);
 
   return (
     <div className="w-full h-ful px-8 pt-8">
       <h1 className="font-semibold text-white text-2xl">Categories</h1>
 
-      <div className="w-full md:w-[40%] mt-8 mb-4">
-        <select
-          value={mainCategoryId}
-          onChange={(e) => setMainCategoryId(e.target.value)}
-          className="w-full border border-gray-300 pl-2 py-[6px] rounded-md shadow-sm bg-slate-200 outline-blue-500"
-        >
-          <option disabled>Select Category</option>
-          {maincategories?.length > 0 ? (
-            maincategories?.map((mainCategory, index) => (
-              <option value={mainCategory?.id} key={index}>
-                {mainCategory?.name}
-              </option>
-            ))
-          ) : getCategoriesLoading ? (
-            <option>Loading ...</option>
-          ) : (
-            <option>Categories not found!</option>
-          )}
-        </select>
-      </div>
       <div className="flex flex-col md:flex-row mt-4">
         <div className="w-full md:w-2/5">
           <AddNewCategoryComponent categories={categories} />
@@ -90,9 +71,34 @@ const CategoriesScreen = () => {
           className="w-full md:w-3/5"
           style={{ paddingLeft: 16, height: 800 }}
         >
-          {console.log(subCategories)}
+          <div className="w-full md:w-full mt-8 mb-4">
+            <select
+              value={JSON.stringify(mainCategory)}
+              onChange={(e) => {
+                const selectedCategory = JSON.parse(e.target.value); // Parse the selected object
+                setMainCategory(selectedCategory);
+              }}
+              className="w-full border border-gray-300 pl-2 py-[6px] rounded-md shadow-sm bg-slate-200 outline-blue-500"
+            >
+              <option value="{}" disabled>
+                Select Category
+              </option>
+              {maincategories?.length > 0 ? (
+                maincategories?.map((categoryItem, index) => (
+                  <option value={JSON.stringify(categoryItem)} key={index}>
+                    {categoryItem?.name}
+                  </option>
+                ))
+              ) : getCategoriesLoading ? (
+                <option>Loading ...</option>
+              ) : (
+                <option>Categories not found!</option>
+              )}
+            </select>
+          </div>
+
           <MAterialTable
-            rows={subCategories}
+            rows={[mainCategory, ...subCategories] || []}
             // rows={categories}
             loading={getSubCategoriesLoading}
             columns={[
@@ -131,7 +137,7 @@ const CategoriesScreen = () => {
                           title="Edit"
                           onClick={() => {
                             navigate(
-                              `/admin-panel/lesson/cateogies/edit/${row.original.id}`
+                              `/admin-panel/lesson/categories/edit/${row.original.id}`
                             );
                           }}
                           style={{ padding: 4, border: "none" }}
@@ -151,7 +157,7 @@ const CategoriesScreen = () => {
                               `/learn_to_trade/courses/${row.original.name}`
                             );
                             // navigate(
-                            //   `/admin-panel/lesson/cateogies/${row.original.slug}`
+                            //   `/admin-panel/lesson/categories/${row.original.slug}`
                             // );
                           }}
                           style={{ padding: 4, border: "none" }}

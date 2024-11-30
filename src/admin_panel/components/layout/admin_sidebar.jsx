@@ -29,6 +29,9 @@ import { PiMemberOfBold, PiStrategy, PiWebcamBold } from "react-icons/pi";
 import { CiLock, CiSettings } from "react-icons/ci";
 import { useTheme } from "@mui/material";
 
+import { TbCategory2 } from "react-icons/tb";
+
+
 const AdminSidebar = () => {
   const [showSidebar, setShowSideBar] = useState(false);
   const [open_item, set_open_item] = useState(null);
@@ -209,13 +212,20 @@ const list = [
     sub_categories: [
       { title: "Topics" },
       { title: "Lessons", route: "/learn-to-trade/lessons" },
-      { title: "E-Books" },
+      { title: "E-Books", route: "/learn-to-trade/e-books" },
       { title: "Podcasts", route: "/learn-to-trade/podcasts" },
-      { title: "Webinars" },
+      { title: "Webinars", route: "/learn-to-trade/webinars" },
       { title: "Videos", route: "/learn-to-trade/videos" },
       { title: "Meetings" },
     ],
   },
+
+  {
+    title: "Categories",
+    Icon: TbCategory2,
+    sub_categories: [{ title: "Categories", route: "/lesson/categories" }],
+  },
+
   {
     title: "Bluehost",
     Icon: TiArchive,
@@ -344,46 +354,46 @@ const list = [
       { title: "Reports" },
     ],
   },
-  {
-    title: "PDF Books",
-    Icon: GrOrderedList,
-    sub_categories: [
-      { title: "All Books", route: "/pdf_books/all_books" },
-      { title: "Add New Book" },
-      { title: "Categories" },
-      { title: "Taxonomy Order" },
-    ],
-  },
+  // {
+  //   title: "PDF Books",
+  //   Icon: GrOrderedList,
+  //   sub_categories: [
+  //     { title: "All Books", route: "/pdf_books/all_books" },
+  //     { title: "Add New Book" },
+  //     { title: "Categories" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
   {
     title: "Feedbacks",
     Icon: MdFeedback,
     sub_categories: [{ title: "All Feedbacks" }, { title: "Add New" }],
   },
-  {
-    title: "Videos",
-    Icon: BiVideo,
-    sub_categories: [
-      { title: "All Videos" },
-      { title: "Add New" },
-      { title: "Categories" },
-      { title: "Taxonomy Order" },
-    ],
-  },
+  // {
+  //   title: "Videos",
+  //   Icon: BiVideo,
+  //   sub_categories: [
+  //     { title: "All Videos" },
+  //     { title: "Add New" },
+  //     { title: "Categories" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
   {
     title: "Teem Members",
     Icon: PiMemberOfBold,
     sub_categories: [{ title: "All Team Members" }, { title: "Add New" }],
   },
-  {
-    title: "Webinars",
-    Icon: PiWebcamBold,
-    sub_categories: [
-      { title: "All Webinars" },
-      { title: "Add New" },
-      { title: "Categories" },
-      { title: "Taxonomy Order" },
-    ],
-  },
+  // {
+  //   title: "Webinars",
+  //   Icon: PiWebcamBold,
+  //   sub_categories: [
+  //     { title: "All Webinars" },
+  //     { title: "Add New" },
+  //     { title: "Categories" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
   {
     title: "User Login History",
     Icon: CiLock,
@@ -423,26 +433,26 @@ const list = [
       { title: "Taxonomy Order" },
     ],
   },
-  {
-    title: "Stocks",
-    Icon: CiSettings,
-    sub_categories: [
-      { title: "All Stocks" },
-      { title: "Add New" },
-      { title: "Tags" },
-      { title: "Categories" },
-      { title: "Taxonomy Order" },
-    ],
-  },
-  {
-    title: "Indices",
-    Icon: FaDollarSign,
-    sub_categories: [
-      { title: "All Indices" },
-      { title: "Add New" },
-      { title: "Tags" },
-      { title: "Categories" },
-      { title: "Taxonomy Order" },
-    ],
-  },
+  // {
+  //   title: "Stocks",
+  //   Icon: CiSettings,
+  //   sub_categories: [
+  //     { title: "All Stocks" },
+  //     { title: "Add New" },
+  //     { title: "Tags" },
+  //     { title: "Categories" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
+  // {
+  //   title: "Indices",
+  //   Icon: FaDollarSign,
+  //   sub_categories: [
+  //     { title: "All Indices" },
+  //     { title: "Add New" },
+  //     { title: "Tags" },
+  //     { title: "Categories" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
 ];

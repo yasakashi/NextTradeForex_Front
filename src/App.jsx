@@ -199,7 +199,7 @@ function App({ auth }) {
                 </Route>
                 <Route path="/admin-panel" element={<MainLayout />}>
                   <Route
-                    path="/admin-panel/lesson/cateogies"
+                    path="/admin-panel/lesson/categories"
                     element={<CategoriesScreen />}
                   />
 
