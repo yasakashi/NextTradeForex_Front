@@ -22,12 +22,14 @@ import { courseApi } from "./features/course/courseApii";
 import { commonApi } from "./features/course/commonApi";
 import { marketPulseReducer } from "./features/marketPulse/marketPulseSlice";
 import { loadingReducer } from "./features/loading";
+import { categoriesApi } from "./features/categories/categoriesApi";
 
 const store = configureStore({
   reducer: {
     [courseBuilderApi.reducerPath]: courseBuilderApi.reducer,
     [courseApi.reducerPath]: courseApi.reducer,
     [commonApi.reducerPath]: commonApi.reducer,
+    [categoriesApi.reducerPath]: categoriesApi.reducer,
 
     login: loginReducer,
     auth: registerReducer,
@@ -53,7 +55,8 @@ const store = configureStore({
     getDefaultMiddleware().concat(
       courseBuilderApi.middleware,
       courseApi.middleware,
-      commonApi.middleware
+      commonApi.middleware,
+      categoriesApi.middleware
     ),
 });
 

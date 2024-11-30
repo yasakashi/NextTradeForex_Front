@@ -12,9 +12,12 @@ const MAterialTable = ({
   setSearchCourses,
   loading,
 }) => {
-  const handleGlobalFilterChange = useCallback((value) => {
-    setSearchCourses(value);
-  }, []);
+  const handleGlobalFilterChange = useCallback(
+    (value) => {
+      setSearchCourses(value);
+    },
+    [searchCourses]
+  );
 
   const table = useMaterialReactTable({
     data: rows || [],
