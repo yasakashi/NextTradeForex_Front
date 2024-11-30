@@ -49,7 +49,7 @@ const CategoriesTable = ({ data }: { data: any[] }) => {
                   title="Edit"
                   onClick={() => {
                     navigate(
-                      `/admin-panel/lesson/cateogies/edit/${row.original.name}`
+                      `/admin-panel/lesson/categories/edit/${row.original.name}`
                     );
                   }}
                   style={{ padding: 4, border: "none" }}
@@ -68,7 +68,7 @@ const CategoriesTable = ({ data }: { data: any[] }) => {
                     navigate(`/learn_to_trade/${row.original.name}`);
 
                     // navigate(
-                    //   `/admin-panel/lesson/cateogies/${row.original.slug}`
+                    //   `/admin-panel/lesson/categories/${row.original.slug}`
                     // );
                   }}
                   style={{ padding: 4, border: "none" }}

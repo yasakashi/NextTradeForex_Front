@@ -24,7 +24,7 @@ const NewCourceCard = ({ children, title, set_cource_items, style }) => {
           paddingTop: 4,
         }}
       >
-        <h4 className="text-sm font-bold text-gray-700">{title}</h4>
+        <h4 className="text-sm font-semibold text-gray-700">{title}</h4>
         <div
           style={{
             display: "flex",

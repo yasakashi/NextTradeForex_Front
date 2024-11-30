@@ -192,7 +192,7 @@ const list = [
       { title: "All Lessons" },
       { title: "Add Lesson" },
       { title: "Tags" },
-      { title: "Categories", route: "/lesson/cateogies" },
+      { title: "Categories", route: "/lesson/categories" },
       { title: "Reorder" },
       { title: "Taxonomy Order" },
     ],

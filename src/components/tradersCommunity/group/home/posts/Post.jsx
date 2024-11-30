@@ -79,7 +79,6 @@ const Post = React.forwardRef(({ post, createPostRef }, ref) => {
               data: { parentId: post?.id, communitygroupid: groupId },
             })
           );
-          console.log("==============> comments", response);
           if (response?.payload?.comments) {
             setPostComments(response.payload.comments || []);
           }
