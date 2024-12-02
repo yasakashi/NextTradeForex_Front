@@ -20,7 +20,7 @@ const CourseCategoriesComponent = ({ formik }) => {
   );
 
   useEffect(() => {
-    dispatch(getGroupCategory({ axiosPrivate }));
+    dispatch(getGroupCategory({ axiosPrivate, parentId: 770 }));
   }, []);
   return (
     <NewCourceCard title={"Course Categories"}>

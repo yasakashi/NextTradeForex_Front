@@ -31,7 +31,6 @@ import { useTheme } from "@mui/material";
 
 import { TbCategory2 } from "react-icons/tb";
 
-
 const AdminSidebar = () => {
   const [showSidebar, setShowSideBar] = useState(false);
   const [open_item, set_open_item] = useState(null);
@@ -45,7 +44,7 @@ const AdminSidebar = () => {
     const active_route = `/${route?.[route.length - 2]}/${
       route?.[route.length - 1]
     }`;
-    
+
     const list_index = list.findIndex((item) =>
       item.sub_categories?.some((sub) => sub?.route === active_route)
     );
@@ -53,7 +52,7 @@ const AdminSidebar = () => {
       set_open_item(list_index);
     }
   }, []);
-  
+
   const navigate = useNavigate();
   const [hoveed, set_hoverd] = useState(null);
 
@@ -212,7 +211,7 @@ const list = [
     title: "Learn To Trader",
     Icon: TiPin,
     sub_categories: [
-      { title: "Topics" },
+      { title: "Topics", route: "/learn-to-trade/topics" },
       { title: "Lessons", route: "/learn-to-trade/lessons" },
       { title: "E-Books", route: "/learn-to-trade/e-books" },
       { title: "Podcasts", route: "/learn-to-trade/podcasts" },
@@ -316,7 +315,7 @@ const list = [
       { title: "Indicators" },
       { title: "Forex", route: "/lessons/market-pulse" },
       { title: "Crypto" },
-      { title: "Indices",route: "/lessons/market-pulse/indices" },
+      { title: "Indices", route: "/lessons/market-pulse/indices" },
       { title: "Comodities" },
       { title: "Stocks" },
       { title: "Forex Chart" },
