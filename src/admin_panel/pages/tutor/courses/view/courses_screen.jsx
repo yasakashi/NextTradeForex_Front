@@ -40,12 +40,11 @@ const CoursesScreen = () => {
   const [removeCourse, { isLoading: removeCourseLoading }] =
     useRemoveCourseMutation();
 
-  const {
-    data: { messageData: courseStatus } = { messageData: [] },
-    isLoading: courseStatusLoading,
-  } = useGetCourseStatusListQuery();
+  const { data: { messageData: courseStatus } = { messageData: [] } } =
+    useGetCourseStatusListQuery();
 
-  const [changeCourseStatus] = useChangeCourseStatusMutation();
+  const [changeCourseStatus, { isLoading: changeStatusLoading }] =
+    useChangeCourseStatusMutation();
 
   const modalRef = useRef(null);
 
@@ -57,6 +56,8 @@ const CoursesScreen = () => {
     data: { messageData: courses } = { messageData: [] },
 
     isLoading,
+
+    refetch: refetchCourses,
   } = useGetCoursesQuery({
     data: {
       Id: null,
@@ -76,16 +77,25 @@ const CoursesScreen = () => {
 
     if (removeRes?.data?.messageCode === 200) {
       toast.success("Course removed.");
+      refetchCourses();
       setSearchCourses("");
     }
   };
 
   const changeCourseStatusHandler = async (statusId, id) => {
-    const chagneStatusRes = await changeCourseStatus({
-      data: { Id: id, coursestatusid: statusId },
-    });
+    try {
+      const chagneStatusRes = await changeCourseStatus({
+        data: { Id: id, coursestatusid: statusId },
+      });
 
-    console.log(chagneStatusRes);
+      if (chagneStatusRes?.data?.messageCode === 200) {
+        refetchCourses();
+        toast.success("Status updated.");
+      }
+    } catch (error) {
+      toast.error("Something went wrong! please try again.");
+      console.log(error);
+    }
   };
 
   return (
@@ -123,16 +133,17 @@ const CoursesScreen = () => {
                   {/* // @ts-ignore */}
                   <img src={temp} alt="" style={{ width: 50, height: 30 }} />
                   <div className="flex flex-col ml-3">
-                    <p
+                    <Link
+                      to={`/admin-panel/tutor/Courses/edit-course/${row?.original?.id}`}
                       style={{
                         color: "#2271b1",
                         fontWeight: "bold",
                         marginBottom: 8,
                       }}
-                      className="capitalize"
+                      className="capitalize hover:underline"
                     >
                       {row.original?.courseName}
-                    </p>
+                    </Link>
                     <div className="flex flex-row" style={{ minWidth: 290 }}>
                       {["Topic", "Lesson", "Quiz", "Assignment"].map(
                         (item, i) => {
@@ -196,6 +207,7 @@ const CoursesScreen = () => {
                       height: 40,
                       color: "white",
                     }}
+                    className="uppercase font-semibold"
                   >
                     {String(row.original?.authorname).slice(0, 2)}
                   </p>
@@ -251,7 +263,9 @@ const CoursesScreen = () => {
                         row?.original?.id
                       )
                     }
+                    disabled={changeStatusLoading}
                     className={`
+                      disabled:cursor-not-allowed disabled:opacity-65
                       text-[13px] cursor-pointer w-[130px] rounded-full py-2 px-2 outline-none border
                       ${
                         row?.original?.coursestatusid === 3
@@ -303,13 +317,15 @@ const CoursesScreen = () => {
                     View Course
                   </CustomButton>
 
-                  <div
+                  <button
+                    type="button"
                     onClick={() => {
                       setShowModal((prev) => !prev);
 
                       setActiveRowId(row?.original?.id);
                     }}
-                    className="relative group hover:bg-blue-100 p-[5px] rounded-full transition-colors"
+                    disabled={removeCourseLoading}
+                    className="relative disabled:cursor-not-allowed disabled:opacity-65 group hover:bg-blue-100 p-[5px] rounded-full transition-colors"
                   >
                     <HiDotsVertical
                       className="text-gray-600 group-hover:text-blue-accent group-hover:cursor-pointer transition-colors"
@@ -347,7 +363,7 @@ const CoursesScreen = () => {
                         </ul>
                       </div>
                     ) : null}
-                  </div>
+                  </button>
 
                   {/* <ContainedButtonPrimary
                     onClick={() => {

@@ -87,7 +87,7 @@ const PublishComponent = ({ isLoading }) => {
             type="submit"
             // onClick={onClick}
             disabled={isLoading}
-            className="px-3 py-1 bg-blue-600 rounded-md disabled:cursor-not-allowed outline-none border-none text-white shadow-sm text-sm"
+            className="px-3 py-2 bg-blue-600 rounded-md disabled:cursor-not-allowed outline-none border-none text-white hover:shadow-none text-sm font-semibold shadow-lg"
           >
             {isLoading ? "Sending ..." : "Submit for preview"}
           </button>

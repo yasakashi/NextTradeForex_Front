@@ -21,8 +21,20 @@ import LTREBooks from "../pages/learn-to-trade/e-books/LTREBooks";
 import AddNewEBook from "../pages/learn-to-trade/e-books/AddNewEbook";
 import LTRWebinars from "../pages/learn-to-trade/webinars/LTRWebinars";
 import AddNewWebinar from "../pages/learn-to-trade/webinars/AddNewWebinar";
+import LTRTopics from "../pages/learn-to-trade/topics/LTRTopics";
+import AddNewTopic from "../pages/learn-to-trade/topics/AddNewTopic";
 
 export const admin_panel_router = [
+  // topics
+  {
+    route: "/admin-panel/learn-to-trade/topics",
+    component: <LTRTopics />,
+  },
+  // add new webinar
+  {
+    route: "/admin-panel/learn-to-trade/topics/add-new-topic",
+    component: <AddNewTopic />,
+  },
   // webinars
   {
     route: "/admin-panel/learn-to-trade/webinars",
@@ -92,6 +104,11 @@ export const admin_panel_router = [
   },
   {
     route: "/admin-panel/tutor/Courses/create-new-course",
+    component: <NewCourse page="admin" />,
+  },
+
+  {
+    route: "/admin-panel/tutor/Courses/edit-course/:id",
     component: <NewCourse page="admin" />,
   },
   {

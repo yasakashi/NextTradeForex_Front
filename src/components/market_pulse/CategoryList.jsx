@@ -14,7 +14,7 @@ function CourseLevelType({ categoryId, onCategoryChange }) {
   console.log(groupCategories,getCategoryLoading);
 
   useEffect(() => {
-    dispatch(getGroupCategory({ axiosPrivate, parentId: 895 }));
+    dispatch(getGroupCategory({ axiosPrivate, parentId: 770 }));
   }, []);
 
   useEffect(() => {

@@ -55,7 +55,7 @@ const TagsComponent = ({ formik, name }) => {
         <div className="flex gap-2">
           <input
             name={name}
-            className="border w-[230px] lg:w-[80%] border-gray-300 rounded-md px-3 py-2 lg:py-[6px] outline-blue-400 outline-[1px] text-gray-700 placeholder:text-gray-400 placeholder:text-sm"
+            className="border w-[230px] placeholder:text-sm lg:w-[80%] border-gray-300 rounded-md px-3 py-2 lg:py-[6px] outline-blue-400 outline-[1px] text-gray-700 placeholder:text-gray-400 placeholder:text-sm"
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}

@@ -17,8 +17,7 @@ import CourseCategoriesComponent from "./new_course_components/course_categories
 import CategoriesComponent from "./new_course_components/categories_component";
 
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   courseInitialValues,
   courseValidationSchema,
@@ -26,9 +25,13 @@ import {
 import CustomTextInput from "../../components/ui/CustomTextInput";
 import DraftEditor from "../../admin_panel/components/editor/draft_editor";
 
-import { EditorState } from "draft-js";
-import { useState } from "react";
-import { useAddNewCourseMutation } from "../../redux/features/course/courseApii";
+import { ContentState, convertFromHTML, EditorState } from "draft-js";
+import { useEffect, useState } from "react";
+import {
+  useAddNewCourseMutation,
+  useEditCourseMutation,
+  useGetCoursesQuery,
+} from "../../redux/features/course/courseApii";
 import LibraryModal from "./new_course_components/library_modal";
 import { BiSave } from "react-icons/bi";
 import { CustomButton } from "../../components/ui/CustomButton";
@@ -36,10 +39,14 @@ import CourseAuthor from "./new_course_components/CourseAuthor";
 import toast from "react-hot-toast";
 
 const NewCourse = ({ page }) => {
+  const { id } = useParams();
+
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [openCourseDescFileModal, setOpenCourseDescFileModal] = useState(false);
 
   const [addNewCourse, { isLoading }] = useAddNewCourseMutation();
+  const [editCourse, { isLoading: editCourseLoading }] =
+    useEditCourseMutation();
 
   const navigate = useNavigate();
 
@@ -93,14 +100,24 @@ const NewCourse = ({ page }) => {
       // }
 
       try {
-        const addCourseRes = await addNewCourse({ data: formData });
-        console.log({ addCourseRes });
+        if (id) {
+          formData.append("Id", values?.Id);
+          const editCourseRes = await editCourse({ data: formData });
+          console.log({ editCourseRes });
 
-        if (addCourseRes?.data?.messageCode === 200) {
-          toast.success("Course created successfully.");
-          navigate(
-            `/user-profile/myCourses/new-course/course-builder/${addCourseRes?.data?.messageData}`
-          );
+          if (editCourseRes?.data?.messageCode === 200) {
+            toast.success("Course updated.");
+          }
+        } else {
+          const addCourseRes = await addNewCourse({ data: formData });
+          console.log({ addCourseRes });
+
+          if (addCourseRes?.data?.messageCode === 200) {
+            toast.success("Course created successfully.");
+            navigate(
+              `/user-profile/myCourses/new-course/course-builder/${addCourseRes?.data?.messageData}`
+            );
+          }
         }
       } catch (error) {
         toast.error("Error! please try again.");
@@ -116,13 +133,93 @@ const NewCourse = ({ page }) => {
     setEditorState(editorData.state);
   };
 
+  // handle edit
+
+  const {
+    data: { messageData: courses } = { messageData: [] },
+
+    isLoading: getCourseLoading,
+
+    refetch: refetchCourses,
+  } = useGetCoursesQuery({
+    data: {
+      Id: id,
+      authorId: null,
+      allowQA: null,
+      isPublicCourse: null,
+      difficultyLevelId: null,
+      courseTags: "",
+      courseName: "",
+      pageindex: 1,
+      rowcount: 21,
+    },
+    skip: !id,
+  });
+
+  useEffect(() => {
+    if ((id, courses?.length > 0)) {
+      const course = courses[0] || {};
+      const {
+        courseName,
+        courseDescription,
+        courseFile,
+        excerpt,
+        authorId,
+        maximumStudents,
+        difficultyLevelId,
+        isPublicCourse,
+        allowQA,
+        coursePrice,
+        whatWillILearn,
+        targetedAudience,
+        courseDuration,
+        materialsIncluded,
+        requirementsInstructions,
+        courseIntroVideo,
+        categoryids,
+        courseTags,
+        featuredImage,
+        id,
+      } = course;
+
+      formik.setValues({
+        Id: id,
+        courseName,
+        courseDescription,
+        courseFile,
+        excerpt,
+        authorId,
+        maximumStudents,
+        difficultyLevelId,
+        isPublicCourse,
+        allowQA,
+        coursePrice,
+        whatWillILearn,
+        targetedAudience,
+        courseDuration,
+        materialsIncluded,
+        requirementsInstructions,
+        courseIntroVideo,
+        categoryids,
+        courseTags: courseTags?.split(","),
+        featuredImage,
+      });
+
+      const blocksFromHTML = convertFromHTML(course.courseDescription || "");
+      const contentState = ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks,
+        blocksFromHTML.entityMap
+      );
+      setEditorState(EditorState.createWithContent(contentState));
+    }
+  }, [courses?.length]);
+
   return (
     <div
       className={`w-full top-0 p-0 m-0 ${
         page === "admin" ? "" : "bg-[#f0f0f1]"
       }`}
     >
-      {console.log(formik.errors)}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -252,7 +349,9 @@ const NewCourse = ({ page }) => {
                   <VideoComponent name="courseIntroVideo" formik={formik} />
 
                   <div>
-                    <PublishComponent isLoading={isLoading} />
+                    <PublishComponent
+                      isLoading={id ? editCourseLoading : isLoading}
+                    />
                   </div>
                 </motion.div>
               </AnimatePresence>

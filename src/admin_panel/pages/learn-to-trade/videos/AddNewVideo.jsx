@@ -1,5 +1,4 @@
 import { useFormik } from "formik";
-import Expandable from "../../../../components/Expandable";
 import CustomTextArea from "../../../../components/ui/CustomTextArea";
 import CustomTextInput from "../../../../components/ui/CustomTextInput";
 import NewCourceCard from "../../../../pages/profile/new_course_components/new_cource_card";

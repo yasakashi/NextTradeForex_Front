@@ -46,6 +46,68 @@ const CategoriesComponent = () => {
     return result;
   };
 
+  // useEffect(() => {
+  //   const flatData = flattenData(data);
+
+  //   const filtered = flatData.filter((category) =>
+  //     category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+
+  //   const buildFilteredTree = (nodes, filteredIds, flatData) => {
+  //     return nodes?.reduce((acc, node) => {
+  //       const isNodeIncluded = filteredIds.has(node.id);
+  //       const isParentExpanded = expandedNodes.has(node.id);
+
+  //       // Always include parent nodes if their children match
+  //       const filteredChildren = node.children
+  //         ? buildFilteredTree(node.children, filteredIds, flatData)
+  //         : [];
+
+  //       if (isNodeIncluded || filteredChildren.length > 0) {
+  //         acc.push({
+  //           ...node,
+  //           children: isParentExpanded ? filteredChildren : [],
+  //         });
+  //       }
+  //       return acc;
+  //     }, []);
+  //   };
+
+  //   const filteredIds = new Set(filtered.map((node) => node.id));
+  //   const treeData = buildFilteredTree(data, filteredIds);
+
+  //   // Automatically expand nodes containing the search results
+  //   const findAllParentIds = (nodes) => {
+  //     const parentIds = new Set();
+  //     const visitedNodes = new Set(); // Track visited nodes to avoid cycles
+
+  //     const findParent = (node) => {
+  //       if (visitedNodes.has(node.id)) return; // Stop if the node has already been visited
+  //       visitedNodes.add(node.id);
+
+  //       if (node.parentId) {
+  //         parentIds.add(node.parentId);
+  //         const parentNode = flatData.find((n) => n.id === node.parentId);
+  //         if (parentNode) findParent(parentNode); // Continue to the parent
+  //       }
+  //     };
+
+  //     nodes?.forEach(findParent);
+  //     return parentIds;
+  //   };
+
+  //   const parentIdsToExpand = findAllParentIds(filtered);
+
+  //   // Update expanded nodes only if there's a search term
+  //   if (searchTerm) {
+  //     setExpandedNodes(parentIdsToExpand);
+  //   } else {
+  //     setExpandedNodes(new Set()); // Collapse all when search term is cleared
+  //   }
+
+  //   setFilteredTreeData(treeData);
+  // }, [searchTerm, data]);
+
   useEffect(() => {
     const flatData = flattenData(data);
 
@@ -53,21 +115,26 @@ const CategoriesComponent = () => {
       category.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const buildFilteredTree = (nodes, filteredIds, flatData) => {
+    const buildFilteredTree = (nodes, filteredIds) => {
       return nodes?.reduce((acc, node) => {
-        const isNodeIncluded = filteredIds.has(node.id);
-        const isParentExpanded = expandedNodes.has(node.id);
-
-        // Always include parent nodes if their children match
-        const filteredChildren = node.children
-          ? buildFilteredTree(node.children, filteredIds, flatData)
-          : [];
-
-        if (isNodeIncluded || filteredChildren.length > 0) {
+        if (filteredIds.has(node.id)) {
           acc.push({
             ...node,
-            children: isParentExpanded ? filteredChildren : [],
+            children: node.children
+              ? buildFilteredTree(node.children, filteredIds)
+              : [],
           });
+        } else if (node.children) {
+          const filteredChildren = buildFilteredTree(
+            node.children,
+            filteredIds
+          );
+          if (filteredChildren.length > 0) {
+            acc.push({
+              ...node,
+              children: filteredChildren,
+            });
+          }
         }
         return acc;
       }, []);
@@ -76,38 +143,35 @@ const CategoriesComponent = () => {
     const filteredIds = new Set(filtered.map((node) => node.id));
     const treeData = buildFilteredTree(data, filteredIds);
 
-    // Automatically expand nodes containing the search results
     const findAllParentIds = (nodes) => {
       const parentIds = new Set();
-      const visitedNodes = new Set(); // Track visited nodes to avoid cycles
+      const visited = new Set(); // Track visited nodes to prevent circular references
 
-      const findParent = (node) => {
-        if (visitedNodes.has(node.id)) return; // Stop if the node has already been visited
-        visitedNodes.add(node.id);
+      const findParent = (node, depth = 0) => {
+        if (depth > 100 || visited.has(node.id)) return; // Limit recursion depth and prevent revisiting nodes
 
+        visited.add(node.id);
         if (node.parentId) {
           parentIds.add(node.parentId);
           const parentNode = flatData.find((n) => n.id === node.parentId);
-          if (parentNode) findParent(parentNode); // Continue to the parent
+          if (parentNode) findParent(parentNode, depth + 1); // Increase depth with each recursive call
         }
       };
 
-      nodes?.forEach(findParent);
+      nodes.forEach(findParent);
       return parentIds;
     };
 
     const parentIdsToExpand = findAllParentIds(filtered);
 
-    // Update expanded nodes only if there's a search term
     if (searchTerm) {
       setExpandedNodes(parentIdsToExpand);
     } else {
-      setExpandedNodes(new Set()); // Collapse all when search term is cleared
+      setExpandedNodes(new Set());
     }
 
     setFilteredTreeData(treeData);
   }, [searchTerm, data]);
-
   const handleSearchBoxClick = (e) => {
     e.stopPropagation();
     setIsVisible(true);
@@ -168,7 +232,7 @@ const CategoriesComponent = () => {
           />
         </div>
         <div
-          className="bg-gray-200"
+          className="bg-gray-200 overflow-x-hidden overflow-y-scroll"
           style={{
             width: "100%",
             border: "1px solid #000",
@@ -318,14 +382,17 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
       className="px-3 select-none"
       style={{ marginLeft: node.parentId ? "20px" : "0" }}
     >
-      <label className="flex items-center gap-2 cursor-pointer">
+      <label className="flex items-center gap-2">
         {hasChildren ? (
           <button
             type="button"
-            onClick={() => onToggle(node.id)}
-            className="mr-2"
+            onClick={() => {
+              console.log("clicked");
+              onToggle(node.id);
+            }}
+            className="mr-2 text-blue-accent cursor-pointer"
           >
-            {isOpen ? <FaMinus size={12} /> : <FaPlus size={12} />}
+            {isOpen ? <FaMinus size={14} /> : <FaPlus size={14} />}
           </button>
         ) : (
           <span className="w-4" /> // Placeholder to align tree nodes
@@ -334,9 +401,10 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
           type="checkbox"
           checked={isSelected}
           onChange={() => onSelect(node)}
+          className="cursor-pointer"
         />
         <span
-          className={`block px-2 py-1 w-full ${
+          className={`block px-2 py-1 w-full cursor-pointer ${
             isSelected ? "font-bold text-gray-800" : "text-gray-600"
           }`}
         >

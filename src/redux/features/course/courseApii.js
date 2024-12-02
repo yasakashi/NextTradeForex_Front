@@ -25,6 +25,14 @@ export const courseApi = createApi({
       }),
     }),
 
+    editCourse: builder.mutation({
+      query: ({ data }) => ({
+        url: "/coursebuilder/updatecourse",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     removeCourse: builder.mutation({
       query: ({ data }) => ({
         url: "/coursebuilder/deletecourse",
@@ -95,5 +103,6 @@ export const {
   useGetAuthorsListQuery,
   useRemoveCourseMutation,
   useChangeCourseStatusMutation,
-  useGetCourseMeetingsQuery
+  useGetCourseMeetingsQuery,
+  useEditCourseMutation
 } = courseApi;
