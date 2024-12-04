@@ -10,16 +10,31 @@ import CategoriesComponent from "../../../../pages/profile/new_course_components
 import CourseAuthor from "../../../../pages/profile/new_course_components/CourseAuthor";
 import TagsComponent from "../../../../pages/profile/new_course_components/tags_component";
 import LTRCategory from "../../../components/LTRCategory";
+import LessonTextOnly from "./LessonTextOnly";
+import LessonImageOnly from "./LessonImageOnly";
+import LessonImageWithText from "./LessonImageWithText";
+import LessonGalleryVideo from "./LessonGalleryVideo";
+import LessonYoutubeVideo from "./LessonYoutubeVideo";
+import LessonVideoFromAnyOtherSources from "./LessonVideoFromAnyOtherSources";
+import LessonPdfDocument from "./LessonPdfDocument";
+import LessonReadOnlyPdf from "./LessonReadOnlyPdf";
+import LessonTable from "./LessonTable";
+import LessonWidgetScript from "./LessonWidgetScript";
+import LessonAudioBook from "./LessonAudioBook";
 
 const dropdownOptions = [
   { label: "Text Only", value: "TextOnly" },
   { label: "Image Only", value: "ImageOnly" },
-  { label: "Image with File", value: "ImageWithFile" },
+  { label: "Image with File", value: "ImageWithText" },
   { label: "Gallery Video", value: "GalleryVideo" },
   { label: "YouTube Video", value: "YoutubeVideo" },
   { label: "Other Video Source", value: "OtherVideo" },
   { label: "PDF Document", value: "PdfDocument" },
   { label: "Read Only PDF", value: "ReadOnlyPdf" },
+  { label: "Table", value: "Table" },
+  { label: "Widget Script", value: "WidgetScript" },
+  { label: "Images", value: "Images" },
+  { label: "Audio Book", value: "Audio Book" },
 ];
 
 const AddNewLesson = () => {
@@ -60,21 +75,22 @@ const AddNewLesson = () => {
   const getefaultComponentValeus = (type) => {
     switch (type) {
       case "TextOnly":
-        return { description: "", file: null };
+        return { type, description: "", file: null };
       case "ImageOnly":
-        return { imageFile: null };
-      case "ImageWithFile":
-        return { imageFile: null, text: "", file: null };
+        return { type, imageFile: null };
+      case "ImageWithText":
+        return { type, imageFile: null, text: "", file: null };
       case "GalleryVideo":
-        return { videoFile: null };
+        return { type, videoFile: null };
       case "YoutubeVideo":
-        return { videoId: "" };
+        return { type, videoId: "" };
       case "OtherVideo":
-        return { videoId: "" };
+        return { type, videoId: "" };
       case "PdfDocument":
-        return { pdfShortcodeId: "" };
+        return { type, pdfShortcodeId: "" };
       case "ReadOnlyPdf":
         return {
+          type,
           pdfTitle: "",
           pdfShortCodeId: "",
           authorId: "",
@@ -115,7 +131,7 @@ const AddNewLesson = () => {
                   {/* Trigger Button */}
                   <span
                     onClick={() => setDropdownVisible(!dropdownVisible)}
-                    className="bg-blue-accent w-full text-nowrap text-sm text-white px-4 py-2 rounded-md cursor-pointer"
+                    className="bg-blue-accent w-full text-nowrap text-[13px] text-white px-3 py-[6px] border border-[#2271b1] rounded-[3px] cursor-pointer font-medium"
                   >
                     Add lesson component
                   </span>
@@ -143,54 +159,40 @@ const AddNewLesson = () => {
               {/* content */}
 
               {/* <LessonTextOnly formik={formik} /> */}
+              {/* <LessonTextOnly formik={formik} />
+              
+             
+           
+            
+            
+          
+         
+              <LessonTable formik={formik} />
+              <LessonWidgetScript formik={formik} />
+              <LessonAudioBook formik={formik} /> */}
 
               <div>
-                {formik.values.components.map((comp, index) => {
-                  const type = Object.keys(comp)[0]; // Get the type from component object
-
-                  return (
-                    <div key={index} className="mb-4">
-                      <h4 className="font-medium text-gray-700">{type}</h4>
-
-                      {/* Render fields dynamically */}
-                      {type === "TextOnly" && (
-                        <div>
-                          <CustomTextArea
-                            name={`components[${index}].description`}
-                            value={formik.values.components[index].description}
-                            onChange={formik.handleChange}
-                            placeholder="Enter text description"
-                          />
-                          <input
-                            type="file"
-                            name={`components[${index}].file`}
-                            onChange={(e) =>
-                              formik.setFieldValue(
-                                `components[${index}].file`,
-                                e.target.files[0]
-                              )
-                            }
-                          />
-                        </div>
-                      )}
-
-                      {type === "ImageOnly" && (
-                        <input
-                          type="file"
-                          name={`components[${index}].imageFile`}
-                          onChange={(e) =>
-                            formik.setFieldValue(
-                              `components[${index}].imageFile`,
-                              e.target.files[0]
-                            )
-                          }
-                        />
-                      )}
-
-                      {/* Add other cases for different component types */}
-                    </div>
-                  );
-                })}
+                {formik.values.components.map((comp, index) => (
+                  <div key={index} className="mb-4">
+                    {comp?.type === "TextOnly" ? (
+                      <LessonTextOnly formik={formik} />
+                    ) : comp?.type === "ImageOnly" ? (
+                      <LessonImageWithText formik={formik} />
+                    ) : comp?.type === "ImageWithText" ? (
+                      <LessonImageWithText formik={formik} />
+                    ) : comp?.type === "GalleryVideo" ? (
+                      <LessonGalleryVideo formik={formik} />
+                    ) : comp?.type === "YoutubeVideo" ? (
+                      <LessonYoutubeVideo formik={formik} />
+                    ) : comp?.type === "OtherVideo" ? (
+                      <LessonVideoFromAnyOtherSources formik={formik} />
+                    ) : comp?.type === "PdfDocument" ? (
+                      <LessonPdfDocument formik={formik} />
+                    ) : comp?.type === "ReadOnlyPdf" ? (
+                      <LessonReadOnlyPdf formik={formik} />
+                    ) : null}
+                  </div>
+                ))}
               </div>
 
               {/* private note */}
