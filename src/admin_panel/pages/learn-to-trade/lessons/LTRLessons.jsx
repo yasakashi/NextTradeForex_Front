@@ -31,7 +31,7 @@ const LTRLessons = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Videos</h1>
+      <h1 className="font-semibold text-2xl text-white mb-4">Lessons</h1>
 
       <div>
         <CustomButton
@@ -40,6 +40,7 @@ const LTRLessons = () => {
           }
           className=" mb-10 mt-6"
           variant="outlined"
+          size="sm"
         >
           Add New Lesson
         </CustomButton>

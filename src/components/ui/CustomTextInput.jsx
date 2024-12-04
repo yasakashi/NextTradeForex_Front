@@ -21,7 +21,7 @@ const CustomTextInput = ({
         onBlur={onBlur}
         placeholder={placeholder}
         className={classNames(
-          "w-full border border-gray-300 px-4 py-2 outline-blue-500 rounded-lg text-sm placeholder:text-gray-400",
+          "w-full border border-gray-300 px-4 py-2 outline-blue-500 rounded-md text-sm placeholder:text-gray-400",
           className
         )}
         {...props}

@@ -7,7 +7,11 @@ const NewCourceCard = ({ children, title, set_cource_items, style }) => {
   const [is_open, set_is_open] = useState(true);
   return (
     <div
-      style={{ ...style, overflow: "hidden", border: "1px solid black" }}
+      style={{
+        ...style,
+        overflow: "hidden",
+        border: "1px solid #ccd0d4",
+      }}
       className="custom_card"
     >
       <div
@@ -24,7 +28,7 @@ const NewCourceCard = ({ children, title, set_cource_items, style }) => {
           paddingTop: 4,
         }}
       >
-        <h4 className="text-sm font-semibold text-gray-700">{title}</h4>
+        <h4 className="text-sm font-medium text-gray-[#444]">{title}</h4>
         <div
           style={{
             display: "flex",
