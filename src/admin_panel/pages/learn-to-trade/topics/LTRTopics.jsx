@@ -31,7 +31,7 @@ const LTRTopics = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Videos</h1>
+      <h1 className="font-semibold text-2xl text-white mb-4">Topics</h1>
 
       <div>
         <CustomButton
@@ -40,6 +40,7 @@ const LTRTopics = () => {
           }
           className=" mb-10 mt-6"
           variant="outlined"
+          size="sm"
         >
           Add New Topic
         </CustomButton>
@@ -51,15 +52,15 @@ const LTRTopics = () => {
         rows={lessons}
         columns={[
           {
-            header: "Title",
+            header: "Topics",
             accessorKey: "title",
             Cell: ({ row, table }) => {
               return (
                 <div className="flex flex-col justify-center items-start w-48">
                   <p className="capitalize text-[#2271b1] font-bold">
-                    {row.original?.title}
+                    Gold Trading bot
                   </p>
-                  <div className="flex items-center">
+                  <div className="flex items-center justify-between">
                     {row.id === open_delete_dialog?.row?.id && (
                       <DeleteMenuModal
                         disabled={false}
@@ -87,7 +88,7 @@ const LTRTopics = () => {
                         //   `/admin-panel/lesson/categories/edit/${row.original.title}`
                         // );
                       }}
-                      style={{ padding: 4, border: "none" }}
+                      style={{ padding: 0, border: "none" }}
                     />
 
                     <BorderedButtonPrimary
@@ -95,7 +96,7 @@ const LTRTopics = () => {
                       onClick={() => {
                         set_open_delete_dialog({ open: true, row });
                       }}
-                      style={{ color: "red", padding: 4, border: "none" }}
+                      style={{ color: "red", padding: 0, border: "none" }}
                     />
                     <BorderedButtonPrimary
                       title="View"
@@ -105,7 +106,7 @@ const LTRTopics = () => {
                         //   `/admin-panel/lesson/categories/${row.original.slug}`
                         // );
                       }}
-                      style={{ padding: 4, border: "none" }}
+                      style={{ padding: 0, border: "none" }}
                     />
                   </div>
                 </div>
@@ -113,18 +114,15 @@ const LTRTopics = () => {
             },
           },
           {
-            header: "Date",
+            header: "Forum",
             Cell: ({ row }) => {
               return (
-                <div className="flex flex-col text-[#50575e]">
-                  <p>Published</p>
-                  <p>{new Date().toLocaleString()}</p>
-                </div>
+                <div className="flex flex-col text-[#50575e]">Popular</div>
               );
             },
           },
           {
-            header: "Category",
+            header: "Replies",
 
             Cell: ({ row }) => {
               return (
@@ -132,64 +130,41 @@ const LTRTopics = () => {
                   className="text-blue-800 cursor-pointer"
                   style={{ color: "#2271b1" }}
                 >
-                  {row?.original?.category}
+                  0
                 </p>
               );
             },
           },
 
           {
-            header: "Is Free",
+            header: "Voices",
             enableEditing: false,
 
             Cell: ({ row }) => {
-              return (
-                <div className="flex">
-                  <CustomRadioButton label="Yes" checked={false} />
-                  <span className="w-2"></span>
-                  <CustomRadioButton label="No" />
-                </div>
-              );
+              return <div className="flex">1</div>;
             },
           },
           {
-            header: "Is Visible",
+            header: "Author",
             enableEditing: false,
             Cell: ({ row }) => {
-              return (
-                <div className="flex">
-                  <CustomRadioButton label="Yes" checked={false} />
-                  <span className="w-2"></span>
-                  <CustomRadioButton label="No" />
-                </div>
-              );
+              return <div className="flex text-sm text-gray-700">NextBit</div>;
             },
           },
           {
-            header: "Lesson Category",
+            header: "Created",
             enableEditing: false,
 
             Cell: ({ row }) => {
-              return (
-                <div className="flex flex-col">
-                  <CustomRadioButton label="All" checked={false} />
-                  <CustomRadioButton label="Newbie" checked={false} />
-                  <CustomRadioButton label="Intermidiate" checked={false} />
-                  <CustomRadioButton label="Advanced" checked={false} />
-                </div>
-              );
+              return <div className="flex flex-col"></div>;
             },
           },
           {
-            header: "Shortcode ",
+            header: "Last Post ",
             enableEditing: false,
             accessorKey: "isVisible",
             Cell: ({ row }) => {
-              return (
-                <code className="text- cursor-pointer text-[#50575e] w-[100px] bg-[#00000012] break-words">
-                  {row?.original?.shortCode}
-                </code>
-              );
+              return <div>a year ago</div>;
             },
           },
         ]}

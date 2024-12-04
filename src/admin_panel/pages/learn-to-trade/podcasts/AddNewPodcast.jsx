@@ -10,6 +10,7 @@ import ExcerptComponent from "../../../../pages/profile/new_course_components/ex
 import PublishComponent from "../../../../pages/profile/new_course_components/publish_component";
 import FeaturedImageComponent from "../../../../pages/profile/new_course_components/featured_image_component";
 import { MdClose } from "react-icons/md";
+import CategoriesComponent from "../../../../pages/profile/new_course_components/categories_component";
 
 const AddNewPodcast = () => {
   const [openAudioFile, setOPenAudioFile] = useState(false);
@@ -189,9 +190,7 @@ const AddNewPodcast = () => {
           </div>
 
           {/* categories */}
-          <NewCourceCard title="Categories">
-            <div className="p-4">categories</div>
-          </NewCourceCard>
+          <CategoriesComponent />
 
           <div className="lg:hidden space-y-4">
             <PublishComponent isLoading={isLoading} />

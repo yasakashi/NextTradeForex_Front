@@ -6,7 +6,7 @@ import DraftEditor from "../../../components/editor/draft_editor";
 import { useState } from "react";
 import { EditorState } from "draft-js";
 
-const LessonTextOnly = ({ formik }) => {
+const LessonImageWithText = ({ formik }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [openLessonFile, setOpenLessonFile] = useState(false);
 
@@ -17,8 +17,33 @@ const LessonTextOnly = ({ formik }) => {
     setEditorState(editorData.state);
   };
   return (
-    <NewCourceCard title="Text Only">
-      <div className="w-full pt-2 pl-2">
+    <NewCourceCard title="Image With Text">
+      <div className="w-full p-4">
+        <h5 className="font-medium text-[14px] text-gray-700 capitalize">
+          Image
+        </h5>
+        <div className="mb-8 flex items-center gap-4 relative border-b border-b-gray-300 pb-8">
+          <p className="text-[13px] text-gray-700">No image selected</p>
+
+          <CustomButton
+            onClick={() => setOpenLessonFile(true)}
+            size="sm"
+            variant="outlined"
+            type="button"
+          >
+            Add Image
+          </CustomButton>
+
+          {formik.errors?.lessonFile && formik.touched?.lessonFile ? (
+            <div className="absolute bg-red-600 max-w-[300px] bottom-[110%] left-0 rounded-lg p-2 text-white font-semibold text-sm">
+              {formik.errors?.lessonFile}
+            </div>
+          ) : null}
+        </div>
+
+        <h5 className="font-medium pb-2 text-[14px] text-gray-700 capitalize">
+          Text
+        </h5>
         <div className="mb-2 flex relative">
           <CustomButton
             onClick={() => setOpenLessonFile(true)}
@@ -68,4 +93,4 @@ const LessonTextOnly = ({ formik }) => {
   );
 };
 
-export default LessonTextOnly;
+export default LessonImageWithText;
