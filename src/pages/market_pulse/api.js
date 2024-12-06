@@ -129,3 +129,56 @@ export const getIndiceRelatedContent = async (id) => {
     throw new Error(`${error}`);
   }
 };
+
+
+
+export const getCommodityItem = async ({ categoryId, id }) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getcomodityitems',
+      {
+        categoryid: categoryId,
+        id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+export const getCommoditiesCurrencies = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/comodity/getcurrencies',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+
+export const getCommodityRelatedContent = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getcomodityforummessages',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    console.log('error daram');
+
+    throw new Error(`${error}`);
+  }
+};
