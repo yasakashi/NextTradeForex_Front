@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { getGroupCategory } from "../../redux/features/groupSlice";
-import TreeChildCategory from "../TreeChildCategory";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { getGroupCategory } from '../../redux/features/groupSlice';
+import TreeChildCategory from '../TreeChildCategory';
 
 function CourseLevelType({ categoryId, onCategoryChange }) {
   const [category, setCategory] = useState();
@@ -10,8 +10,9 @@ function CourseLevelType({ categoryId, onCategoryChange }) {
 
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
-  const { groupCategories, getCategoryLoading } = useSelector((state) => state.group);
-  console.log(groupCategories,getCategoryLoading);
+  const { groupCategories, getCategoryLoading } = useSelector(
+    (state) => state.group
+  );
 
   useEffect(() => {
     dispatch(getGroupCategory({ axiosPrivate, parentId: 895 }));

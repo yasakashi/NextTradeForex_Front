@@ -22,7 +22,6 @@ function AddIndice() {
   const [title, setTitle] = useState(data?.coursetitle || '');
   const [excerpt, setExcerpt] = useState(data?.excerpt || '');
   const [privateNote, setPrivateNote] = useState(data?.privatenotes || '');
-
   const [currencyData, setCurrencyData] = useState({});
   const [fundamentalData, setFundamentalData] = useState({});
   const [categoryid, setCategoryId] = useState(0);
