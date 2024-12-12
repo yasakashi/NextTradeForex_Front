@@ -73,7 +73,7 @@ function Commodity() {
   useEffect(() => {
     // Only fetch subcategories if a top category is selected
     if (selectedTopCategory) {
-      if (selectedTopCategory != 1175) {
+      if (selectedTopCategory != 1086) {
         fetchSubCategories();
       }
     } else {
@@ -107,7 +107,7 @@ function Commodity() {
             placeholder="Select Top Category"
           />
           {/* Subcategory Select Input - Only shows when a top category is selected */}
-          {selectedTopCategory && selectedTopCategory != 1175 ? (
+          {selectedTopCategory && selectedTopCategory != 1086 ? (
             <SelectInput
               options={subCategories}
               value={selectedSubCategory}
@@ -117,7 +117,7 @@ function Commodity() {
           ) : null}
           {selectedTopCategory &&
             selectedSubCategory &&
-            selectedTopCategory != 1175 &&
+            selectedTopCategory != 1086 &&
             selectedSubCategory != 1194 && (
               <SelectInput
                 options={secondCategory}

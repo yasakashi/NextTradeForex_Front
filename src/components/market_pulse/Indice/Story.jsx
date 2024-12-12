@@ -20,7 +20,6 @@ import ListedExchange from './ListedExchanges';
 export default function IndicesStory({
   selectedTopCategory,
   selectedSubCategory,
-  setSecondCategory,
   selectedSecondCategory,
 }) {
   const [currencies, setCurrencies] = useState([]);

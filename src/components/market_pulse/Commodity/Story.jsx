@@ -16,7 +16,11 @@ import {
 import SearchBox from '../Searchbox';
 import LoadingSpinner from '../../Loading';
 
-export default function CommodityStory({ selectedSubCategory }) {
+export default function CommodityStory({
+  selectedTopCategory,
+  selectedSubCategory,
+  selectedSecondCategory,
+}) {
   const [currencies, setCurrencies] = useState([]);
   const [data, setData] = useState(null);
   const [currencyId, setCurrencyId] = useState(null);
@@ -68,6 +72,12 @@ export default function CommodityStory({ selectedSubCategory }) {
   };
 
   useEffect(() => {
+    console.log(selectedTopCategory);
+    
+    if (selectedTopCategory == 1086) {
+      fetchCommodityData(1086);
+    }
+
     getCurrencies();
     getRelatedSources(selectedSubCategory);
   }, [selectedSubCategory]);
@@ -80,8 +90,13 @@ export default function CommodityStory({ selectedSubCategory }) {
 
   useEffect(() => {
     setData(null);
-    fetchCommodityData();
+    fetchCommodityData(currencyId);
   }, [currencyId]);
+
+  useEffect(() => {
+    setData(null);
+    fetchCommodityData(selectedSecondCategory);
+  }, [selectedSecondCategory]);
 
   return (
     <div className="w-4/5 flex flex-col mx-auto mt-[10rem] gap-y-8">
@@ -187,10 +202,10 @@ export default function CommodityStory({ selectedSubCategory }) {
           <h3 className="text-link-water text-3xl font-extrabold mt-5">
             Related Resources
           </h3>
-          {data.pdfSectionlist.map((pdf) => (
+          {data.fundamentalandtechnicaltabsection.comoditiespdfsectionlist.map((pdf) => (
             <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />
           ))}
-          {data.urlSectionlist.map((url) => (
+          {data.fundamentalandtechnicaltabsection.comoditiesurlsectionlist.map((url) => (
             <RelatedRecourses key={url?.id} data={url} tag="URL" />
           ))}
 
