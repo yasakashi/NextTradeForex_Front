@@ -81,7 +81,7 @@ function CommodityList() {
           className="bg-white rounded-md px-[12px] py-[7px]"
           onClick={() => dispatch(clearForexData())}
         >
-          <Link to="/admin-panel/lessons/market-pulse/create">New</Link>
+          <Link to="/admin-panel/lessons/market-pulse/commodities/add">New</Link>
         </button>
       </div>
       <MAterialTable

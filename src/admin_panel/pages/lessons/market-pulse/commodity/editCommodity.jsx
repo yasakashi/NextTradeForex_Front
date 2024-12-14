@@ -98,17 +98,6 @@ function CommodityDetails() {
           </div>
         </Expandable>
 
-        <Expandable title="Private Notes">
-          <div className="rounded-sm bg-white p-[30px]">
-            <CustomTextField
-              value={privateNote}
-              onChange={(e) => setPrivateNote(e.target.value)}
-              helper_text="Private Notes"
-              helper_text_up_position
-            />
-          </div>
-        </Expandable>
-
         <Expandable title="Excerpt">
           <div className="rounded-sm bg-white p-[30px]">
             <CustomTextField

@@ -11,6 +11,9 @@ import CourseBuilderPage from "../../pages/profile/new_course_components/CourseB
 import CourseMeetingAndPdf from '../../pages/profile/new_course_components/CourseMeetingAndPdf'
 import IndicesList from "../pages/lessons/market-pulse/indice/indiceList";
 import AddIndice from "../pages/lessons/market-pulse/indice/newIndice";
+import CommodityList from "../pages/lessons/market-pulse/commodity/commoditiesList";
+import AddCommodity from "../pages/lessons/market-pulse/commodity/newCommodity";
+import CommodityDetails from "../pages/lessons/market-pulse/commodity/editCommodity";
 
 export const admin_panel_router = [
   // { route: "/admin-panel/lesson/cateogies", component: <CategoriesScreen /> },
@@ -65,5 +68,17 @@ export const admin_panel_router = [
   {
     route: "/admin-panel/lessons/market-pulse/indices/:id",
     component: <AddIndice />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/commodities",
+    component: <CommodityList />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/commodities/:id",
+    component: <CommodityDetails />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/commodities/add",
+    component: <AddCommodity />,
   },
 ];

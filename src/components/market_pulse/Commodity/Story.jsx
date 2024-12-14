@@ -27,8 +27,8 @@ export default function CommodityStory({
   const [relatedContent, setRelatedContent] = useState();
   const [query, setQuery] = useState('');
   const [currenciesLoading, setCurrenciesLoading] = useState(false);
-  const [forexItemsLoading, setForexItemsLoading] = useState(false);
-
+  const [forexItemsLoading, setCommodityItemsLoading] = useState(false);
+  const [widgets, setWidgets] = useState([]);
   const getRelatedSources = async (id) => {
     try {
       if (id) {
@@ -42,9 +42,9 @@ export default function CommodityStory({
   const getCurrencies = async () => {
     setCurrencies([]);
     try {
-      if (selectedSubCategory) {
+      if (selectedTopCategory || selectedSubCategory) {
         setCurrenciesLoading(true);
-        setForexItemsLoading(true);
+        setCommodityItemsLoading(true);
         const res = await getCommoditiesCurrencies(selectedSubCategory);
         setCurrencies(res.messageData);
         setCurrenciesLoading(false);
@@ -57,13 +57,15 @@ export default function CommodityStory({
   const fetchCommodityData = async (id) => {
     try {
       if (id) {
-        setForexItemsLoading(true);
+        setCommodityItemsLoading(true);
         const res = await getCommodityItem({
           categoryId: id,
           id: null,
         });
-        setForexItemsLoading(false);
-        setData(res.messageData[0]);
+        console.log(res.messageData);
+        setCommodityItemsLoading(false);
+        setData(res.messageData[0].comodities[0]);
+        setWidgets(res.messageData[0].fundamentalandtechnicaltabsection);
       }
     } catch (error) {
       console.error('Failed to fetch commodity item:', error);
@@ -73,7 +75,7 @@ export default function CommodityStory({
 
   useEffect(() => {
     console.log(selectedTopCategory);
-    
+
     if (selectedTopCategory == 1086) {
       fetchCommodityData(1086);
     }
@@ -111,7 +113,7 @@ export default function CommodityStory({
           {data ? (
             <>
               <p className="text-gold-light_400 text-5xl font-bold">
-                {data.coursetitle}
+                {data.maintitle}
               </p>
               <div className="grid grid-cols-2 gap-4">
                 {data.flexibleBlocklist &&
@@ -173,14 +175,16 @@ export default function CommodityStory({
         <>
           <div className="grid grid-cols-2">
             <CountryBox
-              title={data.firstcountryheading || ''}
-              data={data.firstCountryDatalist[0] || {}}
+              title={data?.firstcontryheading || ''}
+              data={data?.comoditiesfirstcountrydatacountriesdatalist[0] || {}}
             />
             <div className="flex gap-10">
               <div className="h-auto w-px bg-gold-light_400 mx-4"></div>
               <CountryBox
-                title={data.secondcountryheading || ''}
-                data={data.secondCountryDatalist[0] || {}}
+                title={data.secondcontryheading || ''}
+                data={
+                  data.comoditiessecondcountrydatacountriesdatalist[0] || {}
+                }
               />
             </div>
           </div>
@@ -189,23 +193,23 @@ export default function CommodityStory({
             {data ? (
               <FundamentalSammary
                 heading="Fundamental Summary"
-                tabs={data.fundamentalNewsSectionlist}
+                tabs={widgets?.fundamentalnewssections}
               />
             ) : null}
             {data ? (
               <TechnicalSammary
                 heading="Technical Summary"
-                tabs={data.technicalTabslist}
+                tabs={widgets?.technicaltabs}
               />
             ) : null}
           </div>
           <h3 className="text-link-water text-3xl font-extrabold mt-5">
             Related Resources
           </h3>
-          {data.fundamentalandtechnicaltabsection.comoditiespdfsectionlist.map((pdf) => (
+          {widgets.pdfsectionlist.map((pdf) => (
             <RelatedRecourses key={pdf?.id} data={pdf} tag="PDF" />
           ))}
-          {data.fundamentalandtechnicaltabsection.comoditiesurlsectionlist.map((url) => (
+          {widgets.urlsectionlist.map((url) => (
             <RelatedRecourses key={url?.id} data={url} tag="URL" />
           ))}
 

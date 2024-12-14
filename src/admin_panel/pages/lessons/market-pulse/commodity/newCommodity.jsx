@@ -15,7 +15,7 @@ import {
   toggle_loading,
 } from '../../../../../redux/features/generalSlice';
 
-function CommodityDetails() {
+function AddCommodity() {
   const dispatch = useDispatch();
   const data = useSelector(selectCommodityData);
   const [title, setTitle] = useState(data?.coursetitle || '');
@@ -39,15 +39,18 @@ function CommodityDetails() {
 
     const body = {
       coursetitle: title,
-      excerpt,
-      privateNote,
       categoryid,
       author,
       courseleveltypeId,
       isVisible,
-      ...currencyData,
-      ...fundamentalData,
-      NewsMainContentlist: [{ maintitle: 'w2', script: 'w2' }],
+      comodities: [
+        {
+          ...currencyData,
+        },
+      ],
+      fundamentalandtechnicaltabsection: {
+        ...fundamentalData,
+      },
     };
 
     try {
@@ -64,15 +67,6 @@ function CommodityDetails() {
           message: 'Post Created Successfully',
         })
       );
-
-      // if (err?.config?.responseType !== "blob") {
-      //   store.dispatch(
-      //     show_message({
-      //       mode: true,
-      //       color: "error",
-      //       message: err?.response?.data?.title || "",
-      //     })
-      //   );
     } catch (e) {
       throw e;
     } finally {
@@ -95,33 +89,6 @@ function CommodityDetails() {
               helper_text_up_position
               placeHolder="Course Title"
             />
-          </div>
-        </Expandable>
-
-        <Expandable title="Private Notes">
-          <div className="rounded-sm bg-white p-[30px]">
-            <CustomTextField
-              value={privateNote}
-              onChange={(e) => setPrivateNote(e.target.value)}
-              helper_text="Private Notes"
-              helper_text_up_position
-            />
-          </div>
-        </Expandable>
-
-        <Expandable title="Excerpt">
-          <div className="rounded-sm bg-white p-[30px]">
-            <CustomTextField
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-              helper_text="Excerpt"
-              helper_text_up_position
-              placeHolder="Course Title"
-            />
-            <p className="text-sm">
-              Excerpts are optional hand-crafted summaries of your content that
-              can be used in your theme.{' '}
-            </p>
           </div>
         </Expandable>
 
@@ -155,4 +122,4 @@ function CommodityDetails() {
   );
 }
 
-export default CommodityDetails;
+export default AddCommodity;

@@ -33,10 +33,10 @@ function Fundamental({ onFundamentalChange }) {
     forexData?.marketsentimentsscript || ''
   );
 
-  const [TechnicalTabslist, setTechnicalTabslist] = useState([]);
-  const [FundamentalNewsSectionlist, setFundamentalNewsSectionlist] = useState([]);
-  const [URLSectionlist, setURLSectionlist] = useState([]);
-  const [PDFSectionlist, setPDFSectionlist] = useState([]);
+  const [technicaltabs, setTechnicalTabslist] = useState([]);
+  const [fundamentalnewssections, setFundamentalNewsSectionlist] = useState([]);
+  const [urlSectionlist, setURLSectionlist] = useState([]);
+  const [pdfSectionlist, setPDFSectionlist] = useState([]);
 
   useEffect(() => {
     const currencyData = {
@@ -45,10 +45,10 @@ function Fundamental({ onFundamentalChange }) {
       marketsessionScript,
       marketsentimentstitle,
       marketsentimentsscript,
-      TechnicalTabslist,
-      FundamentalNewsSectionlist,
-      URLSectionlist,
-      PDFSectionlist,
+      technicaltabs,
+      fundamentalnewssections,
+      urlSectionlist,
+      pdfSectionlist,
     };
 
     onFundamentalChange(currencyData);
@@ -59,9 +59,10 @@ function Fundamental({ onFundamentalChange }) {
     marketsentimentstitle,
     marketsentimentsscript,
     onFundamentalChange,
-    TechnicalTabslist,
-    URLSectionlist,
-    PDFSectionlist,
+    technicaltabs,
+    fundamentalnewssections,
+    urlSectionlist,
+    pdfSectionlist,
   ]);
 
   return (
@@ -73,15 +74,18 @@ function Fundamental({ onFundamentalChange }) {
           value={instrumentName}
           onChange={(e) => setInstrumentName(e.target.value)}
         />
-        {/* <CustomTextField
+        {/* {/* <CustomTextField
           helper_text="fundamental heading"
           helper_text_up_position
           value={fundamentalHeading}
           onChange={(e) =>setFundamentalHeading(e.target.value)}
-        />
+        /> */}
 
         <h2>Fundamental News Section</h2>
-        <FundamentalSection subItemName="technicalBreakingNewslist" onDataChange={setTechnicalTabslist} /> */}
+        <FundamentalSection
+          subItemName="technicalBreakingNewslist"
+          onDataChange={setTechnicalTabslist}
+        />
 
         <hr className="my-[20px]" />
         <CustomTextField
