@@ -28,6 +28,12 @@ const currencySlice = createSlice({
       const { field, value } = action.payload;
       state[field] = value;
     },
+
+    setDatalist(state, action) {
+      const { field, data } = action.payload;
+      state[field] = data;
+      
+    },
     setSinglePageChartImage(state, action) {
       state.singlePageChartImage = action.payload;
     },

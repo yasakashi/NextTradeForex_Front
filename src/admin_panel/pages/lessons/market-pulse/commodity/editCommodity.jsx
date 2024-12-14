@@ -7,18 +7,17 @@ import Currency from '../../../../../components/market_pulse/forex/form/Currency
 import CourseLevelType from '../../../../../components/market_pulse/CourseLevelType';
 import CourseVisibility from '../../../../../components/market_pulse/CourseVisibility';
 import Fundamental from '../../../../../components/market_pulse/Fundamental';
-import { selectForexData } from '../../../../../redux/features/marketPulse/marketPulseSlice';
+import { selectCommodityData } from '../../../../../redux/features/marketPulse/marketPulseSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { http_instanse_level_2 } from '../../../../../axios/auth_full_http_instanse';
 import {
   show_message,
   toggle_loading,
 } from '../../../../../redux/features/generalSlice';
-import IndiceInformation from './informationForm';
 
-function AddIndice() {
+function CommodityDetails() {
   const dispatch = useDispatch();
-  const data = useSelector(selectForexData);
+  const data = useSelector(selectCommodityData);
   const [title, setTitle] = useState(data?.coursetitle || '');
   const [excerpt, setExcerpt] = useState(data?.excerpt || '');
   const [privateNote, setPrivateNote] = useState(data?.privatenotes || '');
@@ -54,7 +53,7 @@ function AddIndice() {
     try {
       dispatch(toggle_loading(true));
       await http_instanse_level_2.post(
-        '/api/marketpuls/addforexitem',
+        '/api/marketpuls/editcomodityitem',
         JSON.stringify(body)
       );
 
@@ -65,6 +64,15 @@ function AddIndice() {
           message: 'Post Created Successfully',
         })
       );
+
+      // if (err?.config?.responseType !== "blob") {
+      //   store.dispatch(
+      //     show_message({
+      //       mode: true,
+      //       color: "error",
+      //       message: err?.response?.data?.title || "",
+      //     })
+      //   );
     } catch (e) {
       throw e;
     } finally {
@@ -90,17 +98,6 @@ function AddIndice() {
           </div>
         </Expandable>
 
-        <Expandable title="Private Notes">
-          <div className="rounded-sm bg-white p-[30px]">
-            <CustomTextField
-              value={privateNote}
-              onChange={(e) => setPrivateNote(e.target.value)}
-              helper_text="Private Notes"
-              helper_text_up_position
-            />
-          </div>
-        </Expandable>
-
         <Expandable title="Excerpt">
           <div className="rounded-sm bg-white p-[30px]">
             <CustomTextField
@@ -116,8 +113,8 @@ function AddIndice() {
             </p>
           </div>
         </Expandable>
-        <IndiceInformation onCurrencyChange={setCurrencyData} />
-        {/* <Currency onCurrencyChange={setCurrencyData} /> */}
+
+        <Currency onCurrencyChange={setCurrencyData} />
         <Fundamental onFundamentalChange={setFundamentalData} />
 
         <AuthorList onAuthorChange={setAuthor} />
@@ -147,4 +144,4 @@ function AddIndice() {
   );
 }
 
-export default AddIndice;
+export default CommodityDetails;

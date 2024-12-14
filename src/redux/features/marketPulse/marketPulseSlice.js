@@ -5,6 +5,7 @@ const marketPulseSlice = createSlice({
   initialState: {
     forexData: null,
     indiceData: null,
+    commodityData: null,
   },
   reducers: {
     setForexData: (state, action) => {
@@ -19,12 +20,25 @@ const marketPulseSlice = createSlice({
     clearIndiceData: (state) => {
       state.indiceData = null;
     },
+    setCommodityData: (state, action) => {
+      state.commodityData = action.payload;
+    },
+    clearCommodityData: (state) => {
+      state.commodityData = null;
+    },
   },
 });
 
-export const { setForexData, clearForexData, setIndiceData, clearIndiceData } =
-  marketPulseSlice.actions;
+export const {
+  setForexData,
+  clearForexData,
+  setIndiceData,
+  clearIndiceData,
+  setCommodityData,
+  clearCommodityData,
+} = marketPulseSlice.actions;
 export const marketPulseReducer = marketPulseSlice.reducer;
 export const selectForexData = (state) => state.marketPulse.forexData;
 export const selectIndiceData = (state) => state.marketPulse.indiceData;
+export const selectCommodityData = (state) => state.marketPulse.commodityData;
 export default marketPulseSlice;

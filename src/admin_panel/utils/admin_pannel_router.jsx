@@ -23,6 +23,9 @@ import LTRWebinars from "../pages/learn-to-trade/webinars/LTRWebinars";
 import AddNewWebinar from "../pages/learn-to-trade/webinars/AddNewWebinar";
 import LTRTopics from "../pages/learn-to-trade/topics/LTRTopics";
 import AddNewTopic from "../pages/learn-to-trade/topics/AddNewTopic";
+import CommodityList from "../pages/lessons/market-pulse/commodity/commoditiesList";
+import AddCommodity from "../pages/lessons/market-pulse/commodity/newCommodity";
+import CommodityDetails from "../pages/lessons/market-pulse/commodity/editCommodity";
 
 export const admin_panel_router = [
   // topics
@@ -138,5 +141,17 @@ export const admin_panel_router = [
   {
     route: "/admin-panel/lessons/market-pulse/indices/:id",
     component: <AddIndice />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/commodities",
+    component: <CommodityList />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/commodities/:id",
+    component: <CommodityDetails />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/commodities/add",
+    component: <AddCommodity />,
   },
 ];
