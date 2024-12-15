@@ -50,8 +50,8 @@ const CourseCard = ({ course }) => {
 
       {/* course by */}
       <div className="flex  items-center mt-16">
-        <div className="border bg-blue-dark border-gray-200 rounded-full size-[34px]  text-sm flex items-center justify-center text-gray-200 uppercase">
-          {/* {course?.authorusername?.slice(0, 2)} */}A
+        <div className="border shrink-0 bg-blue-dark border-gray-200 rounded-full size-[34px]  text-sm flex items-center justify-center text-gray-200 uppercase">
+          {course?.authorusername?.slice(0, 2)}
         </div>
 
         <p className="px-3 text-[#757c8e] text-sm">

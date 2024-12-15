@@ -6,8 +6,6 @@ import { getTickets } from "../../../redux/features/tickeSlice";
 import CustomBeatLoader from "../../../utils/loaders/CustomBeatLoader";
 
 const Tickets = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-
   const [ticketCategory, setTicketCategory] = useState("all");
 
   const dispatch = useDispatch();
@@ -22,8 +20,8 @@ const Tickets = () => {
         axiosPrivate,
         data: {
           priorityId: null,
-          creatoruserId: user?.userid || null,
-          isanswerd: false,
+          creatoruserId: null,
+          isanswerd: null,
         },
       })
     );

@@ -1,18 +1,70 @@
 import { useFormik } from "formik";
-import Expandable from "../../../../components/Expandable";
 import CustomTextArea from "../../../../components/ui/CustomTextArea";
 import CustomTextInput from "../../../../components/ui/CustomTextInput";
 import NewCourceCard from "../../../../pages/profile/new_course_components/new_cource_card";
-import { CustomButton } from "../../../../components/ui/CustomButton";
-import LibraryModal from "../../../../pages/profile/new_course_components/library_modal";
 import { useEffect, useState } from "react";
-import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import ExcerptComponent from "../../../../pages/profile/new_course_components/excerpt_component";
 import PublishComponent from "../../../../pages/profile/new_course_components/publish_component";
 import FeaturedImageComponent from "../../../../pages/profile/new_course_components/featured_image_component";
 import CategoriesComponent from "../../../../pages/profile/new_course_components/categories_component";
 import LTRCategory from "../../../components/LTRCategory";
 import DflipSettings from "./DFlipSettings";
+
+import * as Yup from "yup";
+
+const ebookInitialValues = {
+  title: "",
+  author: "",
+  description: "",
+  bgColor: "",
+  flipDuration: "",
+  containerHeight: "",
+  autoplayDuration: "",
+  forcePageFit: false,
+  autoEnableOutline: false,
+  autoEnableThumbnail: false,
+  overwritePdfOutline: false,
+  bookSourceTypeId: "",
+  displayMode: "",
+  hardPageId: "",
+  pdfPageRenderSize: "",
+  autoEnableSound: false,
+  enableDownload: false,
+  pageMode: "",
+  singlePageMode: false,
+  controlsPosition: "",
+  direction: "",
+  enableAutoplay: false,
+  enableAutoplayAutomatically: false,
+  pageSize: "",
+  lessonCategoryLevelId: "",
+  featuredImage: null,
+  bgimage: null,
+  pdffile: null,
+  pdfthumbnailimage: null,
+  categoryIds: [],
+  pageimages: [],
+};
+
+const ebookValidationSchema = Yup.object().shape({
+  author: Yup.string().required("Author is required."),
+  description: Yup.string().required("Description is required."),
+  pdffile: Yup.mixed()
+    .required("PDF file is required.")
+    .test("fileSize", "File must be less than 500 KB", (value) => {
+      return !value || (value && value.size <= FILE_SIZE);
+    })
+    .test("fileFormat", "Unsupported format", (value) => {
+      return !value || (value && SUPPORTED_PDF_FORMATS.includes(value.type));
+    }),
+  categoryIds: Yup.array()
+    .of(Yup.number().required("Category ID is required."))
+    .min(1, "At least one category ID is required."),
+  title: Yup.string().nullable(),
+  bgColor: Yup.string()
+    .matches(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color")
+    .nullable(),
+});
 
 const AddNewEBook = () => {
   const [openVideoFile, setOpenVideoFile] = useState(false);
@@ -22,16 +74,59 @@ const AddNewEBook = () => {
   const isLoading = false;
 
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      author: "",
-      description: "",
-      videoFile: null,
-      downloadable: true,
-      subTitleLanguage: "",
-      subTitleFile: null,
-      excerpt: "",
-      featuredImage: null,
+    initialValues: ebookInitialValues,
+    validationSchema: ebookValidationSchema,
+
+    onSubmit: async (values, { resetForm }) => {
+      const formData = new FormData();
+      formData.append("title", "");
+      formData.append("author", "");
+      formData.append("description", "");
+      formData.append("bgColor", "");
+      formData.append("flipDuration", "");
+      formData.append("containerHeight", "");
+      formData.append("autoplayDuration", "");
+      formData.append("forcePageFit", "");
+      formData.append("autoEnableOutline", "");
+      formData.append("autoEnableThumbnail", "");
+      formData.append("overwritePdfOutline", "");
+      formData.append("bookSourceTypeId", "");
+      formData.append("displayMode", "");
+      formData.append("hardPageId", "");
+      formData.append("pdfPageRenderSize", "");
+      formData.append("autoEnableSound", "");
+      formData.append("enableDownload", "");
+      formData.append("pageMode", "");
+      formData.append("singlePageMode", "");
+      formData.append("controlsPosition", "");
+      formData.append("direction", "");
+      formData.append("enableAutoplay", "");
+      formData.append("enableAutoplayAutomatically", "");
+      formData.append("pageSize", "");
+      formData.append("lessonCategoryLevelId", "");
+      if (values?.featuredImage instanceof File) {
+        formData.append("featuredimage", values?.featuredImage);
+      }
+
+      if (values?.bgimage instanceof File) {
+        formData.append("bgimage", values?.bgimage);
+      }
+
+      if (values?.pdffile instanceof File) {
+        formData.append("pdffile", values?.pdffile);
+      }
+
+      if (values?.pdfthumbnailimage instanceof File) {
+        formData.append("pdfthumbnailimage", values?.pdfthumbnailimage);
+      }
+
+      values?.categoryIds.forEach((categoryId) =>
+        formData.append("categoryIds[]", categoryId)
+      );
+
+      values?.pageimages.forEach((pageImage) =>
+        formData.append("pageimages[]", pageImage)
+      );
     },
   });
 
@@ -95,8 +190,7 @@ const AddNewEBook = () => {
               </label>
             </div>
           </NewCourceCard>
-
-          <DflipSettings formik={formik} />+
+          <DflipSettings formik={formik} />
 
           {/* excerpt */}
           <ExcerptComponent name="excerpt" formik={formik} />
@@ -108,10 +202,8 @@ const AddNewEBook = () => {
           <div className="lg:hidden space-y-4">
             <LTRCategory formik={formik} />
           </div>
-
           {/* categories */}
           <CategoriesComponent />
-
           <div className="lg:hidden space-y-4">
             <PublishComponent isLoading={isLoading} />
           </div>

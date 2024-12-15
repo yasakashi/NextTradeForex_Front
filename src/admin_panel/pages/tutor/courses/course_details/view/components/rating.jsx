@@ -17,6 +17,7 @@ const Rating = ({ rate = "1" }) => {
 
       {Array.from(Array(5 - Number(rate)).keys()).map((star, index) => (
         <svg
+          key={index}
           className="w-4 h-4 text-gray-300 me-1 dark:text-gray-500"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"

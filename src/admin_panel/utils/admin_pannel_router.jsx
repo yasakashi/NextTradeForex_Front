@@ -23,6 +23,12 @@ import LTRWebinars from "../pages/learn-to-trade/webinars/LTRWebinars";
 import AddNewWebinar from "../pages/learn-to-trade/webinars/AddNewWebinar";
 import LTRTopics from "../pages/learn-to-trade/topics/LTRTopics";
 import AddNewTopic from "../pages/learn-to-trade/topics/AddNewTopic";
+import ForumPosts from "../pages/posts/Forum/ForumPosts";
+import AddNewForumPost from "../pages/posts/Forum/AddNewForumPost";
+import BlogPosts from "../pages/posts/blog/BlogPosts";
+import AddNewBlogPost from "../pages/posts/blog/AddNewBlogPost";
+import TicketsList from "../pages/fluent-supports/tickets/TicketsList";
+import AdminTicketView from "../pages/fluent-supports/tickets/TicketView";
 
 export const admin_panel_router = [
   // topics
@@ -102,6 +108,37 @@ export const admin_panel_router = [
     route: "/admin-panel/pdf_books/all_books",
     component: <AllBooksScreen />,
   },
+
+  // ============= posts
+  {
+    route: "/admin-panel/posts/forum-posts",
+    component: <ForumPosts />,
+  },
+  {
+    route: "/admin-panel/posts/forum-posts/add-new-forum-post",
+    component: <AddNewForumPost />,
+  },
+
+  {
+    route: "/admin-panel/posts/blog-posts",
+    component: <BlogPosts />,
+  },
+  {
+    route: "/admin-panel/posts/blog-posts/add-new-blog-post",
+    component: <AddNewBlogPost />,
+  },
+
+  // ============ flutent support
+
+  {
+    route: "/admin-panel/fluent-support/tickets",
+    component: <TicketsList />,
+  },
+  {
+    route: "/admin-panel/fluent-support/tickets/:id/view",
+    component: <AdminTicketView />,
+  },
+  // ============== course
   {
     route: "/admin-panel/tutor/Courses/create-new-course",
     component: <NewCourse page="admin" />,

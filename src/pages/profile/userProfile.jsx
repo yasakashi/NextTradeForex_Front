@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import Dashboard from "../../components/profile/Dashboard";
 import MyGroups from "../../components/profile/MyGroups";
 import MyProfile from "../../components/profile/MyProfile";
 
@@ -19,6 +18,8 @@ import { IoMdClose } from "react-icons/io";
 import { IoRocket } from "react-icons/io5";
 import { GiWallet } from "react-icons/gi";
 import { FaRegStar } from "react-icons/fa6";
+import { TiPin } from "react-icons/ti";
+
 
 import {
   Link,
@@ -242,6 +243,20 @@ const UserProfile = () => {
                       >
                         <IoRocket size={20} />
                         My courses
+                      </NavLink>
+                    </li>
+
+                    <li>
+                      <NavLink
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 py-2 px-2 hover:bg-gold-light_400 cursor-pointer transition-all text-white rounded-tl-lg rounded-bl-lg ${
+                            isActive ? "bg-gold-light_400" : ""
+                          }`
+                        }
+                        to={`/user-profile/my-posts`}
+                      >
+                        <TiPin size={20} />
+                        My Posts
                       </NavLink>
                     </li>
                     <li>

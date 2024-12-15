@@ -76,7 +76,10 @@ const NewCourse = ({ page }) => {
       formData.append("meetings", "2");
       formData.append("videoPdfUrls", "dlkjaslfkj");
       // formData.append("featuredImage", values?.featuredImage);
-      formData.append("courseCategoryIds", "2");
+      // formData.append("courseCategoryIds", "2");
+      values?.categoryids.forEach((categoryId) =>
+        formData.append("courseCategoryIds[]", categoryId)
+      );
       formData.append(
         "requirementsInstructions",
         values?.requirementsInstructions
@@ -89,8 +92,8 @@ const NewCourse = ({ page }) => {
         formData.append("featuredImage", values?.featuredImage);
       }
 
-      if (values?.courseTags?.length > 0) {
-        const arrayString = values?.courseTags.slice().join(", ") + ",";
+      if (values?.tags?.length > 0) {
+        const arrayString = values?.tags.slice().join(", ") + ",";
         formData.append("courseTags", arrayString);
       }
 
@@ -201,7 +204,7 @@ const NewCourse = ({ page }) => {
         requirementsInstructions,
         courseIntroVideo,
         categoryids,
-        courseTags: courseTags?.split(","),
+        tags: courseTags?.split(","),
         featuredImage,
       });
 
@@ -296,11 +299,6 @@ const NewCourse = ({ page }) => {
                     />
                   </div>
                 </div>
-
-                {/* <DraftEditor
-                  placeholder="Course description ..."
-                  value={editorState} // Pass the editor state
-                  onChange={handleEditorChange} */}
               </div>
 
               {formik.touched.courseDescription ? (
@@ -328,7 +326,7 @@ const NewCourse = ({ page }) => {
                       formik={formik}
                     />
 
-                    <TagsComponent name="courseTags" formik={formik} />
+                    <TagsComponent name="tags" formik={formik} />
 
                     <FeaturedImageComponent
                       name="featuredImage"
