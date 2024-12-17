@@ -57,7 +57,13 @@
     "src/admin_panel/components/layout/admin_navbar.jsx",
     "src/admin_panel/components/layout/main_layout.jsx",
     "src/admin_panel/pages/categories/view/categories_screen.jsx",
-    "src/admin_panel/pages/categories/view/components/customRadioButton.jsx"
+    "src/admin_panel/pages/categories/view/components/customRadioButton.jsx",
+    "src/pages/learn_to_trade/courses_to_learn_screen.jsx",
+    "src/admin_panel/pages/tutor/lessons/view/lessons_screen.jsx",
+    "src/admin_panel/pages/categories/view/components/add_new_category_component.jsx",
+    "src/admin_panel/pages/categories/view/components/edit_category_components.jsx",
+    "src/pages/learn_to_trade/view/learn_to_trade_screen.jsx",
+    "src/pages/market_pulse/index.jsx"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

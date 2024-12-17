@@ -7,18 +7,17 @@ import Currency from '../../../../../components/market_pulse/forex/form/Currency
 import CourseLevelType from '../../../../../components/market_pulse/CourseLevelType';
 import CourseVisibility from '../../../../../components/market_pulse/CourseVisibility';
 import Fundamental from '../../../../../components/market_pulse/Fundamental';
-import { selectForexData } from '../../../../../redux/features/marketPulse/marketPulseSlice';
+import { selectCommodityData } from '../../../../../redux/features/marketPulse/marketPulseSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { http_instanse_level_2 } from '../../../../../axios/auth_full_http_instanse';
 import {
   show_message,
   toggle_loading,
 } from '../../../../../redux/features/generalSlice';
-import IndiceInformation from './informationForm';
 
-function AddIndice() {
+function AddCommodity() {
   const dispatch = useDispatch();
-  const data = useSelector(selectForexData);
+  const data = useSelector(selectCommodityData);
   const [title, setTitle] = useState(data?.coursetitle || '');
   const [excerpt, setExcerpt] = useState(data?.excerpt || '');
   const [privateNote, setPrivateNote] = useState(data?.privatenotes || '');
@@ -40,21 +39,24 @@ function AddIndice() {
 
     const body = {
       coursetitle: title,
-      excerpt,
-      privateNote,
       categoryid,
       author,
       courseleveltypeId,
       isVisible,
-      ...currencyData,
-      ...fundamentalData,
-      NewsMainContentlist: [{ maintitle: 'w2', script: 'w2' }],
+      comodities: [
+        {
+          ...currencyData,
+        },
+      ],
+      fundamentalandtechnicaltabsection: {
+        ...fundamentalData,
+      },
     };
 
     try {
       dispatch(toggle_loading(true));
       await http_instanse_level_2.post(
-        '/api/marketpuls/addforexitem',
+        '/api/marketpuls/addcomodityitem',
         JSON.stringify(body)
       );
 
@@ -90,34 +92,7 @@ function AddIndice() {
           </div>
         </Expandable>
 
-        <Expandable title="Private Notes">
-          <div className="rounded-sm bg-white p-[30px]">
-            <CustomTextField
-              value={privateNote}
-              onChange={(e) => setPrivateNote(e.target.value)}
-              helper_text="Private Notes"
-              helper_text_up_position
-            />
-          </div>
-        </Expandable>
-
-        <Expandable title="Excerpt">
-          <div className="rounded-sm bg-white p-[30px]">
-            <CustomTextField
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-              helper_text="Excerpt"
-              helper_text_up_position
-              placeHolder="Course Title"
-            />
-            <p className="text-sm">
-              Excerpts are optional hand-crafted summaries of your content that
-              can be used in your theme.{' '}
-            </p>
-          </div>
-        </Expandable>
-        <IndiceInformation onCurrencyChange={setCurrencyData} />
-        {/* <Currency onCurrencyChange={setCurrencyData} /> */}
+        <Currency onCurrencyChange={setCurrencyData} />
         <Fundamental onFundamentalChange={setFundamentalData} />
 
         <AuthorList onAuthorChange={setAuthor} />
@@ -147,4 +122,4 @@ function AddIndice() {
   );
 }
 
-export default AddIndice;
+export default AddCommodity;
