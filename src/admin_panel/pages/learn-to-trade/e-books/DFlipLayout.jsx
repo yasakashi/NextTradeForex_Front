@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { CustomButton } from "../../../../components/ui/CustomButton";
+import LibraryModal from "../../../../pages/profile/new_course_components/library_modal";
 
-const DFlipLayout = () => {
-  const selectPDFRef = useRef(null);
+const DFlipLayout = ({ formik }) => {
+  const [openBgImg, setOpenBgImg] = useState(false);
 
   return (
     <div className="space-y-8 mb-8">
@@ -16,10 +17,16 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>WebGL 3D</option>
-            <option>CSS 3D/2D</option>
+          <select
+            name="displayMode"
+            value={formik.values?.displayMode}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>WebGL 3D</option>
+            <option value={3}>CSS 3D/2D</option>
           </select>
         </div>
       </div>
@@ -38,11 +45,17 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="hardPageId"
+            value={formik.values?.hardPageId}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>Cover Pages</option>
+            <option value={3}>All Pages</option>
+            <option value={4}>None</option>
           </select>
         </div>
       </div>
@@ -64,10 +77,21 @@ const DFlipLayout = () => {
         </div>
         <div>
           <input
+            name="bgColor"
+            value={formik.values?.bgColor}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             placeholder="Example : #FFFFFF"
             type="text"
-            className="w-full placeholder:text-sm text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+            max="7"
+            className="w-full tracking-wider placeholder:capitalize uppercase placeholder:text-sm text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
           />
+          {formik.touched?.bgColor && formik.errors?.bgColor ? (
+            <span className="text-red-600 text-[13px] p-1">
+              {" "}
+              {formik.errors?.bgColor}
+            </span>
+          ) : null}
         </div>
       </div>
 
@@ -87,13 +111,41 @@ const DFlipLayout = () => {
         <div>
           <div className="flex items-center text-base text-[#2c3338] py-[6px] pl-2 bg-transparent rounded-sm">
             <div className="w-full border border-gray-600 py-[6px] px-2">
-              <span className="text-gray-500 text-sm">Select a Pdf File</span>
+              {formik.values?.bgimage ? (
+                <input
+                  type="text"
+                  readOnly
+                  value={formik.values?.bgimage?.name}
+                  className="border-0 outline-none w-full h-full"
+                />
+              ) : (
+                <span className="text-gray-500 text-sm">Select an Image</span>
+              )}
             </div>
-            <CustomButton className="text-nowrap rounded-l-none">
+            <CustomButton
+              type="button"
+              onClick={() => setOpenBgImg(true)}
+              className="text-nowrap rounded-l-none"
+            >
               Select Image
             </CustomButton>
           </div>
         </div>
+
+        <LibraryModal
+          file={formik?.values?.bgimage}
+          set_file={(file) => {
+            formik.setFieldValue("bgimage", file);
+          }}
+          error={formik.errors?.bgimage}
+          onBlur={formik.handleBlur}
+          accept_file="Image"
+          has_side_bar_action={false}
+          title="Add Media"
+          open={openBgImg}
+          set_open={setOpenBgImg}
+          onSave={() => setOpenBgImg(false)}
+        />
       </div>
 
       <div className="w-full h-[1px] bg-gray-300"></div>
@@ -112,9 +164,13 @@ const DFlipLayout = () => {
         </div>
         <div>
           <input
+            name="flipDuration"
+            value={formik.values?.flipDuration}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             placeholder="Example : 1000"
             type="text"
-            className="w-full placeholder:text-sm text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+            className="w-full tracking-wider placeholder:text-sm text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
           />
         </div>
       </div>
@@ -139,9 +195,13 @@ const DFlipLayout = () => {
         </div>
         <div>
           <input
+            name="containerHeight"
+            value={formik.values?.containerHeight}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             placeholder="Example : 500"
             type="text"
-            className="w-full placeholder:text-sm text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+            className="w-full tracking-wider placeholder:text-sm text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
           />
         </div>
       </div>
@@ -160,11 +220,19 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="pdfPageRenderSize"
+            value={formik.values?.pdfPageRenderSize}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>1024</option>
+            <option value={3}>1400</option>
+            <option value={4}>1600</option>
+            <option value={5}>1800</option>
+            <option value={6}>2048</option>
           </select>
         </div>
       </div>
@@ -181,11 +249,16 @@ const DFlipLayout = () => {
           <p className="text-[#999] text-xs">Sound will play from the start.</p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="autoEnableSound"
+            value={formik.values?.autoEnableSound}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>True</option>
+            <option value={3}>False</option>
           </select>
         </div>
       </div>
@@ -202,11 +275,16 @@ const DFlipLayout = () => {
           <p className="text-[#999] text-xs">Enable PDF download</p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="enableDownload"
+            value={formik.values?.enableDownload}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>True</option>
+            <option value={3}>False</option>
           </select>
         </div>
       </div>
@@ -226,11 +304,17 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="pageMode"
+            value={formik.values?.pageMode}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>Auto</option>
+            <option value={3}>Single Page</option>
+            <option value={4}>Double Page</option>
           </select>
         </div>
       </div>
@@ -250,11 +334,17 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="singlePageMode"
+            value={formik.values?.singlePageMode}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>Auto</option>
+            <option value={3}>Normal Size</option>
+            <option value={4}>Booklet Mode</option>
           </select>
         </div>
       </div>
@@ -274,11 +364,17 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="controlsPosition"
+            value={formik.values?.controlsPosition}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>Bottom</option>
+            <option value={3}>Top</option>
+            <option value={4}>Hidden</option>
           </select>
         </div>
       </div>
@@ -295,11 +391,15 @@ const DFlipLayout = () => {
           <p className="text-[#999] text-xs">Left to Right or Right to Left.</p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="direction"
+            value={formik.values?.direction}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Left to Right</option>
+            <option value={2}>Right to Left</option>
           </select>
         </div>
       </div>
@@ -319,11 +419,15 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="forcePageFit"
+            value={formik.values?.forcePageFit}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={true}>True</option>
+            <option value={false}>False</option>
           </select>
         </div>
       </div>
@@ -340,11 +444,16 @@ const DFlipLayout = () => {
           <p className="text-[#999] text-xs">Enable AutoPlay in Flipbook</p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="enableAutoplay"
+            value={formik.values?.enableAutoplay}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>True</option>
+            <option value={3}>False</option>
           </select>
         </div>
       </div>
@@ -365,6 +474,10 @@ const DFlipLayout = () => {
         </div>
         <div>
           <input
+            name="autoplayDuration"
+            value={formik.values?.autoplayDuration}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             placeholder="Example : 5000"
             type="text"
             className="w-full placeholder:text-sm text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
@@ -386,11 +499,16 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="enableAutoplayAutomatically"
+            value={formik.values?.enableAutoplayAutomatically}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Global Setting</option>
+            <option value={2}>True</option>
+            <option value={3}>False</option>
           </select>
         </div>
       </div>
@@ -410,11 +528,16 @@ const DFlipLayout = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>Global Setting</option>
-            <option>Cover Pages</option>
-            <option>All Pages</option>
-            <option>None</option>
+          <select
+            name="pageSize"
+            value={formik.values?.pageSize}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>Auto</option>
+            <option value={2}>Single</option>
+            <option value={3}>Double Internal Page</option>
           </select>
         </div>
       </div>

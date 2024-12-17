@@ -4,7 +4,8 @@ import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
 import {
-  useGetLTRPodcastsQuery,
+ 
+  useGetLTRWebinarsQuery,
   useRemoveLTRPodcastMutation,
 } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
 import { IoTrashOutline } from "react-icons/io5";
@@ -30,15 +31,18 @@ const LTRWebinars = () => {
   });
 
   const {
-    data: { messageData: podcasts } = { messageData: [] },
+    data: { messageData: webinars } = { messageData: [] },
 
     isLoading,
 
     refetch: refetchCourses,
-  } = useGetLTRPodcastsQuery({
+  } = useGetLTRWebinarsQuery({
     data: {
       id: null,
-      title: searchInput,
+      fromdateAndTime: null,
+      todateAndTime: null,
+      title: null,
+      categoryid: null,
       pageindex: 1,
       rowcount: 21,
     },
@@ -76,7 +80,7 @@ const LTRWebinars = () => {
         loading={isLoading}
         setSearchCourses={setSearchInput}
         searchCourses={searchInput}
-        rows={podcasts}
+        rows={webinars}
         columns={[
           {
             header: "Title",

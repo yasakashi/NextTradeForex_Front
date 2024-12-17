@@ -24,7 +24,12 @@ const DropZone = ({ file, set_file, accept_file, ...props }) => {
         : accept_file === "PDF"
         ? { "application/pdf": [] }
         : accept_file === "Subtitle"
-        ? { "text/srt": [], "text/vtt": [] }
+        ? {
+            "application/x-subrip": [],
+            "text/vtt": [],
+            "text/srt": [],
+            "application/srt": [],
+          }
         : accept_file === "Audio"
         ? {
             "audio/mpeg": [],

@@ -77,11 +77,11 @@ const AddNewWebinar = () => {
       title: "",
       description: "",
       webinarFile: null,
-      liveMeetingLink: "",
+      liveMeetingLink: null,
       excerpt: "",
       featuredImage: null,
       lessonCategoryId: 1,
-      categoryids: [],
+      categoryIds: [],
       dateAndTime: "",
     },
     validationSchema: webinarValidationSchema,
@@ -91,25 +91,28 @@ const AddNewWebinar = () => {
 
       formData.append("title", values?.title);
       formData.append("description", values?.description);
+      formData.append("dateAndTime", values?.dateAndTime);
+      formData.append("lessonCategoryLevelId", values?.lessonCategoryId);
+      if (values?.excerpt) formData.append("excerpt", values?.excerpt);
       if (values.webinarFile) {
-        formData.append("webinarFile", values.webinarFile);
+        formData.append("videoFile", values.webinarFile);
       }
       if (values.liveMeetingLink) {
-        formData.append("liveMeetingLink", values.liveMeetingLink);
+        formData.append("meetingLink", values.liveMeetingLink);
       }
       if (values.featuredImage) {
         formData.append("featuredImage", values.featuredImage);
       }
 
-      values?.categoryids.forEach((categoryId) =>
-        formData.append("categories[]", categoryId)
+      values?.categoryIds.forEach((categoryId) =>
+        formData.append("categoryids[]", categoryId)
       );
 
       try {
         const response = await addNewLTRWebinar({ data: formData }).unwrap();
 
-        if (response?.data?.messageCode === 200) {
-          toast.success("Topic created.");
+        if (response?.messageCode === 200) {
+          toast.success("New Webinar created.");
           resetForm();
         }
       } catch (error) {
@@ -361,7 +364,15 @@ const AddNewWebinar = () => {
           </div>
 
           {/* categories */}
-          <CategoriesComponent />
+          <CategoriesComponent
+            errorMsg={
+              formik.errors?.categoryIds ? formik.errors?.categoryIds : null
+            }
+            categoryids={formik.values.categoryIds}
+            onChange={(updatedCategoryIds) =>
+              formik.setFieldValue("categoryIds", updatedCategoryIds)
+            }
+          />
 
           <div className="lg:hidden space-y-4">
             <PublishComponent isLoading={isLoading} />

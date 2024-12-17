@@ -68,7 +68,7 @@ export const LearnToTradeApi = createApi({
     //============= webinar
     addNewLTRWebinar: builder.mutation({
       query: ({ data }) => ({
-        url: "/learntotrade/addnewpodcast",
+        url: "/learntotrade/addnewwebinar",
         method: "POST",
         body: data,
       }),
@@ -76,7 +76,7 @@ export const LearnToTradeApi = createApi({
 
     getLTRWebinars: builder.query({
       query: ({ data }) => ({
-        url: "/learntotrade/getpodcasts",
+        url: "/learntotrade/getwebinars",
         method: "POST",
         body: data,
       }),
@@ -84,7 +84,7 @@ export const LearnToTradeApi = createApi({
 
     removeLTRWebinar: builder.mutation({
       query: ({ data }) => ({
-        url: "/learntotrade/deletepodcast",
+        url: "/learntotrade/addnewwebinar",
         method: "POST",
         body: data,
       }),
@@ -109,7 +109,40 @@ export const LearnToTradeApi = createApi({
 
     removeLTREBook: builder.mutation({
       query: ({ data }) => ({
-        url: "/learntotrade/deletepodcast",
+        url: "/learntotrade/editbook",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    //============= video
+    addNewLTRVideo: builder.mutation({
+      query: ({ data }) => ({
+        url: "/learntotrade/addnewVideo",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    getLTRVideos: builder.query({
+      query: ({ data }) => ({
+        url: "/learntotrade/getVideos",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    removeLTRVideo: builder.mutation({
+      query: ({ data }) => ({
+        url: "/learntotrade/deleteVideo",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    addNewLTRVideoSubtitle: builder.mutation({
+      query: ({ data }) => ({
+        url: "/learntotrade/addnewVideosubtitle",
         method: "POST",
         body: data,
       }),
@@ -132,5 +165,11 @@ export const {
 
   useAddNewLTREBookMutation,
   useGetLTREBooksQuery,
-  useRemoveLTREBookMutation
+  useRemoveLTREBookMutation,
+
+  useAddNewLTRVideoMutation,
+  useGetLTRVideosQuery,
+  useRemoveLTRVideoMutation,
+
+  useAddNewLTRVideoSubtitleMutation
 } = LearnToTradeApi;

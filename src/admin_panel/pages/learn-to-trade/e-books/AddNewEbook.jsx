@@ -11,6 +11,18 @@ import LTRCategory from "../../../components/LTRCategory";
 import DflipSettings from "./DFlipSettings";
 
 import * as Yup from "yup";
+import { useAddNewLTREBookMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import toast from "react-hot-toast";
+const SUPPORTED_FORMATS = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  ,
+  "image/web",
+];
+
+const FILE_SIZE = 500 * 1024;
+const SUPPORTED_PDF_FORMATS = ["application/pdf"];
 
 const ebookInitialValues = {
   title: "",
@@ -20,24 +32,24 @@ const ebookInitialValues = {
   flipDuration: "",
   containerHeight: "",
   autoplayDuration: "",
-  forcePageFit: false,
+  forcePageFit: true,
   autoEnableOutline: false,
   autoEnableThumbnail: false,
   overwritePdfOutline: false,
-  bookSourceTypeId: "",
-  displayMode: "",
-  hardPageId: "",
-  pdfPageRenderSize: "",
-  autoEnableSound: false,
-  enableDownload: false,
-  pageMode: "",
-  singlePageMode: false,
-  controlsPosition: "",
-  direction: "",
-  enableAutoplay: false,
-  enableAutoplayAutomatically: false,
-  pageSize: "",
-  lessonCategoryLevelId: "",
+  bookSourceTypeId: 1,
+  displayMode: 1,
+  hardPageId: 1,
+  pdfPageRenderSize: 1,
+  autoEnableSound: 1,
+  enableDownload: 1,
+  pageMode: 1,
+  singlePageMode: 1,
+  controlsPosition: 1,
+  direction: 1,
+  enableAutoplay: 1,
+  enableAutoplayAutomatically: 1,
+  pageSize: 1,
+  lessonCategoryId: 1,
   featuredImage: null,
   bgimage: null,
   pdffile: null,
@@ -48,6 +60,7 @@ const ebookInitialValues = {
 
 const ebookValidationSchema = Yup.object().shape({
   author: Yup.string().required("Author is required."),
+  title: Yup.string().required("Title is required."),
   description: Yup.string().required("Description is required."),
   pdffile: Yup.mixed()
     .required("PDF file is required.")
@@ -60,9 +73,12 @@ const ebookValidationSchema = Yup.object().shape({
   categoryIds: Yup.array()
     .of(Yup.number().required("Category ID is required."))
     .min(1, "At least one category ID is required."),
-  title: Yup.string().nullable(),
+
   bgColor: Yup.string()
-    .matches(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color")
+    .matches(
+      /^#([0-9A-F]{3}){1,2}$/i,
+      "Must be a valid hex color ( Example: #FFFFFF)"
+    )
     .nullable(),
 });
 
@@ -71,7 +87,8 @@ const AddNewEBook = () => {
   const [openSubFile, setOpenSubFile] = useState(false);
 
   const [videoURL, setVideoURL] = useState(null);
-  const isLoading = false;
+
+  const [addNewLTREBook, { isLoading }] = useAddNewLTREBookMutation();
 
   const formik = useFormik({
     initialValues: ebookInitialValues,
@@ -79,31 +96,43 @@ const AddNewEBook = () => {
 
     onSubmit: async (values, { resetForm }) => {
       const formData = new FormData();
-      formData.append("title", "");
-      formData.append("author", "");
-      formData.append("description", "");
-      formData.append("bgColor", "");
-      formData.append("flipDuration", "");
-      formData.append("containerHeight", "");
-      formData.append("autoplayDuration", "");
-      formData.append("forcePageFit", "");
-      formData.append("autoEnableOutline", "");
-      formData.append("autoEnableThumbnail", "");
-      formData.append("overwritePdfOutline", "");
-      formData.append("bookSourceTypeId", "");
-      formData.append("displayMode", "");
-      formData.append("hardPageId", "");
-      formData.append("pdfPageRenderSize", "");
-      formData.append("autoEnableSound", "");
-      formData.append("enableDownload", "");
-      formData.append("pageMode", "");
-      formData.append("singlePageMode", "");
-      formData.append("controlsPosition", "");
-      formData.append("direction", "");
-      formData.append("enableAutoplay", "");
-      formData.append("enableAutoplayAutomatically", "");
-      formData.append("pageSize", "");
-      formData.append("lessonCategoryLevelId", "");
+      formData.append("title", values?.title);
+      formData.append("author", values?.author);
+      formData.append("description", values?.description);
+
+      formData.append("autoplayDuration", values?.autoplayDuration);
+      formData.append("forcePageFit", values?.forcePageFit);
+      formData.append("autoEnableOutline", values?.autoEnableOutline);
+      formData.append("autoEnableThumbnail", values?.autoEnableThumbnail);
+      formData.append("overwritePdfOutline", values?.overwritePdfOutline);
+      formData.append("bookSourceTypeId", values?.bookSourceTypeId);
+      formData.append("displayMode", values?.displayMode);
+      formData.append("hardPageId", values?.hardPageId);
+      formData.append("pdfPageRenderSize", values?.pdfPageRenderSize);
+      formData.append("autoEnableSound", values?.autoEnableSound);
+      formData.append("enableDownload", values?.enableDownload);
+      formData.append("pageMode", values?.pageMode);
+      formData.append("singlePageMode", values?.singlePageMode);
+      formData.append("controlsPosition", values?.controlsPosition);
+      formData.append("direction", values?.direction);
+      formData.append("enableAutoplay", values?.enableAutoplay);
+      formData.append("pageSize", values?.pageSize);
+      formData.append("lessonCategoryLevelId", formik.values?.lessonCategoryId);
+      formData.append(
+        "enableAutoplayAutomatically",
+        values?.enableAutoplayAutomatically
+      );
+
+      if (values?.bgColor) {
+        formData.append("bgColor", values?.bgColor);
+      }
+
+      if (values?.flipDuration) {
+        formData.append("flipDuration", values?.flipDuration);
+      }
+      if (values?.containerHeight) {
+        formData.append("containerHeight", values?.containerHeight);
+      }
       if (values?.featuredImage instanceof File) {
         formData.append("featuredimage", values?.featuredImage);
       }
@@ -127,6 +156,19 @@ const AddNewEBook = () => {
       values?.pageimages.forEach((pageImage) =>
         formData.append("pageimages[]", pageImage)
       );
+
+      try {
+        const res = await addNewLTREBook({ data: formData }).unwrap();
+
+        if (res?.messageCode === 200) {
+          toast.success("New Book Created.");
+          resetForm();
+        }
+        console.log({ res });
+      } catch (error) {
+        toast.error("Something went wrong! please try again.");
+        console.log(error);
+      }
     },
   });
 
@@ -139,6 +181,7 @@ const AddNewEBook = () => {
   return (
     <div className="flex flex-col px-8 py-10">
       <h1 className="font-semibold text-2xl text-white mb-4">Add New Book</h1>
+      {console.log(formik.errors)}
 
       <form
         onSubmit={formik.handleSubmit}
@@ -190,6 +233,7 @@ const AddNewEBook = () => {
               </label>
             </div>
           </NewCourceCard>
+
           <DflipSettings formik={formik} />
 
           {/* excerpt */}
@@ -203,14 +247,21 @@ const AddNewEBook = () => {
             <LTRCategory formik={formik} />
           </div>
           {/* categories */}
-          <CategoriesComponent />
+          <CategoriesComponent
+            errorMsg={
+              formik.errors?.categoryIds ? formik.errors?.categoryIds : null
+            }
+            categoryids={formik.values.categoryIds}
+            onChange={(updatedCategoryIds) =>
+              formik.setFieldValue("categoryIds", updatedCategoryIds)
+            }
+          />
           <div className="lg:hidden space-y-4">
             <PublishComponent isLoading={isLoading} />
           </div>
         </div>
 
         <div className="hidden lg:block lg:col-span-1">
-          <LTRCategory formik={formik} />
           <PublishComponent isLoading={isLoading} />
           <FeaturedImageComponent name="featuredImage" formik={formik} />
         </div>
