@@ -64,6 +64,6 @@
     "src/admin_panel/pages/categories/view/components/edit_category_components.jsx",
     "src/pages/learn_to_trade/view/learn_to_trade_screen.jsx",
     "src/pages/market_pulse/index.jsx"
-  ],
+, "src/admin_panel/utils/market_pulse_router.jsx"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

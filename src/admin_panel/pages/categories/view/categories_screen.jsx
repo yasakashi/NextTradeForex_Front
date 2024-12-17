@@ -12,6 +12,7 @@ import {
   useGetSubCategoriesByInfoMutation,
 } from "../../../../redux/features/categories/categoriesApi";
 import { useFormik } from "formik";
+import toast from "react-hot-toast";
 
 const CategoriesScreen = () => {
   const { categories } = useCategories({ make_id_tree: true });

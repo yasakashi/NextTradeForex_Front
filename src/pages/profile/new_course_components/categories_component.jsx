@@ -7,198 +7,43 @@ import { MdClose } from "react-icons/md";
 import { useGetCategoriesMutation } from "../../../redux/features/categories/categoriesApi";
 import toast from "react-hot-toast";
 
-const CategoriesComponent = () => {
+const CategoriesComponent = ({ categoryids = [], onChange, errorMsg }) => {
   const [current_tab, set_current_tab] = useState("Categories");
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [category, setCategory] = useState();
+  const [selectedCategories, setSelectedCategories] = useState(categoryids);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [expandedNodes, setExpandedNodes] = useState(new Set());
+  const [filteredTreeData, setFilteredTreeData] = useState([]);
+  const categoryRef = useRef(null);
 
   const [getCategories, { data, error, isLoading: getCategoriesLoading }] =
     useGetCategoriesMutation();
+
   useEffect(() => {
     async function fetchCategories() {
       try {
-        await getCategories().unwrap();
+        const fetchedData = await getCategories().unwrap();
+        setFilteredTreeData(fetchedData || []);
       } catch (err) {
-        toast.error("Failed to fetch categories: ");
+        toast.error("Failed to fetch categories");
       }
     }
     fetchCategories();
   }, [getCategories]);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
-  const [expandedNodes, setExpandedNodes] = useState(new Set());
-  const [filteredTreeData, setFilteredTreeData] = useState(data);
-  const categoryRef = useRef(null);
-
-  const flattenData = (nodes) => {
-    let result = [];
-    const recurse = (nodes) => {
-      nodes?.forEach((node) => {
-        result.push(node);
-        if (node.children) {
-          recurse(node.children);
-        }
-      });
-    };
-    recurse(nodes);
-
-    return result;
-  };
-
-  // useEffect(() => {
-  //   const flatData = flattenData(data);
-
-  //   const filtered = flatData.filter((category) =>
-  //     category.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-
-  //   const buildFilteredTree = (nodes, filteredIds, flatData) => {
-  //     return nodes?.reduce((acc, node) => {
-  //       const isNodeIncluded = filteredIds.has(node.id);
-  //       const isParentExpanded = expandedNodes.has(node.id);
-
-  //       // Always include parent nodes if their children match
-  //       const filteredChildren = node.children
-  //         ? buildFilteredTree(node.children, filteredIds, flatData)
-  //         : [];
-
-  //       if (isNodeIncluded || filteredChildren.length > 0) {
-  //         acc.push({
-  //           ...node,
-  //           children: isParentExpanded ? filteredChildren : [],
-  //         });
-  //       }
-  //       return acc;
-  //     }, []);
-  //   };
-
-  //   const filteredIds = new Set(filtered.map((node) => node.id));
-  //   const treeData = buildFilteredTree(data, filteredIds);
-
-  //   // Automatically expand nodes containing the search results
-  //   const findAllParentIds = (nodes) => {
-  //     const parentIds = new Set();
-  //     const visitedNodes = new Set(); // Track visited nodes to avoid cycles
-
-  //     const findParent = (node) => {
-  //       if (visitedNodes.has(node.id)) return; // Stop if the node has already been visited
-  //       visitedNodes.add(node.id);
-
-  //       if (node.parentId) {
-  //         parentIds.add(node.parentId);
-  //         const parentNode = flatData.find((n) => n.id === node.parentId);
-  //         if (parentNode) findParent(parentNode); // Continue to the parent
-  //       }
-  //     };
-
-  //     nodes?.forEach(findParent);
-  //     return parentIds;
-  //   };
-
-  //   const parentIdsToExpand = findAllParentIds(filtered);
-
-  //   // Update expanded nodes only if there's a search term
-  //   if (searchTerm) {
-  //     setExpandedNodes(parentIdsToExpand);
-  //   } else {
-  //     setExpandedNodes(new Set()); // Collapse all when search term is cleared
-  //   }
-
-  //   setFilteredTreeData(treeData);
-  // }, [searchTerm, data]);
-
   useEffect(() => {
-    const flatData = flattenData(data);
-
-    const filtered = flatData.filter((category) =>
-      category.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const buildFilteredTree = (nodes, filteredIds) => {
-      return nodes?.reduce((acc, node) => {
-        if (filteredIds.has(node.id)) {
-          acc.push({
-            ...node,
-            children: node.children
-              ? buildFilteredTree(node.children, filteredIds)
-              : [],
-          });
-        } else if (node.children) {
-          const filteredChildren = buildFilteredTree(
-            node.children,
-            filteredIds
-          );
-          if (filteredChildren.length > 0) {
-            acc.push({
-              ...node,
-              children: filteredChildren,
-            });
-          }
-        }
-        return acc;
-      }, []);
-    };
-
-    const filteredIds = new Set(filtered.map((node) => node.id));
-    const treeData = buildFilteredTree(data, filteredIds);
-
-    const findAllParentIds = (nodes) => {
-      const parentIds = new Set();
-      const visited = new Set(); // Track visited nodes to prevent circular references
-
-      const findParent = (node, depth = 0) => {
-        if (depth > 100 || visited.has(node.id)) return; // Limit recursion depth and prevent revisiting nodes
-
-        visited.add(node.id);
-        if (node.parentId) {
-          parentIds.add(node.parentId);
-          const parentNode = flatData.find((n) => n.id === node.parentId);
-          if (parentNode) findParent(parentNode, depth + 1); // Increase depth with each recursive call
-        }
-      };
-
-      nodes.forEach(findParent);
-      return parentIds;
-    };
-
-    const parentIdsToExpand = findAllParentIds(filtered);
-
-    if (searchTerm) {
-      setExpandedNodes(parentIdsToExpand);
-    } else {
-      setExpandedNodes(new Set());
-    }
-
-    setFilteredTreeData(treeData);
-  }, [searchTerm, data]);
-  const handleSearchBoxClick = (e) => {
-    e.stopPropagation();
-    setIsVisible(true);
-  };
-
-  const handleOutsideClick = (e) => {
-    if (!categoryRef.current.contains(e.target)) {
-      setIsVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
-    return () => document.removeEventListener("click", handleOutsideClick);
-  }, []);
+    if (categoryids?.length > 0) setSelectedCategories(categoryids); // Sync with prop changes
+  }, [categoryids]);
 
   const handleSelectItem = (node) => {
     setSelectedCategories((prevSelected) => {
-      const isSelected = prevSelected.some((cat) => cat.id === node.id);
+      const isSelected = prevSelected.includes(node.id);
       const newSelected = isSelected
-        ? prevSelected.filter((cat) => cat.id !== node.id)
-        : [...prevSelected, node];
+        ? prevSelected.filter((id) => id !== node.id)
+        : [...prevSelected, node.id];
 
-      setCategory(
-        "categoryids",
-        newSelected.map((cat) => cat.id)
-      );
+      if (onChange) {
+        onChange(newSelected); // Notify parent about updated selection
+      }
       return newSelected;
     });
   };
@@ -213,6 +58,10 @@ const CategoriesComponent = () => {
       }
       return newExpandedNodes;
     });
+  };
+
+  const handleSearchBoxClick = (e) => {
+    e.stopPropagation();
   };
 
   return (
@@ -231,48 +80,43 @@ const CategoriesComponent = () => {
             className="w-full p-2 border placeholder:text-sm border-gray-300 rounded-md mb-2 outline-none focus:ring-blue-400 focus:ring-1"
           />
         </div>
-        <div
-          className="bg-gray-200 overflow-x-hidden overflow-y-scroll"
-          style={{
-            width: "100%",
-            border: "1px solid #000",
-            display: "flex",
-            flexWrap: "wrap",
-            overflow: "auto",
-            minHeight: 150,
-            marginTop: 8,
-            borderRadius: 4,
-            maxHeight: 200,
-          }}
-        >
+
+        <div className="bg-gray-200 overflow-x-hidden overflow-y-scroll w-full border border-[#000] flex flex-wrap overflow-auto min-h-[150px] mt-2 rounded-[4px] max-h-[200px] scrollbar-thin">
           <ul className="list-disc pl-5 flex items-center gap-2 flex-wrap">
-            {selectedCategories?.map((category) => (
-              <li
-                key={category.id}
-                className="flex items-center mb-1 bg-slate-100 px-2 py-1 rounded-[25px] w-max shadow-sm"
-              >
-                {category.name}
-                <button
-                  type="button"
-                  className="ml-2 text-red-500"
-                  onClick={() =>
-                    setSelectedCategories((prev) =>
-                      prev.filter((cat) => cat.id !== category.id)
-                    )
-                  }
-                >
-                  <MdClose size={12} className="text-red-700" />
-                </button>
-              </li>
-            ))}
+            {selectedCategories?.map((categoryId) => {
+              const category = data?.find((cat) => cat.id === categoryId);
+              return (
+                category && (
+                  <li
+                    key={categoryId}
+                    className="flex items-center mb-1 bg-slate-100 px-2 py-1 rounded-[25px] w-max shadow-sm"
+                  >
+                    {category.name}
+                    <button
+                      type="button"
+                      className="ml-2 text-red-500"
+                      onClick={() => handleSelectItem({ id: categoryId })}
+                    >
+                      <MdClose size={12} className="text-red-700" />
+                    </button>
+                  </li>
+                )
+              );
+            })}
           </ul>
         </div>
+
+        {errorMsg ? (
+          <div className="p-2 text-sm text-red-600">{errorMsg}</div>
+        ) : null}
+
         <BootstrapTabs
           disable_padding
           items={[{ title: "Categories" }, { title: "Most Used" }]}
           current_tab={current_tab}
           onClick={(e) => set_current_tab(e)}
         />
+
         <div
           style={{
             border: "1px solid #999",
@@ -285,9 +129,7 @@ const CategoriesComponent = () => {
         >
           <ul
             ref={categoryRef}
-            className={`list-none w-full h-full p-0
-                  rounded-sm py-4 px-2
-            `}
+            className={`list-none w-full h-full p-0 rounded-sm py-4 px-2`}
           >
             {filteredTreeData?.length > 0 ? (
               filteredTreeData?.map((node) => (
@@ -295,7 +137,7 @@ const CategoriesComponent = () => {
                   key={node.id}
                   node={node}
                   onSelect={handleSelectItem}
-                  selectedIds={selectedCategories?.map((cat) => cat.id)}
+                  selectedIds={selectedCategories}
                   onToggle={handleToggleNode}
                   expandedNodes={expandedNodes}
                 />
@@ -375,6 +217,7 @@ export const Row = ({ checked, id, onChange, name, childs }) => {
 const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
   const hasChildren = node.children && node.children.length > 0;
   const isOpen = expandedNodes.has(node.id);
+
   const isSelected = selectedIds.includes(node.id);
 
   return (
@@ -387,12 +230,11 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
           <button
             type="button"
             onClick={() => {
-              console.log("clicked");
               onToggle(node.id);
             }}
-            className="mr-2 text-blue-accent cursor-pointer"
+            className="mr-2 text-blue-accent text-sm cursor-pointer flex items-center"
           >
-            {isOpen ? <FaMinus size={14} /> : <FaPlus size={14} />}
+            [{isOpen ? <FaMinus size={8} /> : <FaPlus size={8} />}]
           </button>
         ) : (
           <span className="w-4" /> // Placeholder to align tree nodes

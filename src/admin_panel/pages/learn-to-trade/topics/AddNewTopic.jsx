@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { useFormik } from "formik";
-import { EditorState } from "draft-js";
+import { ContentState, convertFromHTML, EditorState } from "draft-js";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import CustomTextInput from "../../../../components/ui/CustomTextInput";
 import NewCourceCard from "../../../../pages/profile/new_course_components/new_cource_card";
@@ -12,6 +12,8 @@ import TagsComponent from "../../../../pages/profile/new_course_components/tags_
 import LTRTopicAttributes from "../../../components/LTRTopicAttributes";
 
 import * as Yup from "yup";
+import { useAddNewLTRTopicMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import toast from "react-hot-toast";
 
 const SUPPORTED_FORMATS = [
   "image/jpeg",
@@ -27,7 +29,7 @@ const AddNewTopic = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [openTopicFile, setOpenTopicFile] = useState(false);
 
-  const isLoading = false;
+  const [addNewLTRTopic, { isLoading }] = useAddNewLTRTopicMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -36,8 +38,8 @@ const AddNewTopic = () => {
       file: null,
       typeId: 1,
       statusId: 1,
-      forumId: "",
-      tags: "",
+      forumId: 1,
+      tags: [],
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required."),
@@ -59,6 +61,37 @@ const AddNewTopic = () => {
           }
         ),
     }),
+
+    onSubmit: async (values, { resetForm }) => {
+      const formData = new FormData();
+
+      formData.append("title", values?.title);
+      formData.append("description", values?.description);
+      formData.append("typeId", values?.typeId);
+      formData.append("statusId", values?.statusId);
+      formData.append("forumId", values?.forumId);
+      formData.append("topicfile", values?.file);
+      formData.append("topicTags", "tags");
+
+      try {
+        const response = await addNewLTRTopic({ data: formData }).unwrap();
+
+        if (response?.data?.messageCode === 200) {
+          toast.success("Topic created.");
+          resetForm();
+
+          const blocksFromHTML = convertFromHTML("");
+          const contentState = ContentState.createFromBlockArray(
+            blocksFromHTML.contentBlocks,
+            blocksFromHTML.entityMap
+          );
+          setEditorState(EditorState.createWithContent(contentState));
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! please try again.");
+      }
+    },
   });
 
   const handleEditorChange = (editorData) => {
@@ -71,7 +104,7 @@ const AddNewTopic = () => {
   return (
     <div className="flex flex-col px-8 py-10">
       <h1 className="font-semibold text-2xl text-white mb-4">Add New Topic</h1>
-      {console.log(formik.values)}
+
       <form
         onSubmit={formik.handleSubmit}
         className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
@@ -106,18 +139,18 @@ const AddNewTopic = () => {
                     <BiSave color="white" className="text-xl" />
                   </button>
 
-                  {formik.errors?.topicFile && formik.touched?.topicFile ? (
+                  {formik.errors?.file && formik.touched?.file ? (
                     <div className="absolute bg-red-600 max-w-[300px] bottom-[110%] left-0 rounded-lg p-2 text-white font-semibold text-sm">
-                      {formik.errors?.topicFile}
+                      {formik.errors?.file}
                     </div>
                   ) : null}
                 </div>
                 <LibraryModal
-                  file={formik?.values?.topicFile}
+                  file={formik?.values?.file}
                   set_file={(file) => {
-                    formik.setFieldValue("topicFile", file);
+                    formik.setFieldValue("file", file);
                   }}
-                  error={formik.errors?.topicFile}
+                  error={formik.errors?.file}
                   onBlur={formik.handleBlur}
                   accept_file="Image"
                   has_side_bar_action={false}
@@ -140,7 +173,8 @@ const AddNewTopic = () => {
 
           <div className="lg:hidden space-y-4">
             <LTRTopicAttributes name="topicAttributes" formik={formik} />
-            <TagsComponent name="courseTags" formik={formik} />
+            <TagsComponent name="tags" formik={formik} />
+            <PublishComponent isLoading={isLoading} />
           </div>
         </div>
 

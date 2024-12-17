@@ -15,15 +15,12 @@ import "react-calendar/dist/Calendar.css";
 import "./CustomCalendar.css";
 import ModalLayout from "../../common/modal_layout";
 import { CustomDivider } from "../../pages/profile/new_course_components/new_cource_card";
-import { get_course_meetings_api } from "../../admin_panel/pages/tutor/courses/course_atachments/service/course_metting_api";
-import {
-  loading_selector,
-  useAppSelector,
-} from "../../redux/features/generalSlice";
+
 import { LinearProgress } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
-import { NoAdultContent } from "@mui/icons-material";
-import { ImFileEmpty, ImFilesEmpty } from "react-icons/im";
+import { ImFilesEmpty } from "react-icons/im";
+import { MdClose } from "react-icons/md";
+import { useGetLTRWebinarsQuery } from "../../redux/features/learnToTrade/LearnToTradeApi";
 
 const MONTHS = [
   "Jan",
@@ -87,72 +84,129 @@ const NavButton = ({ label, onClick }) => (
 );
 
 const CustomCalendaar = ({ closingDate }) => {
-  const now = new Date();
-  const loading = useAppSelector(loading_selector);
   const [value, onChange] = useState(new Date());
   const [activeStartDate, setActiveStartDate] = useState(
     closingDate || new Date()
   );
+
+  const [selectedDate, setSelectedData] = useState(null);
   const [is_open, set_is_open] = React.useState({ open: false, value: null });
-  let [meetings, set_meethins] = React.useState([]);
+
+  const {
+    data: { messageData: webinars } = { messageData: [] },
+
+    isLoading,
+  } = useGetLTRWebinarsQuery({
+    data: {
+      id: null,
+      fromdateAndTime: "2020-08-25T01:03:00",
+      todateAndTime: "2020-08-25T01:03:00",
+      title: null,
+      categoryid: null,
+      pageindex: 1,
+      rowcount: 21,
+    },
+    skip: !selectedDate,
+  });
+
+  // 2020-08-25T01:03:00
   return (
     <div className="wrapper mt-16">
+      {console.log({ selectedDate })}
       <ModalLayout
         open={is_open.open}
         onClose={(val) => {
           set_is_open({ open: false, value: null });
-          set_meethins([]);
         }}
       >
         <div
           className="flex flex-col min-w-96 py-6 px-8"
           style={{ minWidth: 600 }}
         >
-          <h3 className="font-semibold">Meeting Schedule</h3>
+          <div className="flex items-center justify-between px-8 py-2">
+            <h3 className="font-semibold">Meeting Schedule</h3>
+            <span
+              onClick={() => set_is_open({ open: false, value: null })}
+              className="cursor-pointer hover:text-red-500 text-gray-700 transition-colors"
+            >
+              <MdClose size={20} />
+            </span>
+          </div>
           <div className="w-full my-2">
             <CustomDivider />
           </div>
-          {loading && (
+          {isLoading && (
             <LinearProgress
               style={{ backgroundColor: "transparent" }}
               color="primary"
             />
           )}
           <AnimatePresence mode="wait" initial={false}>
-            {!loading&& meetings.length && (
+            {!isLoading && webinars.length && (
               <motion.div
                 initial={{ height: 0 }}
-                key={meetings.length}
+                key={webinars.length}
                 exit={{ height: 0 }}
                 animate={{ height: "fit-content" }}
                 style={{ overflow: "hidden" }}
               >
-                {meetings.map((meet, i) => {
-                  return (
-                    <div
-                      key={i}
-                      className="flex justify-between items-center mb-2"
-                    >
-                      <h3 className="font-semibold">{meet?.name}</h3>
-                      <h3 className="font-semibold">
-                        {new Date(meet?.duedatetime).toLocaleDateString("en",{dateStyle:"short"})}
-                      </h3>
-                    </div>
-                  );
-                })}
+                <ul className="mt-3">
+                  {webinars.map((webinar) => (
+                    <li key={webinar.id} className="mb-4">
+                      <div className="flex items-center space-x-6">
+                        <img
+                          src={webinar.featuredimageurl}
+                          alt={webinar.title}
+                          className="w-32 h-32 object-cover rounded"
+                        />{" "}
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-700">
+                            {webinar.title}
+                          </h3>{" "}
+                          <p className="text-gray-600">
+                            {new Date(webinar.dateAndTime).toLocaleString()}
+                          </p>{" "}
+                          <p className="text-gray-700">{webinar.description}</p>{" "}
+                          {webinar.videofileurl && (
+                            <a
+                              href={webinar.videofileurl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 hover:underline"
+                            >
+                              Watch Video
+                            </a>
+                          )}
+                          {webinar.meetingLink && (
+                            <a
+                              href={webinar.meetingLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 hover:underline"
+                            >
+                              Join Meeting
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
             )}
 
-            {!loading && !meetings.length && (
+            {!isLoading && !webinars.length && (
               <motion.div
-                key={meetings.length}
-                initial={{ opacity: 0 ,height:0}}
-                animate={{ opacity: 1,height:"fit-content" }}
-                exit={{ opacity: 0 ,height:0}} 
+                key={webinars.length}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "fit-content" }}
+                exit={{ opacity: 0, height: 0 }}
                 className="w-full justify-center flex items-center overflow-hidden"
-              > 
-              <ImFilesEmpty />
-                <h4 className="text-black font-semibold ml-2">No meetings Scheduled</h4>
+              >
+                <ImFilesEmpty />
+                <h4 className="text-black font-semibold ml-2">
+                  No meetings Scheduled
+                </h4>
               </motion.div>
             )}
           </AnimatePresence>
@@ -197,15 +251,21 @@ const CustomCalendaar = ({ closingDate }) => {
               localDate.setHours(24, 0, 0, 0);
               let IsosString = localDate.toISOString();
               const [datePart, timePart] = IsosString.split("T");
-              get_course_meetings_api({
-                search: {
-                  duedatetime: `${datePart}T00:00:00`,
-                },
-              })
-                .then((res) => {
-                  set_meethins(res);
-                })
-                .catch((err) => {});
+              console.log({ datePart, timePart });
+              setSelectedData(`${datePart}T00:00:00`);
+
+              // get_course_meetings_api({
+              //   search: {
+              //     duedatetime: `${datePart}T00:00:00`,
+              //   },
+              // })
+              // .then((res) => {
+              //   // set_meethins(res);
+              // })
+              // .catch((err) => {
+              //   console.log(err);
+              //   toast.error("Something went wrong! please try again.");
+              // });
             }}
             value={value}
             tileClassName={({ date }) =>

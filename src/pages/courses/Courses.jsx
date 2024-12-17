@@ -2,6 +2,7 @@ import { IoSearch, IoOptions } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
 import CourseCard from "../../components/courses/CourseCard";
@@ -9,9 +10,12 @@ import { useGetCoursesQuery } from "../../redux/features/course/courseApii";
 import CustomRiseLoader from "../../utils/loaders/CustomRiseLoader";
 
 const Courses = () => {
-  const [search, setSearch] = useState("");
+  const location = useLocation();
+
+  const [search, setSearch] = useState(location?.state?.searchValue);
   const [level, setLevel] = useState(null);
-  const [price, setPrice] = useState(null);
+  const [isfree, setIsfree] = useState(null);
+  const [ispaid, setIspaid] = useState(null);
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
@@ -25,16 +29,23 @@ const Courses = () => {
         difficultyLevelId: level,
         courseTags: "",
         courseName: search,
-        coursePrice: price,
+        isfree: isfree,
+        ispaid: ispaid,
         pageindex: 1,
         rowcount: 50,
       },
     });
 
+  const clearAllFiltersHandler = () => {
+    setSearch("");
+    setLevel(null);
+    setIsfree(null);
+    setIspaid(null);
+  };
+
   return (
     <div>
       <Navbar />
-
       <div className="wrapper relative mt-10 text-white grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 items-start">
         <div className="hidden md:block col-span-1  md:col-span-1 lg:col-span-1 sticky top-0 left-0">
           <div className="w-full h-full mt-20 bg-blue-light shadow-sm rounded-md py-8 px-4 space-y-8">
@@ -116,9 +127,15 @@ const Courses = () => {
               <div className="space-y-1">
                 <label className="flex items-center gap-2">
                   <input
-                    value={price}
-                    checked={price === 0}
-                    onChange={() => setPrice(0)}
+                    checked={isfree === true}
+                    onChange={() => {
+                      if (isfree === null) {
+                        setIsfree(true);
+                        setIspaid(null);
+                      } else {
+                        setIsfree(null);
+                      }
+                    }}
                     className="scale-125 cursor-pointer"
                     type="checkbox"
                   />
@@ -127,9 +144,15 @@ const Courses = () => {
 
                 <label className="flex items-center gap-2">
                   <input
-                    value={price}
-                    checked={price === 1}
-                    onChange={() => setPrice(1)}
+                    checked={ispaid === true}
+                    onChange={() => {
+                      if (ispaid === null) {
+                        setIspaid(true);
+                        setIsfree(null);
+                      } else {
+                        setIspaid(null);
+                      }
+                    }}
                     className="scale-125 cursor-pointer"
                     type="checkbox"
                   />
@@ -138,7 +161,12 @@ const Courses = () => {
               </div>
             </div>
 
-            <button className="flex items-center capitalize text-sm text-blue-dark btn_bg-gradient_3  shadow-md rounded-lg py-1 px-2 hover:shadow-none">
+            <button
+              disabled={isLoading}
+              type="button"
+              onClick={clearAllFiltersHandler}
+              className="flex items-center disabled:cursor-not-allowed disabled:opacity-60 capitalize text-sm text-blue-dark btn_bg-gradient_3  shadow-md rounded-lg py-1 px-2 hover:shadow-none"
+            >
               <IoMdClose size={20} />
               clear all filters
             </button>
@@ -273,9 +301,15 @@ const Courses = () => {
                 <div className="space-y-1">
                   <label className="flex items-center gap-2">
                     <input
-                      value={price}
-                      checked={price === 0}
-                      onChange={() => setPrice(0)}
+                      checked={isfree === true}
+                      onChange={() => {
+                        if (isfree === null) {
+                          setIsfree(true);
+                          setIspaid(null);
+                        } else {
+                          setIsfree(null);
+                        }
+                      }}
                       className="scale-125 cursor-pointer"
                       type="checkbox"
                     />
@@ -284,9 +318,15 @@ const Courses = () => {
 
                   <label className="flex items-center gap-2">
                     <input
-                      value={price}
-                      checked={price === 1}
-                      onChange={() => setPrice(1)}
+                      checked={ispaid === true}
+                      onChange={() => {
+                        if (ispaid === null) {
+                          setIspaid(true);
+                          setIsfree(null);
+                        } else {
+                          setIspaid(null);
+                        }
+                      }}
                       className="scale-125 cursor-pointer"
                       type="checkbox"
                     />
