@@ -38,7 +38,6 @@ const Register = () => {
   const [trainingMethodDropdownOpen, setTrainingMehodDropdownOpen] =
     useState(false);
 
-  const navigate = useNavigate();
 
   // redux
   const dispatch = useDispatch();

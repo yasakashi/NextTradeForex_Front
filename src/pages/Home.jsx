@@ -12,7 +12,8 @@ import MoversAndShakers from "../components/home/moversandshakers/MoversAndShake
 import BodyFixedModal from "../common/BodyFixedModal";
 import CustomCalendaar from "../components/Calendar/CustomCalendar";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
+
+
 const Home = () => {
   return (
     <div className="bg-blue-dark w-full h-full">

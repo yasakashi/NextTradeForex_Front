@@ -1,5 +1,42 @@
 import NewCourceCard from "../../pages/profile/new_course_components/new_cource_card";
 
+const types = [
+  {
+    id: 1,
+    name: "Normal",
+  },
+  {
+    id: 2,
+    name: "Sticky",
+  },
+  {
+    id: 3,
+    name: "Super Sticky",
+  },
+];
+
+const statusItems = [
+  {
+    id: 1,
+    name: "Opne",
+  },
+  {
+    id: 2,
+    name: "Closed",
+  },
+  {
+    id: 3,
+    name: "Spam",
+  },
+  {
+    id: 4,
+    name: "Trash",
+  },
+  {
+    id: 5,
+    name: "Pending",
+  },
+];
 const LTRTopicAttributes = ({ formik }) => {
   return (
     <NewCourceCard title="Topic Attributes">
@@ -13,9 +50,11 @@ const LTRTopicAttributes = ({ formik }) => {
             onChange={(e) => formik.setFieldValue("typeId", e.target.value)}
             className="text-sm py-[6px] pl-2 rounded-sm bg-transparent border border-gray-500 outline-blue-600 active:text-blue-600"
           >
-            <option value={1}>Normal</option>
-            <option value={2}>Sticky</option>
-            <option value={3}>Super Sticky</option>
+            {types?.map((type, index) => (
+              <option key={index} value={type?.id}>
+                {type.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -28,11 +67,11 @@ const LTRTopicAttributes = ({ formik }) => {
             onChange={(e) => formik.setFieldValue("statusId", e.target.value)}
             className="text-sm py-[6px] pl-2 rounded-sm bg-transparent border border-gray-500 outline-blue-600 active:text-blue-600"
           >
-            <option value={1}>Open</option>
-            <option value={2}>Close</option>
-            <option value={3}>Spam</option>
-            <option value={4}>Trash</option>
-            <option value={5}>Pending</option>
+            {statusItems?.map((status, index) => (
+              <option key={index} value={status?.id}>
+                {status?.name}
+              </option>
+            ))}
           </select>
         </div>
 

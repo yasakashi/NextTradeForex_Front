@@ -217,7 +217,6 @@ const list = [
       { title: "Podcasts", route: "/learn-to-trade/podcasts" },
       { title: "Webinars", route: "/learn-to-trade/webinars" },
       { title: "Videos", route: "/learn-to-trade/videos" },
-      { title: "Meetings" },
     ],
   },
 
@@ -283,18 +282,18 @@ const list = [
       { title: "Try Premium Version" },
     ],
   },
-  {
-    title: "Posts",
-    Icon: TiPin,
-    sub_categories: [
-      { title: "All Posts" },
-      { title: "Add New" },
-      { title: "Tags" },
-      { title: "Categories" },
-      { title: "Reorder" },
-      { title: "Taxonomy Order" },
-    ],
-  },
+  // {
+  //   title: "Posts",
+  //   Icon: TiPin,
+  //   sub_categories: [
+  //     { title: "All Posts" },
+  //     { title: "Add New" },
+  //     { title: "Tags" },
+  //     { title: "Categories" },
+  //     { title: "Reorder" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
   {
     title: "Media",
     Icon: TiMediaPlayOutline,
@@ -335,7 +334,10 @@ const list = [
   {
     title: "Posts",
     Icon: FaPooStorm,
-    sub_categories: [{ title: "Forum post" }, { title: "Blog post" }],
+    sub_categories: [
+      { title: "Forum post", route: "/posts/forum-posts" },
+      { title: "Blog post", route: "/posts/blog-posts" },
+    ],
   },
   {
     title: "Pages",
@@ -348,7 +350,7 @@ const list = [
     Icon: BiSupport,
     sub_categories: [
       { title: "Dashboard" },
-      { title: "Tickets" },
+      { title: "Tickets", route: "/fluent-support/tickets" },
       { title: "Workflows" },
       { title: "Activities" },
       { title: "Settings" },

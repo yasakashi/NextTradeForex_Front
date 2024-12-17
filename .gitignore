@@ -11,10 +11,7 @@
 # production
 /build
 /dist
-<<<<<<< HEAD
-=======
 dist/
->>>>>>> amir
 
 # misc
 .DS_Store

@@ -1,67 +1,64 @@
 import React, { useId, useRef, useState } from "react";
-import place from "../../../../asset/img/placeholder.svg";
-import { CustomDivider } from "../../new_course_components/new_cource_card";
+import place from "../../../asset/img/placeholder.svg";
+
 import { BiEdit } from "react-icons/bi";
-import useMyCourses from "../hook/use_my_courses";
+
 import { AnimatePresence, motion } from "framer-motion";
 import { CgMoreVertical } from "react-icons/cg";
-import {
-  loading_level_2_selector,
-  loading_selector,
-  useAppSelector,
-} from "../../../../redux/features/generalSlice";
-import { LoadingSpinner } from "../../../../common/contained_button_primary";
+
 import { CircularProgress, IconButton, LinearProgress } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import store from "../../../../redux/store";
-import { set_course_data_state } from "../../../../redux/features/courseSlise";
-import { get_course_cover_image_api } from "../service/get_course_cover_image_api";
 import { AiFillPlusSquare } from "react-icons/ai";
-import { useGetCoursesQuery } from "../../../../redux/features/course/courseApii";
+import { useGetCoursesQuery } from "../../../redux/features/course/courseApii";
 
-const MyCourses = () => {
-  const { courses_list, publish_type, set_publish_type, remove_course_state } =
-    useMyCourses({ issitecourse: false });
+const MyPosts = () => {
+  const [publish_type, set_publish_type] = useState("");
 
-  const [searchCourses, setSearchCourses] = useState("");
+  const [openAddModal, setOpenAddModal] = useState(false);
 
-  const {
-    data: { messageData: myCourses } = { messageData: [] },
-    error,
-    isLoading,
-  } = useGetCoursesQuery({
-    data: {
-      Id: null,
-      authorId: null,
-      allowQA: null,
-      isPublicCourse: null,
-      difficultyLevelId: null,
-      courseTags: "",
-      courseName: "new",
-      pageindex: 1,
-      rowcount: 3,
-    },
-  });
+  const navigate = useNavigate();
 
-  const searchCoursesHandler = (e) => {
-    setSearchCourses(e.target.value);
-  };
+  const isLoading = false;
+  const posts = ["amir"];
 
-  const loading = useAppSelector(loading_selector);
-  const loading_level_2 = useAppSelector(loading_level_2_selector);
   return (
     <div className="flex p-4 flex-col w-full h-full ">
       <div className="flex flex-wrap justify-end items-center gap-2">
-        {/* <h2 className="text-xl text-white my-4">My courses</h2> */}
-        <Link
-          to="/user-profile/myCourses/new-course"
-          className="flex items-center gap-2 bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] shadow-xl text-blue-dark px-4 py-2 rounded-md text-base font-semibold"
-        >
-          <AiFillPlusSquare size={20} />
-          Create a New Course
-        </Link>
+        <div className="w-[220px] relative">
+          <button
+            onClick={() => setOpenAddModal((prev) => !prev)}
+            type="button"
+            className="flex w-full text-nowrap items-center gap-2 bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] shadow-xl text-blue-dark px-4 py-2 rounded-md text-base font-semibold"
+          >
+            <AiFillPlusSquare size={20} />
+            Create a New post
+          </button>
+
+          {openAddModal ? (
+            <div className="absolute w-full top-[105%] rounded-md p-2 bg-[#F0D785]">
+              <ul className="text-sm text-blue-light space-y-3 cursor-pointer font-semibold">
+                <li
+                  onClick={() =>
+                    navigate("/user-profile/my-posts/add-new-forum-post")
+                  }
+                  className="hover:underline border-b border-b-blue-dark pb-3"
+                >
+                  Add Forum Post
+                </li>
+                <li
+                  onClick={() =>
+                    navigate("/user-profile/my-posts/add-new-blog-post")
+                  }
+                  className="hover:underline "
+                >
+                  Add Blog Post
+                </li>
+              </ul>
+            </div>
+          ) : null}
+        </div>
       </div>{" "}
-      <p className="text-white text-2xl mb-3">My Courses</p>
+      <p className="text-white text-2xl mb-3">My Posts</p>
       <div className="w-full">
         <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-white">
           <ul className="flex flex-wrap -mb-px">
@@ -78,13 +75,13 @@ const MyCourses = () => {
                     set_publish_type(item);
                   }}
                 >
-                  {item} ({i == 0 ? courses_list.length : 0})
+                  {item} ({i == 0 ? posts.length : 0})
                 </li>
               );
             })}
           </ul>
         </div>
-        {loading && (
+        {isLoading && (
           <div className="w-full">
             <LinearProgress
               style={{ backgroundColor: "transparent" }}
@@ -94,14 +91,13 @@ const MyCourses = () => {
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:grid-cols-3">
           <AnimatePresence mode="sync" initial={false}>
-            {myCourses?.map((item, i) => {
+            {posts?.map((item, i) => {
               return (
                 <CourceCard
                   key={i}
                   props={{
                     ...item,
-                    updater: remove_course_state,
-                    loading: loading_level_2,
+                    loading: isLoading,
                   }}
                 />
               );
@@ -113,7 +109,7 @@ const MyCourses = () => {
   );
 };
 
-export default MyCourses;
+export default MyPosts;
 
 export const CourceCard = ({ props }) => {
   const [show_edit, set_show_edit] = React.useState(false);
@@ -153,11 +149,17 @@ export const CourceCard = ({ props }) => {
         </p>
         <p className="text-gray-200 text-sm pl-1">{props?.courseDescription}</p>
       </div>
-      <CustomDivider />
+      {/* <CustomDivider /> */}
       <div className="flex w-full justify-between mt-4 relative items-center">
         <p className="text-white text-sm">
           Price :{" "}
-          {props?.coursePrice === 0 ? "Free" : <span className="text-gray-200 font-bold text-base">$ {props?.coursePrice}</span>}
+          {props?.coursePrice === 0 ? (
+            "Free"
+          ) : (
+            <span className="text-gray-200 font-bold text-base">
+              $ {props?.coursePrice}
+            </span>
+          )}
         </p>
         <div className="flex w-fit relative">
           {show_edit && (
@@ -192,12 +194,12 @@ export const CourceCard = ({ props }) => {
               className="absolute bg-slate-500 right-0 p-3 pt-1 pb-1 rounded-sm shadow-sm"
             >
               <button
-                disabled={loading}
+                disabled={isLoading}
                 className="text-sm text-white relative h-6 w-10 flex items-center justify-center"
                 onClick={() => updater(props.id)}
               >
-                {!loading && "Delete"}
-                {loading && (
+                {!isLoading && "Delete"}
+                {isLoading && (
                   <CircularProgress
                     style={{ width: 16, height: 16, color: "white" }}
                   />
@@ -211,7 +213,6 @@ export const CourceCard = ({ props }) => {
   );
 };
 export const CourseImgTag = ({ id, img }) => {
-  
   const [cover, set_cover] = React.useState(null);
   React.useEffect(() => {
     if (img) return;
@@ -305,7 +306,6 @@ export const CourseImgTag = ({ id, img }) => {
 // };
 
 const types = ["publish", "pending", "draft"];
-
 
 export const useOutsideClick = (callback) => {
   const ref = useRef(null);
