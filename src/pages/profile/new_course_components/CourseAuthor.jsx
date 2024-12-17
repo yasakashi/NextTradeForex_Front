@@ -6,6 +6,7 @@ const CourseAuthor = ({ formik }) => {
   return (
     <NewCourceCard title="Author">
       <div className="p-4 w-full flex flex-col gap-4">
+        {console.log({data})}
         <select
           name="authorId"
           value={formik.values?.authorId}

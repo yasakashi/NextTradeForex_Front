@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { CustomButton } from "../../../../components/ui/CustomButton";
+import LibraryModal from "../../../../pages/profile/new_course_components/library_modal";
 
-const DFlipSource = () => {
-
-  const selectPDFRef = useRef(null);
+const DFlipSource = ({ formik }) => {
+  const [openPdfFile, setOPenPdfFile] = useState(false);
+  const [openPdfThumb, setOpenPdfThumb] = useState(false);
 
   return (
     <div className="space-y-8 mb-8">
@@ -20,9 +21,15 @@ const DFlipSource = () => {
           </p>
         </div>
         <div>
-          <select className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]">
-            <option>PDF File</option>
-            <option>Images</option>
+          <select
+            name="bookSourceTypeId"
+            value={formik.values.bookSourceTypeId}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="w-[160px] text-base text-[#2c3338] border border-gray-600 py-[6px] pl-2 bg-transparent rounded-sm outline-[#0295d0]"
+          >
+            <option value={1}>PDF File</option>
+            <option value={2}>Images</option>
           </select>
         </div>
       </div>
@@ -40,14 +47,48 @@ const DFlipSource = () => {
         </div>
         <div>
           <div className="flex items-center text-base text-[#2c3338] py-[6px] pl-2 bg-transparent rounded-sm">
-            <div className="w-full border border-gray-600 py-[6px] px-2">
-              <span className="text-gray-500 text-sm">Select a Pdf File</span>
+            <div className="w-full border border-gray-600 py-[6px] px-2 overflow-hidden text-nowrap">
+              {formik.values?.pdffile ? (
+                <input
+                  type="text"
+                  readOnly
+                  value={formik.values?.pdffile?.name}
+                  className="border-0 outline-none w-full h-full"
+                />
+              ) : (
+                <span className="text-gray-500 text-sm">Select a Pdf File</span>
+              )}
             </div>
-            <CustomButton className="text-nowrap rounded-l-none">
+            <CustomButton
+              type="button"
+              onClick={() => setOPenPdfFile(true)}
+              className="text-nowrap rounded-l-none"
+            >
               Select PDF
             </CustomButton>
           </div>
+
+          {formik.errors?.pdffile && formik.touched?.pdffile ? (
+            <span className="text-sm text-red-600 p-1">
+              {formik.errors.pdffile}
+            </span>
+          ) : null}
         </div>
+
+        <LibraryModal
+          file={formik?.values?.pdffile}
+          set_file={(file) => {
+            formik.setFieldValue("pdffile", file);
+          }}
+          error={formik.errors?.pdffile}
+          onBlur={formik.handleBlur}
+          accept_file="PDF"
+          has_side_bar_action={false}
+          title="Add Media"
+          open={openPdfFile}
+          set_open={setOPenPdfFile}
+          onSave={() => setOPenPdfFile(false)}
+        />
       </div>
 
       <div className="w-full h-[1px] bg-gray-300"></div>
@@ -65,14 +106,47 @@ const DFlipSource = () => {
         </div>
         <div>
           <div className="flex items-center text-base text-[#2c3338] py-[6px] pl-2 bg-transparent rounded-sm">
-            <div className="w-full border border-gray-600 py-[6px] px-2">
-              <span className="text-gray-500 text-sm">Select an image</span>
+            <div className="w-full border border-gray-600 py-[6px] px-2 text-nowrap overflow-hidden">
+              {formik.values?.pdfthumbnailimage ? (
+                <input
+                  type="text"
+                  readOnly
+                  value={formik.values?.pdfthumbnailimage?.name}
+                  className="border-0 outline-none w-full h-full"
+                />
+              ) : (
+                <span className="text-gray-500 text-sm">Select an Image</span>
+              )}
             </div>
-            <CustomButton className="text-nowrap rounded-l-none">
-              Select PDF
+            <CustomButton
+              type="button"
+              onClick={() => setOpenPdfThumb(true)}
+              className="text-nowrap rounded-l-none"
+            >
+              Select Image
             </CustomButton>
           </div>
+          {formik.errors?.pdfthumbnailimage && formik.touched?.pdfthumbnailimage ? (
+            <span className="text-sm text-red-600 p-1">
+              {formik.errors.pdfthumbnailimage}
+            </span>
+          ) : null}
         </div>
+
+        <LibraryModal
+          file={formik?.values?.pdfthumbnailimage}
+          set_file={(file) => {
+            formik.setFieldValue("pdfthumbnailimage", file);
+          }}
+          error={formik.errors?.pdfthumbnailimage}
+          onBlur={formik.handleBlur}
+          accept_file="Image"
+          has_side_bar_action={false}
+          title="Add Media"
+          open={openPdfThumb}
+          set_open={setOpenPdfThumb}
+          onSave={() => setOpenPdfThumb(false)}
+        />
       </div>
     </div>
   );

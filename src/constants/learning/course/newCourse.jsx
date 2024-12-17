@@ -31,7 +31,7 @@ export const courseValidationSchema = Yup.object({
       }
     ),
   excerpt: Yup.string(),
-  authorId: Yup.string().required("Author name is required."),
+  // authorId: Yup.string().required("Author name is required."),
   maximumStudents: Yup.number()
     .required("Maximum number of students is required")
     .typeError("Must be a number"),
@@ -50,7 +50,7 @@ export const courseValidationSchema = Yup.object({
   requirementsInstructions: Yup.string(),
   courseIntroVideo: Yup.string().url("Enter a valid YouTube link"),
   // categoryids: Yup.array().of(Yup.string().required("Category ID is required")),
-  coursetags: Yup.array()
+  tags: Yup.array()
     .min(1, "Each tag should have at least 1 character")
     .max(4, "You can add up to 10 tags only"),
   featuredImage: Yup.mixed()
@@ -77,7 +77,7 @@ export const courseInitialValues = {
   courseDescription: "",
   courseFile: null, // Assuming this is a file input
   excerpt: "",
-  authorId: "",
+  authorId: 1,
   maximumStudents: 1, // Empty string for number field initially
   difficultyLevelId: 1,
   isPublicCourse: false, // default to false
@@ -89,7 +89,7 @@ export const courseInitialValues = {
   materialsIncluded: "",
   requirementsInstructions: "",
   courseIntroVideo: "",
-  categoryids: "2", // Empty array for category IDs
-  courseTags: [], // Empty array for tags
+  categoryids: [], // Empty array for category IDs
+  tags: [], // Empty array for tags
   featuredImage: null, // Assuming this is a file input
 };

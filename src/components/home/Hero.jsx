@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import HeroTemp from "../HeroTemp";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
+  const searchCoursesHandler = () => {
+    navigate("/course-category/top-courses", {
+      state: {
+        searchValue: search,
+      },
+    });
+  };
   return (
     <HeroTemp>
       <div className="relative body_max_width">
@@ -22,9 +32,13 @@ const Hero = () => {
                   className="bg-transparent border-none outline-none w-full h-full pr-5 placeholder:text-gray-600"
                   type="text"
                   placeholder="Search ..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <Link
-                  to="/course-category/top-courses"
+                <button
+                  type="button"
+                  onClick={searchCoursesHandler}
+                  // to="/course-category/top-courses"
                   className="flex w-max h-full items-center  bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] px-3 rounded-lg  space-x-2"
                 >
                   <svg
@@ -43,7 +57,7 @@ const Hero = () => {
                   </svg>
 
                   <span className="w-max hidden md:block">Search Courses</span>
-                </Link>
+                </button>
               </div>
             </div>
             {/* //////////////////////////// */}

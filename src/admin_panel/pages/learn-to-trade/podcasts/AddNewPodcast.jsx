@@ -5,29 +5,106 @@ import NewCourceCard from "../../../../pages/profile/new_course_components/new_c
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import LibraryModal from "../../../../pages/profile/new_course_components/library_modal";
 import { useEffect, useState } from "react";
-import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import ExcerptComponent from "../../../../pages/profile/new_course_components/excerpt_component";
 import PublishComponent from "../../../../pages/profile/new_course_components/publish_component";
 import FeaturedImageComponent from "../../../../pages/profile/new_course_components/featured_image_component";
 import { MdClose } from "react-icons/md";
 import CategoriesComponent from "../../../../pages/profile/new_course_components/categories_component";
+import { useAddNewLTRPodcastMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+
+import * as Yup from "yup";
+
+const FILE_SIZE = 500 * 1024; // 500 KB
+const SUPPORTED_IMAGE_FORMATS = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
+
+const SUPPORTED_AUDIO_FORMATS = ["audio/mpeg", "audio/wav", "audio/mp3"];
+
+const podcastValidationShcema = Yup.object({
+  title: Yup.string().required("Title is required."),
+  description: Yup.string().required("Description is required."),
+  audioFile: Yup.mixed()
+    .required("Audio file is required.")
+    .test("fileSize", "File must be less than 500 KB", (value) => {
+      return !value || (value && value.size <= FILE_SIZE);
+    })
+    .test("fileFormat", "Unsupported format", (value) => {
+      return !value || (value && SUPPORTED_AUDIO_FORMATS.includes(value.type));
+    }),
+
+  featuredImage: Yup.mixed()
+    .optional()
+    .nullable()
+    .test("fileSize", "File must be less than 500 KB", (value) => {
+      return !value || (value && value.size <= FILE_SIZE);
+    })
+    .test("fileFormat", "Unsupported format", (value) => {
+      return !value || (value && SUPPORTED_IMAGE_FORMATS.includes(value.type));
+    }),
+  categoryids: Yup.array()
+    .of(Yup.number().required("Category is required."))
+    .min(1, "At least one category is required."),
+});
 
 const AddNewPodcast = () => {
   const [openAudioFile, setOPenAudioFile] = useState(false);
 
   const [audioURL, setAudioURL] = useState(null);
-  const isLoading = false;
+
+  const [addNewLTRPodcast, { isLoading }] = useAddNewLTRPodcastMutation();
 
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
       audioFile: null,
-      downloadable: true,
-      subTitleLanguage: "",
-      subTitleFile: null,
       excerpt: "",
       featuredImage: null,
+      categoryids: [772],
+    },
+    validationSchema: podcastValidationShcema,
+
+    onSubmit: async (values, { resetForm }) => {
+      const formData = new FormData();
+
+      formData.append("title", values?.title);
+      formData.append("description", values?.description);
+      formData.append("excerpt", values?.excerpt);
+
+      values?.categoryids.forEach((categoryId) =>
+        formData.append("categories[]", categoryId)
+      );
+
+      if (values?.audioFile instanceof File) {
+        formData.append("audiofile", values?.audioFile);
+      }
+
+      if (values?.featuredImage instanceof File) {
+        formData.append("featuredImge", values?.featuredImage);
+      }
+
+      try {
+        const response = await addNewLTRPodcast({ data: formData }).unwrap();
+
+        if (response?.data?.messageCode === 200) {
+          toast.success("Topic created.");
+          resetForm();
+
+          const blocksFromHTML = convertFromHTML("");
+          const contentState = ContentState.createFromBlockArray(
+            blocksFromHTML.contentBlocks,
+            blocksFromHTML.entityMap
+          );
+          setEditorState(EditorState.createWithContent(contentState));
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! please try again.");
+      }
     },
   });
 
@@ -39,7 +116,7 @@ const AddNewPodcast = () => {
 
   const clearnAuio = () => {
     formik.setFieldValue("audioFile", null);
-    setAudioURL(null)
+    setAudioURL(null);
   };
 
   return (
@@ -104,7 +181,7 @@ const AddNewPodcast = () => {
 
                       <audio
                         className="w-full overflow-hidden m-auto rounded-lg object-contain"
-                        autoPlay
+                        autoPlay={false}
                         playsInline
                         controls
                       >
@@ -119,18 +196,26 @@ const AddNewPodcast = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="p-3 flex items-center gap-2">
-                      <span className="text-[13px] text-gray-700 font-normal">
-                        No file selected
-                      </span>
-                      <CustomButton
-                        type="button"
-                        onClick={() => setOPenAudioFile(true)}
-                        size="sm"
-                      >
-                        Add File
-                      </CustomButton>
-                    </div>
+                    <>
+                      <div className="p-3 flex items-center gap-2">
+                        <span className="text-[13px] text-gray-700 font-normal">
+                          No file selected
+                        </span>
+                        <CustomButton
+                          type="button"
+                          onClick={() => setOPenAudioFile(true)}
+                          size="sm"
+                        >
+                          Add File
+                        </CustomButton>
+                      </div>
+
+                      {formik.errors?.audioFile && (
+                        <span className="text-sm p-4 text-red-600">
+                          {formik.errors.audioFile}
+                        </span>
+                      )}
+                    </>
                   )}
 
                   <div>
@@ -190,7 +275,7 @@ const AddNewPodcast = () => {
           </div>
 
           {/* categories */}
-          <CategoriesComponent />
+          <CategoriesComponent name="categoryids" formik={formik} />
 
           <div className="lg:hidden space-y-4">
             <PublishComponent isLoading={isLoading} />

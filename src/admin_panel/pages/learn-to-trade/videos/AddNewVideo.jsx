@@ -10,13 +10,22 @@ import ExcerptComponent from "../../../../pages/profile/new_course_components/ex
 import PublishComponent from "../../../../pages/profile/new_course_components/publish_component";
 import FeaturedImageComponent from "../../../../pages/profile/new_course_components/featured_image_component";
 import CategoriesComponent from "../../../../pages/profile/new_course_components/categories_component";
+import LTRCategory from "../../../components/LTRCategory";
+import {
+  useAddNewLTRVideoMutation,
+  useAddNewLTRVideoSubtitleMutation,
+} from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import toast from "react-hot-toast";
 
 const AddNewVideo = () => {
   const [openVideoFile, setOpenVideoFile] = useState(false);
   const [openSubFile, setOpenSubFile] = useState(false);
 
   const [videoURL, setVideoURL] = useState(null);
-  const isLoading = false;
+
+  const [addNewLTRVideo, { isLoading }] = useAddNewLTRVideoMutation();
+  const [addNewLTRVideoSubtitle, { isLoading: videoSubLoading }] =
+    useAddNewLTRVideoSubtitleMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -28,6 +37,54 @@ const AddNewVideo = () => {
       subTitleFile: null,
       excerpt: "",
       featuredImage: null,
+      lessonCategoryId: 1,
+      categoryIds: [],
+    },
+    onSubmit: async (values, { resetForm }) => {
+      const formData = new FormData();
+      const subData = new FormData();
+
+      subData.append("lang", values?.subTitleLanguage);
+      subData.append("subtitlefile", values?.subTitleFile);
+
+      formData.append("title", values?.title);
+      formData.append("description", values?.description);
+      formData.append("lessonCategoryLevelId", values?.lessonCategoryId);
+      if (values?.excerpt) formData.append("excerpt", values?.excerpt);
+      if (values.webinarFile) {
+        formData.append("videofile", values.webinarFile);
+      }
+      if (values.liveMeetingLink) {
+        formData.append("downloadable", values.downloadable);
+      }
+      if (values.featuredImage) {
+        formData.append("featuredImage", values.featuredImage);
+      }
+
+      values?.categoryIds.forEach((categoryId) =>
+        formData.append("categoriesIds[]", categoryId)
+      );
+      try {
+        const res = await addNewLTRVideo({ data: formData }).unwrap();
+
+        if (res?.messageCode === 200) {
+          subData.append("videoid", res?.messageData?.id);
+
+          const subRes = await addNewLTRVideoSubtitle({
+            data: subData,
+          }).unwrap();
+          if (subRes?.messageCode === 200) {
+            toast.success("New Video Created.");
+            resetForm();
+            setVideoURL(null);
+          }
+          console.log({ subRes });
+        }
+        console.log({ res });
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong! please try again.");
+      }
     },
   });
 
@@ -40,7 +97,7 @@ const AddNewVideo = () => {
   return (
     <div className="flex flex-col px-8 py-10">
       <h1 className="font-semibold text-2xl text-white mb-4">Add New Video</h1>
-
+      {console.log(formik.values)}
       <form
         onSubmit={formik.handleSubmit}
         className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
@@ -87,7 +144,6 @@ const AddNewVideo = () => {
                     {videoURL ? (
                       <video
                         className="w-full h-full overflow-hidden rounded-lg object-contain"
-                        autoPlay
                         playsInline
                         controls
                       >
@@ -201,9 +257,18 @@ const AddNewVideo = () => {
                           <td className="border border-collapse border-gray-300 p-2">
                             <div className="flex items-center gap-2">
                               <div>
-                                <span className="text-[13px] font-normal text-gray-600">
-                                  No file selected
-                                </span>
+                                {formik.values?.subTitleFile ? (
+                                  <input
+                                    type="text"
+                                    className="text-[13px] font-normal text-gray-600 text-nowrap overflow-hidden border-none outline-none w-full h-full"
+                                    value={formik.values?.subTitleFile?.name}
+                                    readOnly
+                                  />
+                                ) : (
+                                  <span className="text-[13px] font-normal text-gray-600">
+                                    No file selected
+                                  </span>
+                                )}
                               </div>
                               <CustomButton
                                 type="button"
@@ -246,8 +311,17 @@ const AddNewVideo = () => {
             <FeaturedImageComponent name="featuredImage" formik={formik} />
           </div>
 
+          <div className="lg:hidden space-y-4">
+            <LTRCategory formik={formik} />
+          </div>
+
           {/* categories */}
-          <CategoriesComponent />
+          <CategoriesComponent
+            categoryids={formik.values.categoryIds}
+            onChange={(updatedCategoryIds) =>
+              formik.setFieldValue("categoryIds", updatedCategoryIds)
+            }
+          />
 
           <div className="lg:hidden space-y-4">
             <PublishComponent isLoading={isLoading} />
@@ -255,6 +329,7 @@ const AddNewVideo = () => {
         </div>
 
         <div className="hidden lg:block lg:col-span-1">
+          <LTRCategory formik={formik} />
           <PublishComponent isLoading={isLoading} />
           <FeaturedImageComponent name="featuredImage" formik={formik} />
         </div>
@@ -263,3 +338,29 @@ const AddNewVideo = () => {
   );
 };
 export default AddNewVideo;
+
+// const videoConfig = {
+//     file: {
+//       tracks: [
+//         {
+//           kind: "subtitles",
+//           src: "./videos/test_captions.srt",
+//           srcLang: "en",
+//           label: "English",
+//           default: true,
+//         },
+//       ],
+//     },
+//   };
+
+// ...
+// //component markup for styling, ReactPlayer is wrapped in a container
+// <ReactPlayer
+//     url={videoUrl}
+//     controls={true}
+//     width="100%"
+//     height="100%"
+//     playing={true}
+//     muted={true} //temporary fix since videos with audio don't autoplay on most browsers
+//     config={videoConfig}
+// />

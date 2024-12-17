@@ -9,10 +9,7 @@ import CustomTextField, {
   CustomTextArea,
 } from "../../../common/custom_text_field";
 import imgTest from "../../../asset/img/AUDUSD-Technical-Analysis_id_6897558c-55cd-4da4-86fc-0699d8a01460_size775-1-300x163.png.jpg";
-import {
-  ArrowLeftCircleIcon,
-  CheckBadgeIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline";
 import { CheckIcon } from "@heroicons/react/16/solid";
 import { CustomDivider } from "./new_cource_card";
 import ContainedButtonPrimary from "../../../common/contained_button_primary";
@@ -65,7 +62,7 @@ const LibraryModal = ({
         <div className="h-full w-full flex flex-col">
           <div className="flex w-full justify-between p-4 pb-0">
             <h2 className="text-xl font-medium text-black">{title}</h2>
-            <button onClick={() => set_open(false)}>
+            <button type="button" onClick={() => set_open(false)}>
               <CgClose color="black" />
             </button>
           </div>

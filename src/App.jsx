@@ -84,6 +84,9 @@ import Courses from "./pages/courses/Courses";
 import CategoriesScreen from "./admin_panel/pages/categories/view/categories_screen";
 import LearnToTradeScreen from "./pages/learn_to_trade/LearnToTradeScreen";
 import LearnToTradeSubCategories from "./pages/learn_to_trade/LearnToTradeSubCategories";
+import MyPosts from "./components/profile/myPosts/MyPosts";
+import AddNewForumPost from "./admin_panel/pages/posts/Forum/AddNewForumPost";
+import AddNewBlogPost from "./admin_panel/pages/posts/blog/AddNewBlogPost";
 
 function App({ auth }) {
   const token = localStorage.getItem("loginToken");
@@ -156,6 +159,16 @@ function App({ auth }) {
                 <Route
                   path="/user-profile/myCourses/new-course"
                   element={<NewCourse />}
+                />
+
+                <Route
+                  path="/user-profile/my-posts/add-new-forum-post"
+                  element={<AddNewForumPost />}
+                />
+
+                <Route
+                  path="/user-profile/my-posts/add-new-blog-post"
+                  element={<AddNewBlogPost />}
                 />
                 <Route
                   path="/user-profile/myCourses/edit-course/:id"
@@ -251,6 +264,8 @@ function App({ auth }) {
                     path="/user-profile/myCourses"
                     element={<MyCourses />}
                   />
+
+                  <Route path="/user-profile/my-posts" element={<MyPosts />} />
 
                   <Route
                     path="/user-profile/withdrawals"
