@@ -21,6 +21,7 @@ import LessonReadOnlyPdf from "./LessonReadOnlyPdf";
 import LessonTable from "./LessonTable";
 import LessonWidgetScript from "./LessonWidgetScript";
 import LessonAudioBook from "./LessonAudioBook";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const dropdownOptions = [
   { label: "Text Only", value: "TextOnly" },
@@ -103,8 +104,9 @@ const AddNewLesson = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Add New Lesson</h1>
+      {/* <h1 className="font-semibold text-2xl text-white mb-4">Add New Lesson</h1> */}
 
+      <AdminPanelTitle title="Add New Lesson" />
       <form
         onSubmit={formik.handleSubmit}
         className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"

@@ -17,6 +17,7 @@ import { useAddNewLTRWebinarMutation } from "../../../../redux/features/learnToT
 import toast from "react-hot-toast";
 
 import * as Yup from "yup";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const FILE_SIZE = 500 * 1024; // 500 KB
 const SUPPORTED_IMAGE_FORMATS = [
@@ -135,10 +136,10 @@ const AddNewWebinar = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">
+      {/* <h1 className="font-semibold text-2xl text-white mb-4">
         Add New Webinar
-      </h1>
-
+      </h1> */}
+      <AdminPanelTitle title="Add New Webinar" />
       <form
         onSubmit={formik.handleSubmit}
         className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"

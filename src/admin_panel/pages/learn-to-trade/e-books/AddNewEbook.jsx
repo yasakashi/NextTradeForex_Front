@@ -13,6 +13,7 @@ import DflipSettings from "./DFlipSettings";
 import * as Yup from "yup";
 import { useAddNewLTREBookMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 const SUPPORTED_FORMATS = [
   "image/jpeg",
   "image/jpg",
@@ -180,9 +181,9 @@ const AddNewEBook = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Add New Book</h1>
-      {console.log(formik.errors)}
+      {/* <h1 className="font-semibold text-2xl text-white mb-4">Add New Book</h1> */}
 
+      <AdminPanelTitle title="Add New Book" />
       <form
         onSubmit={formik.handleSubmit}
         className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"

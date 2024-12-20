@@ -189,7 +189,7 @@ const EditCategoryComponent = () => {
       onSubmit={formik.handleSubmit}
       className="pb-16 wrapper w-full max-w-[800px] mx-auto"
     >
-      {console.log(formik.values)}
+     
       <h4 className="mb-6 text-lg text-white">Add new Category</h4>
 
       <div className="mt-4">

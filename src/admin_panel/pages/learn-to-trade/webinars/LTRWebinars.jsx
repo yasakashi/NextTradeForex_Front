@@ -12,6 +12,7 @@ import { IoTrashOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import useClickOutside from "../../../../hooks/useClickOutside";
 import CustomRadioButton from "../../categories/view/components/customRadioButton";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const LTRWebinars = () => {
   const [showModal, setShowModal] = useState(false);
@@ -61,8 +62,8 @@ const LTRWebinars = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Webinars</h1>
-
+      {/* <h1 className="font-semibold text-2xl text-white mb-4">Webinars</h1> */}
+      <AdminPanelTitle title="Webinars" />
       <div>
         <CustomButton
           onClick={() =>

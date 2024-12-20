@@ -121,7 +121,7 @@ const CategoriesTable = ({ data }: { data: any[] }) => {
         },
       },
     ],
-    state: { showLoadingOverlay: loading,showSkeletons:loading },
+    state: { showLoadingOverlay: loading, showSkeletons: loading },
     enableStickyHeader: true,
     positionGlobalFilter: "left",
     enableHiding: true,

@@ -16,6 +16,7 @@ import {
   useAddNewLTRVideoSubtitleMutation,
 } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const AddNewVideo = () => {
   const [openVideoFile, setOpenVideoFile] = useState(false);
@@ -96,8 +97,8 @@ const AddNewVideo = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Add New Video</h1>
-      {console.log(formik.values)}
+      {/* <h1 className="font-semibold text-2xl text-white mb-4">Add New Video</h1> */}
+      <AdminPanelTitle title="Add New Video" />
       <form
         onSubmit={formik.handleSubmit}
         className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"

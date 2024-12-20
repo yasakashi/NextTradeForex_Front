@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import AdminPage from "./pages/admin/AdminPage";
 import "./App.css";
 import {
   CommunityGroup,
@@ -150,7 +149,6 @@ function App({ auth }) {
                   path="/partnership/profile-view/:userid"
                   element={<PartnershipProfileView />}
                 />
-                <Route path="/admin" element={<AdminPage />} />
                 <Route path="/course/:courseId" element={<CourseDetails />} />
                 <Route
                   path="/courses/:coursename/:courseId/lesson/:lessonId"

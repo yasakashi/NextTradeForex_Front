@@ -10,6 +10,7 @@ import {
 import { IoTrashOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import useClickOutside from "../../../../hooks/useClickOutside";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const LTRTopics = () => {
   const [showModal, setShowModal] = useState(false);
@@ -58,7 +59,7 @@ const LTRTopics = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Topics</h1>
+      <AdminPanelTitle title="Topics" />
 
       <div>
         <CustomButton

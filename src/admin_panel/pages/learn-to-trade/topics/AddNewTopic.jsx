@@ -14,6 +14,7 @@ import LTRTopicAttributes from "../../../components/LTRTopicAttributes";
 import * as Yup from "yup";
 import { useAddNewLTRTopicMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const SUPPORTED_FORMATS = [
   "image/jpeg",
@@ -38,7 +39,7 @@ const AddNewTopic = () => {
       file: null,
       typeId: 1,
       statusId: 1,
-      forumId: 1,
+      forumId: 772,
       tags: [],
     },
     validationSchema: Yup.object({
@@ -69,7 +70,7 @@ const AddNewTopic = () => {
       formData.append("description", values?.description);
       formData.append("typeId", values?.typeId);
       formData.append("statusId", values?.statusId);
-      formData.append("forumId", values?.forumId);
+      formData.append("forumId", Number(values?.forumId));
       formData.append("topicfile", values?.file);
       formData.append("topicTags", "tags");
 
@@ -103,7 +104,8 @@ const AddNewTopic = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Add New Topic</h1>
+      <AdminPanelTitle title="Add New Topic" />
+      {/* <h1 className="font-semibold text-2xl text-white mb-4">Add New Topic</h1> */}
 
       <form
         onSubmit={formik.handleSubmit}
@@ -119,7 +121,7 @@ const AddNewTopic = () => {
             onBlur={formik.handleBlur}
             error={formik?.touched?.title ? formik.errors?.title : ""}
           />
-          <NewCourceCard title="Video">
+          <NewCourceCard title="Topic">
             <div className="w-full p-4 flex flex-col relative space-y-8">
               {/* description */}
               <div className="w-full pt-2 pl-2">

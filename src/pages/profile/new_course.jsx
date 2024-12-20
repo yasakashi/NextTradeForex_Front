@@ -37,6 +37,7 @@ import { BiSave } from "react-icons/bi";
 import { CustomButton } from "../../components/ui/CustomButton";
 import CourseAuthor from "./new_course_components/CourseAuthor";
 import toast from "react-hot-toast";
+import AdminPanelTitle from "../../admin_panel/components/AdminPanelTitle";
 
 const NewCourse = ({ page }) => {
   const { id } = useParams();
@@ -219,7 +220,7 @@ const NewCourse = ({ page }) => {
 
   return (
     <div
-      className={`w-full top-0 p-0 m-0 ${
+      className={`w-full h-full relative z-[100] ${
         page === "admin" ? "" : "bg-[#f0f0f1]"
       }`}
     >
@@ -228,13 +229,15 @@ const NewCourse = ({ page }) => {
         animate={{ opacity: 1 }}
         className="wrapper mx-auto flex w-full flex-col max-h-fit "
       >
-        <h4
+        {/* <h4
           className={`text-3xl ${
             page === "admin" ? "text-gray-100" : "text-gray-700"
           } font-bold mb-4 mt-6`}
         >
           Add New Course
-        </h4>
+        </h4> */}
+
+        <AdminPanelTitle title="Add New Course" />
 
         <form onSubmit={formik.handleSubmit}>
           <div className="grid grid-cols-4 gap-4 mb-8">
