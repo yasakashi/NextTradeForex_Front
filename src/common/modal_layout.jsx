@@ -5,7 +5,7 @@ const ModalLayout = ({ open, className = "", children }) => {
     <div
       draggable={false}
       className={`
-          fixed inset-0 flex justify-center items-center transition-colors z-[1000] w-screen h-screen
+          fixed inset-0 flex justify-center items-center transition-colors z-[10000] w-screen h-screen
           ${open ? "visible bg-black/40" : "invisible"} 
     `}
     >

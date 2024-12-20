@@ -41,7 +41,7 @@ const DropZone = ({ file, set_file, accept_file, ...props }) => {
             "video/mkv": [],
             "video/webm": [],
           },
-    maxFiles: 1,
+    maxFiles: 100,
   });
   return (
     <motion.div

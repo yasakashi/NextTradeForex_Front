@@ -6,6 +6,7 @@ import DeleteMenuModal from "../../../categories/view/components/delete_menu_mod
 import { useNavigate } from "react-router-dom";
 import { CustomSelectBox } from "../../../../../pages/profile/new_course_components/custom_select_box";
 import { useGetTopicLessonsMutation } from "../../../../../redux/features/course/courseBuilderApi";
+import AdminPanelTitle from "../../../../components/AdminPanelTitle";
 
 const LessonsScreen = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const LessonsScreen = () => {
   });
 
   const [lessons, setLessons] = useState([]);
-    const [searchLesson, setSearchLesson] = useState("");
+  const [searchLesson, setSearchLesson] = useState("");
 
   const [getTopicLessons, { isLoading }] = useGetTopicLessonsMutation();
 
@@ -41,7 +42,7 @@ const LessonsScreen = () => {
   return (
     <div className="flex flex-col px-8 py-8">
       {console.log({ lessons })}
-      <h1 className="font-semibold text-2xl text-white mb-4">Lessons</h1>
+      <AdminPanelTitle title="Lessons" />
       <MAterialTable
         loading={isLoading}
         setSearchCourses={setSearchLesson}

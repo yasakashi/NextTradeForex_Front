@@ -13,6 +13,7 @@ import {
 } from "../../../../redux/features/categories/categoriesApi";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const CategoriesScreen = () => {
   const { categories } = useCategories({ make_id_tree: true });
@@ -61,8 +62,8 @@ const CategoriesScreen = () => {
   }, [mainCategory]);
 
   return (
-    <div className="w-full h-ful px-8 pt-8">
-      <h1 className="font-semibold text-white text-2xl">Categories</h1>
+    <div className="w-full h-ful px-8">
+      <AdminPanelTitle title="Categories" />
 
       <div className="flex flex-col md:flex-row mt-4">
         <div className="w-full md:w-2/5">
