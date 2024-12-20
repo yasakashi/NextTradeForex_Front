@@ -10,9 +10,9 @@ const MainLayout = () => {
         <div className="h-screen w-[200px]">
           <AdminSidebar />
         </div>
-        <main className="h-screen w-[calc(100%-200px)] right-0">
+        <main className="min-h-screen h-full w-[calc(100%-200px)] right-0 mt-4">
           <AdminNavbar />
-          <div className="w-full h-full mt-4">
+          <div className="w-full z-[100] relative h-full mt-4 bg-[#f0f0f1] min-h-screen">
             <Outlet />
           </div>
         </main>
