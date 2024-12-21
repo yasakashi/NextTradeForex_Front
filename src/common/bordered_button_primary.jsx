@@ -11,33 +11,28 @@ const BorderedButtonPrimary = ({
   style,
   red_error,
   disabled,
-}: {
-  title: string;
-  disabled?: boolean;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  style?: React.CSSProperties;
-  red_error?: boolean;
+  className = "",
+  ...props
 }) => {
   const loading = useAppSelector(loading_selector);
   return (
     <Button
       variant="outlined"
       disabled={loading || disabled}
-      onClick={onClick} 
-      
+      onClick={onClick}
       className={` hover:text-blue-500 ${
         !red_error
           ? "hover:bg-blue-500 text-blue-500 border-blue-500 "
           : "text-red-600 border-none"
-      }   py-1 px-2 border  hover:border-transparent rounded`}
+      }   py-1 px-2 border  hover:border-transparent rounded ${className}`}
       style={{
         position: "relative",
         textTransform: "capitalize",
         fontSize: 13,
         ...style,
         padding: "2px 8px",
-       
       }}
+      {...props}
     >
       {loading && (
         <div

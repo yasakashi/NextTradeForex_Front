@@ -1,37 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AddNewCategoryComponent from "./components/add_new_category_component";
-
-import useCategories from "../hook/use_categories";
-import DeleteMenuModal from "./components/delete_menu_modal";
 import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 import CustomRadioButton from "./components/customRadioButton";
 import { useNavigate } from "react-router-dom";
 import MAterialTable from "../../../components/table/material_table";
-import {
-  useGetMainCategoriesByInfoMutation,
-  useGetSubCategoriesByInfoMutation,
-} from "../../../../redux/features/categories/categoriesApi";
-import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import {
+  useRemoveCategoryMutation,
+  useGetSubCategoriesByInfoMutation,
+  useGetMainCategoriesByInfoMutation,
+} from "../../../../redux/features/categories/categoriesApi";
+import useClickOutside from "../../../../hooks/useClickOutside";
+
+import { IoTrashOutline } from "react-icons/io5";
 
 const CategoriesScreen = () => {
-  const { categories } = useCategories({ make_id_tree: true });
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [rowId, setRowId] = useState("");
+  const [showRowTools, setShowRowTools] = useState(false);
 
   const [mainCategory, setMainCategory] = useState({});
 
+  const [searchCategory, setSearchCategory] = useState("");
+
+  const removeModalRef = useRef(null);
+
   const navigate = useNavigate();
-  const [open_delete_dialog, set_open_delete_dialog] = useState({
-    open: false,
-  });
 
   const [
     getMainCategoriesByInfo,
     { data: maincategories, error, isLoading: getCategoriesLoading },
   ] = useGetMainCategoriesByInfoMutation();
 
-  const [getSubCategoriesByInfo, { data, isLoading: getSubCategoriesLoading }] =
-    useGetSubCategoriesByInfoMutation();
+  const [
+    getSubCategoriesByInfo,
+    {
+      data,
+      isLoading: getSubCategoriesLoading,
+      isSuccess: subCategeoriesSucces,
+    },
+  ] = useGetSubCategoriesByInfoMutation();
+
+  const [removeCategory, { isLoading: removeLoading }] =
+    useRemoveCategoryMutation();
 
   const subCategories = data || [];
 
@@ -52,6 +64,7 @@ const CategoriesScreen = () => {
         if (mainCategory?.id) {
           await getSubCategoriesByInfo({
             parentId: mainCategory?.id || "",
+            name: searchCategory || null,
           }).unwrap();
         }
       } catch (err) {
@@ -59,7 +72,25 @@ const CategoriesScreen = () => {
       }
     }
     fetchSubCategories();
-  }, [mainCategory]);
+  }, [mainCategory, searchCategory]);
+
+  useClickOutside(removeModalRef, () => {
+    setShowRemoveModal(false);
+  });
+
+  const removeCategoryHandler = async (id) => {
+    try {
+      const res = await removeCategory({ data: { Id: id } }).unwrap();
+      if (res?.messageCode === 200) {
+        toast.success("Category Removed.");
+        setShowRemoveModal(false);
+        await getMainCategoriesByInfo({ parentId: 770 }).unwrap();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Faild to fetch categories");
+    }
+  };
 
   return (
     <div className="w-full h-ful px-8">
@@ -67,7 +98,7 @@ const CategoriesScreen = () => {
 
       <div className="flex flex-col md:flex-row mt-4">
         <div className="w-full md:w-2/5">
-          <AddNewCategoryComponent categories={categories} />
+          <AddNewCategoryComponent />
         </div>
         <div
           className="w-full md:w-3/5"
@@ -100,9 +131,10 @@ const CategoriesScreen = () => {
           </div>
 
           <MAterialTable
-            rows={[mainCategory, ...subCategories] || []}
-            // rows={categories}
+            rows={subCategeoriesSucces ? [mainCategory, ...subCategories] : []}
             loading={getSubCategoriesLoading}
+            search={searchCategory}
+            setSearch={setSearchCategory}
             columns={[
               {
                 header: "Name",
@@ -112,66 +144,79 @@ const CategoriesScreen = () => {
                     <div
                       className="relative min-w-20"
                       style={{ minWidth: 190 }}
+                      onMouseOver={() => {
+                        setShowRowTools(true);
+                        setRowId(row?.original?.id);
+                      }}
+                      onMouseLeave={() => {
+                        setShowRowTools(false);
+                        setRowId("");
+                      }}
                     >
-                      <h5 className="text-blue-600">{row.original.name}</h5>
-                      <div className="flex items-center">
-                        {row.id === open_delete_dialog?.row?.id && (
-                          <DeleteMenuModal
-                            disabled={false}
-                            onYesClick={() => {
-                              set_open_delete_dialog({
-                                open: false,
-                                row: undefined,
-                              });
+                      <h5 className="text-[#2271b1] font-bold text-sm">
+                        {row.original.name}
+                      </h5>
+                      {showRowTools && rowId === row?.original?.id ? (
+                        <div className="flex items-center relative">
+                          <BorderedButtonPrimary
+                            title="Edit"
+                            onClick={() => {
+                              navigate(
+                                `/admin-panel/lesson/categories/edit/${row.original.id}`
+                              );
                             }}
-                            props={{
-                              open: open_delete_dialog.open,
-                              onClose() {
-                                set_open_delete_dialog({
-                                  open: false,
-                                  row: undefined,
-                                });
-                              },
+                            style={{ padding: 4, border: "none" }}
+                          />
+                          <BorderedButtonPrimary
+                            title="Quick Edit"
+                            onClick={() => {
+                              table.setEditingRow(row);
+                            }}
+                            style={{ padding: 4, border: "none" }}
+                            className="text-nowrap"
+                          />
+
+                          <BorderedButtonPrimary
+                            title="View"
+                            onClick={() => {
+                              navigate(`/learn_to_trade`);
+                              // navigate(
+                              //   `/admin-panel/lesson/categories/${row.original.slug}`
+                              // );
+                            }}
+                            style={{ padding: 4, border: "none" }}
+                          />
+                          <BorderedButtonPrimary
+                            title="Delete"
+                            style={{ color: "red", padding: 4, border: "none" }}
+                            onClick={() => {
+                              setShowRemoveModal(true);
+                              setRowId(row?.original?.id);
                             }}
                           />
-                        )}
-                        <BorderedButtonPrimary
-                          title="Edit"
-                          onClick={() => {
-                            navigate(
-                              `/admin-panel/lesson/categories/edit/${row.original.id}`
-                            );
-                          }}
-                          style={{ padding: 4, border: "none" }}
-                        />
-                        <BorderedButtonPrimary
-                          title="Quick Edit"
-                          onClick={() => {
-                            table.setEditingRow(row);
-                          }}
-                          style={{ padding: 4, border: "none" }}
-                        />
 
-                        <BorderedButtonPrimary
-                          title="View"
-                          onClick={() => {
-                            navigate(
-                              `/learn_to_trade/courses/${row.original.name}`
-                            );
-                            // navigate(
-                            //   `/admin-panel/lesson/categories/${row.original.slug}`
-                            // );
-                          }}
-                          style={{ padding: 4, border: "none" }}
-                        />
-                        <BorderedButtonPrimary
-                          title="Delete"
-                          onClick={() => {
-                            set_open_delete_dialog({ open: true, row });
-                          }}
-                          style={{ color: "red", padding: 4, border: "none" }}
-                        />
-                      </div>
+                          {showRemoveModal && rowId === row?.original?.id ? (
+                            <div
+                              ref={removeModalRef}
+                              className="absolute -top-5 right-0 z-[10000] rounded-md shadow-md w-[210px] h-auto py-2 bg-[#212327] border border-[#212327]"
+                            >
+                              <li className="px-2 py-[6px] flex items-center gap-2 hover:bg-[#41454f] cursor-pointer transition-colors text-red-500">
+                                <button
+                                  onClick={() =>
+                                    removeCategoryHandler(row?.original?.id)
+                                  }
+                                  disabled={removeLoading}
+                                  type="button"
+                                  className="flex gap-2 disabled:cursor-not-allowed items-center border-none outline-none"
+                                >
+                                  <IoTrashOutline size={14} />
+                                  Remove Permanently
+                                </button>
+                              </li>
+                            </div>
+                          ) : null}
+                        </div>
+                      ) : null}
                     </div>
                   );
                 },

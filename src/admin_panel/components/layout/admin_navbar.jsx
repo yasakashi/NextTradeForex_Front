@@ -9,8 +9,12 @@ import { useDispatch } from "react-redux";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import toast from "react-hot-toast";
 import { logoutAction } from "../../../redux/features/loginSlice";
+import useUserRole from "../../../hooks/useUserRole";
 
 const AdminNavbar = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const role = useUserRole(user?.userTypeId);
+
   const [showModal, setShowModal] = useState(false);
   const [showMsgModal, setShowMsgModal] = useState(false);
 
@@ -24,11 +28,11 @@ const AdminNavbar = () => {
 
   useClickOutside(modalRef, () => {
     setShowModal(false);
-    setShowMsgModal(false);
+    // setShowMsgModal(false);
   });
 
   useClickOutside(msgRef, () => {
-    setShowModal(false);
+    // setShowModal(false);
     setShowMsgModal(false);
   });
 
@@ -78,8 +82,8 @@ const AdminNavbar = () => {
           className="flex items-center space-x-4 cursor-pointer"
         >
           <p className="text-[13px] font-semibold capitalize">
-            amir
-            <span className="text-gray-400 pl-1">(admin 1)</span>
+            {user?.username || ""}
+            <span className="text-gray-400 pl-1">({role || ""})</span>
           </p>
           <div className="size-[35px] rounded-full border border-gray-300 p-[1px]">
             <img
@@ -98,6 +102,11 @@ const AdminNavbar = () => {
                 src="/assets/bp-avatar.png"
                 alt="User"
               />
+            </div>
+
+            <div className="capitalize space-x-2 mt-2 text-center">
+              <span>{user?.fname}</span>
+              <span>{user?.lname}</span>
             </div>
 
             <div className="w-full h-[1px] bg-[#ffffff0f] my-2" />

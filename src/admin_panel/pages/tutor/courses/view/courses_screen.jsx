@@ -104,8 +104,8 @@ const CoursesScreen = () => {
       <AdminPanelTitle title="Courses" />
       <MaterialTable
         loading={isLoading}
-        setSearchCourses={setSearchCourses}
-        searchCourses={searchCourses}
+        setSearch={setSearchCourses}
+        search={searchCourses}
         RenderTopCustom={({ table }) => {
           return (
             <MySelectBox

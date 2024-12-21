@@ -20,13 +20,12 @@ import {
 } from "../../../../../redux/features/categories/categoriesApi";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
-import AdminPanelTitle from "../../../../components/AdminPanelTitle";
 
 const SUPPORTED_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/web"];
 
 const FILE_SIZE = 500 * 1024; // 500KB
 
-const AddNewCategoryComponent = ({ categories }) => {
+const AddNewCategoryComponent = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [customImgOpen, setCustomImgOpen] = useState(false);
   const [categoryFileOpen, setCategoryFileOpen] = useState(false);
@@ -69,8 +68,7 @@ const AddNewCategoryComponent = ({ categories }) => {
       name: Yup.string().required("Category name is required."),
       description: Yup.string().required("Description is required."),
       categoryImage: Yup.mixed()
-        .optional()
-        .nullable()
+        .required("Category image is required.")
         .test("fileSize", "File must be less than 500 KB", (value) => {
           return typeof value === "string" || !value
             ? true
@@ -105,15 +103,12 @@ const AddNewCategoryComponent = ({ categories }) => {
         ),
     }),
 
-    onSubmit: async (values, { rsetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       const formData = new FormData();
 
       formData.append("parentId", values?.parentId);
       formData.append("name", values?.name);
-      formData.append("Slug", values?.slug);
       formData.append("Description", values?.description);
-      formData.append("customDescription", values?.customDescription);
-      formData.append("chartImage", values?.chartImage);
       formData.append("IsVisible", values?.isVisible);
       formData.append("IsVisibleDropdown", values?.isVisibleDropdown);
       formData.append("IsThisTopCategory", values?.isTopCategory);
@@ -121,6 +116,17 @@ const AddNewCategoryComponent = ({ categories }) => {
       formData.append("categorytypeid_old", 1);
       formData.append("categorytypeid", 14);
 
+      if (values?.customDescription) {
+        formData.append("customDescription", values?.customDescription);
+      }
+
+      if (values?.slug) {
+        formData.append("Slug", values?.slug);
+      }
+
+      if (values?.chartImage) {
+        formData.append("chartImage", values?.chartImage);
+      }
       if (values?.customFile instanceof File) {
         formData.append("customFile", values?.customFile);
       }
@@ -133,7 +139,7 @@ const AddNewCategoryComponent = ({ categories }) => {
         const res = await addNewCategory({ data: formData }).unwrap();
         if (res?.messageCode === 200) {
           toast.success("Category Created.");
-          rsetForm();
+          resetForm();
         }
         console.log({ res });
       } catch (err) {
@@ -151,7 +157,9 @@ const AddNewCategoryComponent = ({ categories }) => {
 
   return (
     <div className="relative">
-      <AdminPanelTitle title="Add New Category" />
+      <h5 className="font-normal text-lg text-[#1d2327] pb-6 pt-2">
+        Add New Category
+      </h5>
       <form onSubmit={formik.handleSubmit} className="pb-16 space-y-4">
         {/* name */}
         <div className="space-y-2">
@@ -385,7 +393,7 @@ const AddNewCategoryComponent = ({ categories }) => {
               <div className="size-[150px] flex items-center justify-center mx-10 my-4 border border-gray-600 p-2 rounded-md relative">
                 <img
                   src={URL.createObjectURL(formik.values?.categoryImage)}
-                  alt=""
+                  alt="Category Image"
                   className="object-contain w-full h-full"
                 />
 
