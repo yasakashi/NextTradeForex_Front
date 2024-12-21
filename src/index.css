@@ -86,6 +86,8 @@ span[style="white-space: nowrap"] {
   );
 }
 
+
+
 .group_banner_gradient {
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
 }

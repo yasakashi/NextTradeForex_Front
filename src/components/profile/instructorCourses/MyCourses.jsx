@@ -12,13 +12,7 @@ const MyCourses = () => {
     <div>
       <div className="flex flex-wrap justify-between items-center gap-2">
         <h2 className="text-xl text-white my-4">My courses</h2>
-        <Link
-          to="/user-profile/myCourses/new-course"
-          className="flex items-center gap-2 bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] shadow-xl text-blue-dark px-4 py-2 rounded-md text-base font-semibold"
-        >
-          <AiFillPlusSquare size={20} />
-          Create a New Course
-        </Link>
+       
       </div>
       <div className="mt-8">
         <div className="w-full border-b border-b-gray-300">

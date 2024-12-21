@@ -1,16 +1,16 @@
 import React, { useRef, useState } from "react";
 import Languages from "../common/Languages";
 import { Link, useNavigate } from "react-router-dom";
-import { FaCheck, FaUser } from "react-icons/fa6";
-import { CiUser } from "react-icons/ci";
-import { RiLogoutCircleLine } from "react-icons/ri";
+import { FaUser } from "react-icons/fa6";
 import GoogleTranslate from "./googleTranslate/GoogleTranslate";
 import { logoutAction } from "../redux/features/loginSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { MdSpaceDashboard } from "react-icons/md";
 import useClickOutside from "../hooks/useClickOutside";
+import { TiArrowSortedDown } from "react-icons/ti";
+import { FaCopy } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [showLanguages, setShowLanguages] = useState(false);
@@ -35,6 +35,18 @@ const Navbar = () => {
   useClickOutside(profileDropDownRef, () => {
     setShowProfileDropDown(false);
   });
+
+  const referralLinkCopyHandler = () => {
+    const fullUrl = `https://www.nexttradeforex.com/register/?referred_by=390344`; // Construct full URL
+    navigator.clipboard
+      .writeText(fullUrl)
+      .then(() => {
+        toast.success("Link copied to clipboard!");
+      })
+      .catch(() => {
+        toast.error("Failed to copy referral link.");
+      });
+  };
 
   return (
     <div className="navbar w-full z-[1000] relative wrapper pt-2 lg:pt-2 bg-blue-light">
@@ -309,67 +321,72 @@ const Navbar = () => {
 
               <div className="flex flex-col lg:flex-row items-start lg:items-start space-x-0 space-y-4 lg:space-y-0 lg:space-x-3 ">
                 {token ? (
-                  <div>
-                    <div className="relative">
-                      <div
-                        onClick={() =>
-                          setShowProfileDropDown(!showProfileDropDown)
-                        }
-                        className="flex items-center cursor-pointer"
-                      >
-                        <div className="relative size-[40px] shrink-0 rounded-full">
-                          <img
-                            className="w-full h-full rounded-full border-2 p-[1px]"
-                            src="/assets/bp-avatar.png"
-                            alt="User"
-                          />
-                          <span className="text-white absolute -top-1 right-0">
-                            <FaCheck
-                              className="bg-green-500 rounded-full p-[2px]"
-                              size={20}
-                            />
-                          </span>
-                        </div>
-                        <span className="capitalize text-white ml-2 font-semibold">
-                          {user?.username || "user"}
-                        </span>
-                      </div>
+                  <div className="group inline w-full cursor-pointer lg:w-fit">
+                    <div className="outline-none focus:outline-none text-white py-1 flex items-center space-x-2">
+                      <span>
+                        <FaUser className="text-[#f5d48b]" size={16} />
+                      </span>
+                      <h5 className="pr-1 text-[15px]">
+                        {user?.fname && user?.lname
+                          ? user?.fname + " " + user?.lname
+                          : user?.username}
+                      </h5>
 
-                      <div className="absolute top-[124%] z-[1000] left-1/2 -translate-x-1/2">
-                        {showProfileDropDown && (
-                          <div
-                            ref={profileDropDownRef}
-                            className="bg-white rounded-lg shadow-lg w-[180px] flex justify-center"
-                          >
-                            <ul className=" text-gray-500 font-semibold text-sm w-full">
-                              <li className="flex items-center w-full pl-4 pr-2 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
-                                <FaUser size={20} />
-                                <Link to="/user-profile/dashboard">
-                                  Profile
-                                </Link>
-                              </li>
-
-                              {user?.userTypeId === 1 ? (
-                                <li className="flex items-center w-full pl-4 pr-2 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
-                                  <MdSpaceDashboard size={20} />
-                                  <Link to="/admin-panel/lesson/categories">
-                                    Admin Panel
-                                  </Link>
-                                </li>
-                              ) : null}
-
-                              <li
-                                onClick={logOutHandler}
-                                className="flex items-center w-full pl-4 pr-2 py-3 space-x-3 hover:bg-gray-200 rounded-lg"
-                              >
-                                <RiLogoutCircleLine size={20} />
-                                <Link to="">Log Out</Link>
-                              </li>
-                            </ul>
-                          </div>
-                        )}
-                      </div>
+                      <TiArrowSortedDown size={18} />
                     </div>
+                    <motion.ul
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.4 }}
+                      className="bg-gold-light_200 rounded-lg px-2 py-2 
+                        transform hidden group-hover:block
+                        lg:group-hover:block 
+                        lg:scale-0 
+                        lg:group-hover:scale-100 
+                        lg:absolute transition duration-150 ease-in-out origin-top lg:w-auto w-3/5 cursor-pointer text-[14px] min-w-[160px]"
+                    >
+                      {user?.userTypeId === 1 || user?.userTypeId === 2 ? (
+                        <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1 hover:font-bold transition-all ">
+                          <Link to="/admin-panel/lesson/categories">
+                            Admin Panel
+                          </Link>
+                        </li>
+                      ) : user?.userTypeId === 3 || user?.userTypeId === 4 ? (
+                        <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1 hover:font-bold transition-all ">
+                          <Link to="/user-profile/dashboard">Profile</Link>
+                        </li>
+                      ) : null}
+
+                      <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1">
+                        <div>
+                          <span>Refer Link</span>
+                          <div
+                            onClick={referralLinkCopyHandler}
+                            className="flex items-center hover:font-bold transition-all"
+                          >
+                            <FaCopy className="text-[#0000ff]" size={16} />
+                            <span className="text-[13px] pt-1">(423874)</span>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1 hover:font-bold transition-all ">
+                        Referral Tree
+                      </li>
+
+                      <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1 hover:font-bold transition-all ">
+                        <Link to="/traders-community/support-portal">
+                          Support Portal
+                        </Link>
+                      </li>
+
+                      <li
+                        onClick={logOutHandler}
+                        className="px-3 text-blue-light pt-3 rounded-sm font-semibold hover:font-bold transition-all "
+                      >
+                        Log Out
+                      </li>
+                    </motion.ul>
                   </div>
                 ) : (
                   <>
