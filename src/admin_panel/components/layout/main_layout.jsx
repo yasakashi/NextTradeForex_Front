@@ -23,20 +23,3 @@ const MainLayout = () => {
 
 export default MainLayout;
 
-{
-  /* <AdminSidebar />
-      <div
-        style={{
-          position: "absolute",
-          width: "calc(100% - 200px)",
-          right: 0,
-          // height: "calc(100% - 38px)",
-          overflow: "auto",
-          top: 38,
-        }}
-        className="absolute"
-      >
-        <Outlet />
-      </div>
-      <AdminNavbar /> */
-}

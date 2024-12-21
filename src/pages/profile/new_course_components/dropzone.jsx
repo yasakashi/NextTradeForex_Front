@@ -110,7 +110,7 @@ const DropZone = ({ file, set_file, accept_file, ...props }) => {
           }}
         >
           <img
-            src={URL.createObjectURL(file) || ""}
+            src={file instanceof File ? URL.createObjectURL(file) : file}
             ref={show_img_ref}
             alt=""
             style={{ width: "100%", height: "100%" }}
