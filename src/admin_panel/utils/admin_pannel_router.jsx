@@ -26,6 +26,9 @@ import AddNewTopic from "../pages/learn-to-trade/topics/AddNewTopic";
 import CommodityList from "../pages/lessons/market-pulse/commodity/commoditiesList";
 import AddCommodity from "../pages/lessons/market-pulse/commodity/newCommodity";
 import CommodityDetails from "../pages/lessons/market-pulse/commodity/editCommodity";
+import CryptoList from "../pages/lessons/market-pulse/crypto/cryptoList";
+import CryptoDetails from "../pages/lessons/market-pulse/crypto/cryptoDetails";
+import AddCrypto from "../pages/lessons/market-pulse/crypto/addCrypto";
 
 export const admin_panel_router = [
   // topics
@@ -153,5 +156,17 @@ export const admin_panel_router = [
   {
     route: "/admin-panel/lessons/market-pulse/commodities/add",
     component: <AddCommodity />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/crypto",
+    component: <CryptoList />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/crypto/:id",
+    component: <CryptoDetails />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/crypto/add",
+    component: <AddCrypto />,
   },
 ];
