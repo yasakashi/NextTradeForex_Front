@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import MyGroups from "../../components/profile/MyGroups";
 import MyProfile from "../../components/profile/MyProfile";
-
 import MySignals from "../../components/profile/MySignals";
 import { GrGroup } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
@@ -11,7 +10,6 @@ import { RiShoppingCart2Fill } from "react-icons/ri";
 import { IoMdSettings } from "react-icons/io";
 import { LuLogOut } from "react-icons/lu";
 import { FaChartLine } from "react-icons/fa6";
-// import { MdDashboard } from "react-icons/md";
 import { ImEmbed } from "react-icons/im";
 import { NavLink, Outlet } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
@@ -19,22 +17,14 @@ import { IoRocket } from "react-icons/io5";
 import { GiWallet } from "react-icons/gi";
 import { FaRegStar } from "react-icons/fa6";
 import { TiPin } from "react-icons/ti";
-
-
-import {
-  Link,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Requests from "../../components/profile/Requests";
-import NewCourse from "./new_course";
 import MyCourses from "./my_courses/view/my_courses";
 import { MdDashboard } from "react-icons/md";
 import { PiHandWithdrawDuotone } from "react-icons/pi";
-import { get_user_info_api } from "./my_courses/service/get_my_courses_api";
 import EnrolledCourses from "./enrolled_courses/view/enrolled_courses";
+import Rating from "../../admin_panel/pages/tutor/courses/course_details/view/components/rating";
+import { AiFillPlusSquare } from "react-icons/ai";
 
 const UserProfile = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -78,31 +68,36 @@ const UserProfile = () => {
         <Navbar />
 
         <div className="px-4 md:px-8 lg:px-12 xl:px-24">
-          <header className="mt-6 sm:mt-10 md:mt-14 lg:mt-20 flex space-x-6 items-center border-b pb-4">
-            <img
-              className="size-[100px] rounded-full border-4 shadow-lg border-white"
-              src="/assets/bp-avatar.png"
-              alt="user img"
-            />
+          <header className="mt-6 sm:mt-10 md:mt-14 lg:mt-20 flex space-x-6 items-center justify-between w-full border-b pb-4">
+            <div className="flex items-center space-x-6">
+              <img
+                className="size-[100px] rounded-full border-4 shadow-lg border-white"
+                src="/assets/bp-avatar.png"
+                alt="user img"
+              />
 
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-col gap-2 text-white">
-                <span>Hello,</span>
-                <h4 className="font-semibold text-xl">
-                  {user?.username || "---"}
-                  <span className="text-sm text-gray-400 mx-1 font-normal">
-                    ({role})
-                  </span>
-                </h4>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 text-white">
+                  <span>Hello,</span>
+                  <h4 className="font-semibold text-xl">
+                    {user?.username || "---"}
+                    <span className="text-sm text-gray-400 mx-1 font-normal">
+                      ({role})
+                    </span>
+                  </h4>
+                </div>
+                <Rating rate="4" />
               </div>
-              <div className="flex items-center gap-1">
-                <FaRegStar className="text-[#ed9700]" size={18} />
-                <FaRegStar className="text-[#ed9700]" size={18} />
-                <FaRegStar className="text-[#ed9700]" size={18} />
-                <FaRegStar className="text-[#ed9700]" size={18} />
-                <FaRegStar className="text-[#ed9700]" size={18} />
-              </div>
+
+              {/*  */}
             </div>
+            <Link
+              to="/user-profile/myCourses/new-course"
+              className="flex items-center gap-2 btn_bg-gradient_3 bg-auto shadow-xl text-blue-dark px-4 py-2 rounded-md text-base font-semibold"
+            >
+              <AiFillPlusSquare size={20} />
+              Create a New Course
+            </Link>
           </header>
 
           <div className="flex">
@@ -224,9 +219,7 @@ const UserProfile = () => {
                 </li>
               </ul>
 
-              {user?.userTypeId === 3 ||
-              user?.userTypeId === 2 ||
-              user?.userTypeId === 1 ? (
+              {user?.userTypeId === 3 ? (
                 <>
                   <div className="w-full h-[1px] bg-white my-2" />
 
@@ -330,9 +323,6 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
-
-
 
 const UserProfileComponent = () => {
   const [activeTab, setActiveTab] = useState("myProfile");
