@@ -8,16 +8,16 @@ const MAterialTable = ({
   rows,
   columns,
   RenderTopCustom,
-  searchCourses,
-  setSearchCourses,
+  search,
+  setSearch,
   loading,
   bodyBorder = "1px solid #666",
 }) => {
   const handleGlobalFilterChange = useCallback(
     (value) => {
-      setSearchCourses(value);
+      setSearch(value);
     },
-    [searchCourses]
+    [search]
   );
 
   const table = useMaterialReactTable({
@@ -28,7 +28,7 @@ const MAterialTable = ({
     state: {
       showLoadingOverlay: loading,
       showSkeletons: loading,
-      // globalFilter: searchCourses,
+      // globalFilter: search,
     },
     enableStickyHeader: true,
     positionGlobalFilter: "left",
