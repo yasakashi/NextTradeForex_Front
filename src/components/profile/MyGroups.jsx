@@ -4,6 +4,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { getUserGroups } from "../../redux/features/groupSlice";
 import { useEffect } from "react";
 import CustomCircleLoader from "../../utils/loaders/CustomCircleLoader";
+import { AiFillPlusSquare } from "react-icons/ai";
 
 const MyGroups = () => {
   const { createGroupStatus, isLoading, errorMsg, userGroups } = useSelector(
@@ -15,6 +16,28 @@ const MyGroups = () => {
   useEffect(() => {
     dispatch(getUserGroups({ axiosPrivate }));
   }, []);
+
+  function formatDate(dateString) {
+    if (dateString) {
+      const date = new Date(dateString);
+
+      // Format date to "DD Mon YYYY"
+      const formattedDate = date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+
+      // Format time to "HH:MM"
+      const formattedTime = date.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      // Return the formatted date and time as "DD Mon YYYY, HH:MM"
+      return `${formattedDate}, ${formattedTime}`;
+    } else return null;
+  }
   return (
     <div>
       <div className="flex items-center flex-wrap gap-4 justify-between">
@@ -43,16 +66,76 @@ const MyGroups = () => {
         </div>
         <div className="my-10">
           <Link
-            className="border-2 text-gray-200 font-medium text-base border-gold-light_400 px-5 py-3 rounded-lg outline-none hover:bg-gold-light_400 transition"
-            to="/traders-community/groups/create"
+            to="/user-profile/myCourses/new-course"
+            className="flex items-center gap-2 btn_bg-gradient_3 bg-auto shadow-xl text-blue-dark px-4 py-2 rounded-md text-base font-semibold"
           >
-            Create a group
+            <AiFillPlusSquare size={20} />
+            Create a Group
           </Link>
         </div>
       </div>
       <div>
         <h5 className="my-4 text-xl font-semibold text-gray-300">My Groups </h5>
-        {isLoading ? (
+
+        <div className="bg-white shadow-xl rounded-lg w-full p-4 overflow-x-scroll">
+          <table className="w-full sm:min-w-[600px]">
+            <thead>
+              <tr className="bg-slate-100">
+                <th className="text-gray-600 font-normal text-base border border-gray-300 text-center px-2 py-1"></th>
+                <th className="text-gray-600 font-normal text-base border border-gray-300 text-center px-2 py-1">
+                  Group Name
+                </th>
+                <th className="text-gray-600 font-normal text-base border border-gray-300 text-center px-2 py-1">
+                  Type
+                </th>
+                <th className="text-gray-600 font-normal text-base border border-gray-300 text-center px-2 py-1">
+                  Members
+                </th>
+                <th className="text-gray-600 font-normal text-base border border-gray-300 text-center px-2 py-1">
+                  Signal Channels
+                </th>
+                <th className="text-gray-600 font-normal text-base border border-gray-300 text-center px-2 py-1">
+                  Date
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {userGroups?.length > 0
+                ? userGroups?.map((group, index) => (
+                    <tr key={index}>
+                      <td className="text-center border border-gray-300 text-[15px] text-gray-700 px-2 py-1">
+                        {index + 1}
+                      </td>
+                      <td className="group text-center border border-gray-300 text-[15px] text-gray-700 px-2 py-1">
+                        <Link
+                          className="text-blue-accent font-medium group-hover:underline cursor-pointer"
+                          to={`/traders-community/groups/${group?.title}`}
+                        >
+                          {group?.title}
+                        </Link>
+                      </td>
+                      <td className="text-center border border-gray-300 text-[15px] text-gray-700 px-2 py-1">
+                        {group?.grouptypename}
+                      </td>
+                      <td className="text-center border border-gray-300 text-[15px] text-gray-700 px-2 py-1">
+                        {group?.membercount ? group?.membercount : 0}
+                      </td>
+                      <td className="text-center border border-gray-300 text-[15px] text-gray-700 px-2 py-1">
+                        {group?.signalchannelcount
+                          ? group?.signalchannelcount
+                          : 0}
+                      </td>
+                      <td className="text-center border border-gray-300 text-[15px] text-gray-700 px-2 py-1">
+                        {formatDate(group?.createdatetime)}
+                      </td>
+                    </tr>
+                  ))
+                : null}
+            </tbody>
+          </table>
+        </div>
+        {/* {isLoading ? (
           <div className="w-full h-screen fixed inset-0 z-[1001] flex justify-center items-center">
             <div className="w-full h-full absolute bg-black opacity-65"></div>
             <div className="z-[1002]">
@@ -87,7 +170,7 @@ const MyGroups = () => {
               </div>
             ))}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

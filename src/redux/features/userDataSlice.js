@@ -13,7 +13,14 @@ export const userDataAction = createAsyncThunk(
           JSON.stringify(response?.data?.messageData)
         );
         toast.success("Login successfully.");
-        navigate("/");
+        if (
+          response?.data?.messageData?.userTypeId === 1 ||
+          response?.data?.messageData?.userTypeId === 2
+        ) {
+          navigate("/admin-panel/lesson/categories");
+        } else {
+          navigate("/");
+        }
       }
       return response.data;
     } catch (error) {
