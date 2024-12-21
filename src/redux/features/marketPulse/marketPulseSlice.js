@@ -6,6 +6,7 @@ const marketPulseSlice = createSlice({
     forexData: null,
     indiceData: null,
     commodityData: null,
+    cryptoData: null,
   },
   reducers: {
     setForexData: (state, action) => {
@@ -26,6 +27,12 @@ const marketPulseSlice = createSlice({
     clearCommodityData: (state) => {
       state.commodityData = null;
     },
+    setCryptoData: (state, action) => {
+      state.cryptoData = action.payload;
+    },
+    clearCryptoData: (state) => {
+      state.cryptoData = null;
+    },
   },
 });
 
@@ -36,6 +43,8 @@ export const {
   clearIndiceData,
   setCommodityData,
   clearCommodityData,
+  setCryptoData, 
+  clearCryptoData
 } = marketPulseSlice.actions;
 export const marketPulseReducer = marketPulseSlice.reducer;
 export const selectForexData = (state) => state.marketPulse.forexData;

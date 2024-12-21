@@ -318,9 +318,9 @@ const list = [
     sub_categories: [
       { title: "Indicators" },
       { title: "Forex", route: "/lessons/market-pulse" },
-      { title: "Crypto" },
-      { title: "Indices", route: "/lessons/market-pulse/indices" },
-      { title: "Commodities", route: "/lessons/market-pulse/commodities" },
+      { title: "Crypto",route: "/lessons/market-pulse/crypto" },
+      { title: "Indices",route: "/lessons/market-pulse/indices" },
+      { title: "Commodities", route: '/lessons/market-pulse/commodities' },
       { title: "Stocks" },
       { title: "Forex Chart" },
       { title: "Srategy" },
