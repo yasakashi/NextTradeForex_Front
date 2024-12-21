@@ -19,6 +19,7 @@ import { CiEdit } from "react-icons/ci";
 import { IoTrashOutline } from "react-icons/io5";
 import { useGetCourseStatusListQuery } from "../../../../../redux/features/course/commonApi";
 import toast from "react-hot-toast";
+import AdminPanelTitle from "../../../../components/AdminPanelTitle";
 
 const statusStyle = {
   pending: "text-[#ed9700] bg-[#ed970026] border-[#ed97004d]",
@@ -99,12 +100,12 @@ const CoursesScreen = () => {
   };
 
   return (
-    <div className="flex flex-col px-8 py-8 scrollbar-thin">
-      <h1 className="font-semibold text-2xl text-white mb-4">Courses</h1>
+    <div className="flex flex-col px-8 pb-8 pt-8 h-full">
+      <AdminPanelTitle title="Courses" />
       <MaterialTable
         loading={isLoading}
-        setSearchCourses={setSearchCourses}
-        searchCourses={searchCourses}
+        setSearch={setSearchCourses}
+        search={searchCourses}
         RenderTopCustom={({ table }) => {
           return (
             <MySelectBox

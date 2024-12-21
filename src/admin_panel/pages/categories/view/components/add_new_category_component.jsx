@@ -25,7 +25,7 @@ const SUPPORTED_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/web"];
 
 const FILE_SIZE = 500 * 1024; // 500KB
 
-const AddNewCategoryComponent = ({ categories }) => {
+const AddNewCategoryComponent = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [customImgOpen, setCustomImgOpen] = useState(false);
   const [categoryFileOpen, setCategoryFileOpen] = useState(false);
@@ -68,8 +68,7 @@ const AddNewCategoryComponent = ({ categories }) => {
       name: Yup.string().required("Category name is required."),
       description: Yup.string().required("Description is required."),
       categoryImage: Yup.mixed()
-        .optional()
-        .nullable()
+        .required("Category image is required.")
         .test("fileSize", "File must be less than 500 KB", (value) => {
           return typeof value === "string" || !value
             ? true
@@ -104,15 +103,12 @@ const AddNewCategoryComponent = ({ categories }) => {
         ),
     }),
 
-    onSubmit: async (values, { rsetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       const formData = new FormData();
 
       formData.append("parentId", values?.parentId);
       formData.append("name", values?.name);
-      formData.append("Slug", values?.slug);
       formData.append("Description", values?.description);
-      formData.append("customDescription", values?.customDescription);
-      formData.append("chartImage", values?.chartImage);
       formData.append("IsVisible", values?.isVisible);
       formData.append("IsVisibleDropdown", values?.isVisibleDropdown);
       formData.append("IsThisTopCategory", values?.isTopCategory);
@@ -120,6 +116,17 @@ const AddNewCategoryComponent = ({ categories }) => {
       formData.append("categorytypeid_old", 1);
       formData.append("categorytypeid", 14);
 
+      if (values?.customDescription) {
+        formData.append("customDescription", values?.customDescription);
+      }
+
+      if (values?.slug) {
+        formData.append("Slug", values?.slug);
+      }
+
+      if (values?.chartImage) {
+        formData.append("chartImage", values?.chartImage);
+      }
       if (values?.customFile instanceof File) {
         formData.append("customFile", values?.customFile);
       }
@@ -132,7 +139,7 @@ const AddNewCategoryComponent = ({ categories }) => {
         const res = await addNewCategory({ data: formData }).unwrap();
         if (res?.messageCode === 200) {
           toast.success("Category Created.");
-          rsetForm();
+          resetForm();
         }
         console.log({ res });
       } catch (err) {
@@ -149,133 +156,160 @@ const AddNewCategoryComponent = ({ categories }) => {
   };
 
   return (
-    <form onSubmit={formik.handleSubmit} className="pb-16">
-      <h4 className="mb-6 text-lg text-white">Add new Category</h4>
+    <div className="relative">
+      <h5 className="font-normal text-lg text-[#1d2327] pb-6 pt-2">
+        Add New Category
+      </h5>
+      <form onSubmit={formik.handleSubmit} className="pb-16 space-y-4">
+        {/* name */}
+        <div className="space-y-2">
+          {/* <h4 className="text-sm text-white mb-1">Name</h4> */}
+          <Title title="Name" />
 
-      <div className="mt-4">
-        <h4 className="text-sm text-white mb-1">Name</h4>
-        <CustomTextInput
-          name="name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          placeholder="Category name"
-          className="text-gray-700"
-          error={formik.touched?.name ? formik.errors.name : null}
-        />
-      </div>
+          <CustomTextInput
+            name="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            placeholder="Category name"
+            className="text-gray-700 border-gray-600"
+            error={formik.touched?.name ? formik.errors.name : null}
+          />
 
-      <div className="mt-4">
-        <div className="mt-4">
-          <h4 className="text-sm text-white mb-1">Slug</h4>
+          <Description
+            description="The name is how it appears on your site.
+
+"
+          />
+        </div>
+
+        {/* slug */}
+        <div className="space-y-2">
+          <Title title="Slug" />
+
           <CustomTextInput
             name="slug"
             value={formik.values.slug}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className="text-gray-700"
+            className="text-gray-700 border-gray-600"
             placeholder="Slug"
           />
+          <Description
+            description="The “slug” is the URL-friendly version of the name. It is usually all
+          lowercase and contains only letters, numbers, and hyphens."
+          />
         </div>
-        <h6 className="text-xs text-white mt-2">
-          The “slug” is the URL-friendly version of the name. It is usually all
-          lowercase and contains only letters, numbers, and hyphens.
-        </h6>
-      </div>
-      <div style={{ color: "black" }}>
-        <h5 className="mt-4 text-white">Parent Category</h5>
 
-        <div className="w-full md:w-full mt-8 mb-4">
-          <select
-            name="parentId"
-            value={formik.values?.parentId}
-            onChange={formik.handleChange}
-            className="w-full border border-gray-300 pl-2 py-[6px] rounded-md shadow-sm bg-white outline-blue-500"
-          >
-            <option value="">Select Category</option>
-            {maincategories?.length > 0 ? (
-              maincategories?.map((mainCategory, index) => (
-                <option value={mainCategory?.id} key={index}>
-                  {mainCategory?.name}
-                </option>
-              ))
-            ) : getCategoriesLoading ? (
-              <option>Loading ...</option>
-            ) : (
-              <option>Categories not found!</option>
-            )}
-          </select>
-        </div>
-        <h6 className="text-xs text-white mt-1">
-          Assign a parent term to create a hierarchy. The term Jazz, for
-          example, would be the parent of Bebop and Big Band.
-        </h6>
-      </div>
-      <div>
-        <h5 className="mt-4 text-white">Description</h5>
-        <CustomTextArea
-          name="description"
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          className="h-[100px] text-gray-700"
-          placeholder="Description"
-          error={formik.touched?.description ? formik.errors.description : null}
-        />
-        <h6 className="text-xs text-white mt-1">
-          The description is not prominent by default; however, some themes may
-          show it.
-        </h6>
-        <div className="my-4">
-          <CustomButton
-            type="button"
-            size="sm"
-            variant="outlined"
-            onClick={() => {
-              setCustomImgOpen(true);
-            }}
-          >
-            Add Media
-          </CustomButton>
-        </div>
-        {formik?.touched?.customFile && formik.errors?.customFile ? (
-          <span className="text-red-600 text-sm p-1">
-            {formik.errors.customFile}
-          </span>
-        ) : null}
-
-        <LibraryModal
-          file={formik?.values?.customFile}
-          set_file={(file) => {
-            formik.setFieldValue("customFile", file);
-          }}
-          error={formik.errors?.customFile}
-          onBlur={formik.handleBlur}
-          accept_file="Image"
-          title="Add Media"
-          open={customImgOpen}
-          set_open={setCustomImgOpen}
-          onSave={() => setCustomImgOpen(false)}
-        />
-        <DraftEditor
-          placeholder="Custom Description ..."
-          editorState={editorState}
-          onChange={handleEditorChange}
-        />
-        {/* <EditorComponent /> */}
+        {/* parent category */}
         <div>
-          <h5 className="mt-4 text-white">Chart Image</h5>
+          <Title title="Parent Category" />
+
+          <div className="w-full md:w-full mt-2 mb-4">
+            <select
+              name="parentId"
+              value={formik.values?.parentId}
+              onChange={formik.handleChange}
+              className="w-full border border-gray-600 pl-2 py-[6px] rounded-md shadow-sm bg-white outline-blue-500 text-sm text-gray-600"
+            >
+              <option value="">Select Category</option>
+              {maincategories?.length > 0 ? (
+                maincategories?.map((mainCategory, index) => (
+                  <option value={mainCategory?.id} key={index}>
+                    {mainCategory?.name}
+                  </option>
+                ))
+              ) : getCategoriesLoading ? (
+                <option>Loading ...</option>
+              ) : (
+                <option>Categories not found!</option>
+              )}
+            </select>
+          </div>
+          <Description
+            description="Assign a parent term to create a hierarchy. The term Jazz, for
+          example, would be the parent of Bebop and Big Band."
+          />
+        </div>
+
+        {/* description */}
+        <div className="space-y-2">
+          <Title title="Description" />
+          <CustomTextArea
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className="h-[100px] text-gray-700 border-gray-700"
+            placeholder="Description"
+            error={
+              formik.touched?.description ? formik.errors.description : null
+            }
+          />
+
+          <Description
+            description="The description is not prominent by default; however, some themes may
+          show it."
+          />
+        </div>
+
+        {/* custom description */}
+        <div>
+          <div className="my-4">
+            <CustomButton
+              type="button"
+              size="sm"
+              variant="outlined"
+              onClick={() => {
+                setCustomImgOpen(true);
+              }}
+            >
+              Add Media
+            </CustomButton>
+            {formik?.touched?.customFile && formik.errors?.customFile ? (
+              <span className="text-red-600 text-sm p-1">
+                {formik.errors.customFile}
+              </span>
+            ) : null}
+          </div>
+
+          <LibraryModal
+            file={formik?.values?.customFile}
+            set_file={(file) => {
+              formik.setFieldValue("customFile", file);
+            }}
+            error={formik.errors?.customFile}
+            onBlur={formik.handleBlur}
+            accept_file="Image"
+            title="Add Media"
+            open={customImgOpen}
+            set_open={setCustomImgOpen}
+            onSave={() => setCustomImgOpen(false)}
+          />
+          <DraftEditor
+            placeholder="Custom Description ..."
+            editorState={editorState}
+            onChange={handleEditorChange}
+            className="border border-gray-600"
+          />
+        </div>
+
+        {/* chart image */}
+        <div>
+          <Title title="Chart Image" />
           <CustomTextArea
             name="chartImage"
             value={formik.values.chartImage}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className="h-[100px] text-gray-700"
+            className="h-[100px] text-gray-700 border-gray-600"
             placeholder="Chart Image"
           />
         </div>
-        <div className="mt-4 text-white">
-          <h5>Is Visible</h5>
+
+        {/* is Visible */}
+        <div>
+          <Title title="Is Visible" />
 
           <div className="my-2 space-y-2">
             <CustomRadioButton
@@ -284,7 +318,6 @@ const AddNewCategoryComponent = ({ categories }) => {
               }}
               type="button"
               label="Yes"
-              label_color="white"
               name="isVisible"
               checked={formik.values.isVisible === true}
             />
@@ -293,14 +326,15 @@ const AddNewCategoryComponent = ({ categories }) => {
                 formik.setFieldValue("isVisible", e.target.value === "Yes");
               }}
               label="No"
-              label_color="white"
               name="isVisible"
               checked={formik.values.isVisible === false}
             />
           </div>
         </div>
-        <div className="mt-4">
-          <h5 className="text-white">Is Visible Dropdown</h5>
+
+        {/* is visible dropdown */}
+        <div>
+          <Title title="Is Visible Dropdown" />
           <div className="my-2 space-y-2">
             <CustomRadioButton
               onChange={(e) => {
@@ -310,7 +344,6 @@ const AddNewCategoryComponent = ({ categories }) => {
                 );
               }}
               label="Yes"
-              label_color="white"
               name="isVisibleDropdown"
               checked={formik.values.isVisibleDropdown === true}
             />
@@ -322,21 +355,21 @@ const AddNewCategoryComponent = ({ categories }) => {
                 );
               }}
               label="No"
-              label_color="white"
               name="isVisibleDropdown"
               checked={formik.values.isVisibleDropdown === false}
             />
           </div>
         </div>
-        <div className="mt-4">
-          <h5 className="text-white">Is This Top Category?</h5>
+
+        {/* is this top category */}
+        <div>
+          <Title title="Is This Top Category?" />
           <div className="my-2 flex items-center space-x-4">
             <CustomRadioButton
               onChange={(e) => {
                 formik.setFieldValue("isTopCategory", e.target.value === "Yes");
               }}
               label="Yes"
-              label_color="white"
               name="isTopCategory"
               checked={formik.values.isTopCategory === true}
             />
@@ -345,20 +378,22 @@ const AddNewCategoryComponent = ({ categories }) => {
                 formik.setFieldValue("isTopCategory", e.target.value === "Yes");
               }}
               label="No"
-              label_color="white"
               name="isTopCategory"
               checked={formik.values.isTopCategory === false}
             />
           </div>
         </div>
-        <div className="mt-4">
-          <h5 className="text-white">Category Image</h5>
+
+        {/* Category Image */}
+        <div>
+          <Title title="Category Image" />
+
           <div className="flex items-center">
             {formik.values?.categoryImage ? (
-              <div className="size-[150px] flex items-center justify-center mx-10 my-4 border border-gray-300 p-2 rounded-md relative">
+              <div className="size-[150px] flex items-center justify-center mx-10 my-4 border border-gray-600 p-2 rounded-md relative">
                 <img
                   src={URL.createObjectURL(formik.values?.categoryImage)}
-                  alt=""
+                  alt="Category Image"
                   className="object-contain w-full h-full"
                 />
 
@@ -370,7 +405,7 @@ const AddNewCategoryComponent = ({ categories }) => {
                 </div>
               </div>
             ) : (
-              <h5 className="mr-6 text-white">No file Selected</h5>
+              <h5 className="mr-6 text-[#1d2327] text-sm">No file Selected</h5>
             )}
 
             <CustomButton
@@ -404,8 +439,11 @@ const AddNewCategoryComponent = ({ categories }) => {
             onSave={() => setCategoryFileOpen(false)}
           />
         </div>
+
+        {/* Course of Category */}
         <div className="mt-4">
-          <h5 className="text-white">Courses Of Category</h5>
+          <Title title="Courses Of Category" />
+
           <div className="my-2 flex items-center space-x-4">
             <CustomRadioButton
               onChange={(e) => {
@@ -415,7 +453,6 @@ const AddNewCategoryComponent = ({ categories }) => {
                 );
               }}
               label="Yes"
-              label_color="white"
               name="coursesOfCategory"
               checked={formik.values.coursesOfCategory === true}
             />
@@ -427,19 +464,19 @@ const AddNewCategoryComponent = ({ categories }) => {
                 );
               }}
               label="No"
-              label_color="white"
               name="coursesOfCategory"
               checked={formik.values.coursesOfCategory === false}
             />
           </div>
         </div>
+
         <div className="mt-4">
           <CustomButton disabled={isLoading} type="submit" size="sm">
             {isLoading ? "Sending ..." : "Add New Category"}
           </CustomButton>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
@@ -613,5 +650,19 @@ export const GroupedSelectBox = ({ options, onChange }) => {
         </AnimatePresence>
       </div>
     </ClickAwayListener>
+  );
+};
+
+const Title = ({ title }) => {
+  return (
+    <label className="text-[#1d2327] font-normal text-[13px]">{title}</label>
+  );
+};
+
+const Description = ({ description }) => {
+  return (
+    <p className="text-[#646970] font-normal my-[2px] max-w-[95%] text-[13px]">
+      {description}
+    </p>
   );
 };

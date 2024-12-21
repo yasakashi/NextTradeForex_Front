@@ -1,37 +1,65 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import MAterialTable from "../../../components/table/material_table";
-import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
-import DeleteMenuModal from "../../categories/view/components/delete_menu_modal";
-import { CustomSelectBox } from "../../../../pages/profile/new_course_components/custom_select_box";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
+import {
+  useGetLTRTopicsQuery,
+  useRemoveTopicMutation,
+} from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import { IoTrashOutline } from "react-icons/io5";
+import toast from "react-hot-toast";
+import useClickOutside from "../../../../hooks/useClickOutside";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const LTRTopics = () => {
-  const [open_delete_dialog, set_open_delete_dialog] = useState({
-    open: false,
-  });
+  const [showModal, setShowModal] = useState(false);
+  const [activeRowId, setActiveRowId] = useState("");
 
   const navigate = useNavigate();
 
-  const [lessons, setLessons] = useState([
-    {
-      title: "capital markets authority (cma) - kenya",
-      date: "2024/03/16 at 8:08pm",
-      category:
-        "Capital Markets Authority (CMA) - Kenya, Regulation Agencies Forex, Financial regulation",
-      isFree: false,
-      isVisible: true,
-      lessonCagegoryId: 1,
-      shortCode: "[dflip id='59710'][/dflip]",
-      lastModified: "",
+  const [searchInput, setSearchInput] = useState("");
+
+  const [removeTopic, { isLoading: removeLoading }] = useRemoveTopicMutation();
+
+  const modalRef = useRef(null);
+
+  useClickOutside(modalRef, () => {
+    setShowModal(false);
+  });
+
+  const {
+    data: { messageData: topics } = { messageData: [] },
+
+    isLoading,
+
+    refetch: refetchCourses,
+  } = useGetLTRTopicsQuery({
+    data: {
+      id: null,
+      title: searchInput,
+      statusId: null,
+      forumId: null,
+      typeId: null,
+      pageindex: 1,
+      rowcount: 21,
     },
-  ]);
-  const isLoading = false;
+  });
+
+  const removeCourseHandler = async (id) => {
+    const removeRes = await removeTopic({ data: { Id: id } });
+
+    if (removeRes?.data?.messageCode === 200) {
+      setShowModal(false);
+      toast.success("Topic removed.");
+      refetchCourses();
+      setSearchInput("");
+    }
+  };
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Topics</h1>
+      <AdminPanelTitle title="Topics" />
 
       <div>
         <CustomButton
@@ -48,8 +76,9 @@ const LTRTopics = () => {
 
       <MAterialTable
         loading={isLoading}
-        // setSearchCourses={setSearchLesson}
-        rows={lessons}
+        setSearchCourses={setSearchInput}
+        searchCourses={searchInput}
+        rows={topics}
         columns={[
           {
             header: "Topics",
@@ -58,29 +87,9 @@ const LTRTopics = () => {
               return (
                 <div className="flex flex-col justify-center items-start w-48">
                   <p className="capitalize text-[#2271b1] font-bold">
-                    Gold Trading bot
+                    {row?.original?.title}
                   </p>
-                  <div className="flex items-center justify-between">
-                    {row.id === open_delete_dialog?.row?.id && (
-                      <DeleteMenuModal
-                        disabled={false}
-                        onYesClick={() => {
-                          set_open_delete_dialog({
-                            open: false,
-                            row: undefined,
-                          });
-                        }}
-                        props={{
-                          open: open_delete_dialog.open,
-                          onClose() {
-                            set_open_delete_dialog({
-                              open: false,
-                              row: undefined,
-                            });
-                          },
-                        }}
-                      />
-                    )}
+                  <div className="flex z-[1050] relative items-center justify-between">
                     <BorderedButtonPrimary
                       title="Edit"
                       onClick={() => {
@@ -94,7 +103,8 @@ const LTRTopics = () => {
                     <BorderedButtonPrimary
                       title="Trash"
                       onClick={() => {
-                        set_open_delete_dialog({ open: true, row });
+                        setActiveRowId(row?.original?.id);
+                        setShowModal((prev) => !prev);
                       }}
                       style={{ color: "red", padding: 0, border: "none" }}
                     />
@@ -108,6 +118,29 @@ const LTRTopics = () => {
                       }}
                       style={{ padding: 0, border: "none" }}
                     />
+
+                    {showModal && row?.original?.id === activeRowId ? (
+                      <div
+                        ref={modalRef}
+                        className="absolute -top-5 right-0 z-[1000] rounded-md shadow-md w-[210px] h-auto py-2 bg-[#212327] border border-[#212327]"
+                      >
+                        <ul>
+                          <li className="px-2 py-[6px] flex items-center gap-2 hover:bg-[#41454f] cursor-pointer transition-colors text-red-500">
+                            <button
+                              onClick={() =>
+                                removeCourseHandler(row?.original?.id)
+                              }
+                              disabled={removeLoading}
+                              type="button"
+                              className="flex gap-2 disabled:cursor-not-allowed items-center border-none outline-none"
+                            >
+                              <IoTrashOutline size={14} />
+                              Remove Permanently
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               );

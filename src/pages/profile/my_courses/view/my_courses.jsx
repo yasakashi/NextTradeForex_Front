@@ -51,8 +51,8 @@ const MyCourses = () => {
   const loading_level_2 = useAppSelector(loading_level_2_selector);
   return (
     <div className="flex p-4 flex-col w-full h-full ">
-      <div className="flex flex-wrap justify-between items-center gap-2">
-        <h2 className="text-xl text-white my-4">My courses</h2>
+      <div className="flex flex-wrap justify-end items-center gap-2">
+        {/* <h2 className="text-xl text-white my-4">My courses</h2> */}
         <Link
           to="/user-profile/myCourses/new-course"
           className="flex items-center gap-2 bg-gradient-to-t from-[#F0D785] via-[#9C7049] to-[#F0D785] shadow-xl text-blue-dark px-4 py-2 rounded-md text-base font-semibold"
@@ -305,6 +305,8 @@ export const CourseImgTag = ({ id, img }) => {
 // };
 
 const types = ["publish", "pending", "draft"];
+
+
 export const useOutsideClick = (callback) => {
   const ref = useRef(null);
 

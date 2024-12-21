@@ -24,7 +24,12 @@ const DropZone = ({ file, set_file, accept_file, ...props }) => {
         : accept_file === "PDF"
         ? { "application/pdf": [] }
         : accept_file === "Subtitle"
-        ? { "text/srt": [], "text/vtt": [] }
+        ? {
+            "application/x-subrip": [],
+            "text/vtt": [],
+            "text/srt": [],
+            "application/srt": [],
+          }
         : accept_file === "Audio"
         ? {
             "audio/mpeg": [],
@@ -36,7 +41,7 @@ const DropZone = ({ file, set_file, accept_file, ...props }) => {
             "video/mkv": [],
             "video/webm": [],
           },
-    maxFiles: 1,
+    maxFiles: 100,
   });
   return (
     <motion.div
@@ -105,7 +110,7 @@ const DropZone = ({ file, set_file, accept_file, ...props }) => {
           }}
         >
           <img
-            src={URL.createObjectURL(file) || ""}
+            src={file instanceof File ? URL.createObjectURL(file) : file}
             ref={show_img_ref}
             alt=""
             style={{ width: "100%", height: "100%" }}

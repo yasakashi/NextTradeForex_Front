@@ -8,26 +8,27 @@ const MAterialTable = ({
   rows,
   columns,
   RenderTopCustom,
-  searchCourses,
-  setSearchCourses,
+  search,
+  setSearch,
   loading,
+  bodyBorder = "1px solid #666",
 }) => {
   const handleGlobalFilterChange = useCallback(
     (value) => {
-      setSearchCourses(value);
+      setSearch(value);
     },
-    [searchCourses]
+    [search]
   );
 
   const table = useMaterialReactTable({
     data: rows || [],
     renderTopToolbarCustomActions: ({ table }) =>
-      RenderTopCustom ? <RenderTopCustom table={table} /> : <></>,
+      RenderTopCustom ? <RenderTopCustom className="" table={table} /> : <></>,
     columns: columns,
     state: {
       showLoadingOverlay: loading,
       showSkeletons: loading,
-      // globalFilter: searchCourses,
+      // globalFilter: search,
     },
     enableStickyHeader: true,
     positionGlobalFilter: "left",
@@ -58,6 +59,7 @@ const MAterialTable = ({
         // height: 920,
         backgroundColor: (t) => t.palette.background.paper,
         boxShadow: "none",
+        border: bodyBorder,
       },
     },
     initialState: { showGlobalFilter: true },

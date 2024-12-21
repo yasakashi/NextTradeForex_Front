@@ -5,7 +5,7 @@ import DFlipLayout from "./DFlipLayout";
 
 const activeClass = "bg-[#0085ba]";
 
-const DflipSettings = () => {
+const DflipSettings = ({ formik }) => {
   const [activeTab, setActiveTab] = useState("source");
 
   return (
@@ -38,9 +38,9 @@ const DflipSettings = () => {
       </div>
       <div className="w-full p-4 flex flex-col relative space-y-8">
         {activeTab === "source" ? (
-          <DFlipSource />
+          <DFlipSource formik={formik} />
         ) : activeTab === "layout" ? (
-          <DFlipLayout />
+            <DFlipLayout formik={formik} />
         ) : null}
       </div>
     </NewCourceCard>

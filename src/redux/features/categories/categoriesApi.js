@@ -75,6 +75,15 @@ export const categoriesApi = createApi({
         body: data,
       }),
     }),
+
+    removeCategory: builder.mutation({
+      query: ({ data }) => ({
+        // data: category Id
+        url: "/categorymangment/deletecategory",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -84,5 +93,6 @@ export const {
   useGetSubCategoriesByInfoMutation,
   useAddNewCategoryMutation,
   useGetCategoryInfoMutation,
-  useUpdateCategoryMutation
+  useUpdateCategoryMutation,
+  useRemoveCategoryMutation
 } = categoriesApi;

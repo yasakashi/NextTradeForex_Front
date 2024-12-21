@@ -6,6 +6,7 @@ import DeleteMenuModal from "../../categories/view/components/delete_menu_modal"
 import { CustomSelectBox } from "../../../../pages/profile/new_course_components/custom_select_box";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
+import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
 const LTRLessons = () => {
   const [open_delete_dialog, set_open_delete_dialog] = useState({
@@ -31,7 +32,8 @@ const LTRLessons = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">Lessons</h1>
+      <AdminPanelTitle title="Lessons" />
+      {/* <h1 className="font-semibold text-2xl text-white mb-4">Lessons</h1> */}
 
       <div>
         <CustomButton
