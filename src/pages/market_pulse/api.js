@@ -130,8 +130,6 @@ export const getIndiceRelatedContent = async (id) => {
   }
 };
 
-
-
 export const getCommodityItem = async ({ categoryId, id }) => {
   try {
     const { data } = await axiosPrivate.post(
@@ -164,11 +162,62 @@ export const getCommoditiesCurrencies = async (id) => {
   }
 };
 
-
 export const getCommodityRelatedContent = async (id) => {
   try {
     const { data } = await axiosPrivate.post(
       '/api/marketpuls/getcomodityforummessages',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    console.log('error daram');
+
+    throw new Error(`${error}`);
+  }
+};
+
+
+export const getCryptoItem = async ({ categoryId, id }) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getcryptoitems',
+      {
+        categoryid: categoryId,
+        id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getCryptoCurrencies = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/crypto/getcurrencies',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getCryptoRelatedContent = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getcryptoforummessages',
       {
         categoryid: id,
       },
