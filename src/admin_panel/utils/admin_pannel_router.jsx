@@ -206,4 +206,16 @@ export const admin_panel_router = [
     route: "/admin-panel/lessons/market-pulse/crypto/add",
     component: <AddCrypto />,
   },
+  {
+    route: "/admin-panel/lessons/market-pulse/stocks",
+    component: <StocksList />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/stocks/:id",
+    component: <StocksDetails />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/stocks/add",
+    component: <AddStocks />,
+  },
 ];

@@ -231,3 +231,55 @@ export const getCryptoRelatedContent = async (id) => {
     throw new Error(`${error}`);
   }
 };
+
+
+export const getstockItem = async ({ categoryId, id }) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getstockitems',
+      {
+        categoryid: categoryId,
+        id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getstockCurrencies = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/stock/getcurrencies',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getstockRelatedContent = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getstockforummessages',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    console.log('error daram');
+
+    throw new Error(`${error}`);
+  }
+};
