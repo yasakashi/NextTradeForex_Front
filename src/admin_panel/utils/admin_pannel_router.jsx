@@ -35,6 +35,9 @@ import BlogPosts from "../pages/posts/blog/BlogPosts";
 import AddNewBlogPost from "../pages/posts/blog/AddNewBlogPost";
 import TicketsList from "../pages/fluent-supports/tickets/TicketsList";
 import AdminTicketView from "../pages/fluent-supports/tickets/TicketView";
+import StockList from "../pages/lessons/market-pulse/stock/stockList";
+import StocksDetails from "../pages/lessons/market-pulse/stock/stockDetails";
+import AddStock from "../pages/lessons/market-pulse/stock/addStock";
 
 export const admin_panel_router = [
   // topics
@@ -205,5 +208,17 @@ export const admin_panel_router = [
   {
     route: "/admin-panel/lessons/market-pulse/crypto/add",
     component: <AddCrypto />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/stocks",
+    component: <StockList />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/stocks/:id",
+    component: <StocksDetails />,
+  },
+  {
+    route: "/admin-panel/lessons/market-pulse/stocks/add",
+    component: <AddStock />,
   },
 ];

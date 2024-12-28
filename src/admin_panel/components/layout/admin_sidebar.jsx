@@ -321,7 +321,7 @@ const list = [
       { title: "Crypto",route: "/lessons/market-pulse/crypto" },
       { title: "Indices",route: "/lessons/market-pulse/indices" },
       { title: "Commodities", route: '/lessons/market-pulse/commodities' },
-      { title: "Stocks" },
+      { title: "Stocks", route: '/lessons/market-pulse/stocks' },
       { title: "Forex Chart" },
       { title: "Srategy" },
     ],
