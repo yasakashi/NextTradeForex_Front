@@ -1,7 +1,7 @@
 import Forex from '../../pages/market_pulse/forex';
 import Indice from '../../pages/market_pulse/indice';
-import Commodity from '../../pages/market_pulse/Commodity';
-import Crypto from '../../pages/market_pulse/Crypto';
+import Commodity from '../../pages/market_pulse/commodity';
+import Crypto from '../../pages/market_pulse/crypto';
 import Stocks from '../../pages/market_pulse/stock';
 
 export const market_pulse_router = [
