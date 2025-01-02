@@ -347,9 +347,7 @@ const Navbar = () => {
                     >
                       {user?.userTypeId === 1 || user?.userTypeId === 2 ? (
                         <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1 hover:font-bold transition-all ">
-                          <Link to="/admin-panel/lesson/categories">
-                            Admin Panel
-                          </Link>
+                          <Link to="/admin-panel">Admin Panel</Link>
                         </li>
                       ) : user?.userTypeId === 3 || user?.userTypeId === 4 ? (
                         <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1 hover:font-bold transition-all ">

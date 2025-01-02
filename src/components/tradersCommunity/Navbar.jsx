@@ -166,7 +166,7 @@ const CummunityNavbar = () => {
 
                         <li className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
                           <CiUser size={20} />
-                          <Link to="/admin-panel/lesson/categories">Admin</Link>
+                          <Link to="/admin-panel">Admin Panel</Link>
                         </li>
                         <li className="flex items-center px-14 py-3 space-x-3 hover:bg-gray-200 rounded-lg border-b border-gray-300 ">
                           <LuUsers size={20} />

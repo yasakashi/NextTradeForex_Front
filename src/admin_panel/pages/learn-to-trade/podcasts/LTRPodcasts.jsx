@@ -13,7 +13,7 @@ import useClickOutside from "../../../../hooks/useClickOutside";
 import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
-const LTRPodcasts = () => {
+const LTRPodcasts = ({ page }) => {
   const [showModal, setShowModal] = useState(false);
   const [activeRowId, setActiveRowId] = useState("");
 
@@ -63,7 +63,11 @@ const LTRPodcasts = () => {
       <div>
         <CustomButton
           onClick={() =>
-            navigate("/admin-panel/learn-to-trade/podcasts/add-new-podcast")
+            navigate(
+              `/admin-panel/${
+                page === "tools" ? "tools" : "learn-to-trade"
+              }/podcasts/add-new-podcast`
+            )
           }
           className=" mb-10 mt-6"
           variant="outlined"
