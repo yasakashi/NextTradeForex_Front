@@ -6,7 +6,7 @@ import Story from '../../components/market_pulse/Crypto/Story';
 import { startLoading, stopLoading } from '../../redux/features/loading';
 import { useDispatch, useSelector } from 'react-redux';
 
-function Forex() {
+function Crypto() {
   const [topCategories, setTopCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [selectedTopCategory, setSelectedTopCategory] = useState(null);
@@ -98,7 +98,7 @@ function Forex() {
       )}
       {selectedTopCategory && !selectedSubCategory && (
         <div>
-          <p className="text-gray-light text-center my-16">
+          <p className="text-gray-light text-center">
             Please select a category
           </p>
         </div>
@@ -112,4 +112,4 @@ function Forex() {
   );
 }
 
-export default Forex;
+export default Crypto;

@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import Search from '../../components/market_pulse/search';
 import SelectInput from '../../components/market_pulse/SelectInput';
 import { http_instanse_level_2 } from '../../axios/auth_full_http_instanse';
-import Story from '../../components/market_pulse/forex/Story';
+import Story from '../../components/market_pulse/Strategy/Story';
 import { startLoading, stopLoading } from '../../redux/features/loading';
 import { useDispatch, useSelector } from 'react-redux';
 
-function Stocks() {
+function Strategy() {
   const [topCategories, setTopCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [selectedTopCategory, setSelectedTopCategory] = useState(null);
@@ -19,7 +19,7 @@ function Stocks() {
     try {
       dispatch(startLoading());
       const res = await http_instanse_level_2.post(
-        'api/marketpuls/stock/gettopcategories',
+        'api/marketpuls/forexchart/gettopcategories',
         {},
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -40,12 +40,11 @@ function Stocks() {
       try {
         dispatch(startLoading());
         const res = await http_instanse_level_2.post(
-          'api/marketpuls/stock/getcategories',
+          'api/marketpuls/forexchart/getcategories',
           {},
           { headers: { 'Content-Type': 'application/json' } }
         );
 
-     
         dispatch(stopLoading());
         setSubCategories(res.data.messageData);
       } catch (error) {
@@ -53,11 +52,10 @@ function Stocks() {
       }
     };
 
-    // Only fetch subcategories if a top category is selected
     if (selectedTopCategory) {
       fetchSubCategories();
     } else {
-      setSubCategories([]); // Reset subcategories if no top category is selected
+      setSubCategories([]);
     }
   }, [selectedTopCategory]);
 
@@ -103,7 +101,6 @@ function Stocks() {
         </div>
       )}
 
-      {/* {isLoading && <LoadingSpinner />} */}
       {selectedSubCategory && (
         <Story selectedSubCategory={selectedSubCategory} />
       )}
@@ -111,4 +108,4 @@ function Stocks() {
   );
 }
 
-export default Stocks;
+export default Strategy;

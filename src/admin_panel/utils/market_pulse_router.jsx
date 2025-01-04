@@ -3,6 +3,8 @@ import Indice from '../../pages/market_pulse/indice';
 import Commodity from '../../pages/market_pulse/Commodity';
 import Crypto from '../../pages/market_pulse/Crypto';
 import Stocks from '../../pages/market_pulse/stock';
+import Chart from '../../pages/market_pulse/Charting';
+import Strategy from '../../pages/market_pulse/Strategy';
 
 export const market_pulse_router = [
   {
@@ -27,10 +29,10 @@ export const market_pulse_router = [
   },
   {
     route: '/market-pulse/charting',
-    component: <Forex />,
+    component: <Chart />,
   },
   {
     route: '/market-pulse/strategy',
-    component: <Forex />,
+    component: <Strategy />,
   },
 ];

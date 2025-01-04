@@ -12,7 +12,7 @@ import {
   setForexData,
 } from '../../../../../redux/features/marketPulse/marketPulseSlice';
 
-function CryptoList() {
+function StrategyList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open_delete_dialog, set_open_delete_dialog] = useState({
@@ -25,7 +25,7 @@ function CryptoList() {
       dispatch(toggle_loading(true));
       try {
         const res = await http_instanse_level_2.post(
-          '/api/marketpuls/getcryptoitems',
+          '/api/marketpuls/getforexchartitems',
           {
             headers: {
               'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ function CryptoList() {
   const deleteData = async (categoryid) => {
     try {
       dispatch(toggle_loading(true));
-      await http_instanse_level_2.post('/api/marketpuls/deletecryptoitem', {
+      await http_instanse_level_2.post('/api/marketpuls/deleteforexchartitem', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -180,4 +180,4 @@ function CryptoList() {
   );
 }
 
-export default CryptoList;
+export default StrategyList;
