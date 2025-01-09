@@ -9,7 +9,8 @@ import CustomCarousel from '../Carousel';
 import {
   getChartingCurrencies,
   getChartingItem,
-  getChartingRelatedContent,
+  getStrategyItem,
+  getStrategyRelatedContent,
 } from '../../../pages/market_pulse/api';
 import SearchBox from '../Searchbox';
 import LoadingSpinner from '../../Loading';
@@ -26,7 +27,7 @@ export default function StrategyStory({ selectedSubCategory }) {
   const getRelatedSources = async (id) => {
     try {
       if (id) {
-        const res = await getChartingRelatedContent(id);
+        const res = await getStrategyRelatedContent(id);
         setRelatedContent(res.messageData);
       }
     } catch (error) {
@@ -48,11 +49,11 @@ export default function StrategyStory({ selectedSubCategory }) {
     }
   };
 
-  const fetchCharting = async (id) => {
+  const fetchStrategy = async (id) => {
     try {
       if (id) {
         setCharting(true);
-        const res = await getChartingItem({
+        const res = await getStrategyItem({
           categoryId: id,
           id: null,
         });
@@ -73,12 +74,12 @@ export default function StrategyStory({ selectedSubCategory }) {
   useEffect(() => {
     if (!currencies?.length) return;
     const firstItem = currencies?.[0];
-    fetchCharting(firstItem.id);
+    fetchStrategy(firstItem.id);
   }, [currencies]);
 
   useEffect(() => {
     setData(null);
-    fetchCharting();
+    fetchStrategy();
   }, [currencyId]);
 
   return (
@@ -129,7 +130,7 @@ export default function StrategyStory({ selectedSubCategory }) {
               currencies={currencies}
               setCurrencies={setCurrencies}
               setCurrencyId={setCurrencyId}
-              fetchCharting={fetchCharting}
+              fetchCharting={fetchStrategy}
               query={query}
             />
           ) : (

@@ -54,7 +54,7 @@ function StrategyDetails() {
     try {
       dispatch(toggle_loading(true));
       await http_instanse_level_2.post(
-        '/api/marketpuls/editforexchartitem',
+        '/api/marketpuls/editstrategyitem',
         JSON.stringify(body)
       );
 

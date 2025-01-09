@@ -25,7 +25,7 @@ function StrategyList() {
       dispatch(toggle_loading(true));
       try {
         const res = await http_instanse_level_2.post(
-          '/api/marketpuls/getforexchartitems',
+          '/api/marketpuls/getstrategyitems',
           {
             headers: {
               'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ function StrategyList() {
   const deleteData = async (categoryid) => {
     try {
       dispatch(toggle_loading(true));
-      await http_instanse_level_2.post('/api/marketpuls/deleteforexchartitem', {
+      await http_instanse_level_2.post('/api/marketpuls/deletestrategyitem', {
         headers: {
           'Content-Type': 'application/json',
         },

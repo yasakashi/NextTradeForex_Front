@@ -53,7 +53,7 @@ function AddStrategy() {
     try {
       dispatch(toggle_loading(true));
       await http_instanse_level_2.post(
-        '/api/marketpuls/addforexchartitem',
+        '/api/marketpuls/addstrategyitem',
         JSON.stringify(body)
       );
 

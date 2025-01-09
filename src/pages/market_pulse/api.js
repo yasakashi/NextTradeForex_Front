@@ -282,7 +282,6 @@ export const getstockRelatedContent = async (id) => {
   }
 };
 
-
 export const getChartingItem = async ({ categoryId, id }) => {
   try {
     const { data } = await axiosPrivate.post(
@@ -320,6 +319,59 @@ export const getChartingRelatedContent = async (id) => {
   try {
     const { data } = await axiosPrivate.post(
       '/api/marketpuls/forexchart/getforummessages',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    console.log('error daram');
+
+    throw new Error(`${error}`);
+  }
+};
+
+export const getStrategyContents = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/getstrategycontenttypes',
+      {
+        categoryid: id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    console.log('error daram');
+
+    throw new Error(`${error}`);
+  }
+};
+
+export const getStrategyItem = async ({ categoryId, id }) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/strategy/getstrategyitems',
+      {
+        categoryid: categoryId,
+        id,
+      },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+    return data;
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
+export const getStrategyRelatedContent = async (id) => {
+  try {
+    const { data } = await axiosPrivate.post(
+      '/api/marketpuls/strategy/getforummessages',
       {
         categoryid: id,
       },

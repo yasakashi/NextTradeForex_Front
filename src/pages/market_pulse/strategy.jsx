@@ -19,7 +19,7 @@ function Strategy() {
     try {
       dispatch(startLoading());
       const res = await http_instanse_level_2.post(
-        'api/marketpuls/forexchart/gettopcategories',
+        'api/marketpuls/strategy/gettopcategories',
         {},
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -40,7 +40,7 @@ function Strategy() {
       try {
         dispatch(startLoading());
         const res = await http_instanse_level_2.post(
-          'api/marketpuls/forexchart/getcategories',
+          'api/marketpuls/strategy/getcategories',
           {},
           { headers: { 'Content-Type': 'application/json' } }
         );
