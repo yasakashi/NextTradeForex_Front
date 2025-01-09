@@ -61,28 +61,32 @@ function Strategy() {
 
   return (
     <div>
-      <div className="mx-auto w-fit ">
+      <div className="mx-auto w-1/4">
         <Search />
         <div className="flex gap-x-[10px]">
           {/* Top Category Select Input */}
-          <SelectInput
-            options={topCategories}
-            value={selectedTopCategory}
-            onChange={(category) => {
-              setSelectedTopCategory(category);
-              setSelectedSubCategory(null); // Reset subcategory when top category changes
-              setSubCategories([]);
-            }}
-            placeholder="Select Top Category"
-          />
+          <div className="w-1/2">
+            <SelectInput
+              options={topCategories}
+              value={selectedTopCategory}
+              onChange={(category) => {
+                setSelectedTopCategory(category);
+                setSelectedSubCategory(null); // Reset subcategory when top category changes
+                setSubCategories([]);
+              }}
+              placeholder="Select Top Category"
+            />
+          </div>
           {/* Subcategory Select Input - Only shows when a top category is selected */}
           {selectedTopCategory && (
-            <SelectInput
-              options={subCategories}
-              value={selectedSubCategory}
-              onChange={setSelectedSubCategory}
-              placeholder="Select Sub Category"
-            />
+            <div className="w-1/2">
+              <SelectInput
+                options={subCategories}
+                value={selectedSubCategory}
+                onChange={setSelectedSubCategory}
+                placeholder="Select Sub Category"
+              />
+            </div>
           )}
         </div>
       </div>
