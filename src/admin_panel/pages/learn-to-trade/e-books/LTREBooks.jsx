@@ -1,15 +1,13 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MAterialTable from "../../../components/table/material_table";
 import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 import DeleteMenuModal from "../../categories/view/components/delete_menu_modal";
-import { CustomSelectBox } from "../../../../pages/profile/new_course_components/custom_select_box";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
-const LTREBooks = () => {
+const LTREBooks = ({ page }) => {
   const [open_delete_dialog, set_open_delete_dialog] = useState({
     open: false,
   });
@@ -39,7 +37,11 @@ const LTREBooks = () => {
       <div>
         <CustomButton
           onClick={() =>
-            navigate("/admin-panel/learn-to-trade/e-books/add-new-book")
+            navigate(
+              `/admin-panel/${
+                page === "tools" ? "tools" : "learn-to-trade"
+              }/e-books/add-new-book`
+            )
           }
           className=" mb-10 mt-6"
           variant="outlined"

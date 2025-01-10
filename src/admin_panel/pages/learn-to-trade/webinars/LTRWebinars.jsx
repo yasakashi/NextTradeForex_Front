@@ -14,7 +14,7 @@ import useClickOutside from "../../../../hooks/useClickOutside";
 import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
-const LTRWebinars = () => {
+const LTRWebinars = ({page}) => {
   const [showModal, setShowModal] = useState(false);
   const [activeRowId, setActiveRowId] = useState("");
 
@@ -67,7 +67,11 @@ const LTRWebinars = () => {
       <div>
         <CustomButton
           onClick={() =>
-            navigate("/admin-panel/learn-to-trade/webinars/add-new-webinar")
+            navigate(
+              `/admin-panel/${
+                page === "tools" ? "tools" : "learn-to-trade"
+              }/webinars/add-new-webinar`
+            )
           }
           className=" mb-10 mt-6"
           variant="outlined"

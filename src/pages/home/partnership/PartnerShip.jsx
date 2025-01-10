@@ -269,9 +269,7 @@ const PatnerShip = () => {
                   onBlur={formik.handleBlur}
                   value={formik.values.cityid}
                 >
-                  <option>
-                    select city
-                  </option>
+                  <option>select city</option>
                   {cities?.length
                     ? cities.map((city, index) => (
                         <option key={index} value={city?.cityid}>

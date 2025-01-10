@@ -38,6 +38,12 @@ import AdminTicketView from "../pages/fluent-supports/tickets/TicketView";
 import StockList from "../pages/lessons/market-pulse/stock/stockList";
 import StocksDetails from "../pages/lessons/market-pulse/stock/stockDetails";
 import AddStock from "../pages/lessons/market-pulse/stock/addStock";
+import AdminPanel from "../pages/admin-panel/AdminPanle";
+import MediaLibrary from "../pages/media/Library";
+import AddNewMediaFile from "../pages/media/AddNewMediaFile";
+import AllUsers from "../pages/users/AllUsers";
+import AddNewUser from "../pages/users/AddNewUser";
+import AdminUsersProfile from "../pages/users/Profile";
 
 export const admin_panel_router = [
   // topics
@@ -50,25 +56,46 @@ export const admin_panel_router = [
     route: "/admin-panel/learn-to-trade/topics/add-new-topic",
     component: <AddNewTopic />,
   },
+  // ============= learn to trade and tools
   // webinars
   {
     route: "/admin-panel/learn-to-trade/webinars",
     component: <LTRWebinars />,
+  },
+
+  {
+    route: "/admin-panel/tools/webinars",
+    component: <LTRWebinars page="tools" />,
   },
   // add new webinar
   {
     route: "/admin-panel/learn-to-trade/webinars/add-new-webinar",
     component: <AddNewWebinar />,
   },
+
+  {
+    route: "/admin-panel/tools/webinars/add-new-webinar",
+    component: <AddNewWebinar page="tools" />,
+  },
   //e-books
   {
     route: "/admin-panel/learn-to-trade/e-books",
     component: <LTREBooks />,
   },
+
+  {
+    route: "/admin-panel/tools/e-books",
+    component: <LTREBooks page="tools" />,
+  },
   // add new e-book
   {
     route: "/admin-panel/learn-to-trade/e-books/add-new-book",
     component: <AddNewEBook />,
+  },
+
+  {
+    route: "/admin-panel/tools/e-books/add-new-book",
+    component: <AddNewEBook page="tools" />,
   },
   {
     route: "/admin-panel/learn-to-trade/lessons",
@@ -91,9 +118,19 @@ export const admin_panel_router = [
     route: "/admin-panel/learn-to-trade/podcasts",
     component: <LTRPodcasts />,
   },
+
+  {
+    route: "/admin-panel/tools/podcasts",
+    component: <LTRPodcasts page="tools" />,
+  },
   {
     route: "/admin-panel/learn-to-trade/podcasts/add-new-podcast",
     component: <AddNewPodcast />,
+  },
+
+  {
+    route: "/admin-panel/tools/podcasts/add-new-podcast",
+    component: <AddNewPodcast page="tools" />,
   },
   { route: "/admin-panel/lesson/categories", component: <CategoriesScreen /> },
 
@@ -169,6 +206,39 @@ export const admin_panel_router = [
     component: <CourseMeetingAndPdf page="admin" />,
   },
 
+  // ====admin panel=======
+  {
+    route: "/admin-panel",
+    component: <AdminPanel />,
+  },
+
+  // Media
+
+  {
+    route: "/admin-panel/media/library",
+    component: <MediaLibrary />,
+  },
+  {
+    route: "/admin-panel/media/add-new-media-file",
+    component: <AddNewMediaFile />,
+  },
+
+  // users
+
+  {
+    route: "/admin-panel/users/all-users",
+    component: <AllUsers />,
+  },
+  {
+    route: "/admin-panel/users/add-new-user",
+    component: <AddNewUser />,
+  },
+  {
+    route: "/admin-panel/users/profile",
+    component: <AdminUsersProfile />,
+  },
+
+  // market pulse
   {
     route: "/admin-panel/lessons/market-pulse",
     component: <MarketPulseListScreen />,
