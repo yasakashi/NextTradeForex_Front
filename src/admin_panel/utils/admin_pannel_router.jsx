@@ -44,6 +44,12 @@ import AddNewMediaFile from "../pages/media/AddNewMediaFile";
 import AllUsers from "../pages/users/AllUsers";
 import AddNewUser from "../pages/users/AddNewUser";
 import AdminUsersProfile from "../pages/users/Profile";
+import AllTeamMembers from "../pages/team-members/AllTeamMembers";
+import AddNewTeamMember from "../pages/team-members/AddNewTeamMember";
+import FluentSupportDashboard from "../pages/fluent-supports/Dsashboard";
+import TicketReports from "../pages/fluent-supports/Reports";
+import FluentSupportActivities from "../pages/fluent-supports/FluentSupportActivities";
+import FluentSupportWorkflows from "../pages/fluent-supports/FluentSupportWorkflows";
 
 export const admin_panel_router = [
   // topics
@@ -177,6 +183,24 @@ export const admin_panel_router = [
   // ============ flutent support
 
   {
+    route: "/admin-panel/fluent-support/dashboard",
+    component: <FluentSupportDashboard />,
+  },
+  {
+    route: "/admin-panel/fluent-support/reports",
+    component: <TicketReports />,
+  },
+
+  {
+    route: "/admin-panel/fluent-support/activity-logger",
+    component: <FluentSupportActivities />,
+  },
+
+  {
+    route: "/admin-panel/fluent-support/workflows",
+    component: <FluentSupportWorkflows />,
+  },
+  {
     route: "/admin-panel/fluent-support/tickets",
     component: <TicketsList />,
   },
@@ -184,6 +208,7 @@ export const admin_panel_router = [
     route: "/admin-panel/fluent-support/tickets/:id/view",
     component: <AdminTicketView />,
   },
+
   // ============== course
   {
     route: "/admin-panel/tutor/Courses/create-new-course",
@@ -236,6 +261,16 @@ export const admin_panel_router = [
   {
     route: "/admin-panel/users/profile",
     component: <AdminUsersProfile />,
+  },
+
+  // team members
+  {
+    route: "/admin-panel/team-members",
+    component: <AllTeamMembers />,
+  },
+  {
+    route: "/admin-panel/team-members/add-new-member",
+    component: <AddNewTeamMember />,
   },
 
   // market pulse

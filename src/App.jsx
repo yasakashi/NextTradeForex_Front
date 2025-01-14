@@ -86,6 +86,7 @@ import LearnToTradeSubCategories from "./pages/learn_to_trade/LearnToTradeSubCat
 import MyPosts from "./components/profile/myPosts/MyPosts";
 import AddNewForumPost from "./admin_panel/pages/posts/Forum/AddNewForumPost";
 import AddNewBlogPost from "./admin_panel/pages/posts/blog/AddNewBlogPost";
+import ReferralTree from "./pages/referral-tree/ReferralTree";
 
 function App({ auth }) {
   const token = localStorage.getItem("loginToken");
@@ -145,6 +146,7 @@ function App({ auth }) {
             {token ? (
               <>
                 <Route path="/partnership" element={<PartnerShip />} />
+                <Route path="/referral-tree" element={<ReferralTree />} />
                 <Route
                   path="/partnership/profile-view/:userid"
                   element={<PartnershipProfileView />}

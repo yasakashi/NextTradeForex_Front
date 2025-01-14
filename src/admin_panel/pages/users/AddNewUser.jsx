@@ -46,15 +46,15 @@ const getPasswordStrength = (password) => {
   return { value, style };
 };
 
-  const generateRandomPassword = () => {
-    const chars =
-      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_+=";
-    let password = "";
-    for (let i = 0; i < 12; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return password;
-  };
+const generateRandomPassword = () => {
+  const chars =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_+=";
+  let password = "";
+  for (let i = 0; i < 12; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+};
 
 const AddNewUser = () => {
   const [showPassword, setShowPassword] = useState(true);
@@ -88,20 +88,18 @@ const AddNewUser = () => {
     setStyle(style);
   };
 
-
-
   const handleGeneratePassword = () => {
     const randomPassword = generateRandomPassword();
     formik.setFieldValue("password", randomPassword);
-    const { value ,style } = getPasswordStrength(randomPassword);
+    const { value, style } = getPasswordStrength(randomPassword);
     setPasswordStrength(value);
-     setStyle(style);
+    setStyle(style);
   };
 
   return (
     <div className="py-10 px-8">
       <h2 className="font-normal text-2xl text-[#1d2327]">Add New User</h2>
-      {console.log(formik.values, style)}
+
       <p className="mt-10 text-[13px] text-gray-600 font-normal">
         Create a brand new user and add the to this site.
       </p>

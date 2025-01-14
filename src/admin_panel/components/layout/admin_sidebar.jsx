@@ -368,12 +368,12 @@ const list = [
     title: "Fluent Support",
     Icon: BiSupport,
     sub_categories: [
-      { title: "Dashboard" },
+      { title: "Dashboard", route: "/fluent-support/dashboard" },
       { title: "Tickets", route: "/fluent-support/tickets" },
-      { title: "Workflows" },
-      { title: "Activities" },
+      { title: "Workflows", route: "/fluent-support/workflows" },
+      { title: "Activities", route: "/fluent-support/activity-logger" },
       { title: "Settings" },
-      { title: "Reports" },
+      { title: "Reports", route: "/fluent-support/reports" },
     ],
   },
   // {
@@ -404,7 +404,10 @@ const list = [
   {
     title: "Teem Members",
     Icon: PiMemberOfBold,
-    sub_categories: [{ title: "All Team Members" }, { title: "Add New" }],
+    sub_categories: [
+      { title: "All Team Members", route: "/team-members" },
+      { title: "Add New", route: "/team-members/add-new-member" },
+    ],
   },
   // {
   //   title: "Webinars",

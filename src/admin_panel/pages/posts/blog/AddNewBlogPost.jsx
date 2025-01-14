@@ -45,7 +45,7 @@ const AddNewBlogPost = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <h1 className="font-semibold text-2xl text-white mb-4">
+      <h1 className="font-semibold text-2xl text-gray-700 mb-4">
         Add New Blog Post
       </h1>
 
