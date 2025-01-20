@@ -1,19 +1,22 @@
-import React, { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import store from '../../../redux/store';
-import { show_message } from '../../../redux/features/generalSlice';
-import { LiaToolboxSolid } from 'react-icons/lia';
-import { FaPooStorm } from 'react-icons/fa';
-import { FaPager } from 'react-icons/fa6';
-import { BsCommand } from 'react-icons/bs';
-import { BiChart, BiSupport } from 'react-icons/bi';
-import { GrSettingsOption } from 'react-icons/gr';
-import { MdFeedback } from 'react-icons/md';
-import { PiMemberOfBold, PiStrategy } from 'react-icons/pi';
-import { CiLock } from 'react-icons/ci';
-import { useTheme } from '@mui/material';
-import { TbCategory2 } from 'react-icons/tb';
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import store from "../../../redux/store";
+import { show_message } from "../../../redux/features/generalSlice";
+import { LiaToolboxSolid } from "react-icons/lia";
+import { FaPooStorm } from "react-icons/fa";
+import { FaPager } from "react-icons/fa6";
+import { BsCommand } from "react-icons/bs";
+import { BiChart, BiSupport } from "react-icons/bi";
+import { GrSettingsOption } from "react-icons/gr";
+import { MdFeedback } from "react-icons/md";
+import { PiMemberOfBold, PiStrategy } from "react-icons/pi";
+import { CiLock } from "react-icons/ci";
+import { useTheme } from "@mui/material";
+import { TbCategory2 } from "react-icons/tb";
+import { AiOutlineDashboard } from "react-icons/ai";
+import { FaUserAlt } from "react-icons/fa";
+
 import {
   TiPin,
   TiHome,
@@ -99,8 +102,8 @@ const AdminSidebar = () => {
                 backgroundColor:
                   i === open_item ? bg_gold_light_400 : '#09165a',
               }}
-              className={`hover:bg-gold-light_400 text-[13px] font-bold text-white ${
-                i === open_item ? 'bg-gold-light_400 text-white' : ''
+              className={`hover:bg-gold-light_400 text-[13px] font-semibold text-white ${
+                i === open_item ? "bg-gold-light_400 text-white" : ""
               } cursor-pointer flex items-center pr-2 pl-2`}
               onClick={() => {
                 if (open_item === i) return set_open_item(null);
@@ -213,40 +216,7 @@ export default AdminSidebar;
 
 const list = [
   {
-    title: 'Learn To Trader',
-    Icon: TiPin,
-    sub_categories: [
-      { title: 'Topics', route: '/learn-to-trade/topics' },
-      { title: 'Lessons', route: '/learn-to-trade/lessons' },
-      { title: 'E-Books', route: '/learn-to-trade/e-books' },
-      { title: 'Podcasts', route: '/learn-to-trade/podcasts' },
-      { title: 'Webinars', route: '/learn-to-trade/webinars' },
-      { title: 'Videos', route: '/learn-to-trade/videos' },
-    ],
-  },
-
-  {
-    title: 'Categories',
-    Icon: TbCategory2,
-    sub_categories: [{ title: 'Categories', route: '/lesson/categories' }],
-  },
-
-  {
-    title: 'Bluehost',
-    Icon: TiArchive,
-    sub_categories: [
-      { title: 'Home' },
-      { title: 'MaretPlase' },
-      { title: '-Featured' },
-      { title: '-Themes' },
-      { title: '-SEO' },
-      { title: 'Staging' },
-      { title: 'Settings' },
-      { title: '-Help' },
-    ],
-  },
-  {
-    title: 'Dashboard',
+    title: "Dashboard",
     Icon: TiDatabase,
     sub_categories: [
       { title: 'Home' },
@@ -254,6 +224,13 @@ const list = [
       { title: 'Site Reviews' },
     ],
   },
+
+  {
+    title: "Admin Panel",
+    Icon: AiOutlineDashboard,
+    sub_categories: [{ title: "Admin Panel", route: "/" }],
+  },
+
   {
     title: 'Tutor LMS',
     Icon: TiAdjustContrast,
@@ -278,7 +255,48 @@ const list = [
     ],
   },
   {
-    title: 'Email Templates',
+    title: "Learn To Trader",
+    Icon: TiPin,
+    sub_categories: [
+      { title: "Topics", route: "/learn-to-trade/topics" },
+      { title: "Lessons", route: "/learn-to-trade/lessons" },
+      { title: "E-Books", route: "/learn-to-trade/e-books" },
+      { title: "Podcasts", route: "/learn-to-trade/podcasts" },
+      { title: "Webinars", route: "/learn-to-trade/webinars" },
+      { title: "Videos", route: "/learn-to-trade/videos" },
+    ],
+  },
+  {
+    title: "Media",
+    Icon: TiMediaPlayOutline,
+    sub_categories: [
+      { title: "Library", route: "/media/library" },
+      { title: "Add New Media File", route: "/media/add-new-media-file" },
+    ],
+  },
+  {
+    title: "Categories",
+    Icon: TbCategory2,
+    sub_categories: [{ title: "Categories", route: "/lesson/categories" }],
+  },
+
+  {
+    title: "Bluehost",
+    Icon: TiArchive,
+    sub_categories: [
+      { title: "Home" },
+      { title: "MaretPlase" },
+      { title: "-Featured" },
+      { title: "-Themes" },
+      { title: "-SEO" },
+      { title: "Staging" },
+      { title: "Settings" },
+      { title: "-Help" },
+    ],
+  },
+
+  {
+    title: "Email Templates",
     Icon: TiMessage,
     sub_categories: [
       { title: 'All Emails' },
@@ -299,11 +317,6 @@ const list = [
   //     { title: "Taxonomy Order" },
   //   ],
   // },
-  {
-    title: 'Media',
-    Icon: TiMediaPlayOutline,
-    sub_categories: [{ title: 'Library' }, { title: 'Add New' }],
-  },
   // {
   //   title: "Totur",
   //   Icon: TiAdjustBrightness,
@@ -330,10 +343,10 @@ const list = [
     title: 'Tools',
     Icon: LiaToolboxSolid,
     sub_categories: [
-      { title: 'PDF Books' },
-      { title: 'Tables' },
-      { title: 'Webinar' },
-      { title: 'Podcast' },
+      { title: "PDF Books", route: "/tools/e-books" },
+      { title: "Tables" },
+      { title: "Webinar", route: "/tools/webinars" },
+      { title: "Podcast", route: "/tools/podcasts" },
     ],
   },
   {
@@ -429,16 +442,25 @@ const list = [
       { title: 'Taxonomy Order' },
     ],
   },
+
+  {
+    title: "Users",
+    Icon: FaUserAlt,
+    sub_categories: [
+      { title: "All Users", route: "/users/all-users" },
+      { title: "Add New User", route: "/users/add-new-user" },
+      { title: "Profile", route: "/users/profile" },
+    ],
+  },
   {
     title: 'Strategies',
     Icon: PiStrategy,
     sub_categories: [
-      { title: 'All Strategies' },
-
-      { title: 'Add New' },
-      { title: 'Tags' },
-      { title: 'Categories' },
-      { title: 'Taxonomy Order' },
+      { title: "All Strategies" },
+      { title: "Add New" },
+      { title: "Tags" },
+      { title: "Categories" },
+      { title: "Taxonomy Order" },
     ],
   },
   // {

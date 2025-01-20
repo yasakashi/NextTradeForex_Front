@@ -113,7 +113,7 @@ const AdminNavbar = () => {
 
             <ul className="py-2 space-y-2 text-[13px]">
               <li className="text-[#f0f6fcb3] hover:text-white transition-colors">
-                <Link to="#">Edit Profile</Link>
+                <Link to="/admin-panel/users/profile">Edit Profile </Link>
               </li>
 
               <li

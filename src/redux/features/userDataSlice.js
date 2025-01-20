@@ -17,7 +17,7 @@ export const userDataAction = createAsyncThunk(
           response?.data?.messageData?.userTypeId === 1 ||
           response?.data?.messageData?.userTypeId === 2
         ) {
-          navigate("/admin-panel/lesson/categories");
+          navigate("/admin-panel");
         } else {
           navigate("/");
         }

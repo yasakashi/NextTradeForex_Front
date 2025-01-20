@@ -36,10 +36,14 @@ const DropZone = ({ file, set_file, accept_file, ...props }) => {
             "audio/mav": [],
             "audio/ogg": [],
           }
-        : {
+        : accept_file === "Audio"
+        ? {
             "video/mp4": [],
             "video/mkv": [],
             "video/webm": [],
+          }
+        : {
+            "*": [],
           },
     maxFiles: 100,
   });
