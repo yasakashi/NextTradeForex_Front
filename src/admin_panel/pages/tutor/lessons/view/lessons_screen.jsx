@@ -5,7 +5,7 @@ import BorderedButtonPrimary from "../../../../../common/bordered_button_primary
 import DeleteMenuModal from "../../../categories/view/components/delete_menu_modal";
 import { useNavigate } from "react-router-dom";
 import { CustomSelectBox } from "../../../../../pages/profile/new_course_components/custom_select_box";
-import { useGetTopicLessonsMutation } from "../../../../../redux/features/course/courseBuilderApi";
+import { useGetTopicLessonsMutation } from "../../../../../redux/features/api/course/courseBuilderApi";
 import AdminPanelTitle from "../../../../components/AdminPanelTitle";
 
 const LessonsScreen = () => {

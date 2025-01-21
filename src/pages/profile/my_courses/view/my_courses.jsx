@@ -17,7 +17,7 @@ import store from "../../../../redux/store";
 import { set_course_data_state } from "../../../../redux/features/courseSlise";
 import { get_course_cover_image_api } from "../service/get_course_cover_image_api";
 import { AiFillPlusSquare } from "react-icons/ai";
-import { useGetCoursesQuery } from "../../../../redux/features/course/courseApii";
+import { useGetCoursesQuery } from "../../../../redux/features/api/course/courseApii";
 
 const MyCourses = () => {
   const { courses_list, publish_type, set_publish_type, remove_course_state } =

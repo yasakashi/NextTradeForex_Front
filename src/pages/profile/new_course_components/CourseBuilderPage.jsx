@@ -21,7 +21,7 @@ import {
   useGetTopicLessonsMutation,
   useRemoveCourseTopicMutation,
   useRemoveTopicLessonMutation,
-} from "../../../redux/features/course/courseBuilderApi";
+} from "../../../redux/features/api/course/courseBuilderApi";
 import { Link, useParams } from "react-router-dom";
 import RemoveConfirmModal from "./RemoveConfirmModal";
 import toast from "react-hot-toast";

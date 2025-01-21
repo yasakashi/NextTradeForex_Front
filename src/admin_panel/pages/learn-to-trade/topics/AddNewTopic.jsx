@@ -12,7 +12,7 @@ import TagsComponent from "../../../../pages/profile/new_course_components/tags_
 import LTRTopicAttributes from "../../../components/LTRTopicAttributes";
 
 import * as Yup from "yup";
-import { useAddNewLTRTopicMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import { useAddNewLTRTopicMutation } from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 

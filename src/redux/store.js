@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import loginReducer from "./features/loginSlice";
 import registerReducer from "./features/registerSlice";
-import usersListReducer from "./features/admin/usersListSlice";
+// import usersListReducer from "./features/admin/usersListSlice";
 import userDataReducer from "./features/userDataSlice";
 import userSendMessage from "./features/messages/sendMsgSlice";
 import groupReducer from "./features/groupSlice";
@@ -16,14 +16,15 @@ import galleryReducer from "./features/gallerySlice";
 import siteMessageReducer from "./features/messageSlice";
 import { generalReducer } from "./features/generalSlice";
 import { courseReducer } from "./features/courseSlise";
-import { courseBuilderApi } from "./features/course/courseBuilderApi";
+import { courseBuilderApi } from "./features/api/course/courseBuilderApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { courseApi } from "./features/course/courseApii";
-import { commonApi } from "./features/course/commonApi";
+import { courseApi } from "./features/api/course/courseApii";
+import { commonApi } from "./features/api/course/commonApi";
 import { marketPulseReducer } from "./features/marketPulse/marketPulseSlice";
 import { loadingReducer } from "./features/loading";
-import { categoriesApi } from "./features/categories/categoriesApi";
-import { LearnToTradeApi } from "./features/learnToTrade/LearnToTradeApi";
+import { categoriesApi } from "./features/api/categories/categoriesApi";
+import { LearnToTradeApi } from "./features/api/learnToTrade/LearnToTradeApi";
+import { userReferralApi } from "./features/api/referral/userReferralApi";
 
 const store = configureStore({
   reducer: {
@@ -32,10 +33,10 @@ const store = configureStore({
     [commonApi.reducerPath]: commonApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [LearnToTradeApi.reducerPath]: LearnToTradeApi.reducer,
+    [userReferralApi.reducerPath]: userReferralApi.reducer,
 
     login: loginReducer,
     auth: registerReducer,
-    usersList: usersListReducer,
     user: userDataReducer,
     userSendMessage: userSendMessage,
     group: groupReducer,
@@ -59,7 +60,8 @@ const store = configureStore({
       courseApi.middleware,
       commonApi.middleware,
       categoriesApi.middleware,
-      LearnToTradeApi.middleware
+      LearnToTradeApi.middleware,
+      userReferralApi.middleware
     ),
 });
 

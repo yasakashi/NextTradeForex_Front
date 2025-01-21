@@ -1,8 +1,12 @@
-import Img1 from "../../../../public/assets/Algo-trading.png";
-import Img2 from "../../../../public/assets/forex-lifestyle2.jpg";
+// import Img1 from "../../../assets/Algo-trading.png";
+// import Img2 from "../../../assets/forex-lifestyle2.jpg";
 import VidoeCover from "../../../asset/video_cover.svg";
 import AudioCover from "../../../asset/audio_cover.svg";
 
+const Img1 =
+  "https://www.nexttradeforex.com/wp-content/uploads/2023/04/Trader.avif";
+const Img2 =
+  "https://www.nexttradeforex.com/wp-content/uploads/2023/04/Trader.avif";
 const data = [
   {
     file: Img1,

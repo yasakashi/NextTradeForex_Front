@@ -11,7 +11,7 @@ import LTRCategory from "../../../components/LTRCategory";
 import DflipSettings from "./DFlipSettings";
 
 import * as Yup from "yup";
-import { useAddNewLTREBookMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import { useAddNewLTREBookMutation } from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 const SUPPORTED_FORMATS = [

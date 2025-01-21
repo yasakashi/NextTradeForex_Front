@@ -31,7 +31,7 @@ import {
   useAddNewCourseMutation,
   useEditCourseMutation,
   useGetCoursesQuery,
-} from "../../redux/features/course/courseApii";
+} from "../../redux/features/api/course/courseApii";
 import LibraryModal from "./new_course_components/library_modal";
 import { BiSave } from "react-icons/bi";
 import { CustomButton } from "../../components/ui/CustomButton";

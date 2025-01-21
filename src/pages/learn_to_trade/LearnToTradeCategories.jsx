@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useGetMainCategoriesByInfoMutation } from "../../redux/features/categories/categoriesApi.js";
+import { useGetMainCategoriesByInfoMutation } from "../../redux/features/api/categories/categoriesApi.js";
 import LTRCard from "../../components/learnToTrade/LTRCard.jsx";
+import SearchFilter from "../../components/learnToTrade/SearchFilter.jsx";
 
 const LearnToTradeCategories = () => {
   const location = useLocation();
@@ -28,7 +29,8 @@ const LearnToTradeCategories = () => {
   const navigate = useNavigate();
   return (
     <div className="w-full">
-      {console.log(data)}
+      <SearchFilter mainCategories={data} />
+
       <AnimatePresence mode="wait">
         {!getCategoriesLoading && (
           <motion.div

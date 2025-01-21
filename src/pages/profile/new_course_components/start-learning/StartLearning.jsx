@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   useGetCourseTopicsMutation,
   useGetTopicLessonsMutation,
-} from "../../../../redux/features/course/courseBuilderApi";
+} from "../../../../redux/features/api/course/courseBuilderApi";
 import { Link, useParams } from "react-router-dom";
 
 import LearningOverview from "./LearningOverview";

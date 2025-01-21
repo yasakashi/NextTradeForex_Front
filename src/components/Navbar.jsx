@@ -369,7 +369,7 @@ const Navbar = () => {
                       </li>
 
                       <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1 hover:font-bold transition-all ">
-                        Referral Tree
+                        <Link to="/referral-tree">Referral Tree</Link>
                       </li>
 
                       <li className="px-3 text-blue-light border-b border-blue-light pt-3 rounded-sm py-1 hover:font-bold transition-all ">

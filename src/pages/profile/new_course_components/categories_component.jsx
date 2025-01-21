@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import BootstrapTabs from "../../../common/bootstrap_tabs";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { MdClose } from "react-icons/md";
-import { useGetCategoriesMutation } from "../../../redux/features/categories/categoriesApi";
+import { useGetCategoriesMutation } from "../../../redux/features/api/categories/categoriesApi";
 import toast from "react-hot-toast";
 
 const CategoriesComponent = ({ categoryids = [], onChange, errorMsg }) => {

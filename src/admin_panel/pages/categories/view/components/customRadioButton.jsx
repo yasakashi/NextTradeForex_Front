@@ -20,7 +20,6 @@ const CustomRadioButton = ({ checked, onChange, label, label_color, name }) => {
           marginLeft: 6,
           fontSize: 13,
         }}
- 
       >
         {label}
       </div>

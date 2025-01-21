@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
 import CourseCard from "../../components/courses/CourseCard";
-import { useGetCoursesQuery } from "../../redux/features/course/courseApii";
+import { useGetCoursesQuery } from "../../redux/features/api/course/courseApii";
 import CustomRiseLoader from "../../utils/loaders/CustomRiseLoader";
 
 const Courses = () => {

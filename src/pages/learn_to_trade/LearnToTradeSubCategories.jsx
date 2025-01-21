@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useGetMainCategoriesByInfoMutation } from "../../redux/features/categories/categoriesApi.js";
+import { useGetMainCategoriesByInfoMutation } from "../../redux/features/api/categories/categoriesApi.js";
 import LTRCard from "../../components/learnToTrade/LTRCard.jsx";
 
 const LearnToTradeSubCategories = () => {
   const location = useLocation();
   const { level, categoryName } = useParams();
   const { categoryId, levelId } = location.state || {};
-  console.log({ levelId }, "level id");
+
   const [
     getMainCategoriesByInfo,
     { data, error, isLoading: getCategoriesLoading },

@@ -9,7 +9,6 @@ import { CgMoreVertical } from "react-icons/cg";
 import { CircularProgress, IconButton, LinearProgress } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillPlusSquare } from "react-icons/ai";
-import { useGetCoursesQuery } from "../../../redux/features/course/courseApii";
 
 const MyPosts = () => {
   const [publish_type, set_publish_type] = useState("");
