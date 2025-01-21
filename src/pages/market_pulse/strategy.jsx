@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import Search from '../../components/market_pulse/search';
 import SelectInput from '../../components/market_pulse/SelectInput';
 import { http_instanse_level_2 } from '../../axios/auth_full_http_instanse';
-import Story from '../../components/market_pulse/forex/Story';
+import Story from '../../components/market_pulse/Strategy/Story';
 import { startLoading, stopLoading } from '../../redux/features/loading';
 import { useDispatch, useSelector } from 'react-redux';
 
-function Stocks() {
+function Strategy() {
   const [topCategories, setTopCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [selectedTopCategory, setSelectedTopCategory] = useState(null);
@@ -19,7 +19,7 @@ function Stocks() {
     try {
       dispatch(startLoading());
       const res = await http_instanse_level_2.post(
-        'api/marketpuls/stock/gettopcategories',
+        'api/marketpuls/strategy/gettopcategories',
         {},
         { headers: { 'Content-Type': 'application/json' } }
       );
@@ -40,12 +40,11 @@ function Stocks() {
       try {
         dispatch(startLoading());
         const res = await http_instanse_level_2.post(
-          'api/marketpuls/stock/getcategories',
+          'api/marketpuls/strategy/getcategories',
           {},
           { headers: { 'Content-Type': 'application/json' } }
         );
 
-     
         dispatch(stopLoading());
         setSubCategories(res.data.messageData);
       } catch (error) {
@@ -53,38 +52,41 @@ function Stocks() {
       }
     };
 
-    // Only fetch subcategories if a top category is selected
     if (selectedTopCategory) {
       fetchSubCategories();
     } else {
-      setSubCategories([]); // Reset subcategories if no top category is selected
+      setSubCategories([]);
     }
   }, [selectedTopCategory]);
 
   return (
     <div>
-      <div className="mx-auto w-fit ">
+      <div className="mx-auto w-1/4">
         <Search />
         <div className="flex gap-x-[10px]">
           {/* Top Category Select Input */}
-          <SelectInput
-            options={topCategories}
-            value={selectedTopCategory}
-            onChange={(category) => {
-              setSelectedTopCategory(category);
-              setSelectedSubCategory(null); // Reset subcategory when top category changes
-              setSubCategories([]);
-            }}
-            placeholder="Select Top Category"
-          />
+          <div className="w-1/2">
+            <SelectInput
+              options={topCategories}
+              value={selectedTopCategory}
+              onChange={(category) => {
+                setSelectedTopCategory(category);
+                setSelectedSubCategory(null); // Reset subcategory when top category changes
+                setSubCategories([]);
+              }}
+              placeholder="Select Top Category"
+            />
+          </div>
           {/* Subcategory Select Input - Only shows when a top category is selected */}
           {selectedTopCategory && (
-            <SelectInput
-              options={subCategories}
-              value={selectedSubCategory}
-              onChange={setSelectedSubCategory}
-              placeholder="Select Sub Category"
-            />
+            <div className="w-1/2">
+              <SelectInput
+                options={subCategories}
+                value={selectedSubCategory}
+                onChange={setSelectedSubCategory}
+                placeholder="Select Sub Category"
+              />
+            </div>
           )}
         </div>
       </div>
@@ -103,7 +105,6 @@ function Stocks() {
         </div>
       )}
 
-      {/* {isLoading && <LoadingSpinner />} */}
       {selectedSubCategory && (
         <Story selectedSubCategory={selectedSubCategory} />
       )}
@@ -111,4 +112,4 @@ function Stocks() {
   );
 }
 
-export default Stocks;
+export default Strategy;

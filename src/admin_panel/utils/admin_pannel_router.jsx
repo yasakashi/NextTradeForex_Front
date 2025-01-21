@@ -44,22 +44,28 @@ import AddNewMediaFile from "../pages/media/AddNewMediaFile";
 import AllUsers from "../pages/users/AllUsers";
 import AddNewUser from "../pages/users/AddNewUser";
 import AdminUsersProfile from "../pages/users/Profile";
+import ChartList from '../pages/lessons/market-pulse/charting/chartList';
+import ChartDetails from '../pages/lessons/market-pulse/charting/chartDetails';
+import AddChart from '../pages/lessons/market-pulse/charting/addChart';
+import StrategyList from '../pages/lessons/market-pulse/strategy/strategyList';
+import StrategyDetails from '../pages/lessons/market-pulse/strategy/strategyDetails';
+import AddStrategy from '../pages/lessons/market-pulse/strategy/addStrategy';
 
 export const admin_panel_router = [
   // topics
   {
-    route: "/admin-panel/learn-to-trade/topics",
+    route: '/admin-panel/learn-to-trade/topics',
     component: <LTRTopics />,
   },
   // add new webinar
   {
-    route: "/admin-panel/learn-to-trade/topics/add-new-topic",
+    route: '/admin-panel/learn-to-trade/topics/add-new-topic',
     component: <AddNewTopic />,
   },
   // ============= learn to trade and tools
   // webinars
   {
-    route: "/admin-panel/learn-to-trade/webinars",
+    route: '/admin-panel/learn-to-trade/webinars',
     component: <LTRWebinars />,
   },
 
@@ -69,7 +75,7 @@ export const admin_panel_router = [
   },
   // add new webinar
   {
-    route: "/admin-panel/learn-to-trade/webinars/add-new-webinar",
+    route: '/admin-panel/learn-to-trade/webinars/add-new-webinar',
     component: <AddNewWebinar />,
   },
 
@@ -79,7 +85,7 @@ export const admin_panel_router = [
   },
   //e-books
   {
-    route: "/admin-panel/learn-to-trade/e-books",
+    route: '/admin-panel/learn-to-trade/e-books',
     component: <LTREBooks />,
   },
 
@@ -89,7 +95,7 @@ export const admin_panel_router = [
   },
   // add new e-book
   {
-    route: "/admin-panel/learn-to-trade/e-books/add-new-book",
+    route: '/admin-panel/learn-to-trade/e-books/add-new-book',
     component: <AddNewEBook />,
   },
 
@@ -98,24 +104,24 @@ export const admin_panel_router = [
     component: <AddNewEBook page="tools" />,
   },
   {
-    route: "/admin-panel/learn-to-trade/lessons",
+    route: '/admin-panel/learn-to-trade/lessons',
     component: <LTRLessons />,
   },
   {
-    route: "/admin-panel/learn-to-trade/lessons/add-new-lesson",
+    route: '/admin-panel/learn-to-trade/lessons/add-new-lesson',
     component: <AddNewLesson />,
   },
   {
-    route: "/admin-panel/learn-to-trade/videos",
+    route: '/admin-panel/learn-to-trade/videos',
     component: <LTRVideos />,
   },
   {
-    route: "/admin-panel/learn-to-trade/videos/add-new-video",
+    route: '/admin-panel/learn-to-trade/videos/add-new-video',
     component: <AddNewVideo />,
   },
 
   {
-    route: "/admin-panel/learn-to-trade/podcasts",
+    route: '/admin-panel/learn-to-trade/podcasts',
     component: <LTRPodcasts />,
   },
 
@@ -124,7 +130,7 @@ export const admin_panel_router = [
     component: <LTRPodcasts page="tools" />,
   },
   {
-    route: "/admin-panel/learn-to-trade/podcasts/add-new-podcast",
+    route: '/admin-panel/learn-to-trade/podcasts/add-new-podcast',
     component: <AddNewPodcast />,
   },
 
@@ -135,74 +141,74 @@ export const admin_panel_router = [
   { route: "/admin-panel/lesson/categories", component: <CategoriesScreen /> },
 
   {
-    route: "/admin-panel/lesson/categories/edit/:id",
+    route: '/admin-panel/lesson/categories/edit/:id',
     component: <EditCategoryComponent />,
   },
   {
-    route: "/admin-panel/lesson/categories/:id",
+    route: '/admin-panel/lesson/categories/:id',
     component: <CategoriesDetailsView />,
   },
   {
-    route: "/admin-panel/tutor/Courses",
+    route: '/admin-panel/tutor/Courses',
     component: <CoursesScreen />,
   },
   {
-    route: "/admin-panel/tutor/lessons",
+    route: '/admin-panel/tutor/lessons',
     component: <LessonsScreen />,
   },
   {
-    route: "/admin-panel/pdf_books/all_books",
+    route: '/admin-panel/pdf_books/all_books',
     component: <AllBooksScreen />,
   },
 
   // ============= posts
   {
-    route: "/admin-panel/posts/forum-posts",
+    route: '/admin-panel/posts/forum-posts',
     component: <ForumPosts />,
   },
   {
-    route: "/admin-panel/posts/forum-posts/add-new-forum-post",
+    route: '/admin-panel/posts/forum-posts/add-new-forum-post',
     component: <AddNewForumPost />,
   },
 
   {
-    route: "/admin-panel/posts/blog-posts",
+    route: '/admin-panel/posts/blog-posts',
     component: <BlogPosts />,
   },
   {
-    route: "/admin-panel/posts/blog-posts/add-new-blog-post",
+    route: '/admin-panel/posts/blog-posts/add-new-blog-post',
     component: <AddNewBlogPost />,
   },
 
   // ============ flutent support
 
   {
-    route: "/admin-panel/fluent-support/tickets",
+    route: '/admin-panel/fluent-support/tickets',
     component: <TicketsList />,
   },
   {
-    route: "/admin-panel/fluent-support/tickets/:id/view",
+    route: '/admin-panel/fluent-support/tickets/:id/view',
     component: <AdminTicketView />,
   },
   // ============== course
   {
-    route: "/admin-panel/tutor/Courses/create-new-course",
+    route: '/admin-panel/tutor/Courses/create-new-course',
     component: <NewCourse page="admin" />,
   },
 
   {
-    route: "/admin-panel/tutor/Courses/edit-course/:id",
+    route: '/admin-panel/tutor/Courses/edit-course/:id',
     component: <NewCourse page="admin" />,
   },
   {
     route:
-      "/admin-panel/tutor/Courses/create-new-course/course-builder/:courseId",
+      '/admin-panel/tutor/Courses/create-new-course/course-builder/:courseId',
     component: <CourseBuilderPage page="admin" />,
   },
 
   {
     route:
-      "/admin-panel/tutor/Courses/create-new-course/add-meeting-pdf/:courseId",
+      '/admin-panel/tutor/Courses/create-new-course/add-meeting-pdf/:courseId',
     component: <CourseMeetingAndPdf page="admin" />,
   },
 
@@ -240,55 +246,79 @@ export const admin_panel_router = [
 
   // market pulse
   {
-    route: "/admin-panel/lessons/market-pulse",
+    route: '/admin-panel/lessons/market-pulse',
     component: <MarketPulseListScreen />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/forex/:id",
+    route: '/admin-panel/lessons/market-pulse/forex/:id',
     component: <MarketPulseNewCourseScreen />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/indices",
+    route: '/admin-panel/lessons/market-pulse/indices',
     component: <IndicesList />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/indices/:id",
+    route: '/admin-panel/lessons/market-pulse/indices/:id',
     component: <AddIndice />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/commodities",
+    route: '/admin-panel/lessons/market-pulse/commodities',
     component: <CommodityList />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/commodities/:id",
+    route: '/admin-panel/lessons/market-pulse/commodities/:id',
     component: <CommodityDetails />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/commodities/add",
+    route: '/admin-panel/lessons/market-pulse/commodities/add',
     component: <AddCommodity />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/crypto",
+    route: '/admin-panel/lessons/market-pulse/crypto',
     component: <CryptoList />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/crypto/:id",
+    route: '/admin-panel/lessons/market-pulse/crypto/:id',
     component: <CryptoDetails />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/crypto/add",
+    route: '/admin-panel/lessons/market-pulse/crypto/add',
     component: <AddCrypto />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/stocks",
+    route: '/admin-panel/lessons/market-pulse/stocks',
     component: <StockList />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/stocks/:id",
+    route: '/admin-panel/lessons/market-pulse/stocks/:id',
     component: <StocksDetails />,
   },
   {
-    route: "/admin-panel/lessons/market-pulse/stocks/add",
+    route: '/admin-panel/lessons/market-pulse/stocks/add',
     component: <AddStock />,
+  },
+  {
+    route: '/admin-panel/lessons/market-pulse/forex-chart',
+    component: <ChartList />,
+  },
+  {
+    route: '/admin-panel/lessons/market-pulse/forex-chart/:id',
+    component: <ChartDetails />,
+  },
+  {
+    route: '/admin-panel/lessons/market-pulse/forex-chart/add',
+    component: <AddChart />,
+  },
+  {
+    route: '/admin-panel/lessons/market-pulse/strategy',
+    component: <StrategyList />,
+  },
+  {
+    route: '/admin-panel/lessons/market-pulse/strategy/:id',
+    component: <StrategyDetails />,
+  },
+  {
+    route: '/admin-panel/lessons/market-pulse/strategy/add',
+    component: <AddStrategy />,
   },
 ];
