@@ -11,13 +11,13 @@ import {
   useChangeCourseStatusMutation,
   useGetCoursesQuery,
   useRemoveCourseMutation,
-} from "../../../../../redux/features/course/courseApii";
+} from "../../../../../redux/features/api/course/courseApii";
 import { CustomButton } from "../../../../../components/ui/CustomButton";
 import useClickOutside from "../../../../../hooks/useClickOutside";
 import { HiDotsVertical } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
 import { IoTrashOutline } from "react-icons/io5";
-import { useGetCourseStatusListQuery } from "../../../../../redux/features/course/commonApi";
+import { useGetCourseStatusListQuery } from "../../../../../redux/features/api/course/commonApi";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../../../components/AdminPanelTitle";
 

@@ -10,7 +10,7 @@ import { MdOutlinePermMedia } from "react-icons/md";
 import { RiImageAddFill } from "react-icons/ri";
 import { FaRegImage } from "react-icons/fa";
 import { GrAttachment } from "react-icons/gr";
-import { useAddTopicLessonMutation } from "../../../redux/features/course/courseBuilderApi";
+import { useAddTopicLessonMutation } from "../../../redux/features/api/course/courseBuilderApi";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { EditorState } from "draft-js";
@@ -115,11 +115,7 @@ const NewLesson = ({
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <ModalLayout
-        className="w-full  sm:w-[600px] md:w-[800px] lg:w-[1000px] h-[93vh] overflow-x-hidden overflow-y-hidden flex flex-col justify-between mx-auto"
-        onClose={setShowNewLessonModal}
-        open={showNewLessonModal}
-      >
+      <ModalLayout onClose={setShowNewLessonModal} open={showNewLessonModal}>
         <div className="flex w-full flex-col border-b border-gray-300">
           <div className="flex justify-between items-center py-4 px-8 w-full">
             <h4 className="font-semibold">Add Lesson</h4>

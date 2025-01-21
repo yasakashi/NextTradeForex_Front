@@ -1,4 +1,4 @@
-import { useGetAuthorsListQuery } from "../../../redux/features/course/courseApii";
+import { useGetAuthorsListQuery } from "../../../redux/features/api/course/courseApii";
 import NewCourceCard from "./new_cource_card";
 
 const CourseAuthor = ({ formik }) => {

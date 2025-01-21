@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetCourseMeetingsQuery } from "../../../../../../redux/features/course/courseApii";
+import { useGetCourseMeetingsQuery } from "../../../../../../redux/features/api/course/courseApii";
 import CoverImage  from '../../../../../../asset/img/placeholder (1).svg'
 import { LazyLoadImage } from "react-lazy-load-image-component";
 

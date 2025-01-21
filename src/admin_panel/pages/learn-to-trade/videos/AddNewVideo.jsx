@@ -14,7 +14,7 @@ import LTRCategory from "../../../components/LTRCategory";
 import {
   useAddNewLTRVideoMutation,
   useAddNewLTRVideoSubtitleMutation,
-} from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+} from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 

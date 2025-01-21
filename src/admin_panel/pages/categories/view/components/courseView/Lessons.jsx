@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import {
   useGetCourseTopicsMutation,
   useGetTopicLessonsMutation,
-} from "../../../../../../redux/features/course/courseBuilderApi";
+} from "../../../../../../redux/features/api/course/courseBuilderApi";
 
 import { Link, useParams } from "react-router-dom";
-import { useGetCoursesQuery } from "../../../../../../redux/features/course/courseApii";
+import { useGetCoursesQuery } from "../../../../../../redux/features/api/course/courseApii";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { motion } from "framer-motion";
 import CoverImage from "../../../../../../asset/img/placeholder (1).svg";

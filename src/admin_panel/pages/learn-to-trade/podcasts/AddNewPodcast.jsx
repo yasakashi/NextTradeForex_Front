@@ -10,7 +10,7 @@ import PublishComponent from "../../../../pages/profile/new_course_components/pu
 import FeaturedImageComponent from "../../../../pages/profile/new_course_components/featured_image_component";
 import { MdClose } from "react-icons/md";
 import CategoriesComponent from "../../../../pages/profile/new_course_components/categories_component";
-import { useAddNewLTRPodcastMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import { useAddNewLTRPodcastMutation } from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 
 import * as Yup from "yup";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";

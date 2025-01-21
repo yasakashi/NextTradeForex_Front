@@ -16,7 +16,7 @@ import CourseProgressComponent, {
 } from "./components/course_progress_component";
 import { useAppSelector } from "../../../../../../redux/features/generalSlice";
 import { course_data_selector } from "../../../../../../redux/features/courseSlise";
-import { useGetCoursesQuery } from "../../../../../../redux/features/course/courseApii";
+import { useGetCoursesQuery } from "../../../../../../redux/features/api/course/courseApii";
 
 const CourseDetails = () => {
   const { courseId } = useParams();

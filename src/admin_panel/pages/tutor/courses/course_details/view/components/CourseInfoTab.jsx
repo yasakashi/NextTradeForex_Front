@@ -8,7 +8,7 @@ import {
   useGetCourseTopicsMutation,
   useGetTopicLessonsMutation,
   useGetTopicQuizMutation,
-} from "../../../../../../../redux/features/course/courseBuilderApi";
+} from "../../../../../../../redux/features/api/course/courseBuilderApi";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Link } from "react-router-dom";
 

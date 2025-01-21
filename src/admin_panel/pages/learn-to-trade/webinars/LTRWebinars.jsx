@@ -4,17 +4,16 @@ import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
 import {
- 
   useGetLTRWebinarsQuery,
   useRemoveLTRPodcastMutation,
-} from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+} from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import { IoTrashOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import useClickOutside from "../../../../hooks/useClickOutside";
 import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
-const LTRWebinars = ({page}) => {
+const LTRWebinars = ({ page }) => {
   const [showModal, setShowModal] = useState(false);
   const [activeRowId, setActiveRowId] = useState("");
 

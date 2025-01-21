@@ -8,7 +8,7 @@ import QuizInfo from "./QuizInfo";
 import AddQuestion from "./AddQuestion";
 import QuizSettings from "./QuizSettings";
 import QuizSteps from "./QuizSteps";
-import { useAddTopicQuizMutation } from "../../../../redux/features/course/courseBuilderApi";
+import { useAddTopicQuizMutation } from "../../../../redux/features/api/course/courseBuilderApi";
 import { useParams } from "react-router-dom";
 
 const AddNewQuiz = ({ setShowQuizModal, showQuizModal, courseId, topicId }) => {

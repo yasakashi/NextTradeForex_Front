@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useGetLTRTopicsQuery,
   useRemoveTopicMutation,
-} from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+} from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import { IoTrashOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import useClickOutside from "../../../../hooks/useClickOutside";

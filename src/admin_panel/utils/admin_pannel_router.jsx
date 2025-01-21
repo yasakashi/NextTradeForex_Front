@@ -50,6 +50,9 @@ import FluentSupportDashboard from "../pages/fluent-supports/Dsashboard";
 import TicketReports from "../pages/fluent-supports/Reports";
 import FluentSupportActivities from "../pages/fluent-supports/FluentSupportActivities";
 import FluentSupportWorkflows from "../pages/fluent-supports/FluentSupportWorkflows";
+import AllStudents from "../pages/tutor-lms/students/AllStudents";
+import AllInstructors from "../pages/tutor-lms/instructors/AllInstructors";
+import AllAnnouncements from "../pages/tutor-lms/announcements/AllAnnouncements";
 
 export const admin_panel_router = [
   // topics
@@ -208,7 +211,7 @@ export const admin_panel_router = [
     route: "/admin-panel/fluent-support/tickets/:id/view",
     component: <AdminTicketView />,
   },
-
+  // //////////////////////// turor LMS ///////////////////////////////////////////
   // ============== course
   {
     route: "/admin-panel/tutor/Courses/create-new-course",
@@ -229,6 +232,24 @@ export const admin_panel_router = [
     route:
       "/admin-panel/tutor/Courses/create-new-course/add-meeting-pdf/:courseId",
     component: <CourseMeetingAndPdf page="admin" />,
+  },
+
+  // ---------- students
+  {
+    route: "/admin-panel/tutor-students",
+    component: <AllStudents />,
+  },
+
+  // ---------- instructors
+  {
+    route: "/admin-panel/tutor-instructors",
+    component: <AllInstructors />,
+  },
+
+  // ---------- Announcements
+  {
+    route: "/admin-panel/tutor-announcements",
+    component: <AllAnnouncements />,
   },
 
   // ====admin panel=======

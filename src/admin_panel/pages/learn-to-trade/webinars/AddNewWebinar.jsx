@@ -13,7 +13,7 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import LTRCategory from "../../../components/LTRCategory";
 import { MdClose } from "react-icons/md";
-import { useAddNewLTRWebinarMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import { useAddNewLTRWebinarMutation } from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
 
 import * as Yup from "yup";

@@ -9,7 +9,7 @@ import { FiMinusCircle } from "react-icons/fi";
 import CustomTextInput from "../../../components/ui/CustomTextInput";
 import CustomTextArea from "../../../components/ui/CustomTextArea";
 import { useFormik } from "formik";
-import { useAddCourseVideoPdfMutation } from "../../../redux/features/course/courseApii";
+import { useAddCourseVideoPdfMutation } from "../../../redux/features/api/course/courseApii";
 import toast from "react-hot-toast";
 
 const VideoPdfUrl = () => {

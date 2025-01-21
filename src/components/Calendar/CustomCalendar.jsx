@@ -20,7 +20,7 @@ import { LinearProgress } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { ImFilesEmpty } from "react-icons/im";
 import { MdClose } from "react-icons/md";
-import { useGetLTRWebinarsQuery } from "../../redux/features/learnToTrade/LearnToTradeApi";
+import { useGetLTRWebinarsQuery } from "../../redux/features/api/learnToTrade/LearnToTradeApi";
 
 const MONTHS = [
   "Jan",

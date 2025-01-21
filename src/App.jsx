@@ -131,7 +131,7 @@ function App({ auth }) {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/register/:referralCode?" element={<Register />} />
             <Route path="/market-pulse" element={<MarketPulseLayout />}>
               <Route index element={<MarketPulseIndex />} />
               {market_pulse_router.map((item, i) => {
@@ -298,7 +298,7 @@ function App({ auth }) {
                   element={<AllMemberShipRequest />}
                 />
                 <Route
-                  path="/traders-community/create-signal-channel/:id"
+                  path="/traders-community/groups/:name/create-signal-channel"
                   element={<CreateSignalChannel />}
                 />
                 <Route

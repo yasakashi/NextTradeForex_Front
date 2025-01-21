@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { usersListAction } from "../../../redux/features/admin/usersListSlice";
+// import { usersListAction } from "../../../redux/features/admin/usersListSlice";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import CustomBeatLoader from "../../../utils/loaders/CustomBeatLoader";
 import { LiaEditSolid } from "react-icons/lia";
@@ -17,7 +17,7 @@ const UsersList = () => {
   );
 
   useEffect(() => {
-    dispatch(usersListAction({ axiosPrivate }));
+    // dispatch(usersListAction({ axiosPrivate }));
   }, []);
 
   return (
