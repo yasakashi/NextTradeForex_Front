@@ -23,7 +23,7 @@ import MyCourses from "./my_courses/view/my_courses";
 import { MdDashboard } from "react-icons/md";
 import { PiHandWithdrawDuotone } from "react-icons/pi";
 import EnrolledCourses from "./enrolled_courses/view/enrolled_courses";
-import Rating from "../../admin_panel/pages/tutor/courses/course_details/view/components/rating";
+import Rating from "../../admin_panel/pages/tutor-lms/courses/course_details/view/components/rating";
 import { AiFillPlusSquare } from "react-icons/ai";
 
 const UserProfile = () => {

@@ -3,7 +3,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { FaRegClock } from "react-icons/fa6";
 
 import CoverImage from "../../asset/img/placeholder (1).svg";
-import Rating from "../../admin_panel/pages/tutor/courses/course_details/view/components/rating";
+import Rating from "../../admin_panel/pages/tutor-lms/courses/course_details/view/components/rating";
 import { Link } from "react-router-dom";
 
 const CourseCard = ({ course }) => {

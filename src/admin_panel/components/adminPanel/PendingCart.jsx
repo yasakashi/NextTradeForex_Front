@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const PendingCart = ({ item }) => {
   return (
-    <div className="flex flex-col items-center justify-evenly  w-full h-[170px] max-w-[520px] bg-[#081257] rounded p-2.5">
+    <div className="flex flex-col items-center justify-evenly  w-full h-[170px] max-w-[320px] bg-[#081257] rounded p-2.5">
       <h2 className="text-[17px] text-white font-medium leading-5">
         {item?.title}
       </h2>

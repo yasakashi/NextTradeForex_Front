@@ -12,6 +12,7 @@ import MoversAndShakers from "../components/home/moversandshakers/MoversAndShake
 import BodyFixedModal from "../common/BodyFixedModal";
 import CustomCalendaar from "../components/Calendar/CustomCalendar";
 import Footer from "../components/Footer";
+import Header from "../components/header/Header";
 
 
 const Home = () => {
@@ -20,7 +21,7 @@ const Home = () => {
       <div className="w-full h-full">
         <div className="w-full mx-auto">
           <BodyFixedModal />
-          {/* <Header /> */}
+          <Header />
           <Hero />
           <Provisions />
           <CustomCalendaar />

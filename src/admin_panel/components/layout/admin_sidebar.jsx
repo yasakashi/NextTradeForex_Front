@@ -26,9 +26,9 @@ import {
   TiMessage,
   TiMediaPlayOutline,
   TiAdjustBrightness,
-} from 'react-icons/ti';
+} from "react-icons/ti";
 
-const bg_gold_light_400 = '#bb914a';
+const bg_gold_light_400 = "#bb914a";
 
 const AdminSidebar = () => {
   const [showSidebar, setShowSideBar] = useState(false);
@@ -39,7 +39,7 @@ const AdminSidebar = () => {
   } = useTheme();
 
   useMemo(() => {
-    const route = pathname.split('/');
+    const route = pathname.split("/");
     const active_route = `/${route?.[route.length - 2]}/${
       route?.[route.length - 1]
     }`;
@@ -58,7 +58,7 @@ const AdminSidebar = () => {
   return (
     <div
       className={`h-full ${
-        showSidebar ? '' : ''
+        showSidebar ? "" : ""
       } w-[200px] bg-blue-light shadow-lg fixed top-0 left-0 z-[1000] overflow-y-scroll overflow-x-hidden scrollbar-thin`}
     >
       <Link
@@ -92,7 +92,7 @@ const AdminSidebar = () => {
             key={i}
             // style={{ boxShadow: "0px -2px 5px 0px rgba(0,0,0,0.16)" }}
             className={`w-full relative border-b border-[#ffffff0f] transition-colors relative${
-              open_item === i ? 'bg-yellow-50' : 'bg-yellow-200'
+              open_item === i ? "bg-yellow-50" : "bg-yellow-200"
             }`}
           >
             <motion.h2
@@ -100,7 +100,7 @@ const AdminSidebar = () => {
               style={{
                 height: 38,
                 backgroundColor:
-                  i === open_item ? bg_gold_light_400 : '#09165a',
+                  i === open_item ? bg_gold_light_400 : "#09165a",
               }}
               className={`hover:bg-gold-light_400 text-[13px] font-semibold text-white ${
                 i === open_item ? "bg-gold-light_400 text-white" : ""
@@ -113,7 +113,7 @@ const AdminSidebar = () => {
               <Icon
                 size={20}
                 className="mr-2"
-                color={open_item === i ? 'white' : 'white'}
+                color={open_item === i ? "white" : "white"}
               />
 
               {item.title}
@@ -122,7 +122,7 @@ const AdminSidebar = () => {
               style={{}}
               className="w-full overflow-hidden"
               initial={{ height: 0 }}
-              animate={{ height: open_item === i ? 'fit-content' : 0 }}
+              animate={{ height: open_item === i ? "fit-content" : 0 }}
             >
               {item?.sub_categories?.map((sub, index) => {
                 const he = sub.route ? pathname.includes(sub?.route) : false;
@@ -131,18 +131,18 @@ const AdminSidebar = () => {
                     whileHover={{ backgroundColor: bg_gold_light_400 }}
                     key={index}
                     style={{
-                      backgroundColor: he ? '' : '#09165a',
-                      color: he ? 'white' : '',
+                      backgroundColor: he ? "" : "#09165a",
+                      color: he ? "white" : "",
                     }}
                     className={`h-8 pl-9 text-[#f0f6fcb3] cursor-pointer flex items-center text-[13px] ${
-                      he ? 'text-white' : ''
+                      he ? "text-white" : ""
                     }`}
                     onClick={() => {
                       if (!sub.route)
                         return store.dispatch(
                           show_message({
-                            message: 'Under Development ...!',
-                            color: 'info',
+                            message: "Under Development ...!",
+                            color: "info",
                             mode: true,
                           })
                         );
@@ -164,11 +164,11 @@ const AdminSidebar = () => {
                   style={{
                     width: 0,
                     height: 0,
-                    borderTop: '8px solid transparent',
-                    borderRight: '12px solid #fff',
+                    borderTop: "8px solid transparent",
+                    borderRight: "12px solid #fff",
                     top: 10,
-                    borderBottom: '8px solid transparent',
-                    position: 'absolute',
+                    borderBottom: "8px solid transparent",
+                    position: "absolute",
                     left: -12,
                   }}
                 ></motion.div>
@@ -180,19 +180,19 @@ const AdminSidebar = () => {
                       key={index}
                       style={{
                         width: 200,
-                        padding: '8px 16px',
-                        backgroundColor: he ? bg_gold_light_400 : '#fff',
+                        padding: "8px 16px",
+                        backgroundColor: he ? bg_gold_light_400 : "#fff",
                       }}
                       className={`h-8 cursor-pointer flex items-center text-sm  ${
-                        he ? 'bg-red-600 text-white' : ''
+                        he ? "bg-red-600 text-white" : ""
                       }`}
                       onClick={() => {
                         // const showing = store.getState().general.message.mode;
                         if (!sub.route)
                           return store.dispatch(
                             show_message({
-                              message: 'Under Development ...!',
-                              color: 'info',
+                              message: "Under Development ...!",
+                              color: "info",
                               mode: true,
                             })
                           );
@@ -219,9 +219,9 @@ const list = [
     title: "Dashboard",
     Icon: TiDatabase,
     sub_categories: [
-      { title: 'Home' },
-      { title: 'Updates' },
-      { title: 'Site Reviews' },
+      // { title: "Home" },
+      // { title: "Updates" },
+      // { title: "Site Reviews" },
     ],
   },
 
@@ -232,26 +232,26 @@ const list = [
   },
 
   {
-    title: 'Tutor LMS',
+    title: "Tutor LMS",
     Icon: TiAdjustContrast,
     sub_categories: [
       // { title: "Courses" },
       { title: "Courses", route: "/tutor/courses" },
       { title: "Lessons", route: "/tutor/lessons" },
-      { title: "Email" },
-      { title: "Categories" },
-      { title: "Tags" },
+      // { title: "Email" },
+      // { title: "Categories" },
+      { title: "Tags", route: "/tutor-tags" },
       { title: "Students", route: "/tutor-students" },
       { title: "Instractors", route: "/tutor-instructors" },
-      { title: "Announcements", route:"/tutor-announcements" },
-      { title: "Q & A" },
-      { title: "Quiz Attempts" },
-      { title: "Withdraw Requests" },
-      { title: "Add-ons" },
-      { title: "Tools" },
-      { title: "Settings" },
-      { title: "What's New" },
-      { title: 'Upgrade to Pro' },
+      { title: "Announcements", route: "/tutor-announcements" },
+      { title: "Q & A", route: "/question-answers" },
+      { title: "Quiz Attempts", route: "/tutor-quiz-attempts" },
+      { title: "Withdraw Requests", route: "/tutor-withdraw-requests" },
+      // { title: "Add-ons" },
+      // { title: "Tools" },
+      // { title: "Settings" },
+      // { title: "What's New" },
+      // { title: "Upgrade to Pro" },
     ],
   },
   {
@@ -277,34 +277,37 @@ const list = [
   {
     title: "Categories",
     Icon: TbCategory2,
-    sub_categories: [{ title: "Categories", route: "/lesson/categories" }],
-  },
-
-  {
-    title: "Bluehost",
-    Icon: TiArchive,
     sub_categories: [
-      { title: "Home" },
-      { title: "MaretPlase" },
-      { title: "-Featured" },
-      { title: "-Themes" },
-      { title: "-SEO" },
-      { title: "Staging" },
-      { title: "Settings" },
-      { title: "-Help" },
+      { title: "Categories", route: "/lesson/categories" },
+      { title: "Add New", route: "/lesson/categories" },
     ],
   },
 
-  {
-    title: "Email Templates",
-    Icon: TiMessage,
-    sub_categories: [
-      { title: 'All Emails' },
-      { title: 'Add New' },
-      { title: 'Extentions' },
-      { title: 'Try Premium Version' },
-    ],
-  },
+  // {
+  //   title: "Bluehost",
+  //   Icon: TiArchive,
+  //   sub_categories: [
+  //     { title: "Home" },
+  //     { title: "MaretPlase" },
+  //     { title: "-Featured" },
+  //     { title: "-Themes" },
+  //     { title: "-SEO" },
+  //     { title: "Staging" },
+  //     { title: "Settings" },
+  //     { title: "-Help" },
+  //   ],
+  // },
+
+  // {
+  //   title: "Email Templates",
+  //   Icon: TiMessage,
+  //   sub_categories: [
+  //     { title: "All Emails" },
+  //     { title: "Add New" },
+  //     { title: "Extentions" },
+  //     { title: "Try Premium Version" },
+  //   ],
+  // },
   // {
   //   title: "Posts",
   //   Icon: TiPin,
@@ -326,21 +329,21 @@ const list = [
   //   ],
   // },
   {
-    title: 'Market Pulse',
+    title: "Market Pulse",
     Icon: TiAdjustBrightness,
     sub_categories: [
-      { title: 'Indicators' },
-      { title: 'Forex', route: '/lessons/market-pulse' },
-      { title: 'Crypto', route: '/lessons/market-pulse/crypto' },
-      { title: 'Indices', route: '/lessons/market-pulse/indices' },
-      { title: 'Commodities', route: '/lessons/market-pulse/commodities' },
-      { title: 'Stocks', route: '/lessons/market-pulse/stocks' },
-      { title: 'Forex Chart', route: '/lessons/market-pulse/forex-chart' },
-      { title: 'Srategy', route: '/lessons/market-pulse/strategy' },
+      { title: "Indicators" },
+      { title: "Forex", route: "/lessons/market-pulse" },
+      { title: "Crypto", route: "/lessons/market-pulse/crypto" },
+      { title: "Indices", route: "/lessons/market-pulse/indices" },
+      { title: "Commodities", route: "/lessons/market-pulse/commodities" },
+      { title: "Stocks", route: "/lessons/market-pulse/stocks" },
+      { title: "Forex Chart", route: "/lessons/market-pulse/forex-chart" },
+      { title: "Srategy", route: "/lessons/market-pulse/strategy" },
     ],
   },
   {
-    title: 'Tools',
+    title: "Tools",
     Icon: LiaToolboxSolid,
     sub_categories: [
       { title: "PDF Books", route: "/tools/e-books" },
@@ -350,28 +353,28 @@ const list = [
     ],
   },
   {
-    title: 'Posts',
+    title: "Posts",
     Icon: FaPooStorm,
     sub_categories: [
-      { title: 'Forum post', route: '/posts/forum-posts' },
-      { title: 'Blog post', route: '/posts/blog-posts' },
+      { title: "Forum post", route: "/posts/forum-posts" },
+      { title: "Blog post", route: "/posts/blog-posts" },
     ],
   },
+  // {
+  //   title: "Pages",
+  //   Icon: FaPager,
+  //   sub_categories: [{ title: "All Pages" }, { title: "Add New" }],
+  // },
+  // { title: "Commands", Icon: BsCommand },
   {
-    title: 'Pages',
-    Icon: FaPager,
-    sub_categories: [{ title: 'All Pages' }, { title: 'Add New' }],
-  },
-  { title: 'Commands', Icon: BsCommand },
-  {
-    title: 'Fluent Support',
+    title: "Fluent Support",
     Icon: BiSupport,
     sub_categories: [
       { title: "Dashboard", route: "/fluent-support/dashboard" },
       { title: "Tickets", route: "/fluent-support/tickets" },
       { title: "Workflows", route: "/fluent-support/workflows" },
       { title: "Activities", route: "/fluent-support/activity-logger" },
-      { title: "Settings" },
+      // { title: "Settings" },
       { title: "Reports", route: "/fluent-support/reports" },
     ],
   },
@@ -386,9 +389,12 @@ const list = [
   //   ],
   // },
   {
-    title: 'Feedbacks',
+    title: "Feedbacks",
     Icon: MdFeedback,
-    sub_categories: [{ title: 'All Feedbacks' }, { title: 'Add New' }],
+    sub_categories: [
+      { title: "All Feedbacks", route: "/feedbacks" },
+      { title: "Add New", route: "/feedbacks/add-new-feedback" },
+    ],
   },
   // {
   //   title: "Videos",
@@ -401,7 +407,7 @@ const list = [
   //   ],
   // },
   {
-    title: 'Teem Members',
+    title: "Teem Members",
     Icon: PiMemberOfBold,
     sub_categories: [
       { title: "All Team Members", route: "/team-members" },
@@ -419,32 +425,32 @@ const list = [
   //   ],
   // },
   {
-    title: 'User Login History',
+    title: "User Login History",
     Icon: CiLock,
-    sub_categories: [{ title: 'Login List' }, { title: 'Pro Features' }],
+    sub_categories: [{ title: "Login List" }, { title: "Pro Features" }],
   },
-  {
-    title: 'Blog',
-    Icon: GrSettingsOption,
-    sub_categories: [
-      { title: 'All Blog' },
-      { title: 'Add New' },
-      { title: 'Tags' },
-      { title: 'Categories' },
-      { title: 'Taxonomy Order' },
-    ],
-  },
-  {
-    title: 'Forex Chart',
-    Icon: BiChart,
-    sub_categories: [
-      { title: 'All Forex Charts' },
-      { title: 'Add New' },
-      { title: 'Tags' },
-      { title: 'Categories' },
-      { title: 'Taxonomy Order' },
-    ],
-  },
+  // {
+  //   title: "Blog",
+  //   Icon: GrSettingsOption,
+  //   sub_categories: [
+  //     { title: "All Blog" },
+  //     { title: "Add New" },
+  //     { title: "Tags" },
+  //     { title: "Categories" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
+  // {
+  //   title: "Forex Chart",
+  //   Icon: BiChart,
+  //   sub_categories: [
+  //     { title: "All Forex Charts" },
+  //     { title: "Add New" },
+  //     { title: "Tags" },
+  //     { title: "Categories" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
 
   {
     title: "Users",
@@ -455,17 +461,17 @@ const list = [
       { title: "Profile", route: "/users/profile" },
     ],
   },
-  {
-    title: 'Strategies',
-    Icon: PiStrategy,
-    sub_categories: [
-      { title: "All Strategies" },
-      { title: "Add New" },
-      { title: "Tags" },
-      { title: "Categories" },
-      { title: "Taxonomy Order" },
-    ],
-  },
+  // {
+  //   title: "Strategies",
+  //   Icon: PiStrategy,
+  //   sub_categories: [
+  //     { title: "All Strategies" },
+  //     { title: "Add New" },
+  //     { title: "Tags" },
+  //     { title: "Categories" },
+  //     { title: "Taxonomy Order" },
+  //   ],
+  // },
   // {
   //   title: "Stocks",
   //   Icon: CiSettings,

@@ -43,7 +43,7 @@ const AdminNavbar = () => {
   };
 
   return (
-    <div className="bg-blue-light z-[1000] w-[calc(100%-200px)] h-[43px] justify-between px-4 text-white fixed top-0 flex items-center ">
+    <div className="bg-blue-light z-[1000] w-[inherit] h-[43px] justify-between px-4 text-white fixed top-0 flex items-center">
       <div className="flex items-center space-x-4">
         {/* <div className="flex items-center mr-2">
           <TiRefresh size={25} />

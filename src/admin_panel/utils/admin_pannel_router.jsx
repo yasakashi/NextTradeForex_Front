@@ -4,8 +4,8 @@ import EditCategoryComponent from "../pages/categories/view/components/edit_cate
 import MarketPulseListScreen from "../pages/lessons/market-pulse/forex/forexList";
 import MarketPulseNewCourseScreen from "../pages/lessons/market-pulse/forex/newForex";
 import AllBooksScreen from "../pages/pdf_books/view/all_books_screen";
-import CoursesScreen from "../pages/tutor/courses/view/courses_screen";
-import LessonsScreen from "../pages/tutor/lessons/view/lessons_screen";
+import CoursesScreen from "../pages/tutor-lms/courses/view/courses_screen";
+import LessonsScreen from "../pages/tutor-lms/lessons/view/lessons_screen";
 import NewCourse from "../../pages/profile/new_course";
 import CourseBuilderPage from "../../pages/profile/new_course_components/CourseBuilderPage";
 import IndicesList from "../pages/lessons/market-pulse/indice/indiceList";
@@ -59,6 +59,12 @@ import FluentSupportWorkflows from "../pages/fluent-supports/FluentSupportWorkfl
 import AllStudents from "../pages/tutor-lms/students/AllStudents";
 import AllInstructors from "../pages/tutor-lms/instructors/AllInstructors";
 import AllAnnouncements from "../pages/tutor-lms/announcements/AllAnnouncements";
+import AllQuestionsAndAnswers from "../pages/tutor-lms/q&a/AllQuestionsAndAnswers";
+import AllQuizAttempts from "../pages/tutor-lms/quiz-attempts/AllQuizAttempts";
+import AllWithdrawRequests from "../pages/tutor-lms/withdraw-requests/AllWithdrawRequests";
+import AllTags from "../pages/tutor-lms/tags/AllTags";
+import AllFeedbacks from "../pages/feedbacks/AllFeedbacks";
+import AddNewFeedback from "../pages/feedbacks/AddNewFeedback";
 
 export const admin_panel_router = [
   // topics
@@ -236,7 +242,7 @@ export const admin_panel_router = [
 
   {
     route:
-      "/admin-panel/tutor/Courses/create-new-course/add-meeting-pdf/:courseId",
+      "/admin-panel/tutor-lms/Courses/create-new-course/add-meeting-pdf/:courseId",
     component: <CourseMeetingAndPdf page="admin" />,
   },
 
@@ -258,6 +264,29 @@ export const admin_panel_router = [
     component: <AllAnnouncements />,
   },
 
+  // ---------- q & a
+  {
+    route: "/admin-panel/question-answers",
+    component: <AllQuestionsAndAnswers />,
+  },
+
+  // ---------- quiz attempts
+  {
+    route: "/admin-panel/tutor-quiz-attempts",
+    component: <AllQuizAttempts />,
+  },
+
+  // ---------- Withdraw requests
+  {
+    route: "/admin-panel/tutor-withdraw-requests",
+    component: <AllWithdrawRequests />,
+  },
+
+  // ---------- tags
+  {
+    route: "/admin-panel/tutor-tags",
+    component: <AllTags />,
+  },
   // ====admin panel=======
   {
     route: "/admin-panel",
@@ -298,6 +327,16 @@ export const admin_panel_router = [
   {
     route: "/admin-panel/team-members/add-new-member",
     component: <AddNewTeamMember />,
+  },
+
+  // Feedbacks
+  {
+    route: "/admin-panel/feedbacks",
+    component: <AllFeedbacks />,
+  },
+  {
+    route: "/admin-panel/feedbacks/add-new-feedback",
+    component: <AddNewFeedback />,
   },
 
   // market pulse

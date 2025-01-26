@@ -9,10 +9,11 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Pagination, Autoplay } from "swiper/modules";
+import "./Header.css";
 
 const Item = () => {
   return (
-    <div className="bg-white w-[100px] px-4 py-1 border-l ">
+    <div className="bg-white w-[100px] px-4 py-1 border-l h-[40px]">
       <h3 className="text-sm leading-4">USDCHF</h3>
       <div className="flex items-center space-x-3">
         <span className="text-xl">1.23699</span>
@@ -38,7 +39,34 @@ const Item = () => {
 const Header = () => {
   return (
     <>
-      <Swiper
+      <div class="custom-ticker">
+        <div class="marquee text-2xl text-white h-[50px] overflow-hidden relative">
+          <div class="custom-marquee block w-[200%] absolute overflow-hidden">
+            <span>
+              <iframe
+                scrolling="no"
+                allowtransparency="true"
+                frameborder="0"
+                width="100%"
+                height="50"
+                src="https://www.mql5.com/quotes/widget?type=ticker&amp;filter=EURUSD%2CUSDJPY%2CGBPUSD%2CAUDUSD%2CUSDCAD%2CUSDCHF%2CNZDUSD%2CWTI_F3%2CXAUUSD%2CXAGUSD%2CGBPAUD%2CEURJPY%2CBRENT_G3%2CUS30%2CGER30M&amp;id=quotesWidgetTicker&amp;utm_source=localhost"
+              ></iframe>
+            </span>
+
+            <span>
+              <iframe
+                scrolling="no"
+                allowtransparency="true"
+                frameborder="0"
+                width="100%"
+                height="50"
+                src="https://www.mql5.com/quotes/widget?type=ticker&amp;filter=EURUSD%2CUSDJPY%2CGBPUSD%2CAUDUSD%2CUSDCAD%2CUSDCHF%2CNZDUSD%2CWTI_F3%2CXAUUSD%2CXAGUSD%2CGBPAUD%2CEURJPY%2CBRENT_G3%2CUS30%2CGER30M&amp;id=quotesWidgetTicker&amp;utm_source=localhost"
+              ></iframe>
+            </span>
+          </div>
+        </div>
+      </div>
+      {/* <Swiper
         direction="horizontal"
         slidesPerView={7}
         simulateTouch={false}
@@ -84,7 +112,7 @@ const Header = () => {
             <Item />
           </SwiperSlide>
         ))}
-      </Swiper>
+      </Swiper> */}
     </>
   );
 };

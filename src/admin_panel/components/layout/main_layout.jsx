@@ -7,10 +7,10 @@ const MainLayout = () => {
   return (
     <div className="w-full min-h-screen">
       <div className="w-full h-full flex">
-        <div className="h-screen w-[200px]">
+        <div className="hidden md:block h-screen w-[200px]">
           <AdminSidebar />
         </div>
-        <main className="min-h-screen h-full w-[calc(100%-200px)] right-0 mt-4">
+        <main className="min-h-screen h-full w-full md:w-[calc(100%-200px)] right-0 mt-4">
           <AdminNavbar />
           <div className="w-full z-[100] relative h-full mt-4 bg-[#f0f0f1] min-h-screen">
             <Outlet />
@@ -22,4 +22,3 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
-

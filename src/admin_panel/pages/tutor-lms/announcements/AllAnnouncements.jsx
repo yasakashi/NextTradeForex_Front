@@ -27,6 +27,10 @@ const AllAnnouncements = () => {
   useClickOutside(removeModalRef, () => {
     setShowRemoveModal(false);
   });
+
+  const editHandler = () => {
+    setOpenInsModal(true);
+  };
   return (
     <>
       <div className="px-8 py-10">
@@ -87,7 +91,7 @@ const AllAnnouncements = () => {
                 },
 
                 {
-                  header: "More",
+                  header: "Details",
                   Cell: ({ row }) => {
                     return (
                       <div className="w-max flex items-center text-[#50575e]">
@@ -121,13 +125,13 @@ const AllAnnouncements = () => {
                             >
                               <ul>
                                 <li className="px-2 py-[6px] flex items-center gap-2 hover:bg-[#41454f] cursor-pointer transition-colors text-white font-semibold">
-                                  <Link
-                                    to={`/user-profile/myCourses/edit-course/${row?.original?.id}`}
+                                  <button
+                                    onClick={editHandler}
                                     className="flex w-full gap-2"
                                   >
                                     <CiEdit size={20} />
                                     Edit
-                                  </Link>
+                                  </button>
                                 </li>
                                 <li className="px-2 py-[6px] flex items-center gap-2 hover:bg-[#41454f] cursor-pointer transition-colors text-white">
                                   <button

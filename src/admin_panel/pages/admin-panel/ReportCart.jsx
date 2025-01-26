@@ -13,7 +13,7 @@ const ReportCart = ({
       <h4 className="text-[#081257] font-semibold text-2xl mb-2">
         {report} Reports
       </h4>
-      <div className="w-full flex items-center h-[230px] px-1 py-2.5 max-w-[520px] bg-[#081257] rounded">
+      <div className="w-full flex items-center h-[230px] px-1 py-2.5 max-w-[320px] bg-[#081257] rounded">
         <ul>
           <li className="flex items-center justify-between text-base border-b border-b-[#ffffff26] px-2.5 py-2.5">
             <Link

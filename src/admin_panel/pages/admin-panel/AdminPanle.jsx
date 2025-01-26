@@ -111,7 +111,7 @@ const OverlaReport = () => {
       <h4 className="text-[#081257] font-semibold text-2xl mb-2">
         Overal Reports
       </h4>
-      <div className="w-full flex items-start h-[230px] px-1 py-2.5 max-w-[520px] bg-[#081257] rounded">
+      <div className="w-full flex items-start h-[230px] px-1 py-2.5 max-w-[320px] bg-[#081257] rounded">
         <ul>
           <li className="flex items-center justify-between text-base border-b border-b-[#ffffff26] px-2.5 py-2.5">
             <Link
@@ -157,9 +157,9 @@ const QuickLinks = () => {
       <h4 className="text-[#081257] font-semibold text-2xl mb-2">
         Quick Links
       </h4>
-      <div className="w-full flex h-[230px] px-1 py-2.5 max-w-[520px] bg-[#081257] rounded">
+      <div className="w-full flex h-[230px] px-1 py-2.5 max-w-[320px] bg-[#081257] rounded">
         <ul>
-          <li className="text-base border-b border-b-[#ffffff26] px-2.5 py-2.5">
+          <li className="text-base border-b w-full border-b-[#ffffff26] px-2.5 py-2.5">
             <Link
               className="text-white hover:underline w-fulll flex items-center gap-1"
               to="/traders-community/create-signal-channel/2"

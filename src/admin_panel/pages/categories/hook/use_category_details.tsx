@@ -1,10 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { get_course_topics_api } from "../../tutor/courses/course_atachments/service/course_topics_api";
-import { get_course_meetings_api } from "../../tutor/courses/course_atachments/service/course_metting_api";
-import { get_course_lessons_api } from "../../tutor/courses/course_atachments/service/course_lessons_api";
-import { get_course_pdf_api } from "../../tutor/courses/course_atachments/service/course_pdf_api";
-import { get_course_videos_api } from "../../tutor/courses/course_atachments/service/course_videos_api";
+import { get_course_topics_api } from "../../tutor-lms/courses/course_atachments/service/course_topics_api";
+import { get_course_meetings_api } from "../../tutor-lms/courses/course_atachments/service/course_metting_api";
+import { get_course_lessons_api } from "../../tutor-lms/courses/course_atachments/service/course_lessons_api";
+import { get_course_pdf_api } from "../../tutor-lms/courses/course_atachments/service/course_pdf_api";
+import { get_course_videos_api } from "../../tutor-lms/courses/course_atachments/service/course_videos_api";
 import {
   loading_selector,
   useAppSelector,
