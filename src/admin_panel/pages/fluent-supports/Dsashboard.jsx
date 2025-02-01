@@ -1,10 +1,16 @@
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { useGetTicketsReportsQuery } from "../../../redux/features/api/admin-panel/adminTicketsApi";
 
 const FluentSupportDashboard = () => {
+  const {
+    data: { messageData: [data = {}] = [] } = { messageData: [] },
+    isLoading,
+  } = useGetTicketsReportsQuery();
   return (
     <div className="flex flex-col px-8 py-10">
+      {console.log({ data })}
       <div className="flex items-center flex-col sm:flex-row gap-2 sm:justify-between">
         <h1 className="text-[#1d2327] text-3xl font-semibold leading-6">
           Good afternoon Next trade !!!
@@ -39,7 +45,7 @@ const FluentSupportDashboard = () => {
                   New Tickets :
                 </span>
                 <span className="text-[12px] text-gray-700 font-medium px-1">
-                  0
+                  {data?.newticketsCount || 0}
                 </span>
               </li>
 
@@ -48,7 +54,7 @@ const FluentSupportDashboard = () => {
                   Active Tickets :
                 </span>
                 <span className="text-[12px] text-gray-700 font-medium px-1">
-                  0
+                  {data?.activeticketsCount || 0}
                 </span>
               </li>
 
@@ -57,7 +63,7 @@ const FluentSupportDashboard = () => {
                   Closed Tickets :
                 </span>
                 <span className="text-[12px] text-gray-700 font-medium px-1">
-                  0
+                  {data?.closedticketsCount || 0}
                 </span>
               </li>
 
@@ -66,7 +72,7 @@ const FluentSupportDashboard = () => {
                   Responses :
                 </span>
                 <span className="text-[12px] text-gray-700 font-medium px-1">
-                  0
+                  {data?.responsesCount || 0}
                 </span>
               </li>
 
@@ -75,7 +81,7 @@ const FluentSupportDashboard = () => {
                   Interactions :
                 </span>
                 <span className="text-[12px] text-gray-700 font-medium px-1">
-                  0
+                  {data?.interactionsCount || 0}
                 </span>
               </li>
 
@@ -84,7 +90,7 @@ const FluentSupportDashboard = () => {
                   Unssigned Tickets :
                 </span>
                 <span className="text-[12px] text-gray-700 font-medium px-1">
-                  1
+                  {data?.unassignedTickets || 0}
                 </span>
               </li>
             </ul>

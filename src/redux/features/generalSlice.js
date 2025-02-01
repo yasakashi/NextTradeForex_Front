@@ -1,16 +1,9 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
-
-interface props {
-  loading: boolean;
-  loading_level_2: boolean;
-  auth: boolean;
-  message: { color: string; message: string; mode: boolean };
-}
+import { useSelector } from "react-redux";
 
 export const generalSlice = createSlice({
   name: "general-reducer",
-  initialState: <props>{
+  initialState: {
     loading: false,
     loading_level_2: false,
     auth: false,
@@ -46,7 +39,7 @@ export const {
 
 export const loading_selector = createSelector(
   [
-    (state: any) => {
+    (state) => {
       return state?.general?.loading;
     },
   ],
@@ -54,10 +47,10 @@ export const loading_selector = createSelector(
 );
 export const loading_level_2_selector = createSelector(
   [
-    (state: any) => {
+    (state) => {
       return state?.general?.loading_level_2;
     },
   ],
   (state) => state
 );
-export const useAppSelector: TypedUseSelectorHook<any> = useSelector;
+export const useAppSelector = useSelector;

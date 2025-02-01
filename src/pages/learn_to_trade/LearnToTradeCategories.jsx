@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useGetMainCategoriesByInfoMutation } from "../../redux/features/api/categories/categoriesApi.js";
@@ -9,6 +9,7 @@ const LearnToTradeCategories = () => {
   const location = useLocation();
   const { level } = useParams();
   const { levelId } = location.state || {};
+  const [categoryId, setCategoryId] = useState(770)
 
   const [
     getMainCategoriesByInfo,
@@ -18,7 +19,7 @@ const LearnToTradeCategories = () => {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        await getMainCategoriesByInfo({ parentId: 770 }).unwrap();
+        await getMainCategoriesByInfo({ parentId: categoryId }).unwrap();
       } catch (err) {
         toast.error("Failed to fetch categories: ");
       }
@@ -29,7 +30,7 @@ const LearnToTradeCategories = () => {
   const navigate = useNavigate();
   return (
     <div className="w-full">
-      <SearchFilter mainCategories={data} />
+      <SearchFilter setCategoryId={setCategoryId} mainCategories={data} />
 
       <AnimatePresence mode="wait">
         {!getCategoriesLoading && (

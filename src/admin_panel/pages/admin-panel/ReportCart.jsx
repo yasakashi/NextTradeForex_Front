@@ -14,11 +14,11 @@ const ReportCart = ({
         {report} Reports
       </h4>
       <div className="w-full flex items-center h-[230px] px-1 py-2.5 max-w-[320px] bg-[#081257] rounded">
-        <ul>
+        <ul className="w-full">
           <li className="flex items-center justify-between text-base border-b border-b-[#ffffff26] px-2.5 py-2.5">
             <Link
               className="text-white max-w-[80%] flex items-center gap-1"
-              to="#"
+              to="/report"
             >
               {report} Activations
               <TbExternalLink size={18} />
@@ -30,7 +30,7 @@ const ReportCart = ({
           <li className="flex items-center justify-between text-base border-b border-b-[#ffffff26] px-2.5 py-2.5">
             <Link
               className="text-white max-w-[80%] flex items-center gap-1"
-              to="#"
+              to="/report"
             >
               {report} Turnover
               <TbExternalLink size={18} />
@@ -40,23 +40,17 @@ const ReportCart = ({
           </li>
 
           <li className="flex items-center justify-between text-base border-b border-b-[#ffffff26] px-2.5 py-2.5">
-            <Link
-              className="text-white max-w-[80%] flex items-center gap-1"
-              to="#"
-            >
+            <span className="text-white max-w-[80%] flex items-center gap-1">
               {report} Withdrawals
-            </Link>
+            </span>
 
             <span className="text-[#f3b66b] font-bold">{withdrawals}</span>
           </li>
 
           <li className="flex items-center justify-between text-base px-2.5 py-2.5">
-            <Link
-              className="text-white max-w-[80%] flex items-center gap-1"
-              to="#"
-            >
+            <span className="text-white max-w-[80%] flex items-center gap-1">
               {report} Withdrawal Amount
-            </Link>
+            </span>
 
             <span className="text-[#f3b66b] font-bold">
               ${withdrawalsAmount}

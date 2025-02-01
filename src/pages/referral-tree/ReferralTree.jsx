@@ -1,9 +1,15 @@
 import MainBannerTitle from "../../common/MainBannerTitle";
 import HeroTemp from "../../components/HeroTemp";
 import { useGetUserReferralsQuery } from "../../redux/features/api/referral/userReferralApi";
-import CustomBeatLoader from "../../utils/loaders/CustomBeatLoader";
-import { FaSquareCheck } from "react-icons/fa6";
-import { FaWindowClose } from "react-icons/fa";
+import { MaterialReactTable } from "material-react-table";
+
+const columns = [
+  { accessorKey: "username", header: "Username" },
+  { accessorKey: "employeeLevel", header: "Employee Level" },
+  { accessorKey: "fname", header: "First Name" },
+  { accessorKey: "lname", header: "Last Name" },
+  { accessorKey: "email", header: "Email" },
+];
 
 const ReferralTree = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -15,9 +21,12 @@ const ReferralTree = () => {
     data: { username: user?.username },
   });
 
+  const getSubRows = (row) => {
+    return referralTreeData.filter((d) => d.parentUserId === row.original?.id);
+  };
+
   return (
     <div>
-      {console.log({ referralTreeData })}
       <div className="text-white">
         <HeroTemp needNav={true}>
           <MainBannerTitle
@@ -27,7 +36,24 @@ const ReferralTree = () => {
         </HeroTemp>
       </div>
 
-      <div className="mt-10">
+      <div className="container mx-auto py-4">
+        <div className="container mx-auto py-4">
+          <MaterialReactTable
+            columns={columns}
+            data={referralTreeData.filter((d) => d.employeeLevel <= 5)}
+            getSubRows={getSubRows}
+            enableExpandRows
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ReferralTree;
+
+{
+  /* <div className="mt-10">
         <div className="mt-10 mb-10 overflow-y-scroll h-screen max-w-[90vw] w-full overflow-x-scroll scrollbar-none mx-auto">
           <div className="w-full bg-blue-light text-center py-2 border-t border-x border-gold-light_400 text-gold-light_400 font-semibold">
             Level 1
@@ -65,7 +91,7 @@ const ReferralTree = () => {
                     className="bg-white shadow-sm border-b border-blue-dark"
                   >
                     <td className="p-3 border border-gray-300 text-center ">
-                      291605
+                      {user?.referalcode}
                     </td>
                     <td className="p-3 border border-gray-300 text-blue-500 text-center underline">
                       {user?.username}
@@ -133,9 +159,5 @@ const ReferralTree = () => {
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-  );
-};
-
-export default ReferralTree;
+      </div> */
+}

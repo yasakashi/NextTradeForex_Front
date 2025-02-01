@@ -87,6 +87,10 @@ import MyPosts from "./components/profile/myPosts/MyPosts";
 import AddNewForumPost from "./admin_panel/pages/posts/Forum/AddNewForumPost";
 import AddNewBlogPost from "./admin_panel/pages/posts/blog/AddNewBlogPost";
 import ReferralTree from "./pages/referral-tree/ReferralTree";
+import WithdrawalRequests from "./pages/WithdrawalRequests";
+import CompanyIncome from "./pages/CompanyIncome";
+import RoyalityIncome from "./pages/RoyalityIncome";
+import DailyReport from "./pages/reports/DailyReport";
 
 function App({ auth }) {
   const token = localStorage.getItem("loginToken");
@@ -147,6 +151,14 @@ function App({ auth }) {
               <>
                 <Route path="/partnership" element={<PartnerShip />} />
                 <Route path="/referral-tree" element={<ReferralTree />} />
+                <Route
+                  path="/all-withdrawal-request"
+                  element={<WithdrawalRequests />}
+                />
+
+                <Route path="/company-income" element={<CompanyIncome />} />
+                <Route path="/royalty-income" element={<RoyalityIncome />} />
+                <Route path="/report" element={<DailyReport />} />
                 <Route
                   path="/partnership/profile-view/:userid"
                   element={<PartnershipProfileView />}
@@ -297,6 +309,7 @@ function App({ auth }) {
                   path="/traders-community/all-membership-request"
                   element={<AllMemberShipRequest />}
                 />
+
                 <Route
                   path="/traders-community/groups/:name/create-signal-channel"
                   element={<CreateSignalChannel />}

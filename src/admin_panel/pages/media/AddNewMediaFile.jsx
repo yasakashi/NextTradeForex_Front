@@ -3,10 +3,24 @@ import LibraryModal from "../../../pages/profile/new_course_components/library_m
 import AdminPanelTitle from "../../components/AdminPanelTitle";
 import { CustomButton } from "../../../components/ui/CustomButton";
 import { IoMdClose } from "react-icons/io";
+import { useAddNewMediaMutation } from "../../../redux/features/api/admin-panel/mediaApi";
 
 const AddNewMediaFile = () => {
   const [is_open, set_is_open] = useState(false);
   const [file, setFile] = useState(null);
+
+  const [addNewMedia, { isLoading }] = useAddNewMediaMutation();
+
+  const addMediaFileHanler = async () => {
+    const formData = new FormData();
+    formData.append("mediafile", file);
+    formData.append("systempartid", 1);
+    formData.append("auther", 2);
+    formData.append("filetypeid", 1);
+
+    const res = await addNewMedia({ data: formData }).unwrap();
+    console.log({ res });
+  };
 
   return (
     <div className="pt-10 px-8">
@@ -46,6 +60,19 @@ const AddNewMediaFile = () => {
           </div>
         )}
       </div>
+      {file ? (
+        <div className="mt-6">
+          <CustomButton
+            disabled={isLoading}
+            onClick={addMediaFileHanler}
+            size="sm"
+            className="disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {" "}
+            {isLoading ? "sending ..." : "Submit File"}
+          </CustomButton>
+        </div>
+      ) : null}
 
       <LibraryModal
         has_side_bar_action={false}

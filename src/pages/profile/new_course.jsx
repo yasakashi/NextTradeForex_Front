@@ -38,6 +38,7 @@ import { CustomButton } from "../../components/ui/CustomButton";
 import CourseAuthor from "./new_course_components/CourseAuthor";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../admin_panel/components/AdminPanelTitle";
+import { MdClose } from "react-icons/md";
 
 const NewCourse = ({ page }) => {
   const { id } = useParams();
@@ -219,158 +220,178 @@ const NewCourse = ({ page }) => {
   }, [courses?.length]);
 
   return (
-    <div
-      className={`w-full h-full relative z-[100] ${
-        page === "admin" ? "" : "bg-[#f0f0f1]"
-      }`}
-    >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="wrapper mx-auto flex w-full flex-col max-h-fit "
+    <>
+      <div
+        className={`w-full h-full relative z-[100] ${
+          page === "admin" ? "" : "bg-[#f0f0f1]"
+        }`}
       >
-        {/* <h4
-          className={`text-3xl ${
-            page === "admin" ? "text-gray-100" : "text-gray-700"
-          } font-bold mb-4 mt-6`}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="wrapper mx-auto flex w-full flex-col max-h-fit "
         >
-          Add New Course
-        </h4> */}
+          <AdminPanelTitle title="Add New Course" />
 
-        <AdminPanelTitle title="Add New Course" />
-
-        <form onSubmit={formik.handleSubmit}>
-          <div className="grid grid-cols-4 gap-4 mb-8">
-            <div className="col-span-4 lg:col-span-3">
-              <div className="w-full bg-white rounded-md">
-                <CustomTextInput
-                  name="courseName"
-                  placeholder="Add title"
-                  className="border border-gray-700 py-[10px] placeholder:text-sm rounded-sm"
-                  value={formik.values?.courseName}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik?.touched?.courseName ? formik.errors?.courseName : ""
-                  }
-                />
-              </div>
-              <div className="border border-gray-700 my-3 bg-white">
-                <div className="w-full pt-2 pl-2">
-                  <div className="mb-2 flex relative">
-                    <CustomButton
-                      onClick={() => setOpenCourseDescFileModal(true)}
-                      size="sm"
-                      variant="outlined"
-                      type="button"
-                    >
-                      Add Media
-                    </CustomButton>
-                    <button
-                      type="button"
-                      className="bg-gray-600 rounded-sm p-1 pr-3 pl-3 ml-2"
-                    >
-                      <BiSave color="white" className="text-xl" />
-                    </button>
-
-                    {formik.errors?.courseFile && formik.touched?.courseFile ? (
-                      <div className="absolute bg-red-600 max-w-[300px] bottom-[110%] left-0 rounded-lg p-2 text-white font-semibold text-sm">
-                        {formik.errors?.courseFile}
-                      </div>
-                    ) : null}
-                  </div>
-                  <LibraryModal
-                    file={formik?.values?.courseFile}
-                    set_file={(file) => {
-                      formik.setFieldValue("courseFile", file);
-                    }}
-                    error={formik.errors?.courseFile}
+          <form onSubmit={formik.handleSubmit}>
+            <div className="grid grid-cols-4 gap-4 mb-8">
+              <div className="col-span-4 lg:col-span-3">
+                <div className="w-full rounded-md">
+                  <CustomTextInput
+                    name="courseName"
+                    placeholder="Add title"
+                    className="border border-[#ccd0d4] py-[10px] placeholder:text-sm rounded-sm"
+                    value={formik.values?.courseName}
+                    onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    accept_file="Image"
-                    has_side_bar_action={false}
-                    title="Add Media"
-                    open={openCourseDescFileModal}
-                    set_open={setOpenCourseDescFileModal}
-                    onSave={() => setOpenCourseDescFileModal(false)}
+                    error={
+                      formik?.errors?.courseName
+                        ? formik?.errors?.courseName
+                        : ""
+                    }
                   />
-                  <div className="w-full relative overflow-y-scroll">
-                    {/* <EditorComponent /> */}
-                    <DraftEditor
-                      placeholder="Description"
-                      editorState={editorState}
-                      onChange={handleEditorChange}
-                    />
-                  </div>
                 </div>
+                <div>
+                  <div className="border border-[#ccd0d4] my-3 bg-white p-2">
+                    <div className="w-full pt-2 pl-2">
+                      <div className="mb-2 flex relative">
+                        <CustomButton
+                          onClick={() => setOpenCourseDescFileModal(true)}
+                          size="sm"
+                          variant="outlined"
+                          type="button"
+                        >
+                          Add Media
+                        </CustomButton>
+                        <button
+                          type="button"
+                          className="bg-gray-600 rounded-sm p-1 pr-3 pl-3 ml-2"
+                        >
+                          <BiSave color="white" className="text-xl" />
+                        </button>
+
+                        {formik.errors?.courseFile &&
+                        formik.touched?.courseFile ? (
+                          <div className="absolute bg-red-600 max-w-[300px] bottom-[110%] left-0 rounded-lg p-2 text-white font-semibold text-sm">
+                            {formik.errors?.courseFile}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div className="w-full relative">
+                        {/* <EditorComponent /> */}
+                        <DraftEditor
+                          placeholder="Description ..."
+                          editorState={editorState}
+                          onChange={handleEditorChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  {formik?.values?.courseFile instanceof File ? (
+                    <div className="w-[160px] aspect-video border-collapse shadow-sm ml-auto relative">
+                      <img
+                        className="size-full"
+                        src={
+                          formik?.values?.courseFile instanceof File
+                            ? URL.createObjectURL(formik.values?.courseFile)
+                            : ""
+                        }
+                        alt="Course file"
+                      />
+                      <div
+                        onClick={() => formik.setFieldValue("courseFile", null)}
+                        className="absolute cursor-pointer top-1 right-1 text-gray-500 shadow-md bg-gray-300 rounded-full p-1"
+                      >
+                        <MdClose size={18} />
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+
+                {formik.touched.courseDescription ? (
+                  <span className="text-red-600 text-sm p-1">
+                    {formik.errors.courseDescription}
+                  </span>
+                ) : null}
+                <AnimatePresence
+                  presenceAffectsLayout
+                  initial={false}
+                  mode="sync"
+                >
+                  <motion.div
+                    initial={{ height: 0 }}
+                    animate={{ opacity: 1, height: "fit-content" }}
+                    transition={{ ease: "linear" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-4"
+                  >
+                    <div className="lg:hidden space-y-4">
+                      <AudioAccessbility />
+
+                      <CourseCategoriesComponent
+                        name="categoryids"
+                        formik={formik}
+                      />
+
+                      <TagsComponent name="tags" formik={formik} />
+
+                      <FeaturedImageComponent
+                        name="featuredImage"
+                        formik={formik}
+                      />
+                    </div>
+
+                    <ExcerptComponent name="excerpt" formik={formik} />
+
+                    <CourseAuthor formik={formik} />
+
+                    <CourseSettingsComponent formik={formik} />
+
+                    <AddProductComponent name="coursePrice" formik={formik} />
+
+                    <AdditionalDate formik={formik} />
+
+                    <VideoComponent name="courseIntroVideo" formik={formik} />
+
+                    <div>
+                      <PublishComponent
+                        isLoading={id ? editCourseLoading : isLoading}
+                      />
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
-              {formik.touched.courseDescription ? (
-                <span className="text-red-600 text-sm p-1">
-                  {formik.errors.courseDescription}
-                </span>
-              ) : null}
-              <AnimatePresence
-                presenceAffectsLayout
-                initial={false}
-                mode="sync"
-              >
-                <motion.div
-                  initial={{ height: 0 }}
-                  animate={{ opacity: 1, height: "fit-content" }}
-                  transition={{ ease: "linear" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="space-y-4"
-                >
-                  <div className="lg:hidden space-y-4">
-                    <AudioAccessbility />
+              <div className="hidden lg:block  lg:col-span-1 space-y-4">
+                <AudioAccessbility />
 
-                    <CourseCategoriesComponent
-                      name="categoryids"
-                      formik={formik}
-                    />
+                <CourseCategoriesComponent name="categoryids" formik={formik} />
 
-                    <TagsComponent name="tags" formik={formik} />
+                <TagsComponent name="coursetags" formik={formik} />
 
-                    <FeaturedImageComponent
-                      name="featuredImage"
-                      formik={formik}
-                    />
-                  </div>
-
-                  <ExcerptComponent name="excerpt" formik={formik} />
-
-                  <CourseAuthor formik={formik} />
-
-                  <CourseSettingsComponent formik={formik} />
-
-                  <AddProductComponent name="coursePrice" formik={formik} />
-
-                  <AdditionalDate formik={formik} />
-
-                  <VideoComponent name="courseIntroVideo" formik={formik} />
-
-                  <div>
-                    <PublishComponent
-                      isLoading={id ? editCourseLoading : isLoading}
-                    />
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+                <FeaturedImageComponent name="featuredImage" formik={formik} />
+              </div>
             </div>
+          </form>
+        </motion.div>
+      </div>
 
-            <div className="hidden lg:block  lg:col-span-1 space-y-4">
-              <AudioAccessbility />
-
-              <CourseCategoriesComponent name="categoryids" formik={formik} />
-
-              <TagsComponent name="coursetags" formik={formik} />
-
-              <FeaturedImageComponent name="featuredImage" formik={formik} />
-            </div>
-          </div>
-        </form>
-      </motion.div>
-    </div>
+      <LibraryModal
+        file={formik?.values?.courseFile}
+        set_file={(file) => {
+          formik.setFieldValue("courseFile", file);
+        }}
+        error={formik.errors?.courseFile}
+        onBlur={formik.handleBlur}
+        accept_file="Image"
+        has_side_bar_action={false}
+        title="Add Media"
+        open={openCourseDescFileModal}
+        set_open={setOpenCourseDescFileModal}
+        onSave={() => setOpenCourseDescFileModal(false)}
+      />
+    </>
   );
 };
 

@@ -4,6 +4,8 @@ import { SiGoogletranslate } from "react-icons/si";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { useState } from "react";
 import * as Yup from "yup";
+import { useAddNewUserByAdminMutation } from "../../../redux/features/api/admin-panel/userApi";
+import toast from "react-hot-toast";
 
 const validationSchema = Yup.object({
   username: Yup.string().required("Username is required"),
@@ -61,6 +63,8 @@ const AddNewUser = () => {
   const [passwordStrength, setPasswordStrength] = useState("");
   const [style, setStyle] = useState("border-[#68de7c] bg-[#b8e6bf]");
 
+  const [addNewUserByAdmin, { isLoading }] = useAddNewUserByAdminMutation();
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -76,8 +80,15 @@ const AddNewUser = () => {
     },
     validationSchema: validationSchema,
 
-    onSubmit: (values) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log(values);
+      const res = await addNewUserByAdmin({ data: values }).unwrap();
+
+      if (res?.messageCode === 200) {
+        toast.success("New user created.");
+        resetForm();
+      }
+      console.log("add New user by admin ===>", { res });
     },
   });
 
@@ -258,7 +269,13 @@ const AddNewUser = () => {
           </div>
         </label>
 
-        <CustomButton size="sm">Add New User</CustomButton>
+        <CustomButton
+          disabled={isLoading}
+          className="disabled:opacity-80 disabled:cursor-not-allowed"
+          size="sm"
+        >
+          {isLoading ? "Sending ..." : "Add New User"}
+        </CustomButton>
       </form>
     </div>
   );

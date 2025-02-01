@@ -1,16 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import store from "../../../redux/store";
 import { show_message } from "../../../redux/features/generalSlice";
 import { LiaToolboxSolid } from "react-icons/lia";
 import { FaPooStorm } from "react-icons/fa";
-import { FaPager } from "react-icons/fa6";
-import { BsCommand } from "react-icons/bs";
-import { BiChart, BiSupport } from "react-icons/bi";
-import { GrSettingsOption } from "react-icons/gr";
+import { BiSupport } from "react-icons/bi";
 import { MdFeedback } from "react-icons/md";
-import { PiMemberOfBold, PiStrategy } from "react-icons/pi";
+import { PiMemberOfBold } from "react-icons/pi";
 import { CiLock } from "react-icons/ci";
 import { useTheme } from "@mui/material";
 import { TbCategory2 } from "react-icons/tb";
@@ -20,19 +17,23 @@ import { FaUserAlt } from "react-icons/fa";
 import {
   TiPin,
   TiHome,
-  TiArchive,
   TiDatabase,
   TiAdjustContrast,
-  TiMessage,
   TiMediaPlayOutline,
   TiAdjustBrightness,
 } from "react-icons/ti";
+import useClickOutside from "../../../hooks/useClickOutside";
+import useIsMobile from "../../../hooks/useIsMobile";
 
 const bg_gold_light_400 = "#bb914a";
 
-const AdminSidebar = () => {
-  const [showSidebar, setShowSideBar] = useState(false);
+const AdminSidebar = ({ showAdminSidebar, setShowAdminsidebar }) => {
   const [open_item, set_open_item] = useState(null);
+  const navigate = useNavigate();
+  const [hoveed, set_hoverd] = useState(null);
+
+  const sidebarRef = useRef(null);
+
   const { pathname } = useLocation();
   const {
     zIndex: { drawer },
@@ -52,126 +53,100 @@ const AdminSidebar = () => {
     }
   }, []);
 
-  const navigate = useNavigate();
-  const [hoveed, set_hoverd] = useState(null);
+  useClickOutside(sidebarRef, () => {
+    setShowAdminsidebar(false);
+  });
+
+  const isMobile = useIsMobile();
+
+  const variants = {
+    hidden: { x: "-100%" },
+    visible: { x: 0 },
+    desktop: { x: 0 },
+  };
 
   return (
-    <div
-      className={`h-full ${
-        showSidebar ? "" : ""
-      } w-[200px] bg-blue-light shadow-lg fixed top-0 left-0 z-[1000] overflow-y-scroll overflow-x-hidden scrollbar-thin`}
+    <motion.div
+      initial={isMobile ? "hidden" : "desktop"}
+      animate={showAdminSidebar ? "visible" : isMobile ? "hidden" : "desktop"}
+      variants={variants}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className={`
+        z-[1001] w-[200px] h-screen overflow-x-hidden bg-blue-light overflow-y-hidden fixed md:relative md:translate-x-0 top-[43px] md:top-0 md:h-[calc(100vh-0)]
+        ${
+          showAdminSidebar
+            ? "absolute top-[43px] h-[calc(100vh-43px)]"
+            : "md:block"
+        }
+      `}
+      ref={sidebarRef}
     >
-      <Link
-        to="/"
-        className="w-full flex items-center h-[43px] bg-gold-light_400 relative group"
+      <div
+        className={`h-full w-full overflow-y-scroll overflow-x-hidden scrollbar-thin`}
       >
-        <h2
-          className={`cursor-pointer pl-2 flex items-center justify-center space-x-2 text-nowrap`}
+        <Link
+          to="/"
+          className="w-full flex items-center h-[43px] bg-gold-light_400 relative group"
         >
-          <TiHome
-            size={20}
-            className="text-[#f0f6fc99] group-hover:text-white transition-colors"
-          />
-          <span className="text-white relative top-1 font-bold text-[13px]">
-            NextTradeForex
-          </span>
-        </h2>
-      </Link>
-
-      {list.map((item, i) => {
-        const { Icon } = item;
-        return (
-          <motion.div
-            onMouseEnter={() => {
-              if (open_item === i) return;
-              set_hoverd(i);
-            }}
-            onMouseLeave={() => {
-              set_hoverd(null);
-            }}
-            key={i}
-            // style={{ boxShadow: "0px -2px 5px 0px rgba(0,0,0,0.16)" }}
-            className={`w-full relative border-b border-[#ffffff0f] transition-colors relative${
-              open_item === i ? "bg-yellow-50" : "bg-yellow-200"
-            }`}
+          <h2
+            className={`cursor-pointer pl-2 flex items-center justify-center space-x-2 text-nowrap`}
           >
-            <motion.h2
-              whileHover={{ backgroundColor: bg_gold_light_400 }}
-              style={{
-                height: 38,
-                backgroundColor:
-                  i === open_item ? bg_gold_light_400 : "#09165a",
-              }}
-              className={`hover:bg-gold-light_400 text-[13px] font-semibold text-white ${
-                i === open_item ? "bg-gold-light_400 text-white" : ""
-              } cursor-pointer flex items-center pr-2 pl-2`}
-              onClick={() => {
-                if (open_item === i) return set_open_item(null);
-                set_open_item(i);
-              }}
-            >
-              <Icon
-                size={20}
-                className="mr-2"
-                color={open_item === i ? "white" : "white"}
-              />
+            <TiHome
+              size={20}
+              className="text-[#f0f6fc99] group-hover:text-white transition-colors"
+            />
+            <span className="text-white relative top-1 font-bold text-[13px]">
+              NextTradeForex
+            </span>
+          </h2>
+        </Link>
 
-              {item.title}
-            </motion.h2>
+        {list.map((item, i) => {
+          const { Icon } = item;
+          return (
             <motion.div
-              style={{}}
-              className="w-full overflow-hidden"
-              initial={{ height: 0 }}
-              animate={{ height: open_item === i ? "fit-content" : 0 }}
+              onMouseEnter={() => {
+                if (open_item === i) return;
+                set_hoverd(i);
+              }}
+              onMouseLeave={() => {
+                set_hoverd(null);
+              }}
+              key={i}
+              // style={{ boxShadow: "0px -2px 5px 0px rgba(0,0,0,0.16)" }}
+              className={`w-full relative border-b border-[#ffffff0f] transition-colors relative${
+                open_item === i ? "bg-yellow-50" : "bg-yellow-200"
+              }`}
             >
-              {item?.sub_categories?.map((sub, index) => {
-                const he = sub.route ? pathname.includes(sub?.route) : false;
-                return (
-                  <motion.div
-                    whileHover={{ backgroundColor: bg_gold_light_400 }}
-                    key={index}
-                    style={{
-                      backgroundColor: he ? "" : "#09165a",
-                      color: he ? "white" : "",
-                    }}
-                    className={`h-8 pl-9 text-[#f0f6fcb3] cursor-pointer flex items-center text-[13px] ${
-                      he ? "text-white" : ""
-                    }`}
-                    onClick={() => {
-                      if (!sub.route)
-                        return store.dispatch(
-                          show_message({
-                            message: "Under Development ...!",
-                            color: "info",
-                            mode: true,
-                          })
-                        );
-                      navigate(`/admin-panel${sub?.route}`);
-                    }}
-                  >
-                    {sub.title}
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-            {hoveed === i && open_item !== hoveed && (
-              <div
-                className="absolute bg-white shadow-md z-[10001]"
-                style={{ right: -200, top: 0, zIndex: drawer + 5 }}
+              <motion.h2
+                whileHover={{ backgroundColor: bg_gold_light_400 }}
+                style={{
+                  height: 38,
+                  backgroundColor:
+                    i === open_item ? bg_gold_light_400 : "#09165a",
+                }}
+                className={`hover:bg-gold-light_400 text-[13px] font-semibold text-white ${
+                  i === open_item ? "bg-gold-light_400 text-white" : ""
+                } cursor-pointer flex items-center pr-2 pl-2`}
+                onClick={() => {
+                  if (open_item === i) return set_open_item(null);
+                  set_open_item(i);
+                }}
               >
-                <motion.div
-                  whileHover={{ backgroundColor: bg_gold_light_400 }}
-                  style={{
-                    width: 0,
-                    height: 0,
-                    borderTop: "8px solid transparent",
-                    borderRight: "12px solid #fff",
-                    top: 10,
-                    borderBottom: "8px solid transparent",
-                    position: "absolute",
-                    left: -12,
-                  }}
-                ></motion.div>
+                <Icon
+                  size={20}
+                  className="mr-2"
+                  color={open_item === i ? "white" : "white"}
+                />
+
+                {item.title}
+              </motion.h2>
+              <motion.div
+                style={{}}
+                className="w-full overflow-hidden"
+                initial={{ height: 0 }}
+                animate={{ height: open_item === i ? "fit-content" : 0 }}
+              >
                 {item?.sub_categories?.map((sub, index) => {
                   const he = sub.route ? pathname.includes(sub?.route) : false;
                   return (
@@ -179,15 +154,13 @@ const AdminSidebar = () => {
                       whileHover={{ backgroundColor: bg_gold_light_400 }}
                       key={index}
                       style={{
-                        width: 200,
-                        padding: "8px 16px",
-                        backgroundColor: he ? bg_gold_light_400 : "#fff",
+                        backgroundColor: he ? "" : "#09165a",
+                        color: he ? "white" : "",
                       }}
-                      className={`h-8 cursor-pointer flex items-center text-sm  ${
-                        he ? "bg-red-600 text-white" : ""
+                      className={`h-8 pl-9 text-[#f0f6fcb3] cursor-pointer flex items-center text-[13px] ${
+                        he ? "text-white" : ""
                       }`}
                       onClick={() => {
-                        // const showing = store.getState().general.message.mode;
                         if (!sub.route)
                           return store.dispatch(
                             show_message({
@@ -203,12 +176,65 @@ const AdminSidebar = () => {
                     </motion.div>
                   );
                 })}
-              </div>
-            )}
-          </motion.div>
-        );
-      })}
-    </div>
+              </motion.div>
+              {hoveed === i && open_item !== hoveed && (
+                <div
+                  className="absolute bg-white shadow-md z-[10001]"
+                  style={{ right: -200, top: 0, zIndex: drawer + 5 }}
+                >
+                  <motion.div
+                    whileHover={{ backgroundColor: bg_gold_light_400 }}
+                    style={{
+                      width: 0,
+                      height: 0,
+                      borderTop: "8px solid transparent",
+                      borderRight: "12px solid #fff",
+                      top: 10,
+                      borderBottom: "8px solid transparent",
+                      position: "absolute",
+                      left: -12,
+                    }}
+                  ></motion.div>
+                  {item?.sub_categories?.map((sub, index) => {
+                    const he = sub.route
+                      ? pathname.includes(sub?.route)
+                      : false;
+                    return (
+                      <motion.div
+                        whileHover={{ backgroundColor: bg_gold_light_400 }}
+                        key={index}
+                        style={{
+                          width: 200,
+                          padding: "8px 16px",
+                          backgroundColor: he ? bg_gold_light_400 : "#fff",
+                        }}
+                        className={`h-8 cursor-pointer flex items-center text-sm  ${
+                          he ? "bg-red-600 text-white" : ""
+                        }`}
+                        onClick={() => {
+                          // const showing = store.getState().general.message.mode;
+                          if (!sub.route)
+                            return store.dispatch(
+                              show_message({
+                                message: "Under Development ...!",
+                                color: "info",
+                                mode: true,
+                              })
+                            );
+                          navigate(`/admin-panel${sub?.route}`);
+                        }}
+                      >
+                        {sub.title}
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </motion.div>
   );
 };
 

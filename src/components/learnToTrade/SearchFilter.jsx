@@ -24,7 +24,7 @@ const SearchFilter = ({ mainCategories }) => {
   }, [categoryId]);
 
   return (
-    <div className="flex items-center justify-center w-full my-4">
+    <div className="wrapper flex items-center justify-center w-full my-4">
       {console.log({ data })}
       <div className="w-full sm:w-[400px] md:w-[500px] space-y-4">
         {/* search box */}

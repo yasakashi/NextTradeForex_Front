@@ -4,13 +4,46 @@ import { CustomButton } from "../../../components/ui/CustomButton";
 import MAterialTable from "../../components/table/material_table";
 import ProfileCover from "../../../asset/img/placeholder.svg";
 import { useNavigate } from "react-router-dom";
+import { useGetPanelAllUsersQuery } from "../../../redux/features/api/admin-panel/panelUsersApi";
 
 const AllUsers = () => {
   const [showModal, setShowModal] = useState(false);
+  const [searchInput, setSearchInput] = useState("")
+  const [searchUser, setSearchUser] = useState("");
 
   const navigate = useNavigate();
-  const isLoading = false;
 
+  const { data: { messageData: data } = { messageData: [] }, isLoading } =
+    useGetPanelAllUsersQuery({
+      data: {
+        username: searchUser,
+        fname: "",
+        lname: "",
+        mobile: "",
+      },
+    });
+
+  function formatDate(dateString) {
+    if (dateString) {
+      const date = new Date(dateString);
+
+      // Format date to "DD Mon YYYY"
+      const formattedDate = date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+
+      // Format time to "HH:MM"
+      const formattedTime = date.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+      // Return the formatted date and time as "DD Mon YYYY, HH:MM"
+      return `${formattedDate}, ${formattedTime}`;
+    } else return null;
+  }
   return (
     <div className="px-8 py-10">
       <div className="flex items-center gap-4">
@@ -53,15 +86,26 @@ const AllUsers = () => {
         </ul>
       </div>
 
-      <div className="mt-14">
+      <div className="mt-10">
         {/* search */}
-        <div>
+        <div className="flex justify-end">
           <div className="flex items-center gap-2 my-10">
             <input
+              value={searchInput}
+              onChange={(e) => {
+                setSearchUser(e.target.value)
+                setSearchInput(e.target.value);
+              }}
               type="text"
-              className="border border-gray-300 rounded-[3px] outline-[#2271b1] active:border-[#2271b1] px-3 py-[5px] text-gray-600"
+              placeholder="Search Users"
+              className="border border-gray-400 rounded-[3px] outline-[#2271b1] active:border-[#2271b1] px-3 py-[5px] text-gray-600"
             />
-            <CustomButton variant="outlined" size="sm">
+            <CustomButton
+              type="button"
+              onClick={() => setSearchUser(searchInput)}
+              variant="outlined"
+              size="sm"
+            >
               Search Users
             </CustomButton>
           </div>
@@ -115,7 +159,7 @@ const AllUsers = () => {
           <MAterialTable
             loading={isLoading}
             // setSearchCourses={setSearchLesson}
-            rows={["amir"]}
+            rows={data}
             columns={[
               {
                 header: "Username",
@@ -124,7 +168,7 @@ const AllUsers = () => {
                   return (
                     <div className="flex flex-col justify-center items-start">
                       <div className="flex items-center gap-2">
-                        <div className="size-[60px]">
+                        <div className="size-[40px]">
                           <img
                             className="w-full h-full bg-cover"
                             src={ProfileCover}
@@ -134,11 +178,11 @@ const AllUsers = () => {
 
                         <div className="flex flex-col leading-7">
                           <p className="capitalize text-[#2271b1] font-bold">
-                            amirbasiri
+                            {row?.original?.username}
                           </p>
                         </div>
                       </div>
-                      <div className="flex hidden z-[1050] relative items-center gap-2">
+                      <div className="hidden z-[1050] relative items-center gap-2">
                         <BorderedButtonPrimary
                           title="Edit"
                           onClick={() => {
@@ -227,7 +271,7 @@ const AllUsers = () => {
                       className="text-blue-800 cursor-pointer"
                       style={{ color: "#2271b1" }}
                     >
-                      basiriamir@gmail.com
+                      {row?.original?.email}
                     </p>
                   );
                 },
@@ -238,7 +282,9 @@ const AllUsers = () => {
                 enableEditing: false,
 
                 Cell: ({ row }) => {
-                  return <div className="flex">Admin</div>;
+                  return (
+                    <div className="flex">{row?.original?.userTypeName}</div>
+                  );
                 },
               },
 
@@ -247,7 +293,13 @@ const AllUsers = () => {
                 enableEditing: false,
 
                 Cell: ({ row }) => {
-                  return <div className="flex">Admin</div>;
+                  return (
+                    <div className="flex">
+                      {row?.original?.forumRoleName
+                        ? row?.original?.forumRoleName
+                        : "-"}
+                    </div>
+                  );
                 },
               },
 
@@ -256,7 +308,12 @@ const AllUsers = () => {
                 enableEditing: false,
 
                 Cell: ({ row }) => {
-                  return <div className="flex">Amir Basiri</div>;
+                  return (
+                    <div className="flex items-center space-x-1 capitalize">
+                      <span>{row?.original?.fname} </span>
+                      <span>{row?.original?.lname}</span>
+                    </div>
+                  );
                 },
               },
 
@@ -265,7 +322,11 @@ const AllUsers = () => {
                 enableEditing: false,
 
                 Cell: ({ row }) => {
-                  return <div className="flex">8</div>;
+                  return (
+                    <div className="flex justify-center">
+                      {row?.original?.posts}
+                    </div>
+                  );
                 },
               },
 
@@ -274,7 +335,11 @@ const AllUsers = () => {
                 enableEditing: false,
 
                 Cell: ({ row }) => {
-                  return <div className="flex">2</div>;
+                  return (
+                    <div className="flex justify-center">
+                      {row?.original?.activeSubscriber}
+                    </div>
+                  );
                 },
               },
 
@@ -282,8 +347,8 @@ const AllUsers = () => {
                 header: "Date",
                 Cell: ({ row }) => {
                   return (
-                    <div className="flex flex-col text-[#50575e]">
-                      <p>{new Date().toLocaleString()}</p>
+                    <div className="flex justify-center text-[#50575e]">
+                      <p>{formatDate(row?.original?.registerDate)}</p>
                     </div>
                   );
                 },

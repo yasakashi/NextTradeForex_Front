@@ -1,13 +1,8 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
-
-interface props {
-  course_data: any;
-}
 
 export const courseSlice = createSlice({
   name: "course-reducer",
-  initialState: <props>{
+  initialState: {
     course_data: {},
   },
   reducers: {
@@ -22,7 +17,7 @@ export const { set_course_data_state } = courseSlice.actions;
 
 export const course_data_selector = createSelector(
   [
-    (state: any) => {
+    (state) => {
       return state?.course?.course_data;
     },
   ],

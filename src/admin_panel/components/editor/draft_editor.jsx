@@ -28,13 +28,13 @@ const DraftEditor = ({
   };
   return (
     <div
-      className={`w-full bg-white text-gray-700 rounded-[8px] p-2 h-[${h}px] ${className}`}
+      className={`w-full bg-white text-gray-700  rounded-[8px] p-2 h-[${h}px] ${className}`}
     >
       <Editor
         editorState={editorState}
-        toolbarClassName="toolbarClassName"
-        wrapperClassName="wrapperClassName placeholder:font-normal"
-        editorClassName="editorClassName placeholder:font-normal"
+        toolbarClassName="toolbarClassName border border-gray-300"
+        wrapperClassName="wrapperClassName placeholder:font-normal h-full overflow-hidden scrollbar-none border border-[[#ccd0d4]"
+        editorClassName="editorClassName placeholder:font-normal h-full scrollbar-none pb-10 mb-10 scrollbar-thin p-4"
         editorStyle={{ height: "100" }}
         spellCheck
         toolbar={{}}

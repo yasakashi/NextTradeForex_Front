@@ -1,11 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-// import {
-//   useRemoveCategoryMutation,
-//   useGetSubCategoriesByInfoMutation,
-//   useGetMainCategoriesByInfoMutation,
-// } from "../../../../redux/features/api/categories/categoriesApi";
+ 
 
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 import AddNewTag from "./AddNewTag";

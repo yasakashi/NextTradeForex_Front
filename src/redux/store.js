@@ -25,6 +25,11 @@ import { loadingReducer } from "./features/loading";
 import { categoriesApi } from "./features/api/categories/categoriesApi";
 import { LearnToTradeApi } from "./features/api/learnToTrade/LearnToTradeApi";
 import { userReferralApi } from "./features/api/referral/userReferralApi";
+import { adminData } from "./features/api/admin-panel/adminDataApi";
+import { panelUsersApi } from "./features/api/admin-panel/panelUsersApi";
+import { adminMediaApi } from "./features/api/admin-panel/mediaApi";
+import { adminTicketsApi } from './features/api/admin-panel/adminTicketsApi';
+import { adminUserApi } from "./features/api/admin-panel/userApi";
 
 const store = configureStore({
   reducer: {
@@ -34,6 +39,11 @@ const store = configureStore({
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [LearnToTradeApi.reducerPath]: LearnToTradeApi.reducer,
     [userReferralApi.reducerPath]: userReferralApi.reducer,
+    [adminData.reducerPath]: adminData.reducer,
+    [panelUsersApi.reducerPath]: panelUsersApi.reducer,
+    [adminMediaApi.reducerPath]: adminMediaApi.reducer,
+    [adminTicketsApi.reducerPath]: adminTicketsApi.reducer,
+    [adminUserApi.reducerPath]: adminUserApi.reducer,
 
     login: loginReducer,
     auth: registerReducer,
@@ -61,7 +71,12 @@ const store = configureStore({
       commonApi.middleware,
       categoriesApi.middleware,
       LearnToTradeApi.middleware,
-      userReferralApi.middleware
+      userReferralApi.middleware,
+      adminData.middleware,
+      panelUsersApi.middleware,
+      adminMediaApi.middleware,
+      adminTicketsApi.middleware,
+      adminUserApi.middleware
     ),
 });
 

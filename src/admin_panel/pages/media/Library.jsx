@@ -4,21 +4,50 @@ import { CiViewTable } from "react-icons/ci";
 import { MdOutlineGridView } from "react-icons/md";
 import GridView from "../../components/media/GridView";
 import TableView from "../../components/media/TableView";
+import { useGetAllMediasQuery } from "../../../redux/features/api/admin-panel/mediaApi";
+import { useNavigate } from "react-router-dom";
 
 
 
 const MediaLibrary = () => {
   const [view, setView] = useState("grid");
 
+  const navigate = useNavigate();
+
+    const {
+      data: { messageData: medias } = { messageData: [] },
+
+      isLoading,
+
+      refetch: refetchMedias,
+    } = useGetAllMediasQuery({
+      data: {
+        Id: null,
+        authorId: null,
+        allowQA: null,
+        isPublicCourse: null,
+        difficultyLevelId: null,
+        courseTags: "",
+        courseName: "",
+        pageindex: 1,
+        rowcount: 21,
+      },
+    });
+
   return (
     <div className="px-8 py-10">
       <div className="flex items-center gap-4">
         <h2 className="font-normal text-2xl text-[#1d2327]">Media Library</h2>
-        <CustomButton variant="outlined" size="sm">
+        <CustomButton
+          type="button"
+          onClick={() => navigate("/admin-panel/media/add-new-media-file")}
+          variant="outlined"
+          size="sm"
+        >
           Add New Media File
         </CustomButton>
       </div>
-
+   
       {/* top bar */}
       <div className="bg-white border flex items-center justify-between border-gray-400 p-2 mt-20 mb-4">
         {/* left side */}
@@ -99,7 +128,8 @@ const MediaLibrary = () => {
             <span className="text-[#50575e] text-[14px]">Search media</span>
             <input
               type="text"
-              className="border border-gray-300 rounded-[3px] outline-[#2271b1] active:border-[#2271b1] px-3 py-[5px] text-gray-600"
+              placeholder="Search Media ..."
+              className="border border-gray-400 rounded-[3px] outline-[#2271b1] active:border-[#2271b1] px-3 py-[5px] text-gray-600"
             />
           </label>
         </div>

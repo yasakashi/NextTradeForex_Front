@@ -66,6 +66,6 @@
     "src/pages/market_pulse/index.jsx",
     "src/admin_panel/utils/market_pulse_router.jsx",
     "src/common/bordered_button_primary.jsx"
-  ],
+, "src/admin_panel/pages/tutor-lms/tags/hook/use_categories.jsx"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

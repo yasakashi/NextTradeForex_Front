@@ -12,6 +12,11 @@ import LibraryModal from "../../../../pages/profile/new_course_components/librar
 import { EditorState } from "draft-js";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { BiSave } from "react-icons/bi";
+import {
+  useResponseToTicketFileMutation,
+  useResponseToTicketMutation,
+} from "../../../../redux/features/api/admin-panel/adminTicketsApi";
+import toast from "react-hot-toast";
 
 const AdminTicketView = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -19,11 +24,17 @@ const AdminTicketView = () => {
   const [fileInput, setFileInput] = useState(null);
   const [fileError, setFileError] = useState(null);
   const [reply, setReply] = useState("");
+
   const { id } = useParams();
+
   const dispatch = useDispatch();
   const { tickets, getTicketsLoading, errorMsg } = useSelector(
     (state) => state.ticket
   );
+
+  const [responseToTicket, { isLoading }] = useResponseToTicketMutation();
+  const [responseToTicketFile, { isLoading: sendFileLoading }] =
+    useResponseToTicketFileMutation();
 
   const ticket = tickets?.length > 0 ? tickets[0] : {};
 
@@ -50,10 +61,44 @@ const AdminTicketView = () => {
     setEditorState(editorData.state);
   };
 
+  const replyTicketHandler = async (e) => {
+    e.preventDefault();
+    try {
+      if (reply) {
+        const res = await responseToTicket({
+          data: { Id: id, responsedescription: reply },
+        }).unwrap();
+
+        if (res?.messageCode === 200 && fileInput instanceof File) {
+          const formData = new FormData();
+          formData.append("Id", id);
+          formData.append("attachtment", fileInput);
+          const fileRes = await responseToTicketFile({
+            data: formData,
+          }).unwrap();
+
+          if (fileRes?.messageCode === 200) {
+            toast.success("Ticket answerd.");
+            setFileInput(null);
+            setReply("");
+            setEditorState(EditorState.createEmpty());
+          }
+          console.log({ fileRes });
+        }
+        console.log("ticket res", { res });
+      } else {
+        toast.error("plese fill the gaps.");
+      }
+    } catch (error) {
+      console.log("send ticket reply error ==>", error);
+    }
+  };
+
   return (
     <div className="pt-10 px-4 bg-[#f1f2f5] w-full min-h-screen">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {/* ticket */}
+        {console.log({ fileInput })}
 
         <div className="col-span-1 md:col-span-3 bg-white py-4 px-8">
           <div className="flex items-center justify-between">
@@ -145,46 +190,54 @@ const AdminTicketView = () => {
           </div>
 
           {/* reply */}
-
-          <div className="w-full pt-2 pl-2 border border-gray-300 rounded-md mt-8 mb-8">
-            <div className="mb-2 flex relative">
-              <CustomButton
-                onClick={() => setOPenFile(true)}
-                size="sm"
-                variant="outlined"
-                type="button"
-              >
-                Add Media
-              </CustomButton>
-              <button
-                type="button"
-                className="bg-gray-600 rounded-sm p-1 pr-3 pl-3 ml-2"
-              >
-                <BiSave color="white" className="text-xl" />
-              </button>
-            </div>
-            <LibraryModal
-              file={fileInput}
-              set_file={(file) => {
-                setFileInput(file);
-              }}
-              error={fileError}
-              accept_file="Image"
-              has_side_bar_action={false}
-              title="Add Media"
-              open={openFile}
-              set_open={setOPenFile}
-              onSave={() => setOPenFile(false)}
-            />
-            <div className="w-full relative overflow-y-scroll">
-              {/* <EditorComponent /> */}
-              <DraftEditor
-                placeholder="Write your reply ..."
-                editorState={editorState}
-                onChange={handleEditorChange}
+          <form onSubmit={(e) => replyTicketHandler(e)}>
+            <div className="w-full pt-2 pl-2 border border-gray-300 rounded-md mt-8 mb-8">
+              <div className="mb-2 flex relative">
+                <CustomButton
+                  onClick={() => setOPenFile(true)}
+                  size="sm"
+                  variant="outlined"
+                  type="button"
+                >
+                  Add Media
+                </CustomButton>
+                <button
+                  type="button"
+                  className="bg-gray-600 rounded-sm p-1 pr-3 pl-3 ml-2"
+                >
+                  <BiSave color="white" className="text-xl" />
+                </button>
+              </div>
+              <LibraryModal
+                file={fileInput}
+                set_file={(file) => {
+                  setFileInput(file);
+                }}
+                error={fileError}
+                accept_file="Image"
+                has_side_bar_action={false}
+                title="Add Media"
+                open={openFile}
+                set_open={setOPenFile}
+                onSave={() => setOPenFile(false)}
               />
+              <div className="w-full relative overflow-y-scroll">
+                {/* <EditorComponent /> */}
+                <DraftEditor
+                  placeholder="Write your reply ..."
+                  editorState={editorState}
+                  onChange={handleEditorChange}
+                />
+              </div>
             </div>
-          </div>
+            <CustomButton
+              disabled={isLoading || sendFileLoading}
+              className="disabled:opacity-80 disabled:cursor-not-allowed"
+              type="submit"
+            >
+              {isLoading || sendFileLoading ? "sending ..." : "Submit"}
+            </CustomButton>
+          </form>
         </div>
 
         {/* user info */}

@@ -1,21 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminSidebar from "./admin_sidebar";
 import AdminNavbar from "./admin_navbar";
 import { Outlet } from "react-router-dom";
-
+// bg-[#f0f0f1]
 const MainLayout = () => {
+
+  const [showAdminSidebar, setShowAdminsidebar] = useState(false);
+
   return (
-    <div className="w-full min-h-screen">
-      <div className="w-full h-full flex">
-        <div className="hidden md:block h-screen w-[200px]">
-          <AdminSidebar />
+    <div className="flex items-start">
+      <AdminSidebar
+        showAdminSidebar={showAdminSidebar}
+        setShowAdminsidebar={setShowAdminsidebar}
+      />
+
+      <div className="w-full">
+        <AdminNavbar
+          showAdminSidebar={showAdminSidebar}
+          setShowAdminsidebar={setShowAdminsidebar}
+        />
+
+        <div className="bg-[#f0f0f1] overflow-y-scroll h-screen w-full">
+          <Outlet />
         </div>
-        <main className="min-h-screen h-full w-full md:w-[calc(100%-200px)] right-0 mt-4">
-          <AdminNavbar />
-          <div className="w-full z-[100] relative h-full mt-4 bg-[#f0f0f1] min-h-screen">
-            <Outlet />
-          </div>
-        </main>
       </div>
     </div>
   );
