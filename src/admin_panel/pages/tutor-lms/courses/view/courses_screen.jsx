@@ -102,6 +102,7 @@ const CoursesScreen = () => {
   return (
     <div className="flex flex-col px-8 pb-8 pt-8 h-full">
       <AdminPanelTitle title="Courses" />
+
       <MaterialTable
         loading={isLoading}
         setSearch={setSearchCourses}

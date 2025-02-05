@@ -41,7 +41,7 @@ const LessonsScreen = () => {
 
   return (
     <div className="flex flex-col px-8 py-8">
-      {console.log({ lessons })}
+    
       <AdminPanelTitle title="Lessons" />
       <MAterialTable
         loading={isLoading}

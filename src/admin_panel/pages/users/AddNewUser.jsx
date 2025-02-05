@@ -4,8 +4,8 @@ import { SiGoogletranslate } from "react-icons/si";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { useState } from "react";
 import * as Yup from "yup";
-import { useAddNewUserByAdminMutation } from "../../../redux/features/api/admin-panel/userApi";
 import toast from "react-hot-toast";
+import { useAddNewUserByAdminMutation } from "../../../redux/features/api/admin-panel/panelUsersApi";
 
 const validationSchema = Yup.object({
   username: Yup.string().required("Username is required"),

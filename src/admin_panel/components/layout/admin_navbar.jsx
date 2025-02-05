@@ -14,7 +14,6 @@ import useUserRole from "../../../hooks/useUserRole";
 const AdminNavbar = ({ showAdminSidebar, setShowAdminsidebar }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const role = useUserRole(user?.userTypeId);
-  
 
   const [showModal, setShowModal] = useState(false);
   const [showMsgModal, setShowMsgModal] = useState(false);

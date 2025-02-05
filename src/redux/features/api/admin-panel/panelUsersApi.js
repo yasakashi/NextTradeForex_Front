@@ -7,13 +7,33 @@ export const panelUsersApi = createApi({
   endpoints: (builder) => ({
     // get courses
     getPanelAllUsers: builder.query({
-      query: ({data}) => ({
+      query: ({ data }) => ({
         url: "adminpanel/users/getallusers",
         method: "POST",
-        body:data
+        body: data,
+      }),
+    }),
+
+    getPanelUsersReport: builder.query({
+      query: ({ data }) => ({
+        url: "adminpanel/users/getalltotalusers",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    addNewUserByAdmin: builder.mutation({
+      query: ({ data }) => ({
+        url: "/adminpanel/users/addnewuser",
+        method: "POST",
+        body: data,
       }),
     }),
   }),
 });
 
-export const { useGetPanelAllUsersQuery } = panelUsersApi;
+export const {
+  useGetPanelAllUsersQuery,
+  useAddNewUserByAdminMutation,
+  useGetPanelUsersReportQuery,
+} = panelUsersApi;

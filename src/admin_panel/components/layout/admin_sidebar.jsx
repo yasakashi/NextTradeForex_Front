@@ -72,7 +72,7 @@ const AdminSidebar = ({ showAdminSidebar, setShowAdminsidebar }) => {
       variants={variants}
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className={`
-        z-[1001] w-[200px] h-screen overflow-x-hidden bg-blue-light overflow-y-hidden fixed md:relative md:translate-x-0 top-[43px] md:top-0 md:h-[calc(100vh-0)]
+        z-[1001] w-[200px] h-screen overflow-x-hidden bg-blue-light overflow-y-hidden fixed md:relative md:translate-x-0 top-[43px] md:top-0 md:h-screen
         ${
           showAdminSidebar
             ? "absolute top-[43px] h-[calc(100vh-43px)]"

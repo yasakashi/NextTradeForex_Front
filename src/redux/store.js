@@ -29,7 +29,6 @@ import { adminData } from "./features/api/admin-panel/adminDataApi";
 import { panelUsersApi } from "./features/api/admin-panel/panelUsersApi";
 import { adminMediaApi } from "./features/api/admin-panel/mediaApi";
 import { adminTicketsApi } from './features/api/admin-panel/adminTicketsApi';
-import { adminUserApi } from "./features/api/admin-panel/userApi";
 
 const store = configureStore({
   reducer: {
@@ -43,7 +42,6 @@ const store = configureStore({
     [panelUsersApi.reducerPath]: panelUsersApi.reducer,
     [adminMediaApi.reducerPath]: adminMediaApi.reducer,
     [adminTicketsApi.reducerPath]: adminTicketsApi.reducer,
-    [adminUserApi.reducerPath]: adminUserApi.reducer,
 
     login: loginReducer,
     auth: registerReducer,
@@ -76,7 +74,6 @@ const store = configureStore({
       panelUsersApi.middleware,
       adminMediaApi.middleware,
       adminTicketsApi.middleware,
-      adminUserApi.middleware
     ),
 });
 
