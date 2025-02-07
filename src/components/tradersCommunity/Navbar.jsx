@@ -102,7 +102,7 @@ const CummunityNavbar = () => {
                   onClick={() => setShowMessages((prev) => !prev)}
                 >
                   <BiMessageRounded size={24} />
-                  <span className="absolute flex items-center justify-center -top-0 right-0 bg-red-400 text-white p-[2px] text-xs rounded-full">
+                  <span className="absolute size-[16px] flex items-center justify-center -top-1 -right-1 bg-red-600 text-white font-medium text-xs rounded-full">
                     {userNotReadMessagesCount === ""
                       ? 0
                       : userNotReadMessagesCount}

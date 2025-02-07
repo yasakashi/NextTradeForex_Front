@@ -103,7 +103,6 @@ const CommunityGroup = () => {
       });
   };
 
-
   return (
     <>
       <SideBar />

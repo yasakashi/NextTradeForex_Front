@@ -13,11 +13,12 @@ export const createSignalChannleAction = createAsyncThunk(
       console.log(id);
       if (response?.status === 200) {
         toast.success("Signal channel is created successfully");
-        navigate(
-          `/traders-community/groups/${localStorage.getItem(
-            "groupname"
-          )}/signal-channels`
-        );
+        // navigate(
+        //   `/traders-community/groups/${localStorage.getItem(
+        //     "groupname"
+        //   )}/signal-channels`
+        // );
+        window.history.back();
       }
 
       return response.data;
@@ -57,7 +58,6 @@ export const getGroupSignalChannels = createAsyncThunk(
 export const getSignalChannel = createAsyncThunk(
   "signalChannel/getSignalChannel",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
-
     try {
       const response = await axiosPrivate.post(
         "/api/signal/getsignalchannel",

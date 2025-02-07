@@ -63,7 +63,10 @@ export const removeGroup = createAsyncThunk(
 
 export const getAllGroups = createAsyncThunk(
   "group/getAllGroups",
-  async ({ axiosPrivate, toast, sortitem, title }, { rejectWithValue }) => {
+  async (
+    { axiosPrivate, toast, sortitem, title, setPageCount, currentPage },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await axiosPrivate.post("/api/getcommunitygroups", {
         owneruserid: null,
@@ -71,10 +74,13 @@ export const getAllGroups = createAsyncThunk(
         sortitem,
         grouptypeId: null,
         // rowcount: 8,
-        // pageindex: ,
+        pageindex: currentPage,
       });
 
       console.log({ response });
+      if (response?.status === 200) {
+        setPageCount(response?.data?.meta?.pagecount);
+      }
 
       return response.data;
     } catch (error) {
