@@ -13,6 +13,8 @@ const CategoriesComponent = ({ categoryids = [], onChange, errorMsg }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedNodes, setExpandedNodes] = useState(new Set());
   const [filteredTreeData, setFilteredTreeData] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
+  const [isSearch, setIsSearch] = useState(false); // Add search flag
   const categoryRef = useRef(null);
 
   const [getCategories, { data, error, isLoading: getCategoriesLoading }] =
@@ -22,6 +24,7 @@ const CategoriesComponent = ({ categoryids = [], onChange, errorMsg }) => {
     async function fetchCategories() {
       try {
         const fetchedData = await getCategories().unwrap();
+        setAllCategories(fetchedData || []);
         setFilteredTreeData(fetchedData || []);
       } catch (err) {
         toast.error("Failed to fetch categories");
@@ -33,6 +36,50 @@ const CategoriesComponent = ({ categoryids = [], onChange, errorMsg }) => {
   useEffect(() => {
     if (categoryids?.length > 0) setSelectedCategories(categoryids); // Sync with prop changes
   }, [categoryids]);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setIsSearch(false);
+    } else {
+      setIsSearch(true);
+    }
+    const expandedNodes = new Set();
+    const filteredData = searchCategories(
+      allCategories,
+      searchTerm,
+      expandedNodes
+    );
+    setExpandedNodes(isSearch ? expandedNodes : new Set()); // Expand nodes only when searching
+    setFilteredTreeData(filteredData);
+  }, [searchTerm, allCategories, isSearch]);
+
+  const searchCategories = (categories, term, expandedNodes = new Set()) => {
+    return categories
+      .map((category) => {
+        const newCategory = structuredClone(category);
+        if (newCategory.name.toLowerCase().includes(term.toLowerCase())) {
+          expandedNodes.add(category.id); // Add parent to expandedNodes
+          return newCategory;
+        }
+        if (newCategory.children && newCategory.children.length > 0) {
+          newCategory.children = searchCategories(
+            newCategory.children,
+            term,
+            expandedNodes
+          );
+          if (newCategory.children.length > 0) {
+            expandedNodes.add(category.id); // Add parent to expandedNodes
+            return newCategory;
+          }
+        }
+        return null;
+      })
+      .filter(Boolean);
+  };
+
+  function structuredClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
 
   const handleSelectItem = (node) => {
     setSelectedCategories((prevSelected) => {
@@ -59,37 +106,40 @@ const CategoriesComponent = ({ categoryids = [], onChange, errorMsg }) => {
       return newExpandedNodes;
     });
   };
-
+  const findCategoryById = (categories, id) => {
+    for (const category of categories) {
+      if (category.id === id) {
+        return category;
+      }
+      if (category.children && category.children.length > 0) {
+        const found = findCategoryById(category.children, id);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  };
   const handleSearchBoxClick = (e) => {
     e.stopPropagation();
   };
 
   return (
     <NewCourceCard title="Categories">
+      
       <div
         style={{ width: "100%", flexDirection: "column", padding: "8px 16px" }}
         className="flex"
       >
-        <div style={{ width: "100%" }}>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search categories..."
-            onClick={handleSearchBoxClick}
-            className="w-full p-2 border placeholder:text-sm border-gray-300 rounded-md mb-2 outline-none focus:ring-blue-400 focus:ring-1"
-          />
-        </div>
-
-        <div className="bg-gray-200 overflow-x-hidden overflow-y-scroll w-full border border-[#000] flex flex-wrap overflow-auto min-h-[150px] mt-2 rounded-[4px] max-h-[200px] scrollbar-thin">
+        <div className="bg-gray-200 p-4 text-sm md:text-base font-medium overflow-x-hidden overflow-y-scroll scrollbar-none w-full border border-gray-500 text-gray-700 flex flex-wrap overflow-auto min-h-[150px] mt-2 rounded-[4px] max-h-[200px]">
           <ul className="list-disc pl-5 flex items-center gap-2 flex-wrap">
             {selectedCategories?.map((categoryId) => {
-              const category = data?.find((cat) => cat.id === categoryId);
+              const category = findCategoryById(data || [], categoryId); // Use recursive function here
               return (
                 category && (
                   <li
                     key={categoryId}
-                    className="flex items-center mb-1 bg-slate-100 px-2 py-1 rounded-[25px] w-max shadow-sm"
+                    className="flex items-center mb-1 bg-slate-100 px-2 py-1 rounded-[25px] w-max shadow-sm hover:cursor-pointer hover:bg-slate-200 transition-all hover:shadow-none"
                   >
                     {category.name}
                     <button
@@ -106,6 +156,17 @@ const CategoriesComponent = ({ categoryids = [], onChange, errorMsg }) => {
           </ul>
         </div>
 
+        <div className="w-full mt-3">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search categories..."
+            onClick={handleSearchBoxClick}
+            className="w-full p-2 border placeholder:text-sm border-gray-300 rounded-md mb-2 outline-none focus:ring-blue-400 focus:ring-1"
+          />
+        </div>
+
         {errorMsg ? (
           <div className="p-2 text-sm text-red-600">{errorMsg}</div>
         ) : null}
@@ -117,16 +178,7 @@ const CategoriesComponent = ({ categoryids = [], onChange, errorMsg }) => {
           onClick={(e) => set_current_tab(e)}
         />
 
-        <div
-          style={{
-            border: "1px solid #999",
-            width: "100%",
-            minHeight: 120,
-            maxHeight: 400,
-            padding: 8,
-            overflow: "auto",
-          }}
-        >
+        <div className="border border-[#999] w-full min-h-[120px] max-h-[400px] p-2 overflow-x-hidden overflow-y-scroll scrollbar-thin">
           <ul
             ref={categoryRef}
             className={`list-none w-full h-full p-0 rounded-sm py-4 px-2`}
@@ -217,7 +269,6 @@ export const Row = ({ checked, id, onChange, name, childs }) => {
 const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
   const hasChildren = node.children && node.children.length > 0;
   const isOpen = expandedNodes.has(node.id);
-
   const isSelected = selectedIds.includes(node.id);
 
   return (
@@ -229,15 +280,13 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
         {hasChildren ? (
           <button
             type="button"
-            onClick={() => {
-              onToggle(node.id);
-            }}
+            onClick={() => onToggle(node.id)}
             className="mr-2 text-blue-accent text-sm cursor-pointer flex items-center"
           >
             [{isOpen ? <FaMinus size={8} /> : <FaPlus size={8} />}]
           </button>
         ) : (
-          <span className="w-4" /> // Placeholder to align tree nodes
+          <span className="w-4" />
         )}
         <input
           type="checkbox"

@@ -24,15 +24,13 @@ const CourseProgressComponent = ({ course, isLoading }) => {
       </div>
 
       <div className="w-full h-1 bg-[#e3e5eb] rounded-lg mt-4 mb-8"></div>
-    
+
       <div className="my-3 w-full">
         <Link
           className="text-center py-2 border w-full block rounded-lg text-[#020E51] text-[17px] font-semibold bg-gradient-to-r from-[#dbbd75] from-0% via-[#bb965f] via-50% to-[#9f7549] to-100%"
           to={
             !isLoading
-              ? `/courses/${nameFormat(course?.courseName)}/${
-                  course?.id
-                }/lesson/lessonid`
+              ? `/courses/${nameFormat(course?.courseName)}/${course?.id}`
               : "#"
           }
         >

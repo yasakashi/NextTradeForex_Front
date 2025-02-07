@@ -11,7 +11,7 @@ const ModalLayout = ({ open, className = "", children }) => {
     >
       <div
         draggable={false}
-        className={`bg-white shadow-md mt-[50px] rounded-3xl transition-all z-[1006] ${className} 
+        className={`bg-white shadow-md mt-[50px] max-h-[90vh] max-w-[1000px] overflow-y-scroll scrollbar-none rounded-3xl transition-all z-[1006] ${className} 
         ${open ? "scale-100 opacity-100" : "scale-125 opacity-0"}
         `}
       >

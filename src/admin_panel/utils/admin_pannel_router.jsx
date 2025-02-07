@@ -167,6 +167,8 @@ export const admin_panel_router = [
     route: "/admin-panel/tutor/Courses",
     component: <CoursesScreen />,
   },
+
+
   {
     route: "/admin-panel/tutor/lessons",
     component: <LessonsScreen />,
@@ -236,7 +238,7 @@ export const admin_panel_router = [
   },
   {
     route:
-      "/admin-panel/tutor/Courses/create-new-course/course-builder/:courseId",
+      "/admin-panel/tutor/courses/create-new-course/course-builder/:courseId",
     component: <CourseBuilderPage page="admin" />,
   },
 

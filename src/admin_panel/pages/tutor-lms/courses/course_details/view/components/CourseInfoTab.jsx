@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { AiOutlineExclamation } from "react-icons/ai";
 import { IoDocumentTextOutline } from "react-icons/io5";
@@ -13,20 +13,23 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const CourseInfoTab = ({ course }) => {
- 
   const [descShowMore, setDescShowMore] = useState(false);
 
   const [topics, setTopics] = useState([]);
   const [lessons, setLessons] = useState({});
   const [quizes, setQuizes] = useState({});
+  const [showButton, setShowButton] = useState(false);
 
   const [openTopicIndex, setOpenTopicIndex] = useState(null);
+
+  const descriptionRef = useRef(null);
 
   const [
     getCourseTopics,
     { error, isLoading: getCourseTopicsLoading, isSuccess },
   ] = useGetCourseTopicsMutation();
-  const [getTopicLessons] = useGetTopicLessonsMutation();
+  const [getTopicLessons, { isLoading: lessonsLoading }] =
+    useGetTopicLessonsMutation();
   const [getTopicQuiz] = useGetTopicQuizMutation();
 
   useEffect(() => {
@@ -48,6 +51,13 @@ const CourseInfoTab = ({ course }) => {
     }
     courseTopics();
   }, []);
+
+  useEffect(() => {
+    // Check if the description is long enough to show the "Show More" button
+    if (descriptionRef.current) {
+      setShowButton(descriptionRef.current.scrollHeight > 250);
+    }
+  }, [course]);
 
   const handleToggleTopic = async (index, topicId) => {
     setOpenTopicIndex(null);
@@ -106,27 +116,32 @@ const CourseInfoTab = ({ course }) => {
         <h5 className="font-bold text-xl mb-4">About Course</h5>
         <div>
           <div
+            ref={descriptionRef}
             className={`font-normal text-[15px] space-y-4 mb-4 w-full overflow-y-hidden text-justify ${
               descShowMore ? "h-auto" : "h-[250px]"
             }`}
             dangerouslySetInnerHTML={{ __html: course?.courseDescription }}
           ></div>
-          {descShowMore ? (
-            <div
-              onClick={() => setDescShowMore(false)}
-              className="cursor-pointer hover:underline transition-all text-gray-400 w-max text-base flex items-center gap-2 mt-2 mb-4"
-            >
-              <FaMinus size={20} />
-              <span>Show Less</span>
-            </div>
-          ) : (
-            <div
-              className="cursor-pointer hover:underline transition-all text-gray-400 w-max text-base flex items-center gap-2 mt-2 mb-4"
-              onClick={() => setDescShowMore(true)}
-            >
-              <FaPlus size={20} />
-              <span>Show More</span>
-            </div>
+          {showButton && (
+            <>
+              {descShowMore ? (
+                <div
+                  onClick={() => setDescShowMore(false)}
+                  className="cursor-pointer hover:underline transition-all text-gray-400 w-max text-base flex items-center gap-2 mt-2 mb-4"
+                >
+                  <FaMinus size={20} />
+                  <span>Show Less</span>
+                </div>
+              ) : (
+                <div
+                  className="cursor-pointer hover:underline transition-all text-gray-400 w-max text-base flex items-center gap-2 mt-2 mb-4"
+                  onClick={() => setDescShowMore(true)}
+                >
+                  <FaPlus size={20} />
+                  <span>Show More</span>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -142,7 +157,7 @@ const CourseInfoTab = ({ course }) => {
         <h5 className="font-bold text-xl mb-4">Course Content</h5>
       </div>
 
-      {topics.length > 0 && (
+      {topics?.length > 0 && (
         <div className="my-6 space-y-2">
           {topics.map((topic, index) => (
             <div
@@ -190,9 +205,12 @@ const CourseInfoTab = ({ course }) => {
                   {/* lessons */}
                   <div className="mb-2 px-2 space-y-2">
                     {/* single lesson */}
-                    {/* <div className="flex items-center rounded-md px-4 py-3 ml-auto">
-                     
-                    </div> */}
+
+                    {lessonsLoading ? (
+                      <p className="p-4 text-gray-600 text-base">
+                        Loading data ...
+                      </p>
+                    ) : null}
                     {lessons[topic?.id]?.map((lesson, lessonIndex) => (
                       <div
                         key={lessonIndex}

@@ -4,27 +4,21 @@ import Footer from "../../../../../../components/Footer";
 import Rating from "./components/rating";
 import { useParams } from "react-router-dom";
 import placeholder from "../../../../../../asset/img/placeholder (1).svg";
-import {
-  yellow_color,
-
-} from "../../../../categories/view/category_details_view_screen";
+import { yellow_color } from "../../../../categories/view/category_details_view_screen";
 import { BiShare } from "react-icons/bi";
 import { LiaStreamSolid } from "react-icons/lia";
 import CourseInfo from "./components/course_info";
 import CourseProgressComponent, {
   CourseBy,
 } from "./components/course_progress_component";
-import { useAppSelector } from "../../../../../../redux/features/generalSlice";
-import { course_data_selector } from "../../../../../../redux/features/courseSlise";
+
 import { useGetCoursesQuery } from "../../../../../../redux/features/api/course/courseApii";
 
 const CourseDetails = () => {
   const { courseId } = useParams();
-  const course_data = useAppSelector(course_data_selector);
-
 
   const {
-    data: { messageData: courses } = { messageData: [] },
+    data: { messageData: [course = {}] = [] } = { messageData: [] },
     error,
     isLoading,
   } = useGetCoursesQuery({
@@ -41,7 +35,7 @@ const CourseDetails = () => {
     },
   });
 
-  const course = courses[0] || {};
+  // const course = courses[0] || {};
 
   // useEffect(() => {
   //   get_course_cover_image_api(course_data.id)
@@ -51,11 +45,8 @@ const CourseDetails = () => {
   //     .catch((err) => {});
   // }, []);
 
-  
-
   return (
     <div className="w-full">
-
       <Navbar />
       <div className="mt-12 w-full px-8 mb-12">
         <div className="flex items-center gap-3">
@@ -68,7 +59,7 @@ const CourseDetails = () => {
         <h3 className="text-white capitalize text-3xl font-bold my-4">
           {course?.courseName}
         </h3>
-
+        {console.log(course)}
         <div className="flex justify-between items-center mb-8">
           <div className="flex  items-center w-2/3">
             <h4 className="border border-gray-200 rounded-full size-[34px]  text-sm flex items-center justify-center text-gray-200 uppercase">
@@ -106,9 +97,7 @@ const CourseDetails = () => {
           <div item className="col-span-1 md:col-span-2">
             <img
               src={
-                course?.featuredImagepath
-                  ? course?.featuredImagepath
-                  : placeholder
+                course?.courseFilepath ? course?.courseFilepath : placeholder
               }
               alt={course?.courseName}
               className="w-full h-[600px] aspect-video"
@@ -116,7 +105,7 @@ const CourseDetails = () => {
             <CourseInfo course={course} />
           </div>
           <div item className="col-span-1 md:col-span-1">
-            <CourseProgressComponent course={course}  isLoading={isLoading} />
+            <CourseProgressComponent course={course} isLoading={isLoading} />
             <CourseBy course={course} />
           </div>
         </div>

@@ -85,19 +85,19 @@ const NewLesson = ({
       try {
         // const addCourseRes = await addNewCourse({ data: formData });
         // console.log({ addCourseRes });
-        const response = await addTopicLesson({ data: formData });
+        const response = await addTopicLesson({ data: formData }).unwrap();
+        console.log("add lesson response ===>", response);
         if (response?.data?.messageCode === 200) {
           resetForm();
           setShowNewLessonModal(false);
           toast.success("Lesson added.");
         }
 
-        console.log({ response });
         if (response?.error?.status === 400) {
           toast.error("Please fill the inputs.");
         }
       } catch (error) {
-        console.error("Error submitting form:", error);
+        console.log("Error submitting form:", error);
       }
     },
   });

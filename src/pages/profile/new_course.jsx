@@ -27,11 +27,6 @@ import DraftEditor from "../../admin_panel/components/editor/draft_editor";
 
 import { ContentState, convertFromHTML, EditorState } from "draft-js";
 import { useEffect, useState } from "react";
-import {
-  useAddNewCourseMutation,
-  useEditCourseMutation,
-  useGetCoursesQuery,
-} from "../../redux/features/api/course/courseApii";
 import LibraryModal from "./new_course_components/library_modal";
 import { BiSave } from "react-icons/bi";
 import { CustomButton } from "../../components/ui/CustomButton";
@@ -39,6 +34,12 @@ import CourseAuthor from "./new_course_components/CourseAuthor";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../admin_panel/components/AdminPanelTitle";
 import { MdClose } from "react-icons/md";
+
+import {
+  useAddNewCourseMutation,
+  useEditCourseMutation,
+  useGetCoursesQuery,
+} from "../../redux/features/api/course/courseApii";
 
 const NewCourse = ({ page }) => {
   const { id } = useParams();
@@ -79,7 +80,7 @@ const NewCourse = ({ page }) => {
       formData.append("videoPdfUrls", "dlkjaslfkj");
       // formData.append("featuredImage", values?.featuredImage);
       // formData.append("courseCategoryIds", "2");
-      values?.categoryids.forEach((categoryId) =>
+      values?.categoryIds.forEach((categoryId) =>
         formData.append("courseCategoryIds[]", categoryId)
       );
       formData.append(
@@ -120,7 +121,7 @@ const NewCourse = ({ page }) => {
           if (addCourseRes?.data?.messageCode === 200) {
             toast.success("Course created successfully.");
             navigate(
-              `/user-profile/myCourses/new-course/course-builder/${addCourseRes?.data?.messageData}`
+              `/admin-panel/tutor/courses/create-new-course/course-builder/${addCourseRes?.data?.messageData?.id}`
             );
           }
         }
@@ -162,7 +163,7 @@ const NewCourse = ({ page }) => {
   });
 
   useEffect(() => {
-    if ((id, courses?.length > 0)) {
+    if (id && courses?.length > 0) {
       const course = courses[0] || {};
       const {
         courseName,
@@ -222,18 +223,18 @@ const NewCourse = ({ page }) => {
   return (
     <>
       <div
-        className={`w-full h-full relative z-[100] ${
+        className={`w-full pt-8 h-full relative z-[100] ${
           page === "admin" ? "" : "bg-[#f0f0f1]"
         }`}
       >
+        {console.log(formik.errors)}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="wrapper mx-auto flex w-full flex-col max-h-fit "
         >
           <AdminPanelTitle title="Add New Course" />
-
-          <form onSubmit={formik.handleSubmit}>
+          <form className="mt-8" onSubmit={formik.handleSubmit}>
             <div className="grid grid-cols-4 gap-4 mb-8">
               <div className="col-span-4 lg:col-span-3">
                 <div className="w-full rounded-md">
@@ -245,7 +246,7 @@ const NewCourse = ({ page }) => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={
-                      formik?.errors?.courseName
+                      formik?.errors?.courseName && formik?.touched?.courseName
                         ? formik?.errors?.courseName
                         : ""
                     }
@@ -329,10 +330,10 @@ const NewCourse = ({ page }) => {
                     <div className="lg:hidden space-y-4">
                       <AudioAccessbility />
 
-                      <CourseCategoriesComponent
+                      {/* <CourseCategoriesComponent
                         name="categoryids"
                         formik={formik}
-                      />
+                      /> */}
 
                       <TagsComponent name="tags" formik={formik} />
 
@@ -354,6 +355,14 @@ const NewCourse = ({ page }) => {
 
                     <VideoComponent name="courseIntroVideo" formik={formik} />
 
+                    <CategoriesComponent
+                      categoryids={formik.values?.categoryids}
+                      name="categoryIds"
+                      onChange={(val) =>
+                        formik.setFieldValue("categoryIds", val)
+                      }
+                    />
+
                     <div>
                       <PublishComponent
                         isLoading={id ? editCourseLoading : isLoading}
@@ -366,7 +375,7 @@ const NewCourse = ({ page }) => {
               <div className="hidden lg:block  lg:col-span-1 space-y-4">
                 <AudioAccessbility />
 
-                <CourseCategoriesComponent name="categoryids" formik={formik} />
+                {/* <CourseCategoriesComponent name="categoryids" formik={formik} /> */}
 
                 <TagsComponent name="coursetags" formik={formik} />
 

@@ -165,7 +165,7 @@ function App({ auth }) {
                 />
                 <Route path="/course/:courseId" element={<CourseDetails />} />
                 <Route
-                  path="/courses/:coursename/:courseId/lesson/:lessonId"
+                  path="/courses/:coursename/:courseId"
                   element={<StartLearning />}
                 />
                 <Route

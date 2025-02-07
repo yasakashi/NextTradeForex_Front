@@ -49,7 +49,7 @@ export const courseValidationSchema = Yup.object({
   materialsIncluded: Yup.string(),
   requirementsInstructions: Yup.string(),
   courseIntroVideo: Yup.string().url("Enter a valid YouTube link"),
-  // categoryids: Yup.array().of(Yup.string().required("Category ID is required")),
+  categoryIds: Yup.array().of(Yup.string().required("Please select category.")),
   tags: Yup.array()
     .min(1, "Each tag should have at least 1 character")
     .max(4, "You can add up to 10 tags only"),
@@ -89,7 +89,7 @@ export const courseInitialValues = {
   materialsIncluded: "",
   requirementsInstructions: "",
   courseIntroVideo: "",
-  categoryids: [], // Empty array for category IDs
+  categoryIds: [], // Empty array for category IDs
   tags: [], // Empty array for tags
   featuredImage: null, // Assuming this is a file input
 };

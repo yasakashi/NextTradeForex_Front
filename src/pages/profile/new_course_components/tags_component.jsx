@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import NewCourceCard from "./new_cource_card";
 
-
 import { IoCloseSharp } from "react-icons/io5";
 import { CustomButton } from "../../../components/ui/CustomButton";
 
@@ -69,8 +68,10 @@ const TagsComponent = ({ formik, name }) => {
             Add
           </CustomButton>
         </div>
-        {tagError ? (
-          <span className="text-red-600 text-xs p-1">{tagError}</span>
+        {formik.errors?.tags ? (
+          <span className="text-red-600 text-xs p-1">
+            {formik?.errors?.tags}
+          </span>
         ) : null}
         <div className="flex flex-wrap gap-2 items-center mt-4 mb-2">
           {formik?.values?.tags?.map((tag, index) => (

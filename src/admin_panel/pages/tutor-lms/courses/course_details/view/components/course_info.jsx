@@ -5,13 +5,9 @@ import { CustomTextArea } from "../../../../../../../common/custom_text_field";
 import CourseInfoTab from "./CourseInfoTab";
 
 const CourseInfo = ({ course }) => {
-  const [value, set_value] = useState(0);
-
   const [activeTab, setActiveTab] = useState("info");
   return (
     <>
-      
-
       <div className="text-base bg-[#061258] font-medium text-center text-white border mt-4 border-[#041996]">
         <ul className="flex flex-wrap -mb-px">
           <li onClick={() => setActiveTab("info")} className="me-2">
@@ -44,7 +40,6 @@ const CourseInfo = ({ course }) => {
       <AnimatePresence mode="wait">
         <motion.div
           style={{ width: "100%", color: "white", marginTop: 24 }}
-          key={value}
           initial={{ opacity: 0, y: 8 }}
           exit={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
