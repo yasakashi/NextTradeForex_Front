@@ -4,21 +4,34 @@ import MAterialTable from "../../../components/table/material_table";
 import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 
 import SearchFilters from "./SearcchFilters";
+import { useGetCourseStudentsQuery } from "../../../../redux/features/api/course/courseApii";
 
 const AllStudents = () => {
   const [showModal, setShowModal] = useState(false);
 
-  const isLoading = false;
-
   const [dateValue, setDateValue] = useState("");
   const [selectedOption, setSelectedOption] = useState("All Courses");
   const [searchValue, setSearchValue] = useState("");
+
+  const {
+    data: { messageData: students } = { messageData: [] },
+    isLoading,
+    refetch: refetchTags,
+  } = useGetCourseStudentsQuery({
+    data: {
+      courseid: null,
+      fromregisterdatetime: null,
+      toregisterdatetime: null,
+    },
+  });
 
   return (
     <div className="px-8 py-10">
       <div className="flex items-center gap-4">
         <h2 className="font-normal text-2xl text-[#1d2327]">Students</h2>
       </div>
+
+     
 
       <div className="mt-14">
         <SearchFilters

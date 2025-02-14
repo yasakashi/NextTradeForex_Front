@@ -7,32 +7,20 @@ import TableView from "../../components/media/TableView";
 import { useGetAllMediasQuery } from "../../../redux/features/api/admin-panel/mediaApi";
 import { useNavigate } from "react-router-dom";
 
-
-
 const MediaLibrary = () => {
   const [view, setView] = useState("grid");
 
   const navigate = useNavigate();
 
-    const {
-      data: { messageData: medias } = { messageData: [] },
+  const {
+    data: { messageData: medias } = { messageData: [] },
 
-      isLoading,
+    isLoading,
 
-      refetch: refetchMedias,
-    } = useGetAllMediasQuery({
-      data: {
-        Id: null,
-        authorId: null,
-        allowQA: null,
-        isPublicCourse: null,
-        difficultyLevelId: null,
-        courseTags: "",
-        courseName: "",
-        pageindex: 1,
-        rowcount: 21,
-      },
-    });
+    refetch: refetchMedias,
+  } = useGetAllMediasQuery({
+    data: { id: null, systempartid: null, filetypeid: null },
+  });
 
   return (
     <div className="px-8 py-10">
@@ -47,11 +35,12 @@ const MediaLibrary = () => {
           Add New Media File
         </CustomButton>
       </div>
-   
+      {console.log({ medias })}
+
       {/* top bar */}
-      <div className="bg-white border flex items-center justify-between border-gray-400 p-2 mt-20 mb-4">
+      <div className="bg-white border flex flex-col gap-y-4 md:gap-y-0 md:flex-row md:items-center justify-between border-gray-400 p-2 mt-20 mb-4">
         {/* left side */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <div className="flex items-center gap-2">
             <span
               onClick={() => setView("table")}
@@ -72,8 +61,8 @@ const MediaLibrary = () => {
           </div>
 
           {/* ========= */}
-          <div className="flex items-center gap-4">
-            <select className="border-[#8c8f94] bg-transparent border text-sm rounded-[3px] outline-[#2271b1] active:text-[#0a4b78] hover:text-[#0a4b78] active:border-[#2271b1] cursor-pointer text-[#2c3338] pl-4 py-1 pr-[2px]">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
+            <select className="w-full border-[#8c8f94] bg-transparent border text-sm rounded-[3px] outline-[#2271b1] active:text-[#0a4b78] hover:text-[#0a4b78] active:border-[#2271b1] cursor-pointer text-[#2c3338] pl-4 py-1 pr-[2px]">
               <option>All media items</option>
               <option>Images</option>
               <option>Audio</option>
@@ -85,7 +74,7 @@ const MediaLibrary = () => {
               <option>Mine</option>
             </select>
 
-            <select className="border-[#8c8f94] bg-transparent border text-sm rounded-[3px] outline-[#2271b1] active:text-[#0a4b78] hover:text-[#0a4b78] active:border-[#2271b1] cursor-pointer text-[#2c3338] pl-4 py-1 pr-[2px]">
+            <select className="w-full border-[#8c8f94] bg-transparent border text-sm rounded-[3px] outline-[#2271b1] active:text-[#0a4b78] hover:text-[#0a4b78] active:border-[#2271b1] cursor-pointer text-[#2c3338] pl-4 py-1 pr-[2px]">
               <option value="all">All dates</option>
               <option value="0">December 2024</option>
               <option value="1">November 2024</option>
@@ -117,27 +106,40 @@ const MediaLibrary = () => {
 
           {/*  */}
 
-          <CustomButton variant="outlined" size="sm" className="rounded-[3px]">
+          <CustomButton
+            variant="outlined"
+            size="sm"
+            className="rounded-[3px] text-nowrap"
+          >
             Bulk Select
           </CustomButton>
         </div>
 
         {/* right side */}
-        <div>
+        <div className="w-full md:w-max">
           <label className="flex items-center gap-2">
-            <span className="text-[#50575e] text-[14px]">Search media</span>
+            <span className="text-[#50575e] text-[14px] text-nowrap">
+              Search media
+            </span>
             <input
               type="text"
               placeholder="Search Media ..."
-              className="border border-gray-400 rounded-[3px] outline-[#2271b1] active:border-[#2271b1] px-3 py-[5px] text-gray-600"
+              className="w-full border border-gray-400 rounded-[3px] outline-[#2271b1] active:border-[#2271b1] px-3 py-[5px] text-gray-600"
             />
           </label>
         </div>
       </div>
+      {isLoading ? (
+        <div className="text-lg text-gray-600 font-normal p-2">Loading ...</div>
+      ) : null}
 
       {/* view */}
 
-      {view === "grid" ? <GridView /> : view === "table" ? <TableView /> : null}
+      {view === "grid" ? (
+        <GridView data={medias} />
+      ) : view === "table" ? (
+        <TableView data={medias} isLoading={isLoading} />
+      ) : null}
     </div>
   );
 };

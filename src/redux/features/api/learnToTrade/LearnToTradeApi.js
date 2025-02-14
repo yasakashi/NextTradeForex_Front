@@ -101,7 +101,7 @@ export const LearnToTradeApi = createApi({
 
     getLTREBooks: builder.query({
       query: ({ data }) => ({
-        url: "/learntotrade/getpodcasts",
+        url: "/learntotrade/getbooks",
         method: "POST",
         body: data,
       }),

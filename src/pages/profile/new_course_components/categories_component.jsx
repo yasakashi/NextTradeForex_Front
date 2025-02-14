@@ -273,8 +273,8 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
 
   return (
     <div
-      className="px-3 select-none"
-      style={{ marginLeft: node.parentId ? "20px" : "0" }}
+      className={`px-3 select-none ${node.parentId ? "ml-0 sm:ml-3 md:ml-5":"ml-0"}`}
+      // style={{ marginLeft: node.parentId ? "20px" : "0" }}
     >
       <label className="flex items-center gap-2">
         {hasChildren ? (
@@ -295,7 +295,7 @@ const TreeNode = ({ node, onSelect, selectedIds, onToggle, expandedNodes }) => {
           className="cursor-pointer"
         />
         <span
-          className={`block px-2 py-1 w-full cursor-pointer ${
+          className={`block text-sm sm:text-base px-2 py-1 w-full cursor-pointer ${
             isSelected ? "font-bold text-gray-800" : "text-gray-600"
           }`}
         >

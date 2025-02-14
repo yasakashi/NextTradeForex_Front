@@ -6,23 +6,45 @@ import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 import SearchFilters from "./SearcchFilters";
 import TabBar from "./TabBar";
 import AddNewInstructor from "./AddNewInstructor";
+import {
+  useGetCourseInstructorsQuery,
+  useGetCourseInstructorsReportQuery,
+} from "../../../../redux/features/api/course/courseApii";
 
 const AllInstructors = () => {
   const [showModal, setShowModal] = useState(false);
   const [openInsModal, setOpenInsModal] = useState(false);
 
-  const isLoading = false;
-
   const [dateValue, setDateValue] = useState("");
   const [selectedOption, setSelectedOption] = useState("All Courses");
   const [searchValue, setSearchValue] = useState("");
+
+  const {
+    data: { messageData: instructors } = { messageData: [] },
+    isLoading,
+  } = useGetCourseInstructorsQuery({
+    data: {
+      courseid: null,
+      fromregisterdatetime: null,
+      toregisterdatetime: null,
+    },
+  });
+
+  const {
+    data: { messageData: [instructorsReport = {}] = [] } = { messageData: [] },
+  } = useGetCourseInstructorsReportQuery({
+    data: {},
+  });
 
   return (
     <>
       <div className="px-8 py-10">
         {/* tab bar */}
         <div className="mt-8">
-          <TabBar setOpenInsModal={setOpenInsModal} />
+          <TabBar
+            instructorsReport={instructorsReport}
+            setOpenInsModal={setOpenInsModal}
+          />
         </div>
 
         <div className="mt-14">
@@ -39,7 +61,7 @@ const AllInstructors = () => {
             <MAterialTable
               loading={isLoading}
               // setSearchCourses={setSearchLesson}
-              rows={["amir"]}
+              rows={instructors}
               columns={[
                 {
                   header: "Username",
@@ -48,9 +70,9 @@ const AllInstructors = () => {
                     return (
                       <div className="flex flex-col justify-center items-start">
                         <div className="flex items-center gap-2">
-                          <div className="size-[60px]">
+                          <div className="size-[40px]">
                             <img
-                              className="w-full h-full bg-cover"
+                              className="w-full h-full bg-cover rounded-full"
                               src={ProfileCover}
                               alt="User Profile"
                             />
@@ -58,7 +80,7 @@ const AllInstructors = () => {
 
                           <div className="flex flex-col leading-7">
                             <p className="capitalize text-[#2271b1] font-bold">
-                              amirbasiri
+                              {row?.original?.username}
                             </p>
                           </div>
                         </div>
@@ -151,7 +173,7 @@ const AllInstructors = () => {
                         className="text-blue-800 cursor-pointer"
                         style={{ color: "#2271b1" }}
                       >
-                        basiriamir@gmail.com
+                        {row.original?.emial}
                       </p>
                     );
                   },
@@ -180,7 +202,12 @@ const AllInstructors = () => {
                   enableEditing: false,
 
                   Cell: ({ row }) => {
-                    return <div className="flex">Amir Basiri</div>;
+                    return (
+                      <div className="flex gap-1 capitalize">
+                        <span>{row?.original?.fname}</span>
+                        <span>{row?.original?.lname}</span>
+                      </div>
+                    );
                   },
                 },
 
@@ -189,7 +216,7 @@ const AllInstructors = () => {
                   enableEditing: false,
 
                   Cell: ({ row }) => {
-                    return <div className="flex">8</div>;
+                    return <div className="flex">0</div>;
                   },
                 },
 
@@ -198,7 +225,7 @@ const AllInstructors = () => {
                   enableEditing: false,
 
                   Cell: ({ row }) => {
-                    return <div className="flex">2</div>;
+                    return <div className="flex">0</div>;
                   },
                 },
 
@@ -207,7 +234,11 @@ const AllInstructors = () => {
                   Cell: ({ row }) => {
                     return (
                       <div className="flex flex-col text-[#50575e]">
-                        <p>{new Date().toLocaleString()}</p>
+                        <p>
+                          {new Date(
+                            row?.original?.registerdatetime
+                          ).toLocaleString()}
+                        </p>
                       </div>
                     );
                   },

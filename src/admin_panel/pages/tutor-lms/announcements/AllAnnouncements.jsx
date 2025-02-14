@@ -9,6 +9,10 @@ import { Link } from "react-router-dom";
 import useClickOutside from "../../../../hooks/useClickOutside";
 import { CiEdit } from "react-icons/ci";
 import { IoTrashOutline } from "react-icons/io5";
+import {
+  useGetCourseAnnouncementsQuery,
+  useRemoveCourseAnnouncementMutation,
+} from "../../../../redux/features/api/admin-panel/tutorLmsApi";
 
 const AllAnnouncements = () => {
   const [openInsModal, setOpenInsModal] = useState(false);
@@ -19,8 +23,24 @@ const AllAnnouncements = () => {
   const [selectedOption, setSelectedOption] = useState("All Courses");
   const [searchValue, setSearchValue] = useState("");
 
-  const isLoading = false;
-  const data = [{ id: 1, value: "" }];
+  const {
+    data: { messageData: data } = { messageData: [] },
+    isLoading,
+    isFetching,
+    refetch: refetchAnnoucements,
+  } = useGetCourseAnnouncementsQuery({
+    data: {
+      id: null,
+      courseId: selectedOption?.id ? selectedOption?.id : null,
+      title: "",
+      fromregisterdatetime: null,
+      toregisterdatetime: null,
+      rowcount: 10,
+      pageindex: 1,
+    },
+  });
+
+  const [removeCourseAnnouncement] = useRemoveCourseAnnouncementMutation();
 
   const removeModalRef = useRef(null);
 
@@ -31,6 +51,12 @@ const AllAnnouncements = () => {
   const editHandler = () => {
     setOpenInsModal(true);
   };
+
+  const removeAnnouncementHandler = async (id) => {
+    const res = await removeCourseAnnouncement({ data: { id } }).unwrap();
+    console.log("remove announcement res", res);
+  };
+
   return (
     <>
       <div className="px-8 py-10">
@@ -53,7 +79,7 @@ const AllAnnouncements = () => {
 
           <div>
             <MAterialTable
-              loading={isLoading}
+              loading={isLoading || isFetching}
               // setSearchCourses={setSearchLesson}
               rows={data}
               columns={[
@@ -64,7 +90,11 @@ const AllAnnouncements = () => {
                     return (
                       <div className="flex flex-col justify-center items-start">
                         <div className="flex flex-col text-[#50575e]">
-                          <p>{new Date().toLocaleString()}</p>
+                          <p>
+                            {new Date(
+                              row?.original.registerdatetime
+                            ).toLocaleString()}
+                          </p>
                         </div>
                       </div>
                     );
@@ -79,10 +109,10 @@ const AllAnnouncements = () => {
                       <div className="flex flex-grow w-[400px]">
                         <div className="space-y-2">
                           <p className="text-gray-700 text-base font-semibold">
-                            New Annoucement
+                            {row?.original?.title}
                           </p>
                           <h5 className="text-gray-400 text-[15px]">
-                            Course: A - Z Guide To Trade Forex
+                            {row?.original?.coursename}
                           </h5>
                         </div>
                       </div>
@@ -135,11 +165,12 @@ const AllAnnouncements = () => {
                                 </li>
                                 <li className="px-2 py-[6px] flex items-center gap-2 hover:bg-[#41454f] cursor-pointer transition-colors text-white">
                                   <button
-                                    // onClick={() =>
-                                    //   removeCourseHandler(row?.original?.id)
-                                    // }
-                                    // disabled={removeCourseLoading}
-                                    // type="button"
+                                    type="button"
+                                    onClick={() =>
+                                      removeAnnouncementHandler(
+                                        row?.original?.id
+                                      )
+                                    }
                                     className="flex gap-2 disabled:cursor-not-allowed items-center border-none outline-none"
                                   >
                                     <IoTrashOutline size={14} />
@@ -159,7 +190,11 @@ const AllAnnouncements = () => {
           </div>
         </div>
       </div>
-      <AddNewAnnouncement isOpen={openInsModal} setIsOpen={setOpenInsModal} />
+      <AddNewAnnouncement
+        refetchAnnoucements={refetchAnnoucements}
+        isOpen={openInsModal}
+        setIsOpen={setOpenInsModal}
+      />
     </>
   );
 };

@@ -81,6 +81,30 @@ export const courseApi = createApi({
         body: {},
       }),
     }),
+
+    getCourseStudents: builder.query({
+      query: ({ data }) => ({
+        url: "/coursebuilder/getcoursestudents",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    getCourseInstructors: builder.query({
+      query: ({ data }) => ({
+        url: "/coursebuilder/getcourseinstructors",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    getCourseInstructorsReport: builder.query({
+      query: ({ data }) => ({
+        url: "/coursebuilder/getinstructorsreport",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -94,4 +118,7 @@ export const {
   useChangeCourseStatusMutation,
   useGetCourseMeetingsQuery,
   useEditCourseMutation,
+  useGetCourseStudentsQuery,
+  useGetCourseInstructorsQuery,
+  useGetCourseInstructorsReportQuery
 } = courseApi;

@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import { useAddNewLTRTopicMutation } from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import EditorWithFile from "../../../components/editor/EditorWithFile";
 
 const SUPPORTED_FORMATS = [
   "image/jpeg",
@@ -39,7 +40,7 @@ const AddNewTopic = () => {
       file: null,
       typeId: 1,
       statusId: 1,
-      forumId: 772,
+      forumId: "f6708d05-3633-45a3-b3c0-9ce9c6314717",
       tags: [],
     },
     validationSchema: Yup.object({
@@ -64,15 +65,26 @@ const AddNewTopic = () => {
     }),
 
     onSubmit: async (values, { resetForm }) => {
+      const errors = await formik.validateForm();
+      console.log("amir", errors);
+      if (Object.keys(errors).length > 0) {
+        Object.values(errors).forEach((error) => toast.error(error));
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
       const formData = new FormData();
 
       formData.append("title", values?.title);
       formData.append("description", values?.description);
       formData.append("typeId", values?.typeId);
       formData.append("statusId", values?.statusId);
-      formData.append("forumId", Number(values?.forumId));
+      formData.append("forumId", values?.forumId);
       formData.append("topicfile", values?.file);
-      formData.append("topicTags", "tags");
+
+      if (values?.tags?.length > 0) {
+        const arrayString = values?.tags.slice().join(", ") + ",";
+        formData.append("topicTags", arrayString);
+      }
 
       try {
         const response = await addNewLTRTopic({ data: formData }).unwrap();
@@ -95,82 +107,49 @@ const AddNewTopic = () => {
     },
   });
 
-  const handleEditorChange = (editorData) => {
-    formik.setFieldValue("description", editorData.htmlContent); // Use HTML content
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errors = await formik.validateForm();
+    formik.setTouched({
+      file: true,
+    });
 
-    // Update the editor state
-    setEditorState(editorData.state);
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach((error) => toast.error(error));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      formik.handleSubmit();
+    }
   };
 
   return (
     <div className="flex flex-col px-8 py-10">
       <AdminPanelTitle title="Add New Topic" />
       {/* <h1 className="font-semibold text-2xl text-white mb-4">Add New Topic</h1> */}
-
+      {console.log(formik.errors)}
       <form
-        onSubmit={formik.handleSubmit}
-        className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
+        onSubmit={handleSubmit}
+        className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start mt-8"
       >
         <div className="col-span-1 lg:col-span-3">
           <CustomTextInput
             name="title"
             placeholder="Add title"
-            className="border border-gray-700 py-[10px] placeholder:text-sm rounded-sm"
+            className="border border-[#ccd0d4] py-[10px] placeholder:text-sm rounded-sm"
             value={formik.values?.title}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik?.touched?.title ? formik.errors?.title : ""}
           />
           <NewCourceCard title="Topic">
-            <div className="w-full p-4 flex flex-col relative space-y-8">
-              {/* description */}
-              <div className="w-full pt-2 pl-2">
-                <div className="mb-2 flex relative">
-                  <CustomButton
-                    onClick={() => setOpenTopicFile(true)}
-                    size="sm"
-                    variant="outlined"
-                    type="button"
-                  >
-                    Add Media
-                  </CustomButton>
-                  <button
-                    type="button"
-                    className="bg-gray-600 rounded-sm p-1 pr-3 pl-3 ml-2"
-                  >
-                    <BiSave color="white" className="text-xl" />
-                  </button>
-
-                  {formik.errors?.file && formik.touched?.file ? (
-                    <div className="absolute bg-red-600 max-w-[300px] bottom-[110%] left-0 rounded-lg p-2 text-white font-semibold text-sm">
-                      {formik.errors?.file}
-                    </div>
-                  ) : null}
-                </div>
-                <LibraryModal
-                  file={formik?.values?.file}
-                  set_file={(file) => {
-                    formik.setFieldValue("file", file);
-                  }}
-                  error={formik.errors?.file}
-                  onBlur={formik.handleBlur}
-                  accept_file="Image"
-                  has_side_bar_action={false}
-                  title="Add Media"
-                  open={openTopicFile}
-                  set_open={setOpenTopicFile}
-                  onSave={() => setOpenTopicFile(false)}
-                />
-                <div className="w-full relative overflow-y-scroll">
-                  {/* <EditorComponent /> */}
-                  <DraftEditor
-                    placeholder="Description"
-                    editorState={editorState}
-                    onChange={handleEditorChange}
-                  />
-                </div>
-              </div>
-            </div>
+            <EditorWithFile
+              formik={formik}
+              name="description"
+              fileName="file"
+              open={openTopicFile}
+              setOpen={setOpenTopicFile}
+              placeholder="Topic description ..."
+            />
           </NewCourceCard>
 
           <div className="lg:hidden space-y-4">
@@ -190,3 +169,55 @@ const AddNewTopic = () => {
   );
 };
 export default AddNewTopic;
+
+const test = () => (
+  <div className="w-full p-4 flex flex-col relative space-y-8">
+    {/* description */}
+    <div className="w-full pt-2 pl-2">
+      <div className="mb-2 flex relative">
+        <CustomButton
+          onClick={() => setOpenTopicFile(true)}
+          size="sm"
+          variant="outlined"
+          type="button"
+        >
+          Add Media
+        </CustomButton>
+        <button
+          type="button"
+          className="bg-gray-600 rounded-sm p-1 pr-3 pl-3 ml-2"
+        >
+          <BiSave color="white" className="text-xl" />
+        </button>
+
+        {formik.errors?.file && formik.touched?.file ? (
+          <div className="absolute bg-red-600 max-w-[300px] bottom-[110%] left-0 rounded-lg p-2 text-white font-semibold text-sm">
+            {formik.errors?.file}
+          </div>
+        ) : null}
+      </div>
+      <LibraryModal
+        file={formik?.values?.file}
+        set_file={(file) => {
+          formik.setFieldValue("file", file);
+        }}
+        error={formik.errors?.file}
+        onBlur={formik.handleBlur}
+        accept_file="Image"
+        has_side_bar_action={false}
+        title="Add Media"
+        open={openTopicFile}
+        set_open={setOpenTopicFile}
+        onSave={() => setOpenTopicFile(false)}
+      />
+      <div className="w-full relative overflow-y-scroll">
+        {/* <EditorComponent /> */}
+        <DraftEditor
+          placeholder="Description"
+          editorState={editorState}
+          onChange={handleEditorChange}
+        />
+      </div>
+    </div>
+  </div>
+);

@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import useClickOutside from "../../../../hooks/useClickOutside";
 import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import { FaPlus } from "react-icons/fa6";
 
 const LTRPodcasts = ({ page }) => {
   const [showModal, setShowModal] = useState(false);
@@ -58,9 +59,9 @@ const LTRPodcasts = ({ page }) => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      {/* <h1 className="font-semibold text-2xl text-white mb-4">Padcasts</h1> */}
-      <AdminPanelTitle title="Podcasts" />
-      <div>
+      {console.log({ podcasts })}
+      <div className="flex items-center gap-4 mb-8">
+        <AdminPanelTitle title="Podcasts" />
         <CustomButton
           onClick={() =>
             navigate(
@@ -69,11 +70,15 @@ const LTRPodcasts = ({ page }) => {
               }/podcasts/add-new-podcast`
             )
           }
-          className=" mb-10 mt-6"
+          className="flex items-center gap-2 group"
           variant="outlined"
           size="sm"
         >
-          Add New Podcast
+          <FaPlus
+            size={16}
+            className="text-blue-accent group-hover:text-white"
+          />
+          <span>Add New Podcast</span>
         </CustomButton>
       </div>
 

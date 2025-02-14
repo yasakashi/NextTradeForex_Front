@@ -6,6 +6,8 @@ import DeleteMenuModal from "../../categories/view/components/delete_menu_modal"
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import { FaPlus } from "react-icons/fa6";
+import { useGetLTREBooksQuery } from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 
 const LTREBooks = ({ page }) => {
   const [open_delete_dialog, set_open_delete_dialog] = useState({
@@ -14,27 +16,22 @@ const LTREBooks = ({ page }) => {
 
   const navigate = useNavigate();
 
-  const [lessons, setLessons] = useState([
-    {
-      title: "capital markets authority (cma) - kenya",
-      date: "2024/03/16 at 8:08pm",
-      category:
-        "Capital Markets Authority (CMA) - Kenya, Regulation Agencies Forex, Financial regulation",
-      isFree: false,
-      isVisible: true,
-      lessonCagegoryId: 1,
-      shortCode: "[dflip id='59710'][/dflip]",
-      lastModified: "",
-    },
-  ]);
-  const isLoading = false;
+  const { data: { messageData: books } = { messageData: [] }, isLoading } =
+    useGetLTREBooksQuery({
+      data: {
+        id: null,
+        title: null,
+        lessonCategoryLevelId: null,
+        categoryid: null,
+      },
+    });
 
   return (
     <div className="flex flex-col px-8 py-10">
       {/* <h1 className="font-semibold text-2xl text-white mb-4">Videos</h1> */}
-      <AdminPanelTitle title="Books" />
-
-      <div>
+      {console.log({ books })}
+      <div className="flex items-center gap-4 mb-8">
+        <AdminPanelTitle title="Books" />
         <CustomButton
           onClick={() =>
             navigate(
@@ -43,18 +40,22 @@ const LTREBooks = ({ page }) => {
               }/e-books/add-new-book`
             )
           }
-          className=" mb-10 mt-6"
+          className="group gap-1"
           variant="outlined"
           size="sm"
         >
-          Add New Book
+          <FaPlus
+            size={16}
+            className="text-blue-accent group-hover:text-white"
+          />
+          <span>Add New Book</span>
         </CustomButton>
       </div>
 
       <MAterialTable
         loading={isLoading}
         // setSearchCourses={setSearchLesson}
-        rows={lessons}
+        rows={books}
         columns={[
           {
             header: "Title",
@@ -134,12 +135,19 @@ const LTREBooks = ({ page }) => {
 
             Cell: ({ row }) => {
               return (
-                <p
-                  className="text-blue-800 cursor-pointer"
+                <div
+                  className="flex items-center flex-wrap gap-3"
                   style={{ color: "#2271b1" }}
                 >
-                  {row?.original?.category}
-                </p>
+                  {row?.original?.categories?.map((category) => (
+                    <span
+                      className="bg-slate-200 px-2 py-[3px] rounded-xl text-gray-600 shadow-sm"
+                      key={category?.id}
+                    >
+                      {category?.name}
+                    </span>
+                  ))}
+                </div>
               );
             },
           },

@@ -7,6 +7,7 @@ import { CustomSelectBox } from "../../../../pages/profile/new_course_components
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import { FaPlus } from "react-icons/fa6";
 
 const LTRVideos = () => {
   const [open_delete_dialog, set_open_delete_dialog] = useState({
@@ -19,19 +20,23 @@ const LTRVideos = () => {
   const isLoading = false;
 
   return (
-    <div className="flex flex-col px-8 py-10">
+    <div className="flex flex-col px-8 py-10 mb-10">
       {/* <h1 className="font-semibold text-2xl text-white mb-4">Videos</h1> */}
-      <AdminPanelTitle title="Videos" />
-      <div>
+      <div className="flex items-center gap-4 mb-8">
+        <AdminPanelTitle title="Videos" />
         <CustomButton
           onClick={() =>
             navigate("/admin-panel/learn-to-trade/videos/add-new-video")
           }
-          className=" mb-10 mt-6"
+          className="flex items-center gap-2 group"
           variant="outlined"
           size="sm"
         >
-          Add New Video
+          <FaPlus
+            size={16}
+            className="text-blue-accent group-hover:text-white"
+          />
+          <span>Add New Video</span>
         </CustomButton>
       </div>
 

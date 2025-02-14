@@ -1,71 +1,26 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
- 
+import React, { useEffect } from "react";
 
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 import AddNewTag from "./AddNewTag";
-import useClickOutside from "../../../../hooks/useClickOutside";
 import { CustomButton } from "../../../../components/ui/CustomButton";
+import { useGetAllTutorTagsQuery } from "../../../../redux/features/api/admin-panel/tutorLmsApi";
 
 const AllTags = () => {
-  const removeModalRef = useRef(null);
-
-  const navigate = useNavigate();
-
-  // const [
-  //   getMainCategoriesByInfo,
-  //   { data: maincategories, error, isLoading: getCategoriesLoading },
-  // ] = useGetMainCategoriesByInfoMutation();
-
-  // const [
-  //   getSubCategoriesByInfo,
-  //   {
-  //     data,
-  //     isLoading: getSubCategoriesLoading,
-  //     isSuccess: subCategeoriesSucces,
-  //   },
-  // ] = useGetSubCategoriesByInfoMutation();
-
-  // const [removeCategory, { isLoading: removeLoading }] =
-  //   useRemoveCategoryMutation();
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        // await getMainCategoriesByInfo({ parentId: 770 }).unwrap();
-      } catch (err) {
-        toast.error("Failed to fetch categories: ");
-      }
-    }
-    fetchCategories();
-  }, []);
-
-  useClickOutside(removeModalRef, () => {
-    setShowRemoveModal(false);
+  const {
+    data: { messageData: tutorTags } = { messageData: [] },
+    isLoading,
+    refetch: refetchTags,
+  } = useGetAllTutorTagsQuery({
+    data: { id: null, name: null, slug: null, rowcount: 10, pageindex: 1 },
   });
 
-  const removeCategoryHandler = async (id) => {
-    try {
-      // const res = await removeCategory({ data: { Id: id } }).unwrap();
-      // if (res?.messageCode === 200) {
-      //   toast.success("Category Removed.");
-      //   setShowRemoveModal(false);
-      //   await getMainCategoriesByInfo({ parentId: 770 }).unwrap();
-      // }
-    } catch (error) {
-      console.log(error);
-      toast.error("Faild to fetch tags");
-    }
-  };
-
   return (
-    <div className="w-full h-ful px-8">
+    <div className="w-full h-ful px-8 pt-4">
       <AdminPanelTitle title="Tags" />
 
       <div className="flex flex-col md:flex-row mt-4">
         <div className="w-full md:w-2/5">
-          <AddNewTag />
+          <AddNewTag refetchTags={refetchTags} />
         </div>
         <div
           className="w-full md:w-3/5"
@@ -99,7 +54,7 @@ const AllTags = () => {
                   </tr>
                 </thead>
                 <tbody className="">
-                  {[1, 2, 3, 4].map((item, index) => (
+                  {tutorTags?.map((item, index) => (
                     <tr
                       key={index}
                       className="bg-white border-b border-b-gray-300 py-2 px-2"
@@ -108,12 +63,14 @@ const AllTags = () => {
                         <input type="checkbox" className="bg-white" />
                       </td>
                       <td className="text-center py-4 px-2 text-[#2271b1] font-semibold">
-                        xaussd
+                        {item?.name}
                       </td>
                       <td className="text-gray-500 text-center py-4 px-2">
-                        ---
+                        {item?.description.slice(1, 15)}
                       </td>
-                      <td className="text-gray-500 text-center py-4 px-2">1</td>
+                      <td className="text-gray-500 text-center py-4 px-2">
+                        {item?.slug}
+                      </td>
                       <td className="text-gray-500 text-center py-4 px-2">0</td>
                     </tr>
                   ))}

@@ -14,8 +14,9 @@ import { useAddNewLTRPodcastMutation } from "../../../../redux/features/api/lear
 
 import * as Yup from "yup";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import toast from "react-hot-toast";
 
-const FILE_SIZE = 500 * 1024; // 500 KB
+const FILE_SIZE = 2 * 1024 * 1024; // 500 KB
 const SUPPORTED_IMAGE_FORMATS = [
   "image/jpg",
   "image/jpeg",
@@ -30,7 +31,7 @@ const podcastValidationShcema = Yup.object({
   description: Yup.string().required("Description is required."),
   audioFile: Yup.mixed()
     .required("Audio file is required.")
-    .test("fileSize", "File must be less than 500 KB", (value) => {
+    .test("fileSize", "File must be less than 2 MB", (value) => {
       return !value || (value && value.size <= FILE_SIZE);
     })
     .test("fileFormat", "Unsupported format", (value) => {
@@ -46,7 +47,7 @@ const podcastValidationShcema = Yup.object({
     .test("fileFormat", "Unsupported format", (value) => {
       return !value || (value && SUPPORTED_IMAGE_FORMATS.includes(value.type));
     }),
-  categoryids: Yup.array()
+  categoryIds: Yup.array()
     .of(Yup.number().required("Category is required."))
     .min(1, "At least one category is required."),
 });
@@ -65,7 +66,7 @@ const AddNewPodcast = () => {
       audioFile: null,
       excerpt: "",
       featuredImage: null,
-      categoryids: [772],
+      categoryIds: [],
     },
     validationSchema: podcastValidationShcema,
 
@@ -76,8 +77,8 @@ const AddNewPodcast = () => {
       formData.append("description", values?.description);
       formData.append("excerpt", values?.excerpt);
 
-      values?.categoryids.forEach((categoryId) =>
-        formData.append("categories[]", categoryId)
+      values?.categoryIds.forEach((categoryId) =>
+        formData.append("categoryIds[]", categoryId)
       );
 
       if (values?.audioFile instanceof File) {
@@ -85,22 +86,16 @@ const AddNewPodcast = () => {
       }
 
       if (values?.featuredImage instanceof File) {
-        formData.append("featuredImge", values?.featuredImage);
+        formData.append("featuredImage", values?.featuredImage);
       }
 
       try {
         const response = await addNewLTRPodcast({ data: formData }).unwrap();
-
-        if (response?.data?.messageCode === 200) {
-          toast.success("Topic created.");
+        console.log({ response });
+        if (response?.messageCode === 200) {
+          toast.success("New podcast created.");
+          setAudioURL(null);
           resetForm();
-
-          const blocksFromHTML = convertFromHTML("");
-          const contentState = ContentState.createFromBlockArray(
-            blocksFromHTML.contentBlocks,
-            blocksFromHTML.entityMap
-          );
-          setEditorState(EditorState.createWithContent(contentState));
         }
       } catch (error) {
         console.log(error);
@@ -125,18 +120,19 @@ const AddNewPodcast = () => {
       {/* <h1 className="font-semibold text-2xl text-white mb-4">
         Add New Podcast
       </h1> */}
+      {console.log(formik.values)}
 
       <AdminPanelTitle title="Add New Podcast" />
 
       <form
         onSubmit={formik.handleSubmit}
-        className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
+        className="space-x-0 mt-8 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
       >
         <div className="col-span-1 lg:col-span-3">
           <CustomTextInput
             name="title"
             placeholder="Add title"
-            className="border border-gray-700 py-[10px] placeholder:text-sm rounded-sm"
+            className="border border-[#ccd0d4] py-[10px] placeholder:text-sm rounded-sm"
             value={formik.values?.title}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -211,15 +207,13 @@ const AddNewPodcast = () => {
                           Add File
                         </CustomButton>
                       </div>
-
-                      {formik.errors?.audioFile && (
-                        <span className="text-sm p-4 text-red-600">
-                          {formik.errors.audioFile}
-                        </span>
-                      )}
                     </>
                   )}
-
+                  {formik.errors?.audioFile && formik?.touched?.audioFile ? (
+                    <span className="text-sm p-4 text-red-600">
+                      {formik.errors.audioFile}
+                    </span>
+                  ) : null}
                   <div>
                     <p className="font-medium text-[14px] text-gray-700">
                       Please
@@ -277,7 +271,15 @@ const AddNewPodcast = () => {
           </div>
 
           {/* categories */}
-          <CategoriesComponent name="categoryids" formik={formik} />
+          <CategoriesComponent
+            errorMsg={
+              formik.errors?.categoryIds ? formik.errors?.categoryIds : null
+            }
+            categoryids={formik.values.categoryIds}
+            onChange={(updatedCategoryIds) =>
+              formik.setFieldValue("categoryIds", updatedCategoryIds)
+            }
+          />
 
           <div className="lg:hidden space-y-4">
             <PublishComponent isLoading={isLoading} />

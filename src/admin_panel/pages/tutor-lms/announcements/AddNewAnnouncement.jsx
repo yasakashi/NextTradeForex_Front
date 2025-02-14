@@ -7,26 +7,36 @@ import CustomTextArea from "../../../../components/ui/CustomTextArea";
 import { useState } from "react";
 import { useGetCoursesQuery } from "../../../../redux/features/api/course/courseApii";
 import { IoIosArrowDown } from "react-icons/io";
+import { useAddNewCourseAnnoucementMutation } from "../../../../redux/features/api/admin-panel/tutorLmsApi";
+import toast from "react-hot-toast";
 
-const AddNewAnnouncement = ({ isOpen, setIsOpen }) => {
+const AddNewAnnouncement = ({ isOpen, setIsOpen, refetchAnnoucements }) => {
+  const [selectedOption, setSelectedOption] = useState("");
 
-  const [selectedOption, setSelectedOption] = useState('');
-
-  const isLoading = false;
+  const [addNewCourseAnnoucement, { isLoading }] =
+    useAddNewCourseAnnoucementMutation();
 
   const formik = useFormik({
     initialValues: {
-      fname: "",
-      lname: "",
-      username: "",
-      phoneNumber: "",
-      email: "",
-      password: "",
-      bio: "",
+      courseId: "",
+      title: "",
+      summary: "",
     },
 
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log({ values });
+
+      const res = await addNewCourseAnnoucement({
+        data: { ...values, courseId: selectedOption?.id },
+      }).unwrap();
+
+      if (res?.messageCode === 200) {
+        toast.success("New announcement added.");
+        resetForm();
+        setIsOpen(false);
+        refetchAnnoucements();
+      }
+      console.log("add course announcement ==>", res);
     },
   });
 
@@ -36,6 +46,7 @@ const AddNewAnnouncement = ({ isOpen, setIsOpen }) => {
         onSubmit={formik.handleSubmit}
         className="flex min-w-[50vw] flex-col max-h-[90vh]"
       >
+        {console.log({ selectedOption })}
         <div className="flex w-full flex-col border-b border-gray-300">
           <div className="flex justify-between items-center py-4 px-8 w-full">
             <h4 className="font-semibold">Add New Instructor</h4>
@@ -83,7 +94,7 @@ const AddNewAnnouncement = ({ isOpen, setIsOpen }) => {
             type="submit"
             className="bg-blue-accent disabled:cursor-not-allowed px-4 py-[6px] text-white border border-blue-accent rounded-md shadow-sm"
           >
-            {isLoading ? "Sending ..." : "Add Lesson"}
+            {isLoading ? "Sending ..." : "Add Announcement"}
           </button>
         </div>
       </form>
@@ -157,7 +168,7 @@ const FormItemTextArea = ({
           name={name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values?.name}
+          value={formik.values[`${name}`]}
           type={type}
           placeholder={placeholer}
           className="text-sm h-[150px] placeholder:text-gray-600 placeholder:text-sm border border-gray-400 px-2 py-[6px] rounded outline-[#2271b1] w-full"
@@ -181,13 +192,7 @@ const FormItemTextArea = ({
   );
 };
 
-const FormItemSelect = ({
-  formik,
-  name,
-  label,
-  selectedOption,
-  setSelectedOption,
-}) => {
+const FormItemSelect = ({ label, selectedOption, setSelectedOption }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [query, setQuery] = useState("");
@@ -225,7 +230,11 @@ const FormItemSelect = ({
                 onClick={() => setIsOpen((prev) => !prev)}
                 className="w-full relative bg-white border border-gray-400 rounded-md px-3 py-[6px] hover:cursor-pointer text-gray-600"
               >
-                <span>{selectedOption ? selectedOption : "Select course"}</span>
+                <span>
+                  {selectedOption?.courseName
+                    ? selectedOption?.courseName
+                    : "Select course"}
+                </span>
                 <IoIosArrowDown
                   size={18}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 font-bold"
@@ -255,7 +264,7 @@ const FormItemSelect = ({
                         key={index}
                         className="px-4 py-2 cursor-pointer hover:bg-gray-200"
                         onMouseDown={() => {
-                          setSelectedOption(option?.courseName);
+                          setSelectedOption(option);
                           setIsOpen(false);
                         }}
                       >

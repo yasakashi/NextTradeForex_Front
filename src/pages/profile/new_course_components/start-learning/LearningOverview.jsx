@@ -448,7 +448,7 @@ const LearningOverview = ({ isLoading }) => {
                         <div className="flex items-center gap-2 grow">
                           <img
                             className="w-9"
-                            src="/public/assets/pdf-icon.png"
+                            src="/assets/pdf-icon.png"
                             alt="Icon"
                           />
                           <span className="text-sm md:text-base line-clamp-1">
@@ -479,7 +479,7 @@ const LearningOverview = ({ isLoading }) => {
                   >
                     <img
                       className="w-10"
-                      src="/public/assets/youtube.png"
+                      src="/assets/youtube.png"
                       alt="Youtube"
                     />
                     <span className="group-hover:underline cursor-pointer transition-all">

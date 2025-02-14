@@ -148,7 +148,7 @@ const AdminTicketView = () => {
           <div className="flex items-center space-x-6 pb-8">
             <img
               className="rounded-full size-[60px] border border-gray-300"
-              src="/public/assets/bp-avatar.png"
+              src="/assets/bp-avatar.png"
               alt="User Image"
             />
             <div className="flex flex-col leading-7">
@@ -170,7 +170,7 @@ const AdminTicketView = () => {
             <div className="flex items-center justify-start space-x-4">
               <img
                 className="rounded-full size-[60px] border border-gray-300"
-                src="/public/assets/bp-avatar.png"
+                src="/assets/bp-avatar.png"
                 alt="User Image"
               />
               <div className="flex flex-col leading-7">
@@ -245,7 +245,7 @@ const AdminTicketView = () => {
           <div className="flex flex-col items-start space-x-6 pb-8">
             <img
               className="rounded-full -mt-8 ml-4 shadow-md p-[1px] size-[70px] border border-gray-300"
-              src="/public/assets/bp-avatar.png"
+              src="/assets/bp-avatar.png"
               alt="User Image"
             />
             <div className="flex w-full mt-2 flex-col leading-7">

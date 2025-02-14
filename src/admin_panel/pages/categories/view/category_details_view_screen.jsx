@@ -68,7 +68,7 @@ const CategoriesDetailsView = () => {
             ) : activeTab === 6 ? (
               <Meetings setLoading={setLoading} />
             ) : activeTab === 2 ? (
-              <EBooks setLoading={setLoading} />
+              <EBooks subCategoryId={subCategoryId} setLoading={setLoading} />
             ) : null}
           </motion.div>
         </AnimatePresence>

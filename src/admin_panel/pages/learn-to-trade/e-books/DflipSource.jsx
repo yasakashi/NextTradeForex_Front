@@ -1,29 +1,32 @@
 import { useEffect, useRef, useState } from "react";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import LibraryModal from "../../../../pages/profile/new_course_components/library_modal";
+import { MdClose } from "react-icons/md";
 
 const DFlipSource = ({ formik }) => {
   const [openPdfFile, setOPenPdfFile] = useState(false);
   const [openPdfThumb, setOpenPdfThumb] = useState(false);
-  const [openCustomPages, setCustomPages] = useState(false);
 
-  const [viewImages, setViewImages] = useState([]);
+  const pageImagesInput = useRef(null);
 
-  useEffect(() => {
-    const imageUrls =
-      formik.values?.pageimages?.map((file) =>
-        window?.URL?.createObjectURL(file)
-      ) || [];
+  const handleAddFiles = (event) => {
+    const files = event.target.files;
+    const fileArray = Array.from(files);
+    const currentImages = [...formik.values?.pageimages, ...fileArray];
 
-    setViewImages(imageUrls);
-  }, [formik.values?.pageimages?.length]);
+    formik.setFieldValue("pageimages", currentImages);
+  };
 
-  const handleAddFiles = (files) => {
-    formik.setFieldValue("pageimages", [...formik.values.pageimages, ...files]);
+  const removePageImageHandler = (imageUrl) => {
+     const newarray = formik.values?.pageimages?.filter(
+      (file) => file?.name !== imageUrl?.name
+    );
+    formik.setFieldValue("pageimages", newarray);
   };
 
   return (
     <div className="space-y-8 mb-8">
+ 
       {/* book source type */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
         <div className="flex flex-col">
@@ -175,9 +178,8 @@ const DFlipSource = ({ formik }) => {
         </div>
       ) : Number(formik.values?.bookSourceTypeId) === 2 ? (
         <div>
-          {console.log(formik.values?.pageimages)}
           {/* Custom Pages */}
-          <div className="flex flex-col items-start gap-y-3">
+          {/* <div className="flex flex-col items-start gap-y-3">
             <div className="flex flex-col">
               <h5 className="text-[14px] text-[#33373a] font-semibold">
                 Custom Pages
@@ -234,6 +236,67 @@ const DFlipSource = ({ formik }) => {
               set_open={setCustomPages}
               onSave={() => setCustomPages(false)}
             />
+          </div> */}
+          <div className="flex flex-col items-start gap-y-3">
+            <div className="flex flex-col">
+              <h5 className="text-[14px] text-[#33373a] font-semibold">
+                Custom Pages
+              </h5>
+              <p className="text-[#999] text-xs">
+                Add or remove pages as per your requirement. Plus reorder them
+                in the order needed.
+              </p>
+            </div>
+
+            <div className="w-full">
+              <div className="flex flex-col w-full text-base text-[#2c3338] py-[6px] pl-2 bg-transparent rounded-sm">
+                <div className="w-full flex items-center gap-2 flex-wrap max-h-[300px] overflow-y-scroll scrollbar-thin">
+                  {formik?.values?.pageimages?.length > 0
+                    ? formik?.values?.pageimages?.map((imageUrl, index) => (
+                        <div className="relative w-[180px] aspect-video bg-contain">
+                          <img
+                            src={URL.createObjectURL(imageUrl)}
+                            key={index}
+                            alt="Page Image"
+                            className="mb-2 w-full h-full object-fill bg-cover"
+                          />
+                          <div
+                            onClick={() => removePageImageHandler(imageUrl)}
+                            className="absolute top-1 right-1 bg-red-400/70 hover:bg-red-400/100 transition-all text-gray-100 size-[25px] flex items-center justify-center rounded-full shadow-sm cursor-pointer"
+                          >
+                            <MdClose size={18} />
+                          </div>
+                        </div>
+                      ))
+                    : null}
+                </div>
+                <CustomButton
+                  type="button"
+                  onClick={() =>
+                    // document.getElementById("pageImagesInput").click()
+                    pageImagesInput.current.click()
+                  }
+                  className="text-nowrap w-max mt-4 mx-3"
+                  size="sm"
+                >
+                  Add New Page
+                </CustomButton>
+                <input
+                  id="pageImagesInput"
+                  ref={pageImagesInput}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleAddFiles}
+                  style={{ display: "none" }}
+                />
+              </div>
+              {formik.errors?.pageimages && formik.touched?.pageimages ? (
+                <span className="text-sm text-red-600 p-1">
+                  {formik.errors.pageimages}
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
       ) : null}

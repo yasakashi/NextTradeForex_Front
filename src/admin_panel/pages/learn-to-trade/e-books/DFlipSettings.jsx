@@ -2,6 +2,7 @@ import { useState } from "react";
 import NewCourceCard from "../../../../pages/profile/new_course_components/new_cource_card";
 import DFlipSource from "./DflipSource";
 import DFlipLayout from "./DFlipLayout";
+import DFlipOutline from "./DFlipOutline";
 
 const activeClass = "bg-[#0085ba]";
 
@@ -40,7 +41,9 @@ const DflipSettings = ({ formik }) => {
         {activeTab === "source" ? (
           <DFlipSource formik={formik} />
         ) : activeTab === "layout" ? (
-            <DFlipLayout formik={formik} />
+          <DFlipLayout formik={formik} />
+        ) : activeTab === "outline" ? (
+          <DFlipOutline formik={formik} />
         ) : null}
       </div>
     </NewCourceCard>

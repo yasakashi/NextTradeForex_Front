@@ -69,14 +69,18 @@ const SearchFilters = ({
                 onClick={() => setIsOpen((prev) => !prev)}
                 className="w-full relative bg-white border border-gray-400 rounded-md px-3 py-[6px] hover:cursor-pointer text-gray-600"
               >
-                <span>{selectedOption}</span>
+                <span className="text-[13px] line-clamp-1">
+                  {selectedOption?.courseName
+                    ? selectedOption?.courseName
+                    : "Select Course"}
+                </span>
                 <IoIosArrowDown
                   size={18}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-600 font-bold"
                 />
               </div>
               {isOpen && (
-                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto overflow-x-hidden overscroll-y-scroll scrollbar-thin px-2 text-gray-700">
+                <ul className="absolute text-[13px] z-10 w-full bg-white border border-gray-300 rounded-md mt-1 max-h-60 overflow-y-auto overflow-x-hidden overscroll-y-scroll scrollbar-thin px-2 text-gray-700">
                   <input
                     type="text"
                     value={query}
@@ -99,7 +103,7 @@ const SearchFilters = ({
                         key={index}
                         className="px-4 py-2 cursor-pointer hover:bg-gray-200"
                         onMouseDown={() => {
-                          setSelectedOption(option?.courseName);
+                          setSelectedOption(option);
                           setIsOpen(false);
                         }}
                       >

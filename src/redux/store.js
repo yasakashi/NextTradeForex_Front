@@ -29,6 +29,7 @@ import { adminData } from "./features/api/admin-panel/adminDataApi";
 import { panelUsersApi } from "./features/api/admin-panel/panelUsersApi";
 import { adminMediaApi } from "./features/api/admin-panel/mediaApi";
 import { adminTicketsApi } from './features/api/admin-panel/adminTicketsApi';
+import { tutorLmsApi } from "./features/api/admin-panel/tutorLmsApi";
 
 const store = configureStore({
   reducer: {
@@ -42,6 +43,7 @@ const store = configureStore({
     [panelUsersApi.reducerPath]: panelUsersApi.reducer,
     [adminMediaApi.reducerPath]: adminMediaApi.reducer,
     [adminTicketsApi.reducerPath]: adminTicketsApi.reducer,
+    [tutorLmsApi.reducerPath]: tutorLmsApi.reducer,
 
     login: loginReducer,
     auth: registerReducer,
@@ -74,6 +76,7 @@ const store = configureStore({
       panelUsersApi.middleware,
       adminMediaApi.middleware,
       adminTicketsApi.middleware,
+      tutorLmsApi.middleware
     ),
 });
 

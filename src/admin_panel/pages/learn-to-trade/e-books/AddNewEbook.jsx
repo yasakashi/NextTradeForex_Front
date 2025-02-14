@@ -22,7 +22,7 @@ const SUPPORTED_FORMATS = [
   "image/web",
 ];
 
-const FILE_SIZE = 500 * 1024;
+const FILE_SIZE = 10 * 1024 * 1024;
 const SUPPORTED_PDF_FORMATS = ["application/pdf"];
 
 const ebookInitialValues = {
@@ -65,15 +65,15 @@ const ebookValidationSchema = Yup.object().shape({
   description: Yup.string().required("Description is required."),
   pdffile: Yup.mixed()
     .required("PDF file is required.")
-    .test("fileSize", "File must be less than 500 KB", (value) => {
+    .test("fileSize", "File must be less than 10 MB", (value) => {
       return !value || (value && value.size <= FILE_SIZE);
     })
     .test("fileFormat", "Unsupported format", (value) => {
       return !value || (value && SUPPORTED_PDF_FORMATS.includes(value.type));
     }),
   categoryIds: Yup.array()
-    .of(Yup.number().required("Category ID is required."))
-    .min(1, "At least one category ID is required."),
+    .of(Yup.number().required("Category is required."))
+    .min(1, "At least one category is required."),
 
   bgColor: Yup.string()
     .matches(
@@ -84,11 +84,6 @@ const ebookValidationSchema = Yup.object().shape({
 });
 
 const AddNewEBook = () => {
-  const [openVideoFile, setOpenVideoFile] = useState(false);
-  const [openSubFile, setOpenSubFile] = useState(false);
-
-  const [videoURL, setVideoURL] = useState(null);
-
   const [addNewLTREBook, { isLoading }] = useAddNewLTREBookMutation();
 
   const formik = useFormik({
@@ -154,7 +149,7 @@ const AddNewEBook = () => {
         formData.append("categoryIds[]", categoryId)
       );
 
-      values?.pageimages.forEach((pageImage) =>
+      values?.pageimages?.forEach((pageImage) =>
         formData.append("pageimages[]", pageImage)
       );
 
@@ -164,6 +159,7 @@ const AddNewEBook = () => {
         if (res?.messageCode === 200) {
           toast.success("New Book Created.");
           resetForm();
+          window?.location?.reload();
         }
         console.log({ res });
       } catch (error) {
@@ -173,12 +169,6 @@ const AddNewEBook = () => {
     },
   });
 
-  useEffect(() => {
-    if (formik.values?.videoFile) {
-      setVideoURL(URL.createObjectURL(formik.values?.videoFile));
-    }
-  }, [formik.values?.videoFile]);
-
   return (
     <div className="flex flex-col px-8 py-10">
       {/* <h1 className="font-semibold text-2xl text-white mb-4">Add New Book</h1> */}
@@ -186,13 +176,13 @@ const AddNewEBook = () => {
       <AdminPanelTitle title="Add New Book" />
       <form
         onSubmit={formik.handleSubmit}
-        className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
+        className="space-x-0 mt-8 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
       >
         <div className="col-span-1 lg:col-span-3">
           <CustomTextInput
             name="title"
             placeholder="Add title"
-            className="border border-gray-700 py-[10px] placeholder:text-sm rounded-sm"
+            className="border border-[#ccd0d4] py-[10px] placeholder:text-sm rounded-sm"
             value={formik.values?.title}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

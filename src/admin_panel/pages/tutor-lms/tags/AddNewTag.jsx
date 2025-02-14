@@ -5,9 +5,11 @@ import toast from "react-hot-toast";
 import * as Yup from "yup";
 import CustomTextArea from "../../../../components/ui/CustomTextArea";
 import { CustomButton } from "../../../../components/ui/CustomButton";
+import { useAddNewTutorTagMutation } from "../../../../redux/features/api/admin-panel/tutorLmsApi";
 
-const AddNewTag = () => {
-  // const [addNewCategory, { isLoading }] = useAddNewCategoryMutation();
+const AddNewTag = ({ refetchTags }) => {
+  const [addNewTutorTag, { isLoading: addTagLoading }] =
+    useAddNewTutorTagMutation();
 
   // const [
   //   getMainCategoriesByInfo,
@@ -29,66 +31,27 @@ const AddNewTag = () => {
 
   const formik = useFormik({
     initialValues: {
-      parentId: 770,
       name: "",
       slug: "",
       description: "",
-      customDescription: "",
-      customFile: null,
-      chartImage: "",
-      isVisible: true,
-      isVisibleDropdown: true,
-      categoryImage: null,
-      isTopCategory: false,
-      coursesOfCategory: false,
     },
 
     validationSchema: Yup.object({
-      name: Yup.string().required("Category name is required."),
+      name: Yup.string().required("Name is required."),
       description: Yup.string().required("Description is required."),
     }),
 
     onSubmit: async (values, { resetForm }) => {
-      const formData = new FormData();
-
-      formData.append("parentId", values?.parentId);
-      formData.append("name", values?.name);
-      formData.append("Description", values?.description);
-      formData.append("IsVisible", values?.isVisible);
-      formData.append("IsVisibleDropdown", values?.isVisibleDropdown);
-      formData.append("IsThisTopCategory", values?.isTopCategory);
-      formData.append("CoursesOfCategory", values?.coursesOfCategory);
-      formData.append("categorytypeid_old", 1);
-      formData.append("categorytypeid", 14);
-
-      if (values?.customDescription) {
-        formData.append("customDescription", values?.customDescription);
-      }
-
-      if (values?.slug) {
-        formData.append("Slug", values?.slug);
-      }
-
-      if (values?.chartImage) {
-        formData.append("chartImage", values?.chartImage);
-      }
-      if (values?.customFile instanceof File) {
-        formData.append("customFile", values?.customFile);
-      }
-
-      if (values?.categoryImage instanceof File) {
-        formData.append("categoryImage", values?.categoryImage);
-      }
-
       try {
-        const res = await addNewCategory({ data: formData }).unwrap();
+        const res = await addNewTutorTag({ data: values }).unwrap();
         if (res?.messageCode === 200) {
-          toast.success("Category Created.");
+          toast.success("New Tag added.");
           resetForm();
+          refetchTags();
         }
         console.log({ res });
       } catch (err) {
-        console.log("Creating new category", err);
+        console.log("add new tag", err);
       }
     },
   });
@@ -98,6 +61,7 @@ const AddNewTag = () => {
       <h5 className="font-normal text-lg text-[#1d2327] pb-6 pt-2">
         Add New Tag
       </h5>
+
       <form onSubmit={formik.handleSubmit} className="pb-16 space-y-4">
         {/* name */}
         <FormItem
@@ -129,8 +93,8 @@ const AddNewTag = () => {
         />
 
         <div className="mt-4">
-          <CustomButton disabled={isLoading} type="submit" size="sm">
-            {isLoading ? "Sending ..." : "Add New Tagg"}
+          <CustomButton disabled={addTagLoading} type="submit" size="sm">
+            {addTagLoading ? "Sending ..." : "Add New Tagg"}
           </CustomButton>
         </div>
       </form>
@@ -160,7 +124,7 @@ const FormItem = ({
           name={name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values?.name}
+          value={formik.values[`${name}`]}
           type={type}
           placeholder={placeholer}
           className="text-sm placeholder:text-gray-600 placeholder:text-sm border border-gray-400 px-2 py-[6px] rounded outline-[#2271b1] w-full"
@@ -213,12 +177,6 @@ const FormItemTextArea = ({
           <span className="text-red-600 p-1 text-[13px] font-normal">
             {formik.errors[`${name}`]}
           </span>
-        ) : null}
-        {description ? (
-          <p
-            dangerouslySetInnerHTML={{ __html: description }}
-            className="text-sm p-1 text-[#646970]"
-          ></p>
         ) : null}
       </div>
     </label>
