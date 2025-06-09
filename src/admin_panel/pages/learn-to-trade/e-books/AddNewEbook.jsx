@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import CustomTextArea from "../../../../components/ui/CustomTextArea";
 import CustomTextInput from "../../../../components/ui/CustomTextInput";
 import NewCourceCard from "../../../../pages/profile/new_course_components/new_cource_card";
-import { useEffect, useState } from "react";
 import ExcerptComponent from "../../../../pages/profile/new_course_components/excerpt_component";
 import PublishComponent from "../../../../pages/profile/new_course_components/publish_component";
 import FeaturedImageComponent from "../../../../pages/profile/new_course_components/featured_image_component";
@@ -14,6 +13,8 @@ import * as Yup from "yup";
 import { useAddNewLTREBookMutation } from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import { useLocation } from "react-router-dom";
+import { useAddNewToolsEBookMutation } from "../../../../redux/features/api/admin-panel/toolsApi";
 const SUPPORTED_FORMATS = [
   "image/jpeg",
   "image/jpg",
@@ -84,7 +85,13 @@ const ebookValidationSchema = Yup.object().shape({
 });
 
 const AddNewEBook = () => {
+  const {
+    state: { page },
+  } = useLocation();
+
   const [addNewLTREBook, { isLoading }] = useAddNewLTREBookMutation();
+  const [addNewToolsEBook, { isLoading: toolsLoading }] =
+    useAddNewToolsEBookMutation();
 
   const formik = useFormik({
     initialValues: ebookInitialValues,
@@ -154,7 +161,12 @@ const AddNewEBook = () => {
       );
 
       try {
-        const res = await addNewLTREBook({ data: formData }).unwrap();
+        let res;
+        if (page === "tools") {
+          res = await addNewToolsEBook({ data: formData }).unwrap();
+        } else {
+          res = await addNewLTREBook({ data: formData }).unwrap();
+        }
 
         if (res?.messageCode === 200) {
           toast.success("New Book Created.");
@@ -248,12 +260,12 @@ const AddNewEBook = () => {
             }
           />
           <div className="lg:hidden space-y-4">
-            <PublishComponent isLoading={isLoading} />
+            <PublishComponent isLoading={isLoading || toolsLoading} />
           </div>
         </div>
 
         <div className="hidden lg:block lg:col-span-1">
-          <PublishComponent isLoading={isLoading} />
+          <PublishComponent isLoading={isLoading || toolsLoading} />
           <FeaturedImageComponent name="featuredImage" formik={formik} />
         </div>
       </form>

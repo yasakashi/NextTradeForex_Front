@@ -7,11 +7,14 @@ function AuthorList({ onAuthorChange }) {
   useEffect(() => {
     const fetchAuthors = async () => {
       try {
-        const res = await http_instanse_level_2.post("/api/users/getuserinstructorslist", {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const res = await http_instanse_level_2.post(
+          "/users/getuserinstructorslist",
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         const { messageData } = res.data;
         const authorsOptions = messageData.map((data) => {
@@ -34,7 +37,11 @@ function AuthorList({ onAuthorChange }) {
     <div className="rounded-sm bg-white p-[30px]">
       <h2 className="font-bold">Author</h2>
 
-      {!authors.length ? <p>Loading...</p> : <CustomSelectBox options={authors} onChange={onAuthorChange} />}
+      {!authors.length ? (
+        <p>Loading...</p>
+      ) : (
+        <CustomSelectBox options={authors} onChange={onAuthorChange} />
+      )}
     </div>
   );
 }

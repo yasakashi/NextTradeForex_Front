@@ -95,41 +95,8 @@ import DailyReport from "./pages/reports/DailyReport";
 function App({ auth }) {
   const token = localStorage.getItem("loginToken");
 
-  // React.useEffect(() => {
-  //   if (!token) {
-  //     http_instanse
-  //       .post(
-  //         "/gettoken",
-  //         {
-  //           username: "yasa",
-  //           password: "kashi",
-  //         },
-  //         { auth: { password: "kashi", username: "yasa" } }
-  //       )
-  //       .then((res) => {
-  //         if (!localStorage?.userid) {
-  //           get_user_info_api().then(() => {
-  //             window?.location?.reload();
-  //           });
-  //         } else {
-  //           window?.location?.reload();
-  //         }
-  //         localStorage.loginToken = res.data.messageData;
-  //       })
-  //       .catch((err) => {});
-  //   }
-  // }, []);
-  // @babel/plugin-proposal-private-property-in-object
-  // export NODE_OPTIONS=--max_old_space_size=4096
-  // npx update-browserslist-db@latest
-
   return (
     <div className="bg-blue-dark">
-      {/* <header className="text-center p-4 bg-white shadow-lg rounded-lg">
-        <h1 className="text-2xl font-bold">Welcome to my multilingual app</h1>
-        <p className="text-gray-600">This is a simple example</p>
-        
-      </header> */}
       <div className="max-w-[1500px] mx-auto flex flex-col min-h-screen  overflow-x-hidden">
         <main className="flex-1">
           <Routes>
@@ -146,6 +113,30 @@ function App({ auth }) {
             </Route>
 
             <Route path="/course-category/top-courses" element={<Courses />} />
+            <Route path="/learn_to_trade" element={<LearnToTrade />}>
+              <Route path="/learn_to_trade" element={<LearnToTradeScreen />} />
+
+              <Route
+                path="/learn_to_trade/:level"
+                element={<LearnToTradeCategories />}
+              />
+
+              <Route
+                path="/learn_to_trade/:level/:categoryName"
+                element={<LearnToTradeSubCategories />}
+              />
+
+              <Route
+                path="/learn_to_trade/:level/:categoryName/:subCategoryName"
+                element={<CategoriesDetailsView />}
+              />
+            </Route>
+
+            <Route path="/traders-community" element={<TradersCommunity />} />
+            <Route
+              path="/traders-community/groups"
+              element={<CommunityGroups />}
+            />
 
             {token ? (
               <>
@@ -201,7 +192,7 @@ function App({ auth }) {
                   element={<CourseAttachments />}
                 />
 
-                <Route path="/learn_to_trade" element={<LearnToTrade />}>
+                {/* <Route path="/learn_to_trade" element={<LearnToTrade />}>
                   <Route
                     path="/learn_to_trade"
                     element={<LearnToTradeScreen />}
@@ -221,7 +212,7 @@ function App({ auth }) {
                     path="/learn_to_trade/:level/:categoryName/:subCategoryName"
                     element={<CategoriesDetailsView />}
                   />
-                </Route>
+                </Route> */}
                 <Route path="/admin-panel" element={<MainLayout />}>
                   <Route
                     path="/admin-panel/lesson/categories"
@@ -238,18 +229,15 @@ function App({ auth }) {
                     );
                   })}
                 </Route>
-                <Route
+                {/* <Route
                   path="/traders-community"
                   element={<TradersCommunity />}
                 />
                 <Route
                   path="/traders-community/groups"
                   element={<CommunityGroups />}
-                />
-                {/* <Route
-              path="/traders-community/groups/:id"
-              element={<CommunityGroup />}
-            /> */}
+                /> */}
+
                 <Route
                   path="/traders-community/groups/create"
                   element={<CreateGroup />}

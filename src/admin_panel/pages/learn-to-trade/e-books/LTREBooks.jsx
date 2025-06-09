@@ -29,7 +29,7 @@ const LTREBooks = ({ page }) => {
   return (
     <div className="flex flex-col px-8 py-10">
       {/* <h1 className="font-semibold text-2xl text-white mb-4">Videos</h1> */}
-      {console.log({ books })}
+     
       <div className="flex items-center gap-4 mb-8">
         <AdminPanelTitle title="Books" />
         <CustomButton
@@ -37,7 +37,12 @@ const LTREBooks = ({ page }) => {
             navigate(
               `/admin-panel/${
                 page === "tools" ? "tools" : "learn-to-trade"
-              }/e-books/add-new-book`
+              }/e-books/add-new-book`,
+              {
+                state: {
+                  page: page,
+                },
+              }
             )
           }
           className="group gap-1"

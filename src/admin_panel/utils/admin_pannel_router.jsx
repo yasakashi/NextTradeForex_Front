@@ -75,7 +75,7 @@ export const admin_panel_router = [
   // add new webinar
   {
     route: "/admin-panel/learn-to-trade/topics/add-new-topic",
-    component: <AddNewTopic />,
+    component: <AddNewTopic page="ltr" />,
   },
   // ============= learn to trade and tools
   // webinars
@@ -91,7 +91,7 @@ export const admin_panel_router = [
   // add new webinar
   {
     route: "/admin-panel/learn-to-trade/webinars/add-new-webinar",
-    component: <AddNewWebinar />,
+    component: <AddNewWebinar page="ltr" />,
   },
 
   {
@@ -111,7 +111,7 @@ export const admin_panel_router = [
   // add new e-book
   {
     route: "/admin-panel/learn-to-trade/e-books/add-new-book",
-    component: <AddNewEBook />,
+    component: <AddNewEBook page="ltr" />,
   },
 
   {
@@ -167,7 +167,6 @@ export const admin_panel_router = [
     route: "/admin-panel/tutor/Courses",
     component: <CoursesScreen />,
   },
-
 
   {
     route: "/admin-panel/tutor/lessons",

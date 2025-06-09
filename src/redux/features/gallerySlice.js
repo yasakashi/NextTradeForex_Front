@@ -23,7 +23,7 @@ export const getGalleries = createAsyncThunk(
   "gallery/getGalleries",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/gallery/getgallery", data);
+      const response = await axiosPrivate.post("/gallery/getgallery", data);
       return response.data;
     } catch (error) {
       console.log("get gallery error", error);
@@ -39,7 +39,7 @@ export const getMyGalleries = createAsyncThunk(
   "gallery/getMyGalleries",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/gallery/getgallery", data);
+      const response = await axiosPrivate.post("/gallery/getgallery", data);
       return response.data;
     } catch (error) {
       console.log("get gallery error", error);

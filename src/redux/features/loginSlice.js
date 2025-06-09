@@ -12,7 +12,7 @@ export const loginAction = createAsyncThunk(
       password: values.password,
     });
     try {
-      const response = await axiosInstance.post("/api/gettoken", data, {
+      const response = await axiosInstance.post("/gettoken", data, {
         headers: {
           Authorization: `Basic ${authToken}`,
         },
@@ -39,7 +39,7 @@ export const logoutAction = createAsyncThunk(
   "login/logoutAction",
   async ({ axiosPrivate, toast, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/signout");
+      const response = await axiosPrivate.post("/signout");
       if (response?.status === 200) {
         toast.success("Logout successfully.");
         localStorage.removeItem("loginToken");
@@ -64,7 +64,7 @@ export const logoutAction = createAsyncThunk(
 //   "login/logoutAction",
 //   async ({ axiosPrivate , toast, navigate}, { rejectWithValue }) => {
 //     try {
-//       const response = await axiosPrivate.post("/api/signout");
+//       const response = await axiosPrivate.post("/signout");
 //       if (response?.status === 200) {
 //         toast.success("Logout successfully.")
 //         localStorage.removeItem("loginToken");
@@ -84,8 +84,6 @@ export const logoutAction = createAsyncThunk(
 //     }
 //   }
 // );
-
-
 
 const loginSlice = createSlice({
   name: "login",

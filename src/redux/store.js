@@ -28,8 +28,9 @@ import { userReferralApi } from "./features/api/referral/userReferralApi";
 import { adminData } from "./features/api/admin-panel/adminDataApi";
 import { panelUsersApi } from "./features/api/admin-panel/panelUsersApi";
 import { adminMediaApi } from "./features/api/admin-panel/mediaApi";
-import { adminTicketsApi } from './features/api/admin-panel/adminTicketsApi';
+import { adminTicketsApi } from "./features/api/admin-panel/adminTicketsApi";
 import { tutorLmsApi } from "./features/api/admin-panel/tutorLmsApi";
+import { adminPanelTools } from "./features/api/admin-panel/toolsApi";
 
 const store = configureStore({
   reducer: {
@@ -44,6 +45,7 @@ const store = configureStore({
     [adminMediaApi.reducerPath]: adminMediaApi.reducer,
     [adminTicketsApi.reducerPath]: adminTicketsApi.reducer,
     [tutorLmsApi.reducerPath]: tutorLmsApi.reducer,
+    [adminPanelTools.reducerPath]: adminPanelTools.reducer,
 
     login: loginReducer,
     auth: registerReducer,
@@ -76,7 +78,8 @@ const store = configureStore({
       panelUsersApi.middleware,
       adminMediaApi.middleware,
       adminTicketsApi.middleware,
-      tutorLmsApi.middleware
+      tutorLmsApi.middleware,
+      adminPanelTools.middleware
     ),
 });
 

@@ -10,7 +10,7 @@ export const registerAction = createAsyncThunk(
     const data = JSON.stringify(values);
 
     try {
-      const response = await axiosInstance.post("/api/users/create", data, {
+      const response = await axiosInstance.post("/users/create", data, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -31,7 +31,7 @@ export const googleRegisterAction = createAsyncThunk(
   "register/googleRegisterAction",
   async ({ token, email }) => {
     try {
-      const response = await axiosInstance.post("/api/users/create", {
+      const response = await axiosInstance.post("/users/create", {
         token,
         email,
       });
@@ -49,7 +49,7 @@ export const getCountries = createAsyncThunk(
   "register/getCountries",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/getcountries");
+      const response = await axiosInstance.post("/getcountries");
 
       console.log("countries", { response });
       return response.data;
@@ -64,7 +64,7 @@ export const getStates = createAsyncThunk(
   "register/getStates",
   async ({ countryid }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/getstates", {
+      const response = await axiosInstance.post("/getstates", {
         countryid,
       });
 
@@ -81,7 +81,7 @@ export const getcities = createAsyncThunk(
   "register/getcities",
   async ({ countryid = null, stateid }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/getcities", {
+      const response = await axiosInstance.post("/getcities", {
         countryid,
         stateid,
       });
@@ -99,7 +99,7 @@ export const getinterestforexs = createAsyncThunk(
   "register/getinterestforexs",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/getinterestforexs");
+      const response = await axiosInstance.post("/getinterestforexs");
 
       console.log("getinterestforexs", { response });
       return response.data;
@@ -114,7 +114,7 @@ export const gettrainingmethods = createAsyncThunk(
   "register/gettrainingmethods",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/gettrainingmethods");
+      const response = await axiosInstance.post("/gettrainingmethods");
 
       console.log("gettrainingmethods", { response });
       return response.data;
@@ -129,7 +129,7 @@ export const gettargettrainers = createAsyncThunk(
   "register/gettargettrainers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/gettargettrainers");
+      const response = await axiosInstance.post("/gettargettrainers");
 
       console.log("gettargettrainers", { response });
       return response.data;
@@ -161,7 +161,7 @@ export const getfinancialinstruments = createAsyncThunk(
   "register/getfinancialinstruments",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/getfinancialinstruments");
+      const response = await axiosInstance.post("/getfinancialinstruments");
 
       console.log("getfinancialinstruments", { response });
       return response.data;

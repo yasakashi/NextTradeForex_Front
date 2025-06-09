@@ -1,58 +1,10 @@
 import { Link } from "react-router-dom";
-import AdminPanelTitle from "../../components/AdminPanelTitle";
 import PendingCart from "../../components/adminPanel/PendingCart";
 import ReportCart from "./ReportCart";
 import { TbExternalLink } from "react-icons/tb";
 import { useGetAdminSiteDataQuery } from "../../../redux/features/api/admin-panel/adminDataApi";
 
-const pendingData = [
-  {
-    title: "Pending Group Approvals",
-    value: 1,
-    href: "#",
-  },
 
-  {
-    title: "Pending Tickets",
-    value: 1,
-    href: "#",
-  },
-  {
-    title: "Pending Withdrawal Approvals",
-    value: 0,
-    href: "#",
-  },
-
-  {
-    title: "Pending Email Verification",
-    value: 1,
-    href: "#",
-  },
-
-  {
-    title: "Pending Course Approvals",
-    value: 1,
-    href: "#",
-  },
-
-  {
-    title: "Pending Channel Approvals",
-    value: 1,
-    href: "#",
-  },
-
-  {
-    title: "Company Income",
-    value: "$174.000",
-    href: "#",
-  },
-
-  {
-    title: "Royalty Income",
-    value: "$0.00",
-    href: "#",
-  },
-];
 
 const AdminPanel = () => {
   const {

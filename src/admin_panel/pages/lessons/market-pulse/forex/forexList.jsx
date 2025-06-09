@@ -7,27 +7,35 @@ import { Link, useNavigate } from "react-router-dom";
 import { http_instanse_level_2 } from "../../../../../axios/auth_full_http_instanse";
 import { useDispatch } from "react-redux";
 import { toggle_loading } from "../../../../../redux/features/generalSlice";
-import { clearForexData, setForexData } from "../../../../../redux/features/marketPulse/marketPulseSlice";
+import {
+  clearForexData,
+  setForexData,
+} from "../../../../../redux/features/marketPulse/marketPulseSlice";
 
 function MarketPulseListScreen() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [open_delete_dialog, set_open_delete_dialog] = useState({ open: false });
+  const [open_delete_dialog, set_open_delete_dialog] = useState({
+    open: false,
+  });
   const [forexData, setData] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
       dispatch(toggle_loading(true));
       try {
-        const res = await http_instanse_level_2.post("/api/marketpuls/getforexitems", {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: null,
-            categoryid: null,
-          }),
-        });
+        const res = await http_instanse_level_2.post(
+          "/marketpuls/getforexitems",
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: null,
+              categoryid: null,
+            }),
+          }
+        );
 
         const { messageData } = res.data;
         setData(messageData);
@@ -44,7 +52,7 @@ function MarketPulseListScreen() {
   const deleteData = async (categoryid) => {
     try {
       dispatch(toggle_loading(true));
-      await http_instanse_level_2.post("/api/marketpuls/deleteforexitem", {
+      await http_instanse_level_2.post("/marketpuls/deleteforexitem", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -55,7 +63,9 @@ function MarketPulseListScreen() {
       });
 
       // After deletion, remove the item from forexData state
-      setData((prevData) => prevData.filter((item) => item.categoryid !== categoryid));
+      setData((prevData) =>
+        prevData.filter((item) => item.categoryid !== categoryid)
+      );
     } catch (e) {
       throw e;
     } finally {
@@ -67,7 +77,10 @@ function MarketPulseListScreen() {
     <div className="flex flex-col px-8 py-8">
       <div className="flex items-center justify-between">
         <h1 className="font-semibold text-2xl text-white mb-4">Lessons</h1>
-        <button className="bg-white rounded-md px-[12px] py-[7px]" onClick={() => dispatch(clearForexData())}>
+        <button
+          className="bg-white rounded-md px-[12px] py-[7px]"
+          onClick={() => dispatch(clearForexData())}
+        >
           <Link to="/admin-panel/lessons/market-pulse/create">New</Link>
         </button>
       </div>
@@ -79,7 +92,9 @@ function MarketPulseListScreen() {
             accessorKey: "coursetitle",
             Cell: ({ row }) => (
               <div className="flex flex-col w-48">
-                <p style={{ color: "#2271b1", fontWeight: "bold" }}>{row.original?.coursetitle}</p>
+                <p style={{ color: "#2271b1", fontWeight: "bold" }}>
+                  {row.original?.coursetitle}
+                </p>
                 <div className="flex items-center">
                   {row.id === open_delete_dialog?.row?.id && (
                     <DeleteMenuModal
@@ -108,7 +123,9 @@ function MarketPulseListScreen() {
                     onClick={() => {
                       // navigate to edit page
                       dispatch(setForexData(row.original));
-                      navigate(`/admin-panel/lessons/market-pulse/forex/${row.original.id}`);
+                      navigate(
+                        `/admin-panel/lessons/market-pulse/forex/${row.original.id}`
+                      );
                     }}
                     style={{ padding: 4, border: "none" }}
                   />
@@ -126,7 +143,9 @@ function MarketPulseListScreen() {
           {
             header: "Author",
             accessorKey: "author",
-            Cell: ({ row }) => <p style={{ color: "#2271b1" }}>{row.original.author}</p>,
+            Cell: ({ row }) => (
+              <p style={{ color: "#2271b1" }}>{row.original.author}</p>
+            ),
           },
           {
             header: "Date",
@@ -143,9 +162,15 @@ function MarketPulseListScreen() {
             accessorKey: "isvisible",
             Cell: ({ row }) => (
               <div className="flex">
-                <CustomRadioButton label="Yes" checked={row.original?.isvisible === true} />
+                <CustomRadioButton
+                  label="Yes"
+                  checked={row.original?.isvisible === true}
+                />
                 <span className="w-2"></span>
-                <CustomRadioButton label="No" checked={row.original?.isvisible === false} />
+                <CustomRadioButton
+                  label="No"
+                  checked={row.original?.isvisible === false}
+                />
               </div>
             ),
           },

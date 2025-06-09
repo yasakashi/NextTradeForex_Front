@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASE_URL = "https://api.yasakashi.ir";
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // "https://api.yasakashi.ir";
 // axios instance

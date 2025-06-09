@@ -30,7 +30,7 @@ export const getTicketPriorities = createAsyncThunk(
   "post/getTicketPriorities",
   async ({ axiosPrivate }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getpriorities", {
+      const response = await axiosPrivate.post("/getpriorities", {
         data: {},
       });
 
@@ -48,7 +48,7 @@ export const getTickets = createAsyncThunk(
   "post/getTickets",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/ticket/gettickets", data);
+      const response = await axiosPrivate.post("/ticket/gettickets", data);
 
       console.log("getTickets", { response });
 
@@ -64,7 +64,7 @@ export const getTicket = createAsyncThunk(
   "post/getTicket",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/ticket/gettickets", data);
+      const response = await axiosPrivate.post("/ticket/gettickets", data);
 
       console.log("getTicket", { response });
 
