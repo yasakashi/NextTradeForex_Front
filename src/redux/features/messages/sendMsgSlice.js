@@ -4,7 +4,7 @@ export const sendMsgAction = createAsyncThunk(
   "sendMessage/sendMsgAction",
   async ({ axiosPrivate, data }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/createforummessage", data);
+      const response = await axiosPrivate.post("/createforummessage", data);
 
       console.log({ response });
       return response.data;

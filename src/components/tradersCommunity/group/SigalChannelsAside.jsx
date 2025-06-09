@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getGroupSignalChannels } from "../../../redux/features/signals/signalChannelsSlice";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useEffect } from "react";
@@ -12,6 +12,7 @@ import {
 
 const SignalChannelsAside = ({ id }) => {
   const name = localStorage.getItem("groupname");
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const axiosPrivate = useAxiosPrivate();
@@ -53,6 +54,14 @@ const SignalChannelsAside = ({ id }) => {
     await dispatch(setSignalOwnerID(channel?.owneruserid));
   };
 
+  const createSignalChannelHandler = () => {
+    navigate(`/traders-community/groups/${name}/create-signal-channel`, {
+      state: {
+        
+      }
+    });
+  };
+
   return (
     <div className="p-6">
       <div className="w-full flex flex-row items-start gap-3 lg:flex-col lg:items-start lg:gap-3 xl:flex-row justify-between">
@@ -60,12 +69,13 @@ const SignalChannelsAside = ({ id }) => {
           Signal Channels
         </h3>
 
-        <Link
-          to={`/traders-community/groups/${name}/create-signal-channel`}
+
+        <button
+          onClick={createSignalChannelHandler}
           className="text-sm border rounded-lg border-blue-main px-2 py-1 text-blue-main"
         >
           New Channel
-        </Link>
+        </button>
       </div>
       <div className="my-4 flex items-center flex-wrap gap-3 text-xs font-medium text-gray-500">
         <span className="bg-blue-main text-gray-100 border rounded-[5px] shadow-sm px-3 py-1 hover:bg-blue-light hover:text-gray-100 transition-all cursor-pointer">

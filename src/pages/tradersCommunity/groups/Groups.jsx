@@ -12,7 +12,7 @@ import {
   getAllGroups,
   getUserGroups,
 } from "../../../redux/features/groupSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CustomBeatLoader from "../../../utils/loaders/CustomBeatLoader";
 import { clearSignalChannelId } from "../../../redux/features/signals/SignalSlice";
 import toast from "react-hot-toast";
@@ -30,6 +30,10 @@ const CommunityGroups = () => {
     ascending: false,
   });
   const [search, setSearch] = useState("");
+  const [pageCount, setPageCount] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const groupsSectionRef = useRef(null);
 
   useEffect(() => {
     dispatch(clearSignalChannelId());
@@ -40,12 +44,14 @@ const CommunityGroups = () => {
           toast,
           sortitem: [filterItem],
           title: search,
+          setPageCount,
+          currentPage,
         })
       );
     } else if (fetchStatus === "mygroups") {
       dispatch(getUserGroups({ axiosPrivate, toast }));
     }
-  }, [fetchStatus, filterItem, search]);
+  }, [fetchStatus, filterItem, search, currentPage]);
 
   const handleSelectChange = (e) => {
     const value = e.target.value;
@@ -68,6 +74,16 @@ const CommunityGroups = () => {
     setFilterItem(sortConfig);
   };
 
+  const changePageIndexHandler = (index) => {
+    setCurrentPage(index);
+    if (groupsSectionRef.current) {
+      window.scrollTo({
+        top: groupsSectionRef.current.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <>
       <SideBar />
@@ -79,6 +95,7 @@ const CommunityGroups = () => {
           </div>
         </div>
       )} */}
+
       <div className="bg-link-water w-full min-h-screen h-auto">
         <CummunityNavbar />
         <div className="px-14 md:px-20 lg:px-12 xl:px-20 max_w_main mx-auto">
@@ -126,7 +143,7 @@ const CommunityGroups = () => {
             </div>
           )}
           {/* groups items */}
-          <div className="mt-20">
+          <div ref={groupsSectionRef} className="mt-20">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-4 p-1 m-1">
               {groupsForDisplay?.map((item, index) => (
                 <GroupCard {...item} key={index} />
@@ -136,18 +153,26 @@ const CommunityGroups = () => {
 
           {/* Pagination */}
           <div className="flex justify-center pb-[200px] mt-20">
-            <div className="flex justify-center items-center gap-1">
-              <div
-                className={` bg-blue-light text-white size-[50px] flex items-center justify-center rounded-lg text-xl cursor-pointer hover:bg-blue-light hover:text-white transition-colors`}
-              >
-                1
-              </div>
-              <div className="bg-white size-[50px] flex items-center justify-center rounded-lg text-xl cursor-pointer hover:bg-blue-light hover:text-white transition-colors">
-                2
-              </div>
-              <div className="bg-white size-[50px] flex items-center justify-center rounded-lg text-xl cursor-pointer hover:bg-blue-light hover:text-white transition-colors">
-                <RiArrowRightWideLine size={20} />
-              </div>
+            <div className="flex justify-center items-center gap-2">
+              {Array.from({ length: pageCount }, (_, index) => (
+                <div
+                  onClick={() => changePageIndexHandler(index + 1)}
+                  key={index}
+                  className={`${
+                    currentPage === index + 1
+                      ? "bg-blue-light text-white"
+                      : "bg-white text-blue-light"
+                  } size-[50px] flex items-center justify-center rounded-lg text-xl cursor-pointer hover:bg-blue-light hover:text-white transition-colors`}
+                >
+                  {index + 1}
+                </div>
+              ))}
+
+              {pageCount > 10 ? (
+                <div className="bg-white size-[50px] flex items-center justify-center rounded-lg text-xl cursor-pointer hover:bg-blue-light hover:text-white transition-colors">
+                  <RiArrowRightWideLine size={20} />
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

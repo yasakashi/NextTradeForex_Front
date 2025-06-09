@@ -50,8 +50,8 @@ import SelectLearnToTrade from "./pages/learn_to_trade/select_learn_to_trade";
 import LearnToTradeCategories from "./pages/learn_to_trade/LearnToTradeCategories";
 import CategoryListToLearnScreen from "./pages/learn_to_trade/category_list_to_learn_screen";
 import CategoriesDetailsView from "./admin_panel/pages/categories/view/category_details_view_screen";
-import CourseDetails from "./admin_panel/pages/tutor/courses/course_details/view/course_detasils";
-import CourseAttachments from "./admin_panel/pages/tutor/courses/course_atachments/view/course_attachments";
+import CourseDetails from "./admin_panel/pages/tutor-lms/courses/course_details/view/course_detasils";
+import CourseAttachments from "./admin_panel/pages/tutor-lms/courses/course_atachments/view/course_attachments";
 import PartnerShip from "./pages/home/partnership/PartnerShip";
 import PartnershipProfileView from "./pages/home/partnership/PartnershipProfileView";
 import { connect } from "react-redux";
@@ -86,51 +86,23 @@ import LearnToTradeSubCategories from "./pages/learn_to_trade/LearnToTradeSubCat
 import MyPosts from "./components/profile/myPosts/MyPosts";
 import AddNewForumPost from "./admin_panel/pages/posts/Forum/AddNewForumPost";
 import AddNewBlogPost from "./admin_panel/pages/posts/blog/AddNewBlogPost";
+import ReferralTree from "./pages/referral-tree/ReferralTree";
+import WithdrawalRequests from "./pages/WithdrawalRequests";
+import CompanyIncome from "./pages/CompanyIncome";
+import RoyalityIncome from "./pages/RoyalityIncome";
+import DailyReport from "./pages/reports/DailyReport";
 
 function App({ auth }) {
   const token = localStorage.getItem("loginToken");
 
-  // React.useEffect(() => {
-  //   if (!token) {
-  //     http_instanse
-  //       .post(
-  //         "/gettoken",
-  //         {
-  //           username: "yasa",
-  //           password: "kashi",
-  //         },
-  //         { auth: { password: "kashi", username: "yasa" } }
-  //       )
-  //       .then((res) => {
-  //         if (!localStorage?.userid) {
-  //           get_user_info_api().then(() => {
-  //             window?.location?.reload();
-  //           });
-  //         } else {
-  //           window?.location?.reload();
-  //         }
-  //         localStorage.loginToken = res.data.messageData;
-  //       })
-  //       .catch((err) => {});
-  //   }
-  // }, []);
-  // @babel/plugin-proposal-private-property-in-object
-  // export NODE_OPTIONS=--max_old_space_size=4096
-  // npx update-browserslist-db@latest
-
   return (
     <div className="bg-blue-dark">
-      {/* <header className="text-center p-4 bg-white shadow-lg rounded-lg">
-        <h1 className="text-2xl font-bold">Welcome to my multilingual app</h1>
-        <p className="text-gray-600">This is a simple example</p>
-        
-      </header> */}
       <div className="max-w-[1500px] mx-auto flex flex-col min-h-screen  overflow-x-hidden">
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/register/:referralCode?" element={<Register />} />
             <Route path="/market-pulse" element={<MarketPulseLayout />}>
               <Route index element={<MarketPulseIndex />} />
               {market_pulse_router.map((item, i) => {
@@ -141,17 +113,50 @@ function App({ auth }) {
             </Route>
 
             <Route path="/course-category/top-courses" element={<Courses />} />
+            <Route path="/learn_to_trade" element={<LearnToTrade />}>
+              <Route path="/learn_to_trade" element={<LearnToTradeScreen />} />
+
+              <Route
+                path="/learn_to_trade/:level"
+                element={<LearnToTradeCategories />}
+              />
+
+              <Route
+                path="/learn_to_trade/:level/:categoryName"
+                element={<LearnToTradeSubCategories />}
+              />
+
+              <Route
+                path="/learn_to_trade/:level/:categoryName/:subCategoryName"
+                element={<CategoriesDetailsView />}
+              />
+            </Route>
+
+            <Route path="/traders-community" element={<TradersCommunity />} />
+            <Route
+              path="/traders-community/groups"
+              element={<CommunityGroups />}
+            />
 
             {token ? (
               <>
                 <Route path="/partnership" element={<PartnerShip />} />
+                <Route path="/referral-tree" element={<ReferralTree />} />
+                <Route
+                  path="/all-withdrawal-request"
+                  element={<WithdrawalRequests />}
+                />
+
+                <Route path="/company-income" element={<CompanyIncome />} />
+                <Route path="/royalty-income" element={<RoyalityIncome />} />
+                <Route path="/report" element={<DailyReport />} />
                 <Route
                   path="/partnership/profile-view/:userid"
                   element={<PartnershipProfileView />}
                 />
                 <Route path="/course/:courseId" element={<CourseDetails />} />
                 <Route
-                  path="/courses/:coursename/:courseId/lesson/:lessonId"
+                  path="/courses/:coursename/:courseId"
                   element={<StartLearning />}
                 />
                 <Route
@@ -187,7 +192,7 @@ function App({ auth }) {
                   element={<CourseAttachments />}
                 />
 
-                <Route path="/learn_to_trade" element={<LearnToTrade />}>
+                {/* <Route path="/learn_to_trade" element={<LearnToTrade />}>
                   <Route
                     path="/learn_to_trade"
                     element={<LearnToTradeScreen />}
@@ -207,7 +212,7 @@ function App({ auth }) {
                     path="/learn_to_trade/:level/:categoryName/:subCategoryName"
                     element={<CategoriesDetailsView />}
                   />
-                </Route>
+                </Route> */}
                 <Route path="/admin-panel" element={<MainLayout />}>
                   <Route
                     path="/admin-panel/lesson/categories"
@@ -224,18 +229,15 @@ function App({ auth }) {
                     );
                   })}
                 </Route>
-                <Route
+                {/* <Route
                   path="/traders-community"
                   element={<TradersCommunity />}
                 />
                 <Route
                   path="/traders-community/groups"
                   element={<CommunityGroups />}
-                />
-                {/* <Route
-              path="/traders-community/groups/:id"
-              element={<CommunityGroup />}
-            /> */}
+                /> */}
+
                 <Route
                   path="/traders-community/groups/create"
                   element={<CreateGroup />}
@@ -295,8 +297,9 @@ function App({ auth }) {
                   path="/traders-community/all-membership-request"
                   element={<AllMemberShipRequest />}
                 />
+
                 <Route
-                  path="/traders-community/create-signal-channel/:id"
+                  path="/traders-community/groups/:name/create-signal-channel"
                   element={<CreateSignalChannel />}
                 />
                 <Route

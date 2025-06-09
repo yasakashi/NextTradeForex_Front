@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import {
   useGetCourseTopicsMutation,
   useGetTopicLessonsMutation,
-} from "../../../../../../redux/features/course/courseBuilderApi";
+} from "../../../../../../redux/features/api/course/courseBuilderApi";
 
 import { Link, useParams } from "react-router-dom";
-import { useGetCoursesQuery } from "../../../../../../redux/features/course/courseApii";
+import { useGetCoursesQuery } from "../../../../../../redux/features/api/course/courseApii";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { motion } from "framer-motion";
 import CoverImage from "../../../../../../asset/img/placeholder (1).svg";
@@ -92,7 +92,7 @@ const Lessons = ({ setLoading }) => {
 
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {console.log(lessons)}
+    
       {lessons?.length > 0
         ? lessons?.map((lesson, index) => (
             <Link

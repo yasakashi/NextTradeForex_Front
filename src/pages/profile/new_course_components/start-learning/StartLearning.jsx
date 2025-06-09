@@ -1,30 +1,26 @@
 import { useEffect, useState } from "react";
-import {
-  useGetCourseTopicsMutation,
-  useGetTopicLessonsMutation,
-} from "../../../../redux/features/course/courseBuilderApi";
 import { Link, useParams } from "react-router-dom";
 
 import LearningOverview from "./LearningOverview";
 import LearningComments from "./learning-comments/LearningComments";
+import {
+  useGetCourseTopicsMutation,
+  useGetTopicLessonsMutation,
+} from "../../../../redux/features/api/course/courseBuilderApi";
+import { useGetCoursesQuery } from "../../../../redux/features/api/course/courseApii";
 
 const StartLearning = () => {
-  const { courseId, lessonId } = useParams();
-
-
+  const { courseId } = useParams();
 
   const [activeTab, setActiveTab] = useState("overview");
-
-  const [topics, setTopics] = useState([]);
-  const [lessons, setLessons] = useState({});
-
-  const [openTopicIndex, setOpenTopicIndex] = useState(0);
 
   const [
     getCourseTopics,
     { error, isLoading: getCourseTopicsLoading, isSuccess },
   ] = useGetCourseTopicsMutation();
+
   const [getTopicLessons] = useGetTopicLessonsMutation();
+  
 
   useEffect(() => {
     async function courseTopics() {
@@ -46,36 +42,11 @@ const StartLearning = () => {
     courseTopics();
   }, []);
 
-  const handleToggleTopic = async (index, topicId) => {
-    setOpenTopicIndex(null);
-
-    if (openTopicIndex === index) {
-      setOpenTopicIndex(null);
-    } else {
-      setOpenTopicIndex(index);
-      if (!lessons[topicId]) {
-        const lessonsRes = await getTopicLessons({
-          data: {
-            Id: null,
-            courseId: courseId,
-            topicId: topicId,
-            lessonName: "",
-            pageindex: 1,
-            rowcount: 50,
-          },
-        });
-        if (lessonsRes?.data?.messageCode === 200) {
-          setLessons((prev) => ({
-            ...prev,
-            [topicId]: lessonsRes?.data?.messageData,
-          }));
-        }
-      }
-    }
-  };
+ 
 
   return (
     <div>
+      
       {/* top nav */}
       <div className="mt-8 mb-4 flex items-center justify-center">
         <ul className="flex flex-wrap justify-center -mb-px border-b border-gray-200 w-full">
@@ -107,7 +78,10 @@ const StartLearning = () => {
       </div>
 
       {activeTab === "overview" ? (
-        <LearningOverview isLoading={getCourseTopicsLoading} />
+        <LearningOverview
+          
+          isLoading={getCourseTopicsLoading}
+        />
       ) : activeTab === "comments" ? (
         <LearningComments />
       ) : null}

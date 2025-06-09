@@ -17,7 +17,7 @@ import { EditorState } from "draft-js";
 import {
   useAddNewCategoryMutation,
   useGetMainCategoriesByInfoMutation,
-} from "../../../../../redux/features/categories/categoriesApi";
+} from "../../../../../redux/features/api/categories/categoriesApi";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
 

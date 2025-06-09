@@ -3,17 +3,36 @@ import LibraryModal from "../../../pages/profile/new_course_components/library_m
 import AdminPanelTitle from "../../components/AdminPanelTitle";
 import { CustomButton } from "../../../components/ui/CustomButton";
 import { IoMdClose } from "react-icons/io";
+import { useAddNewMediaMutation } from "../../../redux/features/api/admin-panel/mediaApi";
+import toast from "react-hot-toast";
 
 const AddNewMediaFile = () => {
   const [is_open, set_is_open] = useState(false);
   const [file, setFile] = useState(null);
 
+  const [addNewMedia, { isLoading }] = useAddNewMediaMutation();
+
+  const addMediaFileHanler = async () => {
+    const formData = new FormData();
+    formData.append("mediafile", file);
+    formData.append("systempartid", 1);
+    formData.append("auther", 2);
+    formData.append("filetypeid", 1);
+
+    const res = await addNewMedia({ data: formData }).unwrap();
+
+    if (res?.messageCode === 200) {
+      toast.success("Media file added.");
+      setFile(null);
+    }
+    console.log({ res });
+  };
+
   return (
     <div className="pt-10 px-8">
-      {console.log({ file })}
       <AdminPanelTitle title="Upload New Media" />
 
-      <div className="bg-slate-200 w-full flex flex-col items-center justify-center md:w-[80%] h-[200px] mx-auto border border-dashed border-slate-400 rounded-l-lg">
+      <div className="bg-slate-200 mt-4 w-full flex flex-col items-center justify-center md:w-[80%] h-[200px] mx-auto border border-dashed border-slate-400 rounded-l-lg">
         {file ? (
           <div className="max-w-[500px] aspect-video h-[90%] relative">
             <img
@@ -46,6 +65,19 @@ const AddNewMediaFile = () => {
           </div>
         )}
       </div>
+      {file ? (
+        <div className="mt-6">
+          <CustomButton
+            disabled={isLoading}
+            onClick={addMediaFileHanler}
+            size="sm"
+            className="disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {" "}
+            {isLoading ? "sending ..." : "Submit File"}
+          </CustomButton>
+        </div>
+      ) : null}
 
       <LibraryModal
         has_side_bar_action={false}

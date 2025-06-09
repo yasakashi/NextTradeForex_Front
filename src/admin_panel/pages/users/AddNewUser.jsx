@@ -4,6 +4,8 @@ import { SiGoogletranslate } from "react-icons/si";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { useState } from "react";
 import * as Yup from "yup";
+import toast from "react-hot-toast";
+import { useAddNewUserByAdminMutation } from "../../../redux/features/api/admin-panel/panelUsersApi";
 
 const validationSchema = Yup.object({
   username: Yup.string().required("Username is required"),
@@ -46,20 +48,22 @@ const getPasswordStrength = (password) => {
   return { value, style };
 };
 
-  const generateRandomPassword = () => {
-    const chars =
-      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_+=";
-    let password = "";
-    for (let i = 0; i < 12; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return password;
-  };
+const generateRandomPassword = () => {
+  const chars =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-_+=";
+  let password = "";
+  for (let i = 0; i < 12; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+};
 
 const AddNewUser = () => {
   const [showPassword, setShowPassword] = useState(true);
   const [passwordStrength, setPasswordStrength] = useState("");
   const [style, setStyle] = useState("border-[#68de7c] bg-[#b8e6bf]");
+
+  const [addNewUserByAdmin, { isLoading }] = useAddNewUserByAdminMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -76,8 +80,15 @@ const AddNewUser = () => {
     },
     validationSchema: validationSchema,
 
-    onSubmit: (values) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log(values);
+      const res = await addNewUserByAdmin({ data: values }).unwrap();
+
+      if (res?.messageCode === 200) {
+        toast.success("New user created.");
+        resetForm();
+      }
+      console.log("add New user by admin ===>", { res });
     },
   });
 
@@ -88,20 +99,18 @@ const AddNewUser = () => {
     setStyle(style);
   };
 
-
-
   const handleGeneratePassword = () => {
     const randomPassword = generateRandomPassword();
     formik.setFieldValue("password", randomPassword);
-    const { value ,style } = getPasswordStrength(randomPassword);
+    const { value, style } = getPasswordStrength(randomPassword);
     setPasswordStrength(value);
-     setStyle(style);
+    setStyle(style);
   };
 
   return (
     <div className="py-10 px-8">
       <h2 className="font-normal text-2xl text-[#1d2327]">Add New User</h2>
-      {console.log(formik.values, style)}
+
       <p className="mt-10 text-[13px] text-gray-600 font-normal">
         Create a brand new user and add the to this site.
       </p>
@@ -260,7 +269,13 @@ const AddNewUser = () => {
           </div>
         </label>
 
-        <CustomButton size="sm">Add New User</CustomButton>
+        <CustomButton
+          disabled={isLoading}
+          className="disabled:opacity-80 disabled:cursor-not-allowed"
+          size="sm"
+        >
+          {isLoading ? "Sending ..." : "Add New User"}
+        </CustomButton>
       </form>
     </div>
   );

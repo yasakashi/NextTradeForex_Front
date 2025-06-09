@@ -1,0 +1,29 @@
+.marquee .custom-marquee {
+  display: block;
+  width: 200%;
+  position: absolute;
+  overflow: hidden;
+  animation: marquee 40s linear infinite;
+}
+
+.marquee {
+  font-size: 2vw;
+  color: #fff;
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee span {
+  float: left;
+  width: 50%;
+}
+
+@keyframes marquee {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}

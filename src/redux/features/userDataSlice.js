@@ -4,7 +4,7 @@ export const userDataAction = createAsyncThunk(
   "user/userDataAction",
   async ({ axiosPrivate, navigate, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/checktoken");
+      const response = await axiosPrivate.post("/checktoken");
 
       console.log("userdata response", { response });
       if (response?.status === 200) {
@@ -18,8 +18,10 @@ export const userDataAction = createAsyncThunk(
           response?.data?.messageData?.userTypeId === 2
         ) {
           navigate("/admin-panel");
+          window.location.reload();
         } else {
           navigate("/");
+          window.location.reload();
         }
       }
       return response.data;

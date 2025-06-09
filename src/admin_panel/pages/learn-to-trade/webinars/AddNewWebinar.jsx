@@ -13,7 +13,7 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import LTRCategory from "../../../components/LTRCategory";
 import { MdClose } from "react-icons/md";
-import { useAddNewLTRWebinarMutation } from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+import { useAddNewLTRWebinarMutation } from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
 
 import * as Yup from "yup";
@@ -142,13 +142,13 @@ const AddNewWebinar = () => {
       <AdminPanelTitle title="Add New Webinar" />
       <form
         onSubmit={formik.handleSubmit}
-        className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
+        className="space-x-0 mt-8 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
       >
         <div className="col-span-1 lg:col-span-3">
           <CustomTextInput
             name="title"
             placeholder="Add title"
-            className="border border-gray-700 py-[10px] placeholder:text-sm rounded-sm"
+            className="border border-[#ccd0d4] py-[10px] placeholder:text-sm rounded-sm"
             value={formik.values?.title}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

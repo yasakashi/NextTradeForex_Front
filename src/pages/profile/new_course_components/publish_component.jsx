@@ -3,6 +3,7 @@ import NewCourceCard, { CustomDivider } from "./new_cource_card";
 import BorderedButtonPrimary from "../../../common/bordered_button_primary";
 import { bold_font, light_font } from "../../../constants/style/fonts";
 import ContainedButtonPrimary from "../../../common/contained_button_primary";
+import { CustomButton } from "../../../components/ui/CustomButton";
 
 const PublishComponent = ({ isLoading }) => {
   return (
@@ -83,14 +84,14 @@ const PublishComponent = ({ isLoading }) => {
             justifyContent: "flex-end",
           }}
         >
-          <button
+          <CustomButton
             type="submit"
+            size="sm"
             // onClick={onClick}
             disabled={isLoading}
-            className="px-3 py-2 bg-blue-600 rounded-md disabled:cursor-not-allowed outline-none border-none text-white hover:shadow-none text-sm font-semibold shadow-lg"
           >
             {isLoading ? "Sending ..." : "Submit for preview"}
-          </button>
+          </CustomButton>
         </div>
       </div>
     </NewCourceCard>

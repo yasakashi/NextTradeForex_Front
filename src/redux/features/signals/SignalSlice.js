@@ -4,7 +4,7 @@ export const addSignalAction = createAsyncThunk(
   "signal/addSignalAction",
   async ({ axiosPrivate, data, toast, navigate, id }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/signal/addsignal", data);
+      const response = await axiosPrivate.post("/signal/addsignal", data);
 
       console.log({ response });
       // if (response?.status === 200) {
@@ -76,7 +76,7 @@ export const getAnalysisType = createAsyncThunk(
   "signal/getAnalysisType",
   async ({ axiosPrivate, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getanalysistype");
+      const response = await axiosPrivate.post("/getanalysistype");
 
       console.log("analysis type", { response });
 
@@ -95,7 +95,7 @@ export const getPositionType = createAsyncThunk(
   "signal/getPositionType",
   async ({ axiosPrivate, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getpositiontype");
+      const response = await axiosPrivate.post("/getpositiontype");
 
       console.log("position type", { response });
 
@@ -114,7 +114,7 @@ export const getMarketCycle = createAsyncThunk(
   "signal/getMarketCycle",
   async ({ axiosPrivate, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getmarketcycle");
+      const response = await axiosPrivate.post("/getmarketcycle");
 
       console.log("market cycle", { response });
 
@@ -133,7 +133,7 @@ export const getInstrument = createAsyncThunk(
   "signal/getInstrument",
   async ({ axiosPrivate, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getinstrument");
+      const response = await axiosPrivate.post("/getinstrument");
 
       console.log("instruments", { response });
 
@@ -152,7 +152,7 @@ export const getEntryPoint = createAsyncThunk(
   "signal/getEntryPoint",
   async ({ axiosPrivate, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getentrypoint");
+      const response = await axiosPrivate.post("/getentrypoint");
 
       console.log("entry point", { response });
 

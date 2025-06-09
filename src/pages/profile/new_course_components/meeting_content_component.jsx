@@ -13,7 +13,7 @@ import LibraryModal from "./library_modal";
 import DraftEditor from "../../../admin_panel/components/editor/draft_editor";
 import { EditorState } from "draft-js";
 import { useFormik } from "formik";
-import { useAddCourseMeetingMutation } from "../../../redux/features/course/courseApii";
+import { useAddCourseMeetingMutation } from "../../../redux/features/api/course/courseApii";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 

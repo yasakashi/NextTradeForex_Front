@@ -14,7 +14,7 @@ import LTRCategory from "../../../components/LTRCategory";
 import {
   useAddNewLTRVideoMutation,
   useAddNewLTRVideoSubtitleMutation,
-} from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+} from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import toast from "react-hot-toast";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
 
@@ -101,13 +101,13 @@ const AddNewVideo = () => {
       <AdminPanelTitle title="Add New Video" />
       <form
         onSubmit={formik.handleSubmit}
-        className="space-x-0 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
+        className="space-x-0 mt-8 lg:space-x-4 grid grid-cols-1 lg:grid-cols-4 items-start"
       >
         <div className="col-span-1 lg:col-span-3">
           <CustomTextInput
             name="title"
             placeholder="Add title"
-            className="border border-gray-700 py-[10px] placeholder:text-sm rounded-sm"
+            className="border border-[#ccd0d4] py-[10px] placeholder:text-sm rounded-sm"
             value={formik.values?.title}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

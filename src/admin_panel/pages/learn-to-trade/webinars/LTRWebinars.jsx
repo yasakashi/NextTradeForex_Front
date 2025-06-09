@@ -4,17 +4,17 @@ import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
 import {
- 
   useGetLTRWebinarsQuery,
   useRemoveLTRPodcastMutation,
-} from "../../../../redux/features/learnToTrade/LearnToTradeApi";
+} from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 import { IoTrashOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import useClickOutside from "../../../../hooks/useClickOutside";
 import CustomRadioButton from "../../categories/view/components/customRadioButton";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import { FaPlus } from "react-icons/fa6";
 
-const LTRWebinars = ({page}) => {
+const LTRWebinars = ({ page }) => {
   const [showModal, setShowModal] = useState(false);
   const [activeRowId, setActiveRowId] = useState("");
 
@@ -61,10 +61,10 @@ const LTRWebinars = ({page}) => {
   };
 
   return (
-    <div className="flex flex-col px-8 py-10">
+    <div className="flex flex-col px-8 py-10 mb-10">
       {/* <h1 className="font-semibold text-2xl text-white mb-4">Webinars</h1> */}
-      <AdminPanelTitle title="Webinars" />
-      <div>
+      <div className="flex items-center gap-4 mb-8">
+        <AdminPanelTitle title="Webinars" />
         <CustomButton
           onClick={() =>
             navigate(
@@ -73,11 +73,15 @@ const LTRWebinars = ({page}) => {
               }/webinars/add-new-webinar`
             )
           }
-          className=" mb-10 mt-6"
+          className="flex items-center gap-2 group"
           variant="outlined"
           size="sm"
         >
-          Add New Webinar
+          <FaPlus
+            size={16}
+            className="text-blue-accent group-hover:text-white"
+          />
+          <span>Add New Webinar</span>
         </CustomButton>
       </div>
 

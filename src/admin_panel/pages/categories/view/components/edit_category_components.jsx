@@ -10,7 +10,7 @@ import {
   useAddNewCategoryMutation,
   useGetCategoryInfoMutation,
   useUpdateCategoryMutation,
-} from "../../../../../redux/features/categories/categoriesApi";
+} from "../../../../../redux/features/api/categories/categoriesApi";
 import { useFormik } from "formik";
 import { EditorState } from "draft-js";
 

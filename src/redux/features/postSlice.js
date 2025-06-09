@@ -2,10 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const createGroupPost = createAsyncThunk(
   "post/createGroupPost",
-  async (
-    { axiosPrivate, data, toast, resetForm },
-    { rejectWithValue }
-  ) => {
+  async ({ axiosPrivate, data, toast, resetForm }, { rejectWithValue }) => {
     console.log({ data });
     try {
       const response = await axiosPrivate.post(
@@ -30,7 +27,7 @@ export const createPostComment = createAsyncThunk(
   "post/createPostComment",
   async ({ axiosPrivate, data, toast }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/createforummessage", data);
+      const response = await axiosPrivate.post("/createforummessage", data);
 
       console.log({ response });
       if (response?.status === 200) {
@@ -49,7 +46,7 @@ export const getGroupPosts = createAsyncThunk(
   async ({ axiosPrivate, data }, { rejectWithValue }) => {
     console.log({ data });
     try {
-      const response = await axiosPrivate.post("/api/getforummessage", data);
+      const response = await axiosPrivate.post("/getforummessage", data);
 
       console.log("getPosts", { response });
       return response.data;
@@ -65,7 +62,7 @@ export const getGroupPost = createAsyncThunk(
   async ({ axiosPrivate, data }, { rejectWithValue }) => {
     console.log({ data });
     try {
-      const response = await axiosPrivate.post("/api/getforummessage", data);
+      const response = await axiosPrivate.post("/getforummessage", data);
 
       console.log("getPost", { response });
       return response.data;
@@ -80,7 +77,7 @@ export const getPostComments = createAsyncThunk(
   "post/getPostComments",
   async ({ axiosPrivate, data }, { rejectWithValue }) => {
     try {
-      const response = await axiosPrivate.post("/api/getforummessage", data);
+      const response = await axiosPrivate.post("/getforummessage", data);
       return { parentId: data.parentId, comments: response.data.messageData };
       // console.log("getcomments", { response });
       // return response.data;
@@ -125,7 +122,7 @@ export const removePost = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axiosPrivate.post("/api/deleteforummessage", data);
+      const response = await axiosPrivate.post("/deleteforummessage", data);
 
       console.log({ response });
       if (response?.status === 200) {
@@ -169,7 +166,6 @@ export const getPostReactions = createAsyncThunk(
         "/api/getforummessagereaction",
         data
       );
-
 
       return response.data;
     } catch (error) {
@@ -314,7 +310,6 @@ const groupPostSlice = createSlice({
         state.errorMsg = null;
       })
       .addCase(getPostReactions.fulfilled, (state, action) => {
-        
         state.postReactionLoading = false;
         state.errorMsg = null;
         state.postReactions = action?.payload?.messageData;

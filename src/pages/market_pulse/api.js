@@ -2,7 +2,7 @@ import { axiosInstance, axiosPrivate } from '../../axios/axiosInstance';
 
 export const getCurrencies = async () => {
   try {
-    const { data } = await axiosInstance.get('/api/marketpuls/getcurrencies', {
+    const { data } = await axiosInstance.get('/marketpuls/getcurrencies', {
       headers: { 'Content-Type': 'application/json' },
     });
 

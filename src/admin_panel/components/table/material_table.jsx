@@ -60,6 +60,8 @@ const MAterialTable = ({
         backgroundColor: (t) => t.palette.background.paper,
         boxShadow: "none",
         border: bodyBorder,
+        width: `100%`,
+        margin: "auto",
       },
     },
     initialState: { showGlobalFilter: true },
@@ -94,7 +96,8 @@ const MAterialTable = ({
       sx: {
         backgroundColor: (t) => t.palette.background.paper,
         // height: `calc(100% - ${78}px)`,
-        height: 800,
+        height: 400,
+        width: "100%",
         borderRadius: 1,
         scrollbarGutter: "stable",
 

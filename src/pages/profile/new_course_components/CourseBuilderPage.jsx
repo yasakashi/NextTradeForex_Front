@@ -21,7 +21,7 @@ import {
   useGetTopicLessonsMutation,
   useRemoveCourseTopicMutation,
   useRemoveTopicLessonMutation,
-} from "../../../redux/features/course/courseBuilderApi";
+} from "../../../redux/features/api/course/courseBuilderApi";
 import { Link, useParams } from "react-router-dom";
 import RemoveConfirmModal from "./RemoveConfirmModal";
 import toast from "react-hot-toast";
@@ -206,7 +206,7 @@ const CourseBuilderPage = ({ page }) => {
   return (
     <>
       <div
-        className={`w-full ${
+        className={`w-full pb-10 ${
           page === "admin" ? "" : "bg-[#f0f0f1]"
         } top-0 p-0 m-0 min-h-screen`}
       >
@@ -216,9 +216,9 @@ const CourseBuilderPage = ({ page }) => {
           className="wrapper mx-auto flex w-full flex-col max-h-fit "
         >
           <h4
-            className={`text-3xl ${
-              page === "admin" ? "text-gray-100" : "text-gray-700"
-            } font-bold mb-4 mt-4`}
+            className={`font-medium text-2xl ${
+              page === "admin" ? "text-[#1d2327]" : "text-[#1d2327]"
+            } mb-4 mt-6`}
           >
             Add Course Details
           </h4>
@@ -312,7 +312,8 @@ const CourseBuilderPage = ({ page }) => {
                                   </button>
                                   <h5>{lesson?.lessonName} : </h5>
                                   <p className="text-gray-400 text-sm">
-                                    {lesson?.lessonDescription.slice(0, 16) + " . . ."}
+                                    {lesson?.lessonDescription.slice(0, 16) +
+                                      " . . ."}
                                   </p>
                                 </div>
 
@@ -490,11 +491,11 @@ const CourseBuilderPage = ({ page }) => {
 
         <div className="flex py-10 px-4">
           <Link
-            className="text-[#1976d2] hover:text-[#1565c0] hover:underline px-3 py-[6px] rounded-md shadow-sm text-base font-medium"
+            className="text-[#1976d2] hover:text-[#1565c0] hover:underline px-3 py-[6px] rounded-md shadow-sm text-base font-normal"
             // to={`/user-profile/myCourses/new-course/add-meeting-pdf/${courseId}`}
             to={
               page === "admin"
-                ? `/admin-panel/tutor/Courses/create-new-course/add-meeting-pdf/${courseId}`
+                ? `/admin-panel/tutor-lms/Courses/create-new-course/add-meeting-pdf/${courseId}`
                 : `/user-profile/myCourses/new-course/add-meeting-pdf/${courseId}`
             }
           >

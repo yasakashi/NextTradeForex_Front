@@ -137,7 +137,7 @@ const TicketsList = () => {
                     <div className="flex items-center space-x-3">
                       <img
                         className="rounded-full size-[40px] border border-gray-300"
-                        src="/public/assets/bp-avatar.png"
+                        src="/assets/bp-avatar.png"
                         alt="User Image"
                       />
                       <div className="flex flex-col leading-5">

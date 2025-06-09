@@ -10,7 +10,7 @@ import {
   useRemoveCategoryMutation,
   useGetSubCategoriesByInfoMutation,
   useGetMainCategoriesByInfoMutation,
-} from "../../../../redux/features/categories/categoriesApi";
+} from "../../../../redux/features/api/categories/categoriesApi";
 import useClickOutside from "../../../../hooks/useClickOutside";
 
 import { IoTrashOutline } from "react-icons/io5";

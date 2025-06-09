@@ -3,14 +3,15 @@ import MAterialTable from "../../../components/table/material_table";
 import BorderedButtonPrimary from "../../../../common/bordered_button_primary";
 import { CustomButton } from "../../../../components/ui/CustomButton";
 import { useNavigate } from "react-router-dom";
-import {
-  useGetLTRTopicsQuery,
-  useRemoveTopicMutation,
-} from "../../../../redux/features/learnToTrade/LearnToTradeApi";
 import { IoTrashOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import useClickOutside from "../../../../hooks/useClickOutside";
 import AdminPanelTitle from "../../../components/AdminPanelTitle";
+import { FaPlus } from "react-icons/fa6";
+import {
+  useGetLTRTopicsQuery,
+  useRemoveTopicMutation,
+} from "../../../../redux/features/api/learnToTrade/LearnToTradeApi";
 
 const LTRTopics = () => {
   const [showModal, setShowModal] = useState(false);
@@ -59,18 +60,21 @@ const LTRTopics = () => {
 
   return (
     <div className="flex flex-col px-8 py-10">
-      <AdminPanelTitle title="Topics" />
-
-      <div>
+      <div className="flex items-center gap-6 mb-8">
+        <AdminPanelTitle title="Topics" />
         <CustomButton
           onClick={() =>
             navigate("/admin-panel/learn-to-trade/topics/add-new-topic")
           }
-          className=" mb-10 mt-6"
+          className="group gap-1"
           variant="outlined"
           size="sm"
         >
-          Add New Topic
+          <FaPlus
+            size={16}
+            className="text-blue-accent group-hover:text-white"
+          />
+          <span>Add New Topic</span>
         </CustomButton>
       </div>
 

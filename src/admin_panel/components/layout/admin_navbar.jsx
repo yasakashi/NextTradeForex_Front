@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
-import { TiMessage, TiPlus, TiRefresh } from "react-icons/ti";
 import { FaPlus } from "react-icons/fa6";
 import { BiSolidMessage } from "react-icons/bi";
+import { RiMenuFill, RiCloseLargeLine } from "react-icons/ri";
 
 import { Link, useNavigate } from "react-router-dom";
 import useClickOutside from "../../../hooks/useClickOutside";
@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { logoutAction } from "../../../redux/features/loginSlice";
 import useUserRole from "../../../hooks/useUserRole";
 
-const AdminNavbar = () => {
+const AdminNavbar = ({ showAdminSidebar, setShowAdminsidebar }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const role = useUserRole(user?.userTypeId);
 
@@ -43,12 +43,24 @@ const AdminNavbar = () => {
   };
 
   return (
-    <div className="bg-blue-light z-[1000] w-[calc(100%-200px)] h-[43px] justify-between px-4 text-white fixed top-0 flex items-center ">
+    <div className="bg-blue-light fixed z-[1000] w-full md:w-[calc(100%-200px)] h-[43px] justify-between px-4 text-white top-0 flex items-center">
       <div className="flex items-center space-x-4">
-        {/* <div className="flex items-center mr-2">
-          <TiRefresh size={25} />
-          <h5 className="font-bold text-sm">49</h5>
-        </div> */}
+        <div
+          onClick={() => setShowAdminsidebar((prev) => !prev)}
+          className="cursor-pointer shadow-sm group"
+        >
+          {showAdminSidebar ? (
+            <RiCloseLargeLine
+              className="text-[#f0f6fcb3] md:hidden font-bold group-hover:text-[#f0f6fcdc] transition-colors"
+              size={26}
+            />
+          ) : (
+            <RiMenuFill
+              className="text-[#f0f6fcb3] md:hidden font-bold group-hover:text-[#f0f6fcdc] transition-colors"
+              size={26}
+            />
+          )}
+        </div>
         <div ref={msgRef} className="relative">
           <div
             onClick={() => setShowMsgModal((prev) => !prev)}
@@ -81,7 +93,7 @@ const AdminNavbar = () => {
           onClick={() => setShowModal((prev) => !prev)}
           className="flex items-center space-x-4 cursor-pointer"
         >
-          <p className="text-[13px] font-semibold capitalize">
+          <p className="text-[13px] font-semibold capitalize hidden sm:flex">
             {user?.username || ""}
             <span className="text-gray-400 pl-1">({role || ""})</span>
           </p>

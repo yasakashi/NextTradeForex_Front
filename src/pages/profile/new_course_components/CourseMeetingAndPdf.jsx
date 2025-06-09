@@ -18,9 +18,9 @@ const CourseMeetingAndPdf = ({ page }) => {
         className="wrapper mx-auto flex w-full flex-col max-h-fit "
       >
         <h4
-          className={`text-3xl ${
-            page === "admin" ? "text-gray-100" : "text-gray-700"
-          } font-bold mb-4 mt-4`}
+          className={`font-medium text-2xl ${
+            page === "admin" ? "text-[#1d2327]" : "text-[#1d2327]"
+          } mb-4 mt-6`}
         >
           Add Course Details
         </h4>
@@ -41,7 +41,7 @@ const CourseMeetingAndPdf = ({ page }) => {
           <MeetingContentComponent />
           <VideoPdfUrl />
         </div>
-        <div className="flex">
+        <div className="flex mb-10">
           <Link
             className="text-[#1976d2] hover:text-[#1565c0] hover:underline px-3 py-[6px] rounded-md shadow-sm text-base font-medium"
             to="/user-profile/myCourses"

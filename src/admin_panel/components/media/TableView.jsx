@@ -6,16 +6,21 @@ import VidoeCover from "../../../asset/video_cover.svg";
 import AudioCover from "../../../asset/audio_cover.svg";
 import Image from "../../../asset/img/advance.png";
 
-const TableView = () => {
+const TableView = ({ data, isLoading }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const isLoading = false;
+  console.log(data);
+
+  const getFileNameWithoutExtension = (fileName) => {
+    return fileName?.replace(/\.[^/.]+$/, "");
+  };
+
   return (
     <div>
       <MAterialTable
         loading={isLoading}
         // setSearchCourses={setSearchLesson}
-        rows={["amir"]}
+        rows={data}
         columns={[
           {
             header: "File",
@@ -24,22 +29,44 @@ const TableView = () => {
               return (
                 <div className="flex flex-col justify-center items-start w-[300px]">
                   <div className="flex items-center gap-2">
-                    <div className="size-[70px]">
-                      <img
-                        className="w-full h-full bg-cover"
-                        src={Image}
-                        alt="Img"
-                      />
+                    <div className="size-[50px]">
+                      {row?.original?.filecontenttype.includes("image") ? (
+                        <img
+                          className="w-full h-full bg-contain object-fill"
+                          src={row?.original?.fileurl}
+                          alt="Img"
+                        />
+                      ) : row?.original?.filecontenttype.includes("video") ? (
+                        <img
+                          className="w-full h-full bg-cover"
+                          src={VidoeCover}
+                          alt="Video"
+                        />
+                      ) : row?.original?.filecontenttype.includes("audio") ? (
+                        <img
+                          className="w-full h-full bg-cover"
+                          src={AudioCover}
+                          alt="Audio"
+                        />
+                      ) : (
+                        <img
+                          className="w-full h-full bg-cover"
+                          src={Image}
+                          alt="Audio"
+                        />
+                      )}
                     </div>
 
                     <div className="flex flex-col leading-7">
-                      <p className="capitalize text-[#2271b1] font-bold">
-                        Forex-trading-chart
+                      <p className="capitalize text-[#2271b1] font-bold text-base">
+                        {getFileNameWithoutExtension(row?.original?.filename)}
                       </p>
-                      <span>Forex-trading-chart.png</span>
+                      <span className="text-gray-600 text-sm">
+                        {row?.original?.filename}
+                      </span>
                     </div>
                   </div>
-                  <div className="flex z-[1050] relative items-center gap-2">
+                  <div className="hidden  z-[1050] relative items-center gap-2">
                     <BorderedButtonPrimary
                       title="Edit"
                       onClick={() => {
@@ -153,8 +180,9 @@ const TableView = () => {
             Cell: ({ row }) => {
               return (
                 <div className="flex flex-col text-[#50575e]">
-                  <p>Published</p>
-                  <p>{new Date().toLocaleString()}</p>
+                  <p>
+                    {new Date(row?.original?.updatedatetime).toLocaleString()}
+                  </p>
                 </div>
               );
             },
